@@ -74,4 +74,11 @@ crashlytics-build.properties
 builds/
 Assets/scripts/Helpers/tests*
 Assets/Scenes/TestScenes*
-
+Assets/ModelImports*
+Assets/BakeryLightmaps*
+Assets/Bakery*
+Assets/prefabs/SimplifiedModels*
+Assets/prefabs/TestPrefabs*
+Assets/Editor/x64/Bakery*
+Assets/Bakery*
+Assets/BakeryLightmaps*

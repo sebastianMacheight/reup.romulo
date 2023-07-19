@@ -12,6 +12,7 @@ namespace ReUpVirtualTwin
             var materialsManager = ObjectFinder.FindMaterialsManager();
             materialsManager.ShowMaterialsContainer(
                 materialSelectionTrigger.materialObject,
+                materialSelectionTrigger.materialIndex,
                 materialSelectionTrigger.selectableMaterials.ToArray());
         }
     }

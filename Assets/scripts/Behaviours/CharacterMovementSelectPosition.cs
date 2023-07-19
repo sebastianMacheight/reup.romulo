@@ -15,6 +15,6 @@ public class CharacterMovementSelectPosition : SelectPoint
     }
     public override void MissHit()
     {
-        Debug.Log("paila no hay hit");
+        //Debug.Log("No hit for movement");
     }
 }

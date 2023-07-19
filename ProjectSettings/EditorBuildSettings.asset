@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestScenes/SimplifiyingMeshes.unity
-    guid: 647b07cd286c54e45ae19c0853159dbb
-  - enabled: 1
-    path: Assets/Scenes/TestScenes/mc_mahon_circle_simplified 2.unity
-    guid: 5f4542626adb77140aa0211927920166
+    path: Assets/Scenes/TestScenes/Miller_st_19_enlighten.unity
+    guid: b17c67f39961582488b3f9d11e26fd14
   m_configObjects: {}
