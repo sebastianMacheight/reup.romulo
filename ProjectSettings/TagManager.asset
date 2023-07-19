@@ -11,7 +11,7 @@ TagManager:
   - Trigger
   - MaterialSelection
   - Floor0
-  - RoomSelector
+  - SpaceSelector
   layers:
   - Default
   - TransparentFX
