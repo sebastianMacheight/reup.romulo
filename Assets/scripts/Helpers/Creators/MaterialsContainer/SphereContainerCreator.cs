@@ -25,7 +25,8 @@ public class SphereContainerCreator : MaterialsContainerCreator
         // If materials container is showing, hide it instead
         if (materialsContainerInstance != null)
         {
-            HideContainer();
+            //HideContainer();
+            Debug.Log("instance already exits");
             return;
         }
         materialsContainerInstance = _objectPool.GetObjectFromPool(materialsContainerPrefab.name, _mainCamera.transform);

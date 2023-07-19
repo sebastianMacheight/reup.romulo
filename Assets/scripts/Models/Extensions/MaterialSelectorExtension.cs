@@ -18,7 +18,7 @@ namespace ReUpVirtualTwin.Models
         public override void ActivateExtension()
         {
             var materialsManager = ObjectFinder.FindMaterialsManager();
-            materialsManager.ShowMaterialsContainer(objectToReplaceMaterial, selectableMaterials);
+            //materialsManager.ShowMaterialsContainer(objectToReplaceMaterial, selectableMaterials);
         }
 
     }

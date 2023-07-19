@@ -8,6 +8,7 @@ using ReUpVirtualTwin.Experiments;
 using ReUpVirtualTwin.Helpers;
 using System;
 using TB;
+using UnityEngine.UIElements;
 
 namespace ReUpVirtualTwin
 {
@@ -23,9 +24,11 @@ namespace ReUpVirtualTwin
         bool preserveBorderEdges = true;
         bool preserveUVSeamEdges = true;
         bool preserveUVFoldoverEdges = true;
+        bool simplifyVerbose = false;
 
         bool useDefinedQuality;
         float definedQuality = 1f;
+        string createPrefabLabel = "Create prefab";
 
 
         //test variables
@@ -39,32 +42,13 @@ namespace ReUpVirtualTwin
 
         void OnGUI()
         {
-            string createPrefabLabel = "Create prefab";
-            if (GUILayout.Button("simplify"))
+            if (GUILayout.Button("Simplify"))
             {
-                if (obj == null)
-                {
-                    Debug.LogError("Please select Object to simplify");
-                    return;
-                }
-                var isPrefab = PrefabUtility.IsPartOfPrefabAsset(obj);
-                if (!createPrefab && isPrefab)
-                {
-                    Debug.LogWarning($"This is a prefab, please check the option '{createPrefabLabel}'");
-                    return;
-                }
-                GameObject objToSimplify;
-                if (createPrefab)
-                {
-                    var instanceObj = Instantiate(obj);
-                    objToSimplify = PrefabUtil.MakePrefab(instanceObj, true);
-                    DestroyImmediate(instanceObj);
-                }
-                else
-                {
-                    objToSimplify = obj;
-                }
-                SimplifyAllTreeObject(objToSimplify);
+                SimplifyAction(false);
+            }
+            if (GUILayout.Button("Simplify verbose"))
+            {
+                SimplifyAction(true);
             }
             obj = (GameObject)EditorGUILayout.ObjectField("Object", obj, typeof(object), true);
             createPrefab = EditorGUILayout.Toggle(createPrefabLabel, createPrefab);
@@ -97,6 +81,34 @@ namespace ReUpVirtualTwin
                 var ave = GetAverageDensity(obj);
                 PrintAverages(ave);
             }
+        }
+
+        void SimplifyAction(bool verbose)
+        {
+            simplifyVerbose = verbose;
+            if (obj == null)
+            {
+                Debug.LogError("Please select Object to simplify");
+                return;
+            }
+            var isPrefab = PrefabUtility.IsPartOfPrefabAsset(obj);
+            if (!createPrefab && isPrefab)
+            {
+                Debug.LogWarning($"This is a prefab, please check the option '{createPrefabLabel}'");
+                return;
+            }
+            GameObject objToSimplify;
+            if (createPrefab)
+            {
+                var instanceObj = Instantiate(obj);
+                objToSimplify = PrefabUtil.MakePrefab(instanceObj, true);
+                DestroyImmediate(instanceObj);
+            }
+            else
+            {
+                objToSimplify = obj;
+            }
+            SimplifyAllTreeObject(objToSimplify);
         }
         void PrintAverages(AverageInfo ave)
         {
@@ -191,19 +203,28 @@ namespace ReUpVirtualTwin
             //check if object has either sharedMesh or serializedMesh
             var originalMesh = meshFilter.sharedMesh;
 
-            //Debug.Log($"original mesh for {obj.name}: " + originalMesh.triangles.Length / 3 + " triangles and " + originalMesh.vertices.Length + " vertices");
+            if (simplifyVerbose)
+            {
+                Debug.Log($"original mesh for {obj.name}: " + originalMesh.triangles.Length / 3 + " triangles and " + originalMesh.vertices.Length + " vertices");
+            }
 
             float quality = useDefinedQuality ? definedQuality : GetQualityReduction(obj);
 
             if (quality >= 1)
             {
-                //Debug.Log($"Quality to simplify {obj.name} is {quality}, no reduction was performed");
+                if (simplifyVerbose)
+                {
+                    Debug.Log($"Quality to simplify {obj.name} is {quality}, no reduction was performed");
+                }
                 return;
             }
 
             var meshSimplifier = new MeshSimplifier();
             meshSimplifier.Initialize(originalMesh);
-            //Debug.Log($"performing reduction in quality {quality} for {obj.name}");
+            if (simplifyVerbose)
+            {
+                Debug.Log($"performing reduction in quality {quality} for {obj.name}");
+            }
             meshSimplifier.SimplifyMesh(quality);
             meshSimplifier.SimplificationOptions = new SimplificationOptions
             {
@@ -225,18 +246,12 @@ namespace ReUpVirtualTwin
             //Debug.Log($"simplifiedMesh.normals.Length {simplifiedMesh.normals.Length}");
             //Debug.Log($"simplifiedMesh.uv.Length {simplifiedMesh.uv.Length}");
 
+
             var trianglesReduction = 100 * simplifiedMesh.triangles.Length / originalMesh.triangles.Length;
             var vertexReduction = 100 * simplifiedMesh.vertices.Length / originalMesh.vertices.Length;
-            if (trianglesReduction > 100 || vertexReduction > 100)
+            if (!(trianglesReduction > 100 || vertexReduction > 100))
             {
-                Debug.Log($"With reduction of {quality} for {obj.name}");
-                Debug.Log($"Resulting mesh for {obj.name}: {simplifiedMesh.triangles.Length / 3} triangles ({trianglesReduction}%) \n and {simplifiedMesh.vertices.Length} vertices ({vertexReduction}%)");
-                MeshInfo meshInfo = new MeshInfo(obj);
-                Debug.Log($"for {obj.name} VolDensity: {meshInfo.volVertexDensity} ArealDensity: {meshInfo.arealVertexDensity}");
-            }
-            else
-            {
-                //for some reason, some meshes dosen't have uvs
+                //for some reason, some meshes don't have uvs
                 if (simplifiedMesh.uv.Length == 0)
                 {
                     MeshUtils.GeneratePlanarUVMapping(simplifiedMesh);
@@ -244,6 +259,14 @@ namespace ReUpVirtualTwin
                 simplifiedMesh.RecalculateBounds();
                 simplifiedMesh.RecalculateNormals(softBorderAngle);
                 obj.GetComponent<MeshFilter>().sharedMesh = simplifiedMesh;
+            }
+
+            if (simplifyVerbose)
+            {
+                Debug.Log($"With reduction of {quality} for {obj.name}");
+                Debug.Log($"Resulting mesh for {obj.name}: {simplifiedMesh.triangles.Length / 3} triangles ({trianglesReduction}%) \n and {simplifiedMesh.vertices.Length} vertices ({vertexReduction}%)");
+                MeshInfo meshInfo = new MeshInfo(obj);
+                Debug.Log($"for {obj.name} VolDensity: {meshInfo.volVertexDensity} ArealDensity: {meshInfo.arealVertexDensity}");
             }
         }
 
