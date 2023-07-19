@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class SpacesManager : MonoBehaviour
 {
-    //[HideInInspector]
-    //public RegisteredRooms registeredRooms;
-    public List<SpaceSelector> roomSelectors = new List<SpaceSelector>();
+    public List<SpaceSelector> spaceSelectors;
     void Start()
     {
-        //registeredRooms = GetComponent<RegisteredRooms>();
     }
 }

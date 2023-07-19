@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 1493374150959457918}
   - component: {fileID: 2400863058411172698}
   m_Layer: 0
-  m_Name: RoomSelector
-  m_TagString: RoomSelector
+  m_Name: SpaceSelector
+  m_TagString: SpaceSelector
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,4 +110,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4221eedd5cc6fc74b99364eaf21a0719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomName: 
+  spaceName: 
