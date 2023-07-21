@@ -9,6 +9,8 @@ public class CharacterPositionManager : MonoBehaviour
     [SerializeField]
     private float floorDistanceThreshold = 0.7f;
 
+    private float stopDistance;
+
     Vector3 _characterPosition
     {
         get
@@ -27,16 +29,26 @@ public class CharacterPositionManager : MonoBehaviour
         var step = direction * Time.deltaTime * characterVelocity;
         transform.position += step;
     }
-    public void MovePositionToTarget(Vector3 target)
+    public void WalkToTarget(Vector3 target)
     {
-        StopCoroutine("MoveToTarget");
-        StartCoroutine("MoveToTarget", target);
+        stopDistance = (target.y > _characterPosition.y - floorDistanceThreshold) ? 0.5f : 0.05f;
+        target.y = _characterPosition.y;
+        MoveToTarget(target);
+    }
+    public void SliceToTarget(Vector3 target)
+    {
+        stopDistance = 0;
+        MoveToTarget(target);
     }
 
-    private IEnumerator MoveToTarget(Vector3 target)
+    public void MoveToTarget(Vector3 target)
     {
-        float stopDistance = (target.y > _characterPosition.y - floorDistanceThreshold) ? 0.5f : 0.05f;
-        target.y = _characterPosition.y;
+        StopCoroutine("MoveToTargetCoroutine");
+        StartCoroutine("MoveToTargetCoroutine", target);
+    }
+
+    private IEnumerator MoveToTargetCoroutine(Vector3 target)
+    {
         while(Vector3.Distance(target, _characterPosition) > stopDistance)
         {
             _characterPosition = Vector3.Lerp(_characterPosition, target, characterVelocity * Time.deltaTime);
