@@ -5,7 +5,8 @@ using TMPro;
 
 public class SpaceButtonInstance : MonoBehaviour
 {
-    public TMP_Text nameField;
+    [SerializeField]
+    TMP_Text nameField;
     public string spaceName
     {
         get { return nameField.text; }
