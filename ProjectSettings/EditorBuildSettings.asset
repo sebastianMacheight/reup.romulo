@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestScenes/Miller_st_19_enlighten.unity
-    guid: b17c67f39961582488b3f9d11e26fd14
+    path: Assets/Scenes/TestScenes/mahon_circle.unity
+    guid: 804b9a36bbf2ee64a9cc37f230f50684
   m_configObjects: {}

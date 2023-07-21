@@ -17,7 +17,7 @@ namespace ReUpVirtualTwin
 
         GameObject obj;
         bool createPrefab = false;
-        float maxVolumetricDensity = 10000000;
+        float maxVolumetricDensity = 1000000;
         float maxArealDensity = 500000;
         int minVertexCount = 100;
         float softBorderAngle = 60f;
