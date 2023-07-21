@@ -55,5 +55,9 @@ namespace ReUpVirtualTwin.Helpers
         {
             return GameObject.FindAnyObjectByType<SpacesManager>();
         }
+        public static CharacterPositionManager FindCharacterPositionManager()
+        {
+            return GameObject.FindAnyObjectByType<CharacterPositionManager>();
+        }
     }
 }

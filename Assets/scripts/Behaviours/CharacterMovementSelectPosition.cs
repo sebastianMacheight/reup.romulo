@@ -11,7 +11,7 @@ public class CharacterMovementSelectPosition : SelectPoint
     }
     public override void HandleHit(RaycastHit hit)
     {
-        _characterPositionManager.MovePositionToTarget(hit.point);
+        _characterPositionManager.WalkToTarget(hit.point);
     }
     public override void MissHit()
     {

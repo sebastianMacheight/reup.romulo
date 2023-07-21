@@ -15,13 +15,13 @@ public class SpacesButtonList : MonoBehaviour
     {
         objectPool = ObjectFinder.FindObjectPool();
         spacesManager = ObjectFinder.FindSpacesManager();
-        Debug.Log("the spaces are: ");
 
         foreach(SpaceSelector space in spacesManager.spaceSelectors)
         {
-            var spaceButton = objectPool.GetObjectFromPool(spaceButtonPrefab.name, transform);
-            Debug.Log(space.spaceName);
-            spaceButton.GetComponent<SpaceButtonInstance>().spaceName = space.spaceName;
+            GameObject spaceButton = objectPool.GetObjectFromPool(spaceButtonPrefab.name, transform);
+            var spaceButtonInstance = spaceButton.GetComponent<SpaceButtonInstance>();
+            spaceButtonInstance.spaceSelector = space;
+            spaceButtonInstance.spaceName = space.spaceName;
         }
     }
 }
