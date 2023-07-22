@@ -8,12 +8,6 @@ public class SpacesManager : MonoBehaviour
     void Start()
     {
         UpdateSpaces();
-        Debug.Log($"in the spacesmanager there are {spaceSelectors.Count}");
-
-        //foreach( SpaceSelector selector in spaceSelectors )
-        //{
-        //    Debug.Log($"the space is {selector}");
-        //}
     }
 
     public void UpdateSpaces()

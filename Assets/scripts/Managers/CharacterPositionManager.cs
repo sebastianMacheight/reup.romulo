@@ -9,7 +9,23 @@ public class CharacterPositionManager : MonoBehaviour
     [SerializeField]
     private float floorDistanceThreshold = 0.7f;
 
-    private float stopDistance;
+    private float _stopDistance;
+    private float stopDistance {
+        get
+        {
+            return _stopDistance;
+        }
+        set
+        {
+            if (value < 0.01f)
+            {
+                _stopDistance = 0.01f;
+            }
+            else
+            {
+                _stopDistance = value;
+            }
+        } }
 
     Vector3 _characterPosition
     {
@@ -25,7 +41,7 @@ public class CharacterPositionManager : MonoBehaviour
 
     public void MovePositionByStepInDirection(Vector3 direction)
     {
-        StopCoroutine("MoveToTarget");
+        StopCoroutine("MoveToTargetCoroutine");
         var step = direction * Time.deltaTime * characterVelocity;
         transform.position += step;
     }
