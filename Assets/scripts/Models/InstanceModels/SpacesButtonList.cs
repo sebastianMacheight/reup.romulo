@@ -16,12 +16,15 @@ public class SpacesButtonList : MonoBehaviour
         objectPool = ObjectFinder.FindObjectPool();
         spacesManager = ObjectFinder.FindSpacesManager();
 
+        Debug.Log($"there are {spacesManager.spaceSelectors.Count} spaces");
+
         foreach(SpaceSelector space in spacesManager.spaceSelectors)
         {
             GameObject spaceButton = objectPool.GetObjectFromPool(spaceButtonPrefab.name, transform);
             var spaceButtonInstance = spaceButton.GetComponent<SpaceButtonInstance>();
             spaceButtonInstance.spaceSelector = space;
             spaceButtonInstance.spaceName = space.spaceName;
+            //Debug.Log(space.spaceName);
         }
     }
 }
