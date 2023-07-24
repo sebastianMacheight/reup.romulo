@@ -15,10 +15,9 @@ public abstract class SelectPoint : Select
 
     public override void OnSelect(InputAction.CallbackContext ctx)
     {
-        if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi)
+        if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi && !_dragManager.prevselectInputInUI)
         {
             Ray ray = _rayProvider.GetRay();
-            //Debug.DrawRay(ray.origin, ray.direction, Color.red, 1);
             RaycastHit? hit = _hitSelector.GetHit(ray);
 		    if (hit !=null) 
 		    {
