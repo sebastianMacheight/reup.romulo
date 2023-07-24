@@ -199,9 +199,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6137961238514962480}
-        m_TargetAssemblyTypeName: SpaceButtonInstance, Main
-        m_MethodName: GoToSpace
+      - m_Target: {fileID: 6683392190240491147}
+        m_TargetAssemblyTypeName: ShowSlidingPanel, Main
+        m_MethodName: HidePanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -456,6 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spaceButtonPrefab: {fileID: 4690271077178968154, guid: 5cb8894d81e593e49a0fc4f086bc8d99, type: 3}
+  spacesList: {fileID: 1270935072}
 --- !u!1 &3726147760900454414
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,7 +583,7 @@ GameObject:
   - component: {fileID: 3726147762164743017}
   - component: {fileID: 3726147762164743018}
   m_Layer: 5
-  m_Name: ThepowerfulScrollbar
+  m_Name: Scrollbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -690,7 +691,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3726147761684448936}
   m_HandleRect: {fileID: 3726147761684448937}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -753,6 +754,7 @@ GameObject:
   - component: {fileID: 3694556964446253108}
   - component: {fileID: 174004311301017713}
   - component: {fileID: 3847860436754445603}
+  - component: {fileID: 1270935072}
   m_Layer: 5
   m_Name: SpacesList
   m_TagString: Untagged
@@ -777,11 +779,11 @@ RectTransform:
   m_Father: {fileID: 3726147762662734172}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.3}
+  m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -30, y: -15.000061}
-  m_SizeDelta: {x: 251.5, y: -29.999908}
-  m_Pivot: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -30, y: -30}
+  m_SizeDelta: {x: 251.5, y: 400}
+  m_Pivot: {x: 1, y: 1}
 --- !u!222 &174004311301017713
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -804,6 +806,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
+--- !u!114 &1270935072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4178533922112293405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de223c8a4dc1115469e03143290cbb80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHeight: 400
 --- !u!1 &7472491671812983734
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,9 +942,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SpaceButtonInstance, Main
-        m_MethodName: GoToSpace
+      - m_Target: {fileID: 6683392190240491147}
+        m_TargetAssemblyTypeName: ShowSlidingPanel, Main
+        m_MethodName: ShowPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -951,6 +966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994acbf19ec6ed441b532d84e2e98af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panel: {fileID: 2720563134437313593}
 --- !u!1 &7829778888917422473
 GameObject:
   m_ObjectHideFlags: 0
