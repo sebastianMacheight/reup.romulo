@@ -10,6 +10,8 @@ public class DragManager : MonoBehaviour
     public bool prevDragging = false;
     public bool pointerUnderUi = false;
     public float dragDitanceThreshold = 10f;
+    public bool selectInputInUI = false;
+    public bool prevselectInputInUI = false;
 
     private bool _selectInput = false;
     private Vector3 _selectPosition;
@@ -42,6 +44,7 @@ public class DragManager : MonoBehaviour
         pointerUnderUi = EventSystem.current != null ? EventSystem.current.IsPointerOverGameObject() : false;
 
         prevDragging = dragging;
+        prevselectInputInUI = selectInputInUI;
         if (_selectInput && dragging == false)
         {
             dragging = Vector3.Distance(_inputProvider.PointerInput(), _selectPosition) > dragDitanceThreshold;
@@ -50,7 +53,11 @@ public class DragManager : MonoBehaviour
 
     private void OnPress(InputAction.CallbackContext obj)
     {
-        if (!pointerUnderUi)
+        if (pointerUnderUi)
+        {
+            selectInputInUI = true;
+        }
+        else
         {
             _selectInput = true;
             _selectPosition = _inputProvider.PointerInput();
@@ -61,5 +68,6 @@ public class DragManager : MonoBehaviour
     {
         _selectInput = false;
         dragging = false;
+        selectInputInUI = false;
     }
 }

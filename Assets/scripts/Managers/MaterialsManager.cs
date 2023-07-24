@@ -15,7 +15,6 @@ public class MaterialsManager : MonoBehaviour
 
     public void ShowMaterialsContainer(GameObject obj, int materialIndex, Material[] selectableMaterials)
     {
-        Debug.Log($"the new index is {materialIndex}");
         selectedObject = obj;
         selectedMaterialIndex = materialIndex;
         _containerCreator.CreateContainer(selectedObject, selectableMaterials);
@@ -26,12 +25,8 @@ public class MaterialsManager : MonoBehaviour
         var materials = selectedObject.GetComponent<Renderer>().materials;
         Material[] newMaterials = new Material[materials.Length];
         newMaterials = materials;
-        Debug.Log($"the index is {selectedMaterialIndex}");
-        Debug.Log("the material is" + material.name);
-        Debug.Log($"the previous material is {selectedObject.GetComponent<Renderer>().materials[selectedMaterialIndex]}");
         newMaterials[selectedMaterialIndex] = material;
         selectedObject.GetComponent<Renderer>().materials = newMaterials;
-        Debug.Log($"the new material is {selectedObject.GetComponent<Renderer>().materials[selectedMaterialIndex]}");
 
     }
 }
