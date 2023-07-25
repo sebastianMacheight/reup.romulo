@@ -14,8 +14,8 @@ public class ImageColor : MonoBehaviour
         image = GetComponent<Image>();
         image.color = colorSo.color;
     }
-    private void Update()
-    {
-        image.color = colorSo.color;
-    }
+    //private void Update()
+    //{
+    //    image.color = colorSo.color;
+    //}
 }

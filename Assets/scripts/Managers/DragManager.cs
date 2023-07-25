@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using ReUpVirtualTwin.Helpers;
 
 public class DragManager : MonoBehaviour
 {
@@ -91,59 +89,14 @@ public class DragManager : MonoBehaviour
 
     private void OnPress(InputAction.CallbackContext obj)
     {
-        //if (pointerUnderUi)
-        //{
-        //    Debug.Log("hay select input CON UI");
-        //    selectInputInUI = true;
-        //}
-        //else
-        //{
-        //    Debug.Log("hay select input SIN UI");
-        //    _selectInput = true;
-        //    _selectPosition = _inputProvider.PointerInput();
-        //}
-        //if(currentTouchscreen != null && currentTouchscreen.press.isPressed)
-        //{
-        //}
-        //else
-        //{
-        //    Debug.Log("paila");
-        //}
-
-
-        PointerEventData eventData = new PointerEventData(EventSystem.current);
-        Touchscreen currentTouchscreen = Touchscreen.current;
-        if (currentTouchscreen != null )
+        if (OverUICheck.PointerOverUI2())
         {
-            eventData.position = currentTouchscreen.position.ReadValue();
-        }
-        else
-        {
-            eventData.position = Mouse.current.position.ReadValue();
-        }
-        List<RaycastResult> raycastResultsList = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, raycastResultsList);
-        var UIElement = false;
-        for (int i = 0; i< raycastResultsList.Count; i++)
-        {
-            if (raycastResultsList[i].gameObject.GetType() == typeof(GameObject))
-            {
-                UIElement = true;
-                break;
-            }
-        }
-        //if (!UIElement)
-        //{
-        //    Debug.Log("on press for select input");
-        //    _selectInput = true;
-        //    _selectPosition = _inputProvider.PointerInput();
-        //}
-        if (UIElement)
-        {
+            Debug.Log("pointer is over UI");
             selectInputInUI = true;
         }
         else
         {
+            Debug.Log("pointer is NOT over UI");
             _selectInput = true;
             _selectPosition = _inputProvider.PointerInput();
         }
