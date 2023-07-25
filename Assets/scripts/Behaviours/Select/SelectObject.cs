@@ -19,7 +19,8 @@ public abstract class SelectObject : Select
 
     public override void OnSelect(InputAction.CallbackContext ctx)
     {
-        if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi && !_dragManager.prevselectInputInUI)
+        //if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi && !_dragManager.prevSelectInputInUI)
+        if (!_dragManager.prevDragging && !_dragManager.prevSelectInputInUI)
         {
             Ray ray = _rayProvider.GetRay();
             //Debug.DrawRay(ray.origin, ray.direction, Color.red, 1);

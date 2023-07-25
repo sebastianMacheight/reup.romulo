@@ -42,7 +42,8 @@ namespace ReUpVirtualTwin.Behaviours
 
     private void OnSelect(InputAction.CallbackContext ctx)
         {
-        if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi)
+        //if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi)
+        if (!_dragManager.prevDragging && !_dragManager.prevSelectInputInUI)
             {
                 Ray ray = _rayProvider.GetRay();
                 GameObject obj = _objectSelector.CheckSelection(ray);

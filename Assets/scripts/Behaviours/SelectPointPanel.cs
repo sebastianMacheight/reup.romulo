@@ -40,7 +40,8 @@ namespace ReUpVirtualTwin.Behaviours
 
         private void GetPoint(InputAction.CallbackContext ctx)
         {
-            if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi)
+            //if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi)
+            if (!_dragManager.prevDragging && !_dragManager.prevSelectInputInUI)
             {
                 Ray ray = _rayProvider.GetRay();
                 var hit = _pointSelector.GetHit(ray);
