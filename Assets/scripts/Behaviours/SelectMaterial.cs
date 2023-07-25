@@ -40,10 +40,10 @@ namespace ReUpVirtualTwin.Behaviours
             selectedMaterialObject = null;
         }
 
+    //This is an old code that is not used anymore, the new select classes are all children from the SelectObject or SelectPoint or Select class
     private void OnSelect(InputAction.CallbackContext ctx)
         {
-        //if (!_dragManager.prevDragging && !_dragManager.pointerUnderUi)
-        if (!_dragManager.prevDragging && !_dragManager.prevSelectInputInUI)
+            if (!_dragManager.prevDragging && !OverUICheck.PointerOverUI2() && !_dragManager.selectInputInUI)
             {
                 Ray ray = _rayProvider.GetRay();
                 GameObject obj = _objectSelector.CheckSelection(ray);
