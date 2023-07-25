@@ -25,12 +25,10 @@ public abstract class SelectPoint : Select
 		    if (hit !=null) 
 		    {
                 HandleHit((RaycastHit)hit);
+                return;
 		    }
-            else
-            {
-                MissHit();
-            }
         }
+        MissHit();
     }
     public abstract void HandleHit(RaycastHit hit);
     public virtual void MissHit() { }

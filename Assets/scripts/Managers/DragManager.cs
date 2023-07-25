@@ -91,12 +91,10 @@ public class DragManager : MonoBehaviour
     {
         if (OverUICheck.PointerOverUI2())
         {
-            Debug.Log("pointer is over UI");
             selectInputInUI = true;
         }
         else
         {
-            Debug.Log("pointer is NOT over UI");
             _selectInput = true;
             _selectPosition = _inputProvider.PointerInput();
         }
