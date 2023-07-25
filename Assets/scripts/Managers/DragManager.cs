@@ -8,7 +8,6 @@ public class DragManager : MonoBehaviour
 {
     public bool dragging = false;
     public bool prevDragging = false;
-    //public bool pointerUnderUi = false;
     public float dragDitanceThreshold = 10f;
     public bool selectInputInUI = false;
     public bool prevSelectInputInUI = false;
@@ -141,12 +140,10 @@ public class DragManager : MonoBehaviour
         //}
         if (UIElement)
         {
-            Debug.Log("hay select input CON UI");
             selectInputInUI = true;
         }
         else
         {
-            Debug.Log("hay select input SIN UI");
             _selectInput = true;
             _selectPosition = _inputProvider.PointerInput();
         }
@@ -154,7 +151,6 @@ public class DragManager : MonoBehaviour
 
     private void OnPressCanceled(InputAction.CallbackContext obj)
     {
-        Debug.Log("cancelando todo en drag manager pape");
         _selectInput = false;
         dragging = false;
         selectInputInUI = false;
