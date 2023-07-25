@@ -28,12 +28,10 @@ public abstract class SelectObject : Select
 		    if (obj !=null) 
 		    {
                 HandleObject(obj);
+                return;
 		    }
-            else
-            {
-                MissObject();
-            }
         }
+        MissObject();
     }
     public abstract void HandleObject(GameObject obj);
     public virtual void MissObject() { }
