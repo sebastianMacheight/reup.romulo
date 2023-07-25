@@ -14,8 +14,8 @@ public class CharacterMovementSelectPosition : SelectPoint
     {
         _characterPositionManager.WalkToTarget(hit.point);
     }
-    public override void MissHit()
-    {
-        //Debug.Log("No hit for movement");
-    }
+    //public override void MissHit()
+    //{
+    //    Debug.Log("No hit for movement");
+    //}
 }

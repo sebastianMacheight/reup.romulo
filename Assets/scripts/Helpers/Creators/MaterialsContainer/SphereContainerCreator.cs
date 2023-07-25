@@ -22,11 +22,9 @@ public class SphereContainerCreator : MaterialsContainerCreator
 
     public override void CreateContainer(GameObject obj, Material[] selectableMaterials)
     {
-        // If materials container is showing, hide it instead
+        // If materials container is showing, don't do anything
         if (materialsContainerInstance != null)
         {
-            //HideContainer();
-            Debug.Log("instance already exits");
             return;
         }
         materialsContainerInstance = _objectPool.GetObjectFromPool(materialsContainerPrefab.name, _mainCamera.transform);
