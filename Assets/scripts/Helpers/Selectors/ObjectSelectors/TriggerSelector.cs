@@ -1,17 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ReUpVirtualTwin
 {
-    public class MaterialSelectionSelector : MonoBehaviour, IObjectSelector
-        {
+    public class TriggerSelector : Selector, IObjectSelector
+    {
         public GameObject CheckSelection(Ray ray)
         {
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (CastRay(ray, out hit))
             {
                 GameObject obj = hit.collider.gameObject;
-                //Debug.Log("the obj is materialselectionselector " + obj);
-                if (obj.CompareTag(TagsEnum.materialSelection))
+                if (obj.CompareTag(TagsEnum.trigger))
                 {
                     return obj;
                 }

@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-public class AllObjectsSelector : MonoBehaviour, IObjectSelector
+public class AllObjectsSelector : Selector, IObjectSelector
 {
     public GameObject CheckSelection(Ray ray)
     { 
 	    RaycastHit hit;
-	    bool didHit = Physics.Raycast(ray, out hit);
+	    bool didHit = CastRay(ray, out hit);
         if (didHit)
         {
             GameObject obj = hit.collider.gameObject;
