@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace ReUpVirtualTwin
 {
-    public class RayCastHitSelector : MonoBehaviour, IRayCastHitSelector
+    public class RayCastHitSelector : Selector, IRayCastHitSelector
     {
         public RaycastHit? GetHit(Ray ray)
         {
-            if (Physics.Raycast(ray, out var hit))
+            if (CastRay(ray, out var hit))
             {
                 return hit;
             }
