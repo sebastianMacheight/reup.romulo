@@ -7,7 +7,7 @@ public abstract class MaterialsContainerCreator : MonoBehaviour, IMaterialsConta
 {
     //public DragManager dragManager;
     public GameObject materialsContainerInstance { get; set; } = null;
-    public abstract void CreateContainer(GameObject obj, Material[] selectableMaterials);
+    public abstract void CreateContainer(Material[] selectableMaterials);
     public abstract void HideContainer();
 
     private bool _prevMaterialsContainerInstance;
