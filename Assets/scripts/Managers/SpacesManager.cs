@@ -1,13 +1,23 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpacesManager : MonoBehaviour
 {
     public List<SpaceSelector> spaceSelectors;
+    public List<SpaceSelectorFloorPlane> spaceSelectorPlanes;
+    [HideInInspector]
+    public bool drawSpacesGizmos = true;
+    [HideInInspector]
+    public bool drawPlanesGizmos = true;
+    [HideInInspector]
+    public int floorPlanesLenght = 20;
+    [HideInInspector]
+    public int gizmoGridSize = 9;
+
     void Start()
     {
         UpdateSpaces();
+        UpdatePlanes();
     }
 
     public void UpdateSpaces()
@@ -18,6 +28,16 @@ public class SpacesManager : MonoBehaviour
         {
             var roomSelector = room.GetComponent<SpaceSelector>();
             spaceSelectors.Add(roomSelector);
+        }
+    }
+    public void UpdatePlanes()
+    {
+        GameObject[] planes = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelectorPlane);
+        spaceSelectorPlanes.Clear();
+        foreach (GameObject plane in planes)
+        {
+            var spaceSelectorPlane = plane.GetComponent<SpaceSelectorFloorPlane>();
+            spaceSelectorPlanes.Add(spaceSelectorPlane);
         }
     }
 }
