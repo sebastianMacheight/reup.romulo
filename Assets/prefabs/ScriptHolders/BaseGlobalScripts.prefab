@@ -245,10 +245,6 @@ PrefabInstance:
       value: ObjectPool
       objectReference: {fileID: 0}
     - target: {fileID: 2447689631095576323, guid: fd0dd2c73bf7fc94fbbe48d823dfe2cd, type: 3}
-      propertyPath: PrefabsForPool.Array.size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2447689631095576323, guid: fd0dd2c73bf7fc94fbbe48d823dfe2cd, type: 3}
       propertyPath: PrefabsForPool.Array.data[9]
       value: 
       objectReference: {fileID: 4690271077178968154, guid: 5cb8894d81e593e49a0fc4f086bc8d99, type: 3}

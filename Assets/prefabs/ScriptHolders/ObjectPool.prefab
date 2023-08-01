@@ -45,12 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PrefabsForPool:
-  - {fileID: 6176978846602516675, guid: 9c137c39370474aacac417985e4c165f, type: 3}
   - {fileID: 795185681624372215, guid: 63f9ee5011f4745b6a4f85331988a00a, type: 3}
   - {fileID: 6089178694768482751, guid: 909bced0a4ff4405d9026f65b859cc6a, type: 3}
-  - {fileID: 4236549323958280088, guid: 9730ff101aabbd24fbae321fb5861cd1, type: 3}
-  - {fileID: 8283795272454349609, guid: a4acabf0fb6529f4dad1d17f5bdccd01, type: 3}
-  - {fileID: 6694966052049902889, guid: bc6aed6aab9e57d44b8af56bf4187c5b, type: 3}
-  - {fileID: 3302628504097905605, guid: 30a4cfc8a54c12c4dae9e16a71e52178, type: 3}
   - {fileID: 3336025878449961110, guid: 0212f277abe25a14b884fbe1d17e6ad8, type: 3}
-  - {fileID: 6738496162713234083, guid: e6b4fbe60848b5442ba284f8e3dca948, type: 3}
+  - {fileID: 4690271077178968154, guid: 5cb8894d81e593e49a0fc4f086bc8d99, type: 3}
