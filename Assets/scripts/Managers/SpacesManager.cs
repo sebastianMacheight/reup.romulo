@@ -10,7 +10,7 @@ public class SpacesManager : MonoBehaviour
     [HideInInspector]
     public bool drawPlanesGizmos = true;
     [HideInInspector]
-    public int floorPlanesLenght = 20;
+    public int floorPlanesLength = 20;
     [HideInInspector]
     public int gizmoGridSize = 9;
 

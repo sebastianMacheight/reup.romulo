@@ -38,7 +38,7 @@ namespace ReUpVirtualTwin
             EditorGUILayout.Space(10f);
 
             spacesManager.drawSpacesGizmos =  EditorGUILayout.Toggle("Draw spaces gizmos", spacesManager.drawSpacesGizmos);
-            spacesManager.floorPlanesLenght = EditorGUILayout.IntField("Floor planes lenght", spacesManager.floorPlanesLenght);
+            spacesManager.floorPlanesLength = EditorGUILayout.IntField("Floor planes length", spacesManager.floorPlanesLength);
             spacesManager.gizmoGridSize = EditorGUILayout.IntSlider("Floor plane grid size", spacesManager.gizmoGridSize, 1, 10);
 
             DrawDefaultInspector();

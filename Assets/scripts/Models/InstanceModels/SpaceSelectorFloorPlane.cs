@@ -16,7 +16,7 @@ public class SpaceSelectorFloorPlane : MonoBehaviour
         if (drawPlane)
         {
             Gizmos.color = new Color(0.05f, 0.5f, 0.2f);
-            var l = _spacesManager.floorPlanesLenght;
+            var l = _spacesManager.floorPlanesLength;
             float gridSize = (float) 1 / (11 - _spacesManager.gizmoGridSize);
             for (float i = 0f; i < l; i = i + gridSize)
             {
