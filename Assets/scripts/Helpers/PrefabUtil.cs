@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEditor;
 using System.IO;
-using ReUpVirtualTwin.Helpers;
 
-namespace ReUpVirtualTwin
+namespace ReUpVirtualTwin.Helpers
 {
     public static class PrefabUtil
     {

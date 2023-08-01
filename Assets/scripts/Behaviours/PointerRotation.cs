@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Rotation : MonoBehaviour
+public class PointerRotation : MonoBehaviour
 {
     public float sensitivity = 1f;
 
