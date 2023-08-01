@@ -27,7 +27,7 @@ namespace ReUpVirtualTwin
         {
             Ray ray = _rayProvider.GetRay();
             //Debug.DrawRay(ray.origin, ray.direction, Color.green);
-            GameObject selection = _objSelector.CheckSelection(ray);
+            GameObject selection = _objSelector.GetObject(ray);
             bool newObj = !GameObject.ReferenceEquals(selection, _currentSelection);
             if (newObj)
             {
