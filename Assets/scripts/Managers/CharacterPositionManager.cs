@@ -54,9 +54,6 @@ public class CharacterPositionManager : MonoBehaviour
         StopCoroutine("MoveToTargetCoroutine");
         rb.isKinematic = false;
         var step = direction * movementForceMultiplier;
-        //var step = direction * Time.deltaTime * characterVelocity;
-        //transform.position += step;
-        //rb.MovePosition(transform.position + step);
         rb.AddForce(step, ForceMode.Force);
     }
     public void WalkToTarget(Vector3 target)

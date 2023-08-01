@@ -1,16 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ReUpVirtualTwin
 {
-    public class RayCastHitSelector : Selector, IRayCastHitSelector
+    public abstract class RayCastHitSelector : Selector, IRayCastHitSelector
     {
         public RaycastHit? GetHit(Ray ray)
         {
-            if (CastRay(ray, out var hit))
+            RaycastHit hit;
+            if (CastRay(ray, out hit))
             {
-                return hit;
+                GameObject obj = hit.collider.gameObject;
+                if (!obj.CompareTag(TagsEnum.trigger) && !obj.CompareTag(TagsEnum.materialSelection))
+                {
+                    return hit;
+                }
             }
             return null;
         }

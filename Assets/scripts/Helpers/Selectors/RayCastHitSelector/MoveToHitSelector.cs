@@ -1,21 +1,12 @@
-using ReUpVirtualTwin;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveToHitSelector : Selector, IRayCastHitSelector
+namespace ReUpVirtualTwin
 {
-    public RaycastHit? GetHit(Ray ray)
+    public class MoveToHitSelector : RayCastHitSelector
     {
-        RaycastHit hit;
-        if (CastRay(ray, out hit))
+        protected override bool IsSelectable(GameObject obj)
         {
-            GameObject obj = hit.collider.gameObject;
-            if (!obj.CompareTag(TagsEnum.trigger) && !obj.CompareTag(TagsEnum.materialSelection))
-            {
-                return hit;
-            }
+            return !obj.CompareTag(TagsEnum.trigger) && !obj.CompareTag(TagsEnum.materialSelection);
         }
-        return null;
     }
 }
