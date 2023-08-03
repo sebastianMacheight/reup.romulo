@@ -18,7 +18,7 @@ public class SpacesButtonList : MonoBehaviour
         objectPool = ObjectFinder.FindObjectPool();
         spacesManager = ObjectFinder.FindSpacesManager();
 
-        foreach(SpaceSelector space in spacesManager.spaceSelectors)
+        foreach(SpaceJumpPoint space in spacesManager.spaceSelectors)
         {
             GameObject spaceButton = objectPool.GetObjectFromPool(spaceButtonPrefab.name, transform);
             var spaceButtonInstance = spaceButton.GetComponent<SpaceButtonInstance>();

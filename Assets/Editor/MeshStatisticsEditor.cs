@@ -34,17 +34,6 @@ public class MeshStatisticsEditor : Editor
             EditorGUILayout.LabelField("Mesh area: " + meshInfo.area);
             EditorGUILayout.LabelField("Mesh volumen: " + meshInfo.volumen);
 
-            //var serializedMesh = ((GameObject)target).GetComponent<SerializeMesh>();
-            if (meshInfo.isMeshSerialized)
-            {
-                var serializedMesh = target.GetComponent<SerializeMesh>().Rebuild();
-                EditorGUILayout.LabelField("Serialized Mesh Data", EditorStyles.boldLabel);
-                EditorGUILayout.LabelField("Triangle Count: " + serializedMesh.triangles.Length / 3);
-                EditorGUILayout.LabelField("Vertex Count: " + serializedMesh.vertexCount);
-                EditorGUILayout.LabelField("Normal Count: " + serializedMesh.normals.Length);
-                EditorGUILayout.LabelField("Tangent Count: " + serializedMesh.tangents.Length);
-                EditorGUILayout.LabelField("Uv Lenght: " + serializedMesh.uv.Length);
-            }
         }
     }
 }

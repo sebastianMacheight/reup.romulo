@@ -17,7 +17,7 @@ namespace ReUpVirtualTwin
                 spacesManager.UpdateSpaces();
             }
             EditorGUILayout.LabelField("List of spaces in the scene: ", EditorStyles.boldLabel);
-            foreach (SpaceSelector spaceSelector in spacesManager.spaceSelectors)
+            foreach (SpaceJumpPoint spaceSelector in spacesManager.spaceSelectors)
             {
                     EditorGUILayout.LabelField($" - {spaceSelector.gameObject.name} ({spaceSelector.spaceName})");
             }
@@ -31,7 +31,7 @@ namespace ReUpVirtualTwin
             EditorGUILayout.Space(10f);
 
             EditorGUILayout.LabelField("List of spaces floor planes in the scene: ", EditorStyles.boldLabel);
-            foreach (SpaceSelectorFloorPlane spaceSelectorPlane in spacesManager.spaceSelectorPlanes)
+            foreach (FloorPlane spaceSelectorPlane in spacesManager.spaceSelectorPlanes)
             {
                     EditorGUILayout.LabelField($" - {spaceSelectorPlane.gameObject.name} ({spaceSelectorPlane.planeName})");
             }
