@@ -2,6 +2,6 @@
 using UnityEngine;
 public interface IObjectSelector
 {
-    public GameObject CheckSelection(Ray ray);
+    public GameObject GetObject(Ray ray);
 }
 
