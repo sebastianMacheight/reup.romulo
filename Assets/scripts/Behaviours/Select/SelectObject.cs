@@ -24,7 +24,7 @@ public abstract class SelectObject : Select
         {
             Ray ray = _rayProvider.GetRay();
             //Debug.DrawRay(ray.origin, ray.direction, Color.red, 1);
-            GameObject obj = _objectSelector.CheckSelection(ray);
+            GameObject obj = _objectSelector.GetObject(ray);
 		    if (obj !=null) 
 		    {
                 HandleObject(obj);

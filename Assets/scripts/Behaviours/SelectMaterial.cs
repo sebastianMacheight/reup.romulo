@@ -46,7 +46,7 @@ namespace ReUpVirtualTwin.Behaviours
             if (!_dragManager.prevDragging && !OverUICheck.PointerOverUI2() && !_dragManager.selectInputInUI)
             {
                 Ray ray = _rayProvider.GetRay();
-                GameObject obj = _objectSelector.CheckSelection(ray);
+                GameObject obj = _objectSelector.GetObject(ray);
                 if (obj != null)
                 {
                     selectedMaterialObject = obj;

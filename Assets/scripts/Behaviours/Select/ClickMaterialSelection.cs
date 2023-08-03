@@ -6,12 +6,14 @@ namespace ReUpVirtualTwin
     public class ClickMaterialSelection : SelectObject
     { 
         IMaterialsContainerCreator materialCreator;
-        MaterialsManager materialsManager; 
+        MaterialsManager materialsManager;
+        DragManager dragManager;
 
         private void Start()
         {
             materialCreator = ObjectFinder.FindMaterialsManager().gameObject.GetComponent<IMaterialsContainerCreator>();
             materialsManager = ObjectFinder.FindMaterialsManager();
+            dragManager = ObjectFinder.FindDragManager();
         }
         public override void HandleObject(GameObject materialSelectionObject)
         {
@@ -21,8 +23,11 @@ namespace ReUpVirtualTwin
         }
         public override void MissObject()
         {
-            //Debug.Log("Miss material selection, so hiding materials");
-            materialCreator.HideContainer();
+            if (!dragManager.dragging && !dragManager.prevDragging)
+            {
+                //Debug.Log("Miss material selection, so hiding materials");
+                materialCreator.HideContainer();
+            }
         }
     }
 }
