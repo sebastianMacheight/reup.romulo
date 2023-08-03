@@ -7,7 +7,9 @@ using ReUpVirtualTwin.Helpers;
 public class SpaceButtonInstance : MonoBehaviour
 {
     public SpaceSelector spaceSelector;
-    CharacterPositionManager characterPositionManager;
+
+    CharacterPositionManager _characterPositionManager;
+    SpacesManager _spacesManager;
     public string spaceName
     {
         get { return nameField.text; }
@@ -19,11 +21,33 @@ public class SpaceButtonInstance : MonoBehaviour
 
     private void Start()
     {
-        characterPositionManager = ObjectFinder.FindCharacterPositionManager();
+        _characterPositionManager = ObjectFinder.FindCharacterPositionManager();
+        _spacesManager = ObjectFinder.FindSpacesManager();
     }
 
     public void GoToSpace()
     {
-        characterPositionManager.SliceToTarget(spaceSelector.transform.position);
+        var spaceSelectorPosition = spaceSelector.transform.position;
+        var floorPlane = GetClosestFloorPlane(spaceSelectorPosition);
+        var newPosition = spaceSelectorPosition;
+        newPosition.y = floorPlane.gameObject.transform.position.y;
+        _characterPositionManager.SliceToTarget(newPosition);
+    }
+
+    SpaceSelectorFloorPlane GetClosestFloorPlane(Vector3 position)
+    {
+        var height = position.y;
+        float minDistance = Mathf.Infinity;
+        SpaceSelectorFloorPlane closestPlane = null;
+        float distance;
+        foreach(var plane in _spacesManager.spaceSelectorPlanes)
+        {
+            if ((distance = Mathf.Abs(height - plane.gameObject.transform.position.y)) < minDistance)
+            {
+                closestPlane = plane;
+                minDistance = distance;
+            }
+        }
+        return closestPlane;
     }
 }
