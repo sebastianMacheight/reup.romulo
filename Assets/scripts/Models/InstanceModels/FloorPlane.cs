@@ -1,18 +1,15 @@
-using ReUpVirtualTwin.Helpers;
+using ReupVirtualTwinMain;
 using UnityEngine;
 
-public class SpaceSelectorFloorPlane : MonoBehaviour
+public class FloorPlane : SpaceObjectWithGizmo
 {
     public string planeName = "Unnamed level";
     [SerializeField]
     bool drawPlane = false;
 
-    SpacesManager _spacesManager;
-
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        if (_spacesManager == null)
-            _spacesManager = ObjectFinder.FindSpacesManager();
+        CheckSpaceManager();
         if (drawPlane)
         {
             Gizmos.color = new Color(0.05f, 0.5f, 0.2f);

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class SpacesManager : MonoBehaviour
 {
-    public List<SpaceSelector> spaceSelectors;
-    public List<SpaceSelectorFloorPlane> spaceSelectorPlanes;
+    public List<SpaceJumpPoint> spaceSelectors;
+    public List<FloorPlane> spaceSelectorPlanes;
     [HideInInspector]
     public bool drawSpacesGizmos = true;
     [HideInInspector]
@@ -26,7 +26,7 @@ public class SpacesManager : MonoBehaviour
         spaceSelectors.Clear();
         foreach (GameObject room in spaces)
         {
-            var roomSelector = room.GetComponent<SpaceSelector>();
+            var roomSelector = room.GetComponent<SpaceJumpPoint>();
             spaceSelectors.Add(roomSelector);
         }
     }
@@ -36,7 +36,7 @@ public class SpacesManager : MonoBehaviour
         spaceSelectorPlanes.Clear();
         foreach (GameObject plane in planes)
         {
-            var spaceSelectorPlane = plane.GetComponent<SpaceSelectorFloorPlane>();
+            var spaceSelectorPlane = plane.GetComponent<FloorPlane>();
             spaceSelectorPlanes.Add(spaceSelectorPlane);
         }
     }

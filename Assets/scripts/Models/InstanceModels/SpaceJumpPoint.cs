@@ -1,16 +1,16 @@
 using ReUpVirtualTwin.Helpers;
+using ReupVirtualTwinMain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpaceSelector : MonoBehaviour
+public class SpaceJumpPoint : SpaceObjectWithGizmo
 {
     public string spaceName = "Unnamed space";
 
-    SpacesManager _spacesManager;
-
     private void OnDrawGizmos()
     {
+        CheckSpaceManager();
         if (_spacesManager == null)
             _spacesManager = ObjectFinder.FindSpacesManager();
         if (_spacesManager.drawSpacesGizmos)

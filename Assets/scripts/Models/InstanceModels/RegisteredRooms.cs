@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class RegisteredRooms : MonoBehaviour
 {
-    public List<SpaceSelector> roomSelectors = new List<SpaceSelector>();
+    public List<SpaceJumpPoint> roomSelectors = new List<SpaceJumpPoint>();
 }
