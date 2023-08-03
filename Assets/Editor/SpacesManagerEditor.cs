@@ -10,7 +10,6 @@ namespace ReUpVirtualTwin
     {
         public override void OnInspectorGUI()
         {
-            DrawDefaultInspector();
             SpacesManager spacesManager = (SpacesManager)target;
             GameObject[] spaces = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelector);
             if (spaces.Length != spacesManager.spaceSelectors.Count)
@@ -22,6 +21,27 @@ namespace ReUpVirtualTwin
             {
                     EditorGUILayout.LabelField($" - {spaceSelector.gameObject.name} ({spaceSelector.spaceName})");
             }
+
+
+            GameObject[] spacePlanes = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelectorPlane);
+            if (spacePlanes.Length != spacesManager.spaceSelectorPlanes.Count)
+            {
+                spacesManager.UpdatePlanes();
+            }
+            EditorGUILayout.Space(10f);
+
+            EditorGUILayout.LabelField("List of spaces floor planes in the scene: ", EditorStyles.boldLabel);
+            foreach (SpaceSelectorFloorPlane spaceSelectorPlane in spacesManager.spaceSelectorPlanes)
+            {
+                    EditorGUILayout.LabelField($" - {spaceSelectorPlane.gameObject.name} ({spaceSelectorPlane.planeName})");
+            }
+            EditorGUILayout.Space(10f);
+
+            spacesManager.drawSpacesGizmos =  EditorGUILayout.Toggle("Draw spaces gizmos", spacesManager.drawSpacesGizmos);
+            spacesManager.floorPlanesLength = EditorGUILayout.IntField("Floor planes length", spacesManager.floorPlanesLength);
+            spacesManager.gizmoGridSize = EditorGUILayout.IntSlider("Floor plane grid size", spacesManager.gizmoGridSize, 1, 10);
+
+            DrawDefaultInspector();
         }
     }
 }

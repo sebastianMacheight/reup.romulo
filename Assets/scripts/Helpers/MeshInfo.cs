@@ -23,7 +23,6 @@ public class MeshInfo
 
     public MeshInfo(GameObject obj, bool readSerializedMesh = false)
     {
-        //Debug.Log($"MeshInfo for {obj.name}");
         SerializeMesh serializeMesh = null;
         Mesh mesh;
 
@@ -47,18 +46,9 @@ public class MeshInfo
         {
             mesh = obj.GetComponent<MeshFilter>().sharedMesh;
         }
-        //Debug.Log($"mesh is {mesh}");
-        //Debug.Log($"mesh Vertex count is is {mesh.vertexCount}");
-        //Debug.Log($"mesh Vertex count is is {mesh.vertices.Length}");
-        //position = obj.transform.position;
-        //meanVertex = MeshUtils.MeanPoint(obj);
         borders = MeshUtils.Borders(mesh, obj.transform);
-        //Debug.Log($"borders are null {borders == null}");
         if (borders == null) return;
         size = MeshUtils.Size(borders);
-        //Debug.Log($"borders are  {borders[0]} {borders[1]}");
-        //Debug.Log($"size : {size}");
-        //Debug.Log(string.Join(", ", borders));
         vertexCount = mesh.vertexCount;
         triangleCount = mesh.triangles.Length / 3;
         volVertexDensity = MeshUtils.VolumetricVertexDensity(vertexCount, size);
@@ -66,28 +56,4 @@ public class MeshInfo
         area = MeshUtils.Area(size);
         volumen = MeshUtils.Volumen(size);
     }
-    //public void OnSceneGUI(SceneView sceneView)
-    //{
-    //    var minSize = Mathf.Min(size.x, size.y, size.z);
-    //    Handles.color = Color.red;
-    //    DrawSphereGizmo((Vector3)meanVertex + (Vector3)position, minSize/ 5);
-    //    //DrawBorders();
-    //}
-    //private void DrawSphereGizmo(Vector3 mean, float radius)
-    //{
-    //    Handles.DrawWireDisc(mean, Vector3.up, radius);
-    //    Handles.DrawWireDisc(mean, Vector3.right, radius);
-    //    Handles.DrawWireDisc(mean, Vector3.forward, radius);
-    //}
-
-    //private void DrawBorders()
-    //{
-
-    //    var center = new Vector3(
-    //        (borders[0].x + borders[1].x) / 2,
-    //        (borders[0].y + borders[1].y) / 2,
-    //        (borders[0].z + borders[1].z) / 2
-    //        );
-    //    Handles.DrawWireCube(center + (Vector3)position, size);
-    //}
 }

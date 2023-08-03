@@ -15,22 +15,16 @@ public static class MeshUtils
         mean.x = mean.x * transform.GetTotalScale().x;
         mean.y = mean.y * transform.GetTotalScale().y;
         mean.z = mean.z * transform.GetTotalScale().z;
-        //for (int i = 0; i < vertices.Length; i++)
-        //{
-        //    Debug.Log(vertices[i]);
-        //}
-
-        //Debug.Log(transform.localScale.x + " " + transform.localScale.y + " " + transform.localScale.z);
         mean = Quaternion.Euler(transform.localEulerAngles) * mean;
         return mean;
     }
 
-    public static float Volumen(Vector3 size )
+    public static float Volumen(Vector3 size)
     {
         return (size.x * size.y * size.z);
     }
 
-    public static float VolumetricVertexDensity(long vertexNumber, Vector3 size )
+    public static float VolumetricVertexDensity(long vertexNumber, Vector3 size)
     {
         var density = vertexNumber / Volumen(size);
         return density;
@@ -41,7 +35,7 @@ public static class MeshUtils
         return (size.x * size.y * 2 + size.x * size.z * 2 + size.y * size.z * 2);
     }
 
-    public static float ArealVertexDensity(long vertexNumber, Vector3 size )
+    public static float ArealVertexDensity(long vertexNumber, Vector3 size)
     {
         var density = vertexNumber / Area(size);
         return density;
@@ -60,7 +54,7 @@ public static class MeshUtils
     public static Vector3[] Borders(Mesh mesh, Transform transform)
     {
         var vertices = mesh.vertices;
-        if (vertices == null || vertices.Length == 0) 
+        if (vertices == null || vertices.Length == 0)
         {
             return null;
         }
@@ -71,7 +65,7 @@ public static class MeshUtils
         float ymin = vertices[0].y;
         float zmin = vertices[0].z;
 
-        foreach (Vector3 vertex in  vertices)
+        foreach (Vector3 vertex in vertices)
         {
             if (vertex.x < xmin) xmin = vertex.x;
             if (vertex.x > xmax) xmax = vertex.x;
@@ -97,7 +91,7 @@ public static class MeshUtils
         //minBorder = rotation * minBorder;
         //maxBorder = rotation * maxBorder;
 
-        return new Vector3[] {minBorder, maxBorder};
+        return new Vector3[] { minBorder, maxBorder };
     }
 
     public static void GeneratePlanarUVMapping(Mesh mesh)

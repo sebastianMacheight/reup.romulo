@@ -12,6 +12,7 @@ TagManager:
   - MaterialSelection
   - Floor0
   - SpaceSelector
+  - SpaceSelectorPlane
   layers:
   - Default
   - TransparentFX

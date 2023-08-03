@@ -38,10 +38,6 @@ namespace ReUpVirtualTwin.Helpers
             return GameObject.FindAnyObjectByType<DragManager>();
         }
 
-        public static ExtensionsManager FindExtensionManager()
-        {
-            return GameObject.FindAnyObjectByType<ExtensionsManager>();
-        }
         public static GameObject FindExtensionsTrigger()
         {
             return GameObject.FindGameObjectWithTag("ExtensionsTriggers");
