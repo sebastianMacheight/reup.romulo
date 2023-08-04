@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using UnityMeshSimplifier;
-using ReUpVirtualTwin.Experiments;
 using ReUpVirtualTwin.Helpers;
 using System;
 using TB;
@@ -66,15 +65,6 @@ namespace ReUpVirtualTwin
                 minVertexCount = EditorGUILayout.IntField("Minimum vertex count", minVertexCount);
                 maxArealDensity = EditorGUILayout.FloatField("Max Areal Density", maxArealDensity);
                 maxVolumetricDensity = EditorGUILayout.FloatField("Max Volumetric Density", maxVolumetricDensity);
-            }
-            if (GUILayout.Button("tests"))
-            {
-                var theMesh = CreateMesh.GetTheMesh();
-                obj.GetComponent<MeshFilter>().sharedMesh = theMesh;
-                for (int i =0; i < theMesh.vertexCount; i++)
-                {
-                    Debug.Log(theMesh.uv[i]);
-                }
             }
             if (GUILayout.Button("Get Averages"))
             {

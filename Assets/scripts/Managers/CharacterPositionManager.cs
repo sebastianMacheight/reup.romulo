@@ -5,12 +5,12 @@ using UnityEngine;
 public class CharacterPositionManager : MonoBehaviour
 {
     [SerializeField]
-    private float movementForceMultiplier = 30f;
+    private float movementForceMultiplier = 10f;
     [SerializeField]
     private float floorDistanceThreshold = 0.7f;
     private Rigidbody rb;
     [SerializeField]
-    private float bodyDrag;
+    private float bodyDrag = 5f;
 
     private float _stopDistance;
     private float stopDistance {
