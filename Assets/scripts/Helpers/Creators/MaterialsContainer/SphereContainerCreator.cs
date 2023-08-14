@@ -1,5 +1,6 @@
 ﻿using ReUpVirtualTwin.Helpers;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SphereContainerCreator : MaterialsContainerCreator
@@ -20,7 +21,7 @@ public class SphereContainerCreator : MaterialsContainerCreator
         _mainCamera = Camera.main;
     }
 
-    public override void CreateContainer(GameObject obj, Material[] selectableMaterials)
+    public override void CreateContainer(Material[] selectableMaterials)
     {
         // If materials container is showing, don't do anything
         if (materialsContainerInstance != null)

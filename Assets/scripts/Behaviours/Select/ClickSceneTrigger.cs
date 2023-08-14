@@ -7,12 +7,11 @@ namespace ReUpVirtualTwin
     { 
         public override void HandleObject(GameObject triggerObject)
         {
-            //Debug.Log("you clicked the trigger " + triggerObject.name);
             var materialSelectionTrigger = triggerObject.GetComponent<MaterialSelectionTrigger>();
             var materialsManager = ObjectFinder.FindMaterialsManager();
             materialsManager.ShowMaterialsContainer(
-                materialSelectionTrigger.materialObject,
-                materialSelectionTrigger.materialIndex,
+                materialSelectionTrigger.materialObjects,
+                materialSelectionTrigger.materialIndexes,
                 materialSelectionTrigger.selectableMaterials.ToArray());
         }
     }

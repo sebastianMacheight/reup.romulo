@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,23 +14,31 @@ namespace ReUpVirtualTwin
             DrawDefaultInspector();
             MaterialSelectionTrigger trigger = (MaterialSelectionTrigger)target;
 
-            if (trigger.materialObject != null)
+            if (trigger.materialObjects.Count != 0)
             {
-                var materials = trigger.materialObject.GetComponent<Renderer>().sharedMaterials;
-                if (materials.Length > 1)
+                if (trigger.materialIndexes.Length != trigger.materialObjects.Count)
+                    trigger.materialIndexes = new int[trigger.materialObjects.Count];
+                EditorGUI.BeginChangeCheck();
+                foreach (var (obj, j) in trigger.materialObjects.Select((v,i) => (v,i)))
                 {
-                    EditorGUILayout.HelpBox($"The object '{trigger.materialObject.name}' has more than one material assigned, select the material you want to change", MessageType.Warning, true);
-                    string[] materialOptions = new string[materials.Length];
-                    for (int i = 0; i < materialOptions.Length; i++)
+                    if (obj != null)
                     {
-                        materialOptions[i] = materials[i].name;
+                        var materials = obj.GetComponent<Renderer>().sharedMaterials;
+                        if (materials.Length > 1)
+                        {
+                            EditorGUILayout.HelpBox($"The object '{obj.name}' has more than one material assigned, select the material you want to change", MessageType.Warning, true);
+                            string[] materialOptions = new string[materials.Length];
+                            for (int i = 0; i < materialOptions.Length; i++)
+                            {
+                                materialOptions[i] = materials[i].name;
+                            }
+                            trigger.materialIndexes[j] = EditorGUILayout.Popup($"Material to change for {obj.name}", trigger.materialIndexes[j], materialOptions);
+                        }
                     }
-                    EditorGUI.BeginChangeCheck();
-                    trigger.materialIndex = EditorGUILayout.Popup("Material to change", trigger.materialIndex, materialOptions);
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        EditorUtility.SetDirty(trigger);
-                    }
+                }
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorUtility.SetDirty(trigger);
                 }
             }
         }
