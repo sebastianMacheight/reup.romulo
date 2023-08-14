@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MaterialSelectionTrigger : MonoBehaviour
 {
-    public GameObject materialObject;
+    public List<GameObject> materialObjects;
     [HideInInspector]
-    public int materialIndex;
+    public int[] materialIndexes;
     public List<Material> selectableMaterials;
 }
