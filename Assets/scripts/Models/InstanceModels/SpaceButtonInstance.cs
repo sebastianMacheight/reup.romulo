@@ -40,7 +40,7 @@ public class SpaceButtonInstance : MonoBehaviour
         float minDistance = Mathf.Infinity;
         FloorPlane closestPlane = null;
         float distance;
-        foreach(var plane in _spacesManager.spaceSelectorPlanes)
+        foreach(var plane in _spacesManager.floorPlanes)
         {
             if ((distance = Mathf.Abs(height - plane.gameObject.transform.position.y)) < minDistance)
             {
