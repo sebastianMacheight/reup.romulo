@@ -8,32 +8,47 @@ namespace ReUpVirtualTwin
     [CustomEditor(typeof(SpacesManager))]
     public class SpacesManagerEditor : Editor
     {
+
+        bool ListCheck<T>(List<T> list, int expectedLength)
+        {
+            if (list.Count != expectedLength)
+            {
+                return true;
+            }
+            if (list.Count > 0 && list[0] == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public override void OnInspectorGUI()
         {
             SpacesManager spacesManager = (SpacesManager)target;
             GameObject[] spaces = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelector);
-            if (spaces.Length != spacesManager.spaceSelectors.Count)
+            if (ListCheck<SpaceJumpPoint>(spacesManager.jumpPoints, spaces.Length))
             {
                 spacesManager.UpdateSpaces();
             }
             EditorGUILayout.LabelField("List of spaces in the scene: ", EditorStyles.boldLabel);
-            foreach (SpaceSelector spaceSelector in spacesManager.spaceSelectors)
+            foreach (SpaceJumpPoint spaceSelector in spacesManager.jumpPoints)
             {
-                    EditorGUILayout.LabelField($" - {spaceSelector.gameObject.name} ({spaceSelector.spaceName})");
+                EditorGUILayout.LabelField($" - {spaceSelector.gameObject.name} ({spaceSelector.spaceName})");
             }
 
-
-            GameObject[] spacePlanes = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelectorPlane);
-            if (spacePlanes.Length != spacesManager.spaceSelectorPlanes.Count)
-            {
-                spacesManager.UpdatePlanes();
-            }
             EditorGUILayout.Space(10f);
 
-            EditorGUILayout.LabelField("List of spaces floor planes in the scene: ", EditorStyles.boldLabel);
-            foreach (SpaceSelectorFloorPlane spaceSelectorPlane in spacesManager.spaceSelectorPlanes)
+            GameObject[] spacePlanes = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelectorPlane);
+            if (ListCheck<FloorPlane>(spacesManager.floorPlanes, spacePlanes.Length))
             {
-                    EditorGUILayout.LabelField($" - {spaceSelectorPlane.gameObject.name} ({spaceSelectorPlane.planeName})");
+                Debug.Log("updateing planes");
+                spacesManager.UpdatePlanes();
+            }
+
+            EditorGUILayout.LabelField("List of spaces floor planes in the scene: ", EditorStyles.boldLabel);
+            foreach (FloorPlane spaceSelectorPlane in spacesManager.floorPlanes)
+            {
+                EditorGUILayout.LabelField($" - {spaceSelectorPlane.gameObject.name} ({spaceSelectorPlane.planeName})");
             }
             EditorGUILayout.Space(10f);
 
