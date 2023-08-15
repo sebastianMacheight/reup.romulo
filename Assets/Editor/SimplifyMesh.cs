@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using UnityMeshSimplifier;
-using ReUpVirtualTwin.Helpers;
 using System;
 using TB;
 using UnityEngine.UIElements;
+using ReUpVirtualTwin.Helpers;
 
 namespace ReUpVirtualTwin
 {
@@ -15,7 +13,6 @@ namespace ReUpVirtualTwin
     {
 
         GameObject obj;
-        bool createPrefab = false;
         float maxVolumetricDensity = 1000000;
         float maxArealDensity = 500000;
         int minVertexCount = 100;
@@ -27,7 +24,6 @@ namespace ReUpVirtualTwin
 
         bool useDefinedQuality;
         float definedQuality = 1f;
-        string createPrefabLabel = "Create prefab";
 
 
         //test variables
@@ -50,7 +46,6 @@ namespace ReUpVirtualTwin
                 SimplifyAction(true);
             }
             obj = (GameObject)EditorGUILayout.ObjectField("Object", obj, typeof(object), true);
-            createPrefab = EditorGUILayout.Toggle(createPrefabLabel, createPrefab);
             preserveBorderEdges = EditorGUILayout.Toggle("Preserve border edges", preserveBorderEdges);
             preserveUVSeamEdges = EditorGUILayout.Toggle("Preserver UV seam edges", preserveUVSeamEdges);
             preserveUVFoldoverEdges = EditorGUILayout.Toggle("Preserver UV foldovers", preserveUVFoldoverEdges);
@@ -82,22 +77,8 @@ namespace ReUpVirtualTwin
                 return;
             }
             var isPrefab = PrefabUtility.IsPartOfPrefabAsset(obj);
-            if (!createPrefab && isPrefab)
-            {
-                Debug.LogWarning($"This is a prefab, please check the option '{createPrefabLabel}'");
-                return;
-            }
             GameObject objToSimplify;
-            if (createPrefab)
-            {
-                var instanceObj = Instantiate(obj);
-                objToSimplify = PrefabUtil.MakePrefab(instanceObj, true);
-                DestroyImmediate(instanceObj);
-            }
-            else
-            {
-                objToSimplify = obj;
-            }
+            objToSimplify = obj;
             SimplifyAllTreeObject(objToSimplify);
         }
         void PrintAverages(AverageInfo ave)
