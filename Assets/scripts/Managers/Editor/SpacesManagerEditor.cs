@@ -26,12 +26,12 @@ namespace ReUpVirtualTwin
         {
             SpacesManager spacesManager = (SpacesManager)target;
             GameObject[] spaces = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelector);
-            if (ListCheck<SpaceJumpPoint>(spacesManager.spaceSelectors, spaces.Length))
+            if (ListCheck<SpaceJumpPoint>(spacesManager.jumpPoints, spaces.Length))
             {
                 spacesManager.UpdateSpaces();
             }
             EditorGUILayout.LabelField("List of spaces in the scene: ", EditorStyles.boldLabel);
-            foreach (SpaceJumpPoint spaceSelector in spacesManager.spaceSelectors)
+            foreach (SpaceJumpPoint spaceSelector in spacesManager.jumpPoints)
             {
                 EditorGUILayout.LabelField($" - {spaceSelector.gameObject.name} ({spaceSelector.spaceName})");
             }
@@ -39,14 +39,14 @@ namespace ReUpVirtualTwin
             EditorGUILayout.Space(10f);
 
             GameObject[] spacePlanes = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelectorPlane);
-            if (ListCheck<FloorPlane>(spacesManager.spaceSelectorPlanes, spacePlanes.Length))
+            if (ListCheck<FloorPlane>(spacesManager.floorPlanes, spacePlanes.Length))
             {
                 Debug.Log("updateing planes");
                 spacesManager.UpdatePlanes();
             }
 
             EditorGUILayout.LabelField("List of spaces floor planes in the scene: ", EditorStyles.boldLabel);
-            foreach (FloorPlane spaceSelectorPlane in spacesManager.spaceSelectorPlanes)
+            foreach (FloorPlane spaceSelectorPlane in spacesManager.floorPlanes)
             {
                 EditorGUILayout.LabelField($" - {spaceSelectorPlane.gameObject.name} ({spaceSelectorPlane.planeName})");
             }
