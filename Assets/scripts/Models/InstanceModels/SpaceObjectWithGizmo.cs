@@ -1,7 +1,7 @@
 using ReUpVirtualTwin.Helpers;
 using UnityEngine;
 
-namespace ReupVirtualTwinMain
+namespace ReupVirtualTwin
 {
     public class SpaceObjectWithGizmo : MonoBehaviour
     {
