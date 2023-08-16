@@ -1,5 +1,5 @@
 using ReUpVirtualTwin.Helpers;
-using ReupVirtualTwinMain;
+using ReupVirtualTwin;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
