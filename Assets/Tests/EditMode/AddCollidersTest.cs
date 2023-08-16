@@ -5,7 +5,7 @@ using UnityEngine;
 public class AddCollidersTest
 {
     [Test]
-    public void AddColliders()
+    public void AddColliders_to_objectswithnocolliders()
     {
         //Create objects
         var parentObject = new GameObject();
