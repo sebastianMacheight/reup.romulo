@@ -8,4 +8,6 @@ public class TagsEnum
     public const string trigger = "Trigger";
     public const string spaceSelector = "SpaceSelector";
     public const string spaceSelectorPlane = "SpaceSelectorPlane";
+    public const string objectPool = "ObjectPool";
+    public const string mainCamera = "MainCamera";
 }

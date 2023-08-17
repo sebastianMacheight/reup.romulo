@@ -14,7 +14,7 @@ namespace ReUpVirtualTwin.Helpers
         /// <returns>ObjectPool</returns>
         public static IObjectPool FindObjectPool()
         {
-            return GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<IObjectPool>();
+            return GameObject.FindGameObjectWithTag(TagsEnum.objectPool).GetComponent<IObjectPool>();
         }
 
         /// <summary>
