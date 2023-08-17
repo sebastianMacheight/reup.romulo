@@ -17,6 +17,11 @@ namespace ReUpVirtualTwin.Helpers
             return GameObject.FindGameObjectWithTag(TagsEnum.objectPool).GetComponent<IObjectPool>();
         }
 
+        public static IMaterialsContainerCreator FindMaterialsContainerCreator()
+        {
+            return GameObject.FindGameObjectWithTag(TagsEnum.extensionsTriggers).GetComponent<IMaterialsContainerCreator>();
+        }
+
         /// <summary>
         /// Find the ok button of a parent
         /// </summary>
