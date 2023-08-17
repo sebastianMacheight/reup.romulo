@@ -38,10 +38,6 @@ public class SpheresMaterialContainerCreatorTest
             new Material(Shader.Find("Standard")),
         };
 
-        materials[0].name = "material0";
-        materials[1].name = "material1";
-        materials[2].name = "material2";
-
         // Check there is no container
         Assert.AreEqual(0, camera.transform.childCount);
 
