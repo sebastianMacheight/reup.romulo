@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class SpheresMaterialContainerCreator : MaterialsContainerCreator
 {
-    //public Material[] testMaterialsList; // todo obtain the material list from the object hit by the raycast
     public GameObject materialsContainerPrefab;
     public GameObject materialsSpherePrefab;
     public float spheresZDistance = 0.14f;
