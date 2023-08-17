@@ -4,7 +4,7 @@ using UnityEngine;
 public interface IMaterialsContainerCreator
 {
     public GameObject materialsContainerInstance { get; set; }
-    public void CreateContainer(Material[] selectableMaterials);
+    public GameObject CreateContainer(Material[] selectableMaterials);
     public void HideContainer();
 }
 
