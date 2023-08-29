@@ -6,6 +6,8 @@ public class CharacterPositionManager : MonoBehaviour
     [SerializeField]
     private float movementForceMultiplier = 10f;
     [SerializeField]
+    private float slideMovementSpeedMultiplier = 2f;
+    [SerializeField]
     private float floorDistanceThreshold = 0.7f;
     private Rigidbody rb;
     [SerializeField]
@@ -63,7 +65,7 @@ public class CharacterPositionManager : MonoBehaviour
         rb.isKinematic = true;
         while(Vector3.Distance(target, _characterPosition) > _stopDistance)
         {
-            _characterPosition = Vector3.Lerp(_characterPosition, target, movementForceMultiplier * Time.deltaTime / 10);
+            _characterPosition = Vector3.Lerp(_characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
             yield return null;
         }
         rb.isKinematic = false;
