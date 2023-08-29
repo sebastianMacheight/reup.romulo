@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementForceMultiplier: 10
+  slideMovementSpeedMultiplier: 10
   floorDistanceThreshold: 0.7
   bodyDrag: 5
 --- !u!114 &7341686661031932329
@@ -370,7 +371,6 @@ GameObject:
   - component: {fileID: 2199105442367158081}
   - component: {fileID: 8348441568477808737}
   - component: {fileID: 6853016693375159829}
-  - component: {fileID: 7341686661059100171}
   - component: {fileID: 724972502}
   m_Layer: 7
   m_Name: Main_Camera
@@ -445,19 +445,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3366587928214486604}
   m_Enabled: 1
---- !u!114 &7341686661059100171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3366587928214486604}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56e78e2605d5b47b1a22da782bf8a994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensitivity: 5
 --- !u!114 &724972502
 MonoBehaviour:
   m_ObjectHideFlags: 0
