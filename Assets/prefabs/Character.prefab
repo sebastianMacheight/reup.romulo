@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementForceMultiplier: 10
-  slideMovementSpeedMultiplier: 10
+  slideMovementSpeedMultiplier: 2
   floorDistanceThreshold: 0.7
   bodyDrag: 5
 --- !u!114 &7341686661031932329
