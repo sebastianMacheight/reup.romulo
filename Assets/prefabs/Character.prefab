@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a787ae412683574596cb285f281581f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementForceMultiplier: 10
+  movementForceMultiplier: 20
   slideMovementSpeedMultiplier: 2
   floorDistanceThreshold: 0.7
   bodyDrag: 5
