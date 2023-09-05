@@ -7,15 +7,21 @@ using UnityEngine.TestTools;
 
 public class SpheresMaterialContainerCreatorTest
 {
-    [UnityTest]
-    public IEnumerator CreateContainer_should_success()
+    private GameObject poolObject;
+    private ObjectPool pool;
+    private GameObject containerPrefab;
+    private GameObject spherePrefab;
+    private Camera camera;
+    private SpheresMaterialContainerCreator creator;
+    [SetUp]
+    public void SetUp()
     {
         // Create object pool
-        var poolObject = new GameObject();
+        poolObject = new GameObject();
         poolObject.tag = TagsEnum.objectPool;
-        var pool = poolObject.AddComponent<ObjectPool>();
-        var containerPrefab = new GameObject("container");
-        var spherePrefab = new GameObject("sphere");
+        pool = poolObject.AddComponent<ObjectPool>();
+        containerPrefab = new GameObject("container");
+        spherePrefab = new GameObject("sphere");
         spherePrefab.AddComponent<MeshRenderer>();
         pool.PrefabsForPool = new List<GameObject>
         {
@@ -23,13 +29,28 @@ public class SpheresMaterialContainerCreatorTest
         };
 
         // Create main camera
-        var camera = new GameObject().AddComponent<Camera>();
+        camera = new GameObject().AddComponent<Camera>();
         camera.tag = TagsEnum.mainCamera;
 
         // Create container creator
-        var creator = new GameObject().AddComponent<SpheresMaterialContainerCreator>();
+        creator = new GameObject().AddComponent<SpheresMaterialContainerCreator>();
         creator.materialsContainerPrefab = containerPrefab;
         creator.materialsSpherePrefab = spherePrefab;
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        Object.Destroy(poolObject);
+        Object.Destroy(containerPrefab);
+        Object.Destroy(spherePrefab);
+        Object.Destroy(camera);
+        Object.Destroy(creator);
+    }
+
+    [UnityTest]
+    public IEnumerator CreateContainer_should_success()
+    {
 
         var materials = new Material[3]
         {
