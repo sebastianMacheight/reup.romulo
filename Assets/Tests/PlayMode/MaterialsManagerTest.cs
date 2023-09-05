@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class MaterialsManagerTest : MonoBehaviour
 {
     [UnityTest]
-    public IEnumerator ChangeMaterial_of_oneObject_should_success()
+    public IEnumerator ChangeMaterialOfOneObjectShouldSuccess()
     {
         var obj0 = new GameObject();
         obj0.AddComponent<MeshRenderer>();
@@ -27,7 +27,7 @@ public class MaterialsManagerTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator ChangeMaterial_of_severalObjects_should_success()
+    public IEnumerator ChangeMaterialOfSeveralObjectsShouldSuccess()
     {
         var obj0 = new GameObject();
         obj0.AddComponent<MeshRenderer>();

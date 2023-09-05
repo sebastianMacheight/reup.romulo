@@ -25,7 +25,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator SliceToTarget_should_success()
+    public IEnumerator SliceToTargetShouldSuccess()
     {
         //check original character's position
         Assert.AreEqual(Vector3.zero, character.transform.position);
@@ -41,7 +41,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator WalkToTarget_should_success()
+    public IEnumerator WalkToTargetShouldSuccess()
     {
         //check original character's position
         Assert.AreEqual(Vector3.zero, character.transform.position);
