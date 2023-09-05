@@ -49,7 +49,7 @@ public class SpheresMaterialContainerCreatorTest
     }
 
     [UnityTest]
-    public IEnumerator CreateContainer_should_success()
+    public IEnumerator CreateContainerShouldSuccess()
     {
 
         var materials = new Material[3]

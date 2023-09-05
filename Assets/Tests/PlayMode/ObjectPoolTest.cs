@@ -35,7 +35,7 @@ public class ObjectPoolTest
     }
 
     [UnityTest]
-    public IEnumerator Pool_unpool_visibleObject_should_success()
+    public IEnumerator PoolUnpoolVisibleObjectShouldSuccess()
     {
         //check object is active
         Assert.IsTrue(obj.activeSelf);
@@ -50,7 +50,7 @@ public class ObjectPoolTest
     }
 
     [UnityTest]
-    public IEnumerator Unpool_newObject_noParentArgument_should_fail()
+    public IEnumerator UnpoolNewObjectNoParentArgumentShouldFail()
     {
         Assert.Throws<InvalidOperationException>(() => pool.GetObjectFromPool("name of object"));
         yield return null;
