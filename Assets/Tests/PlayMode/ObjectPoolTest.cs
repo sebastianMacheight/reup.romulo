@@ -8,11 +8,35 @@ using UnityEngine.TestTools;
 
 public class ObjectPoolTest
 {
+    private GameObject obj;
+    private ObjectPool pool;
+    private GameObject parentObject;
+    private GameObject prefab;
+
+    [SetUp]
+    public void SetUp()
+    {
+        obj = new GameObject();
+        pool = new GameObject().AddComponent<ObjectPool>();
+        parentObject = new GameObject();
+        prefab = new GameObject("object's name");
+        pool.PrefabsForPool = new List<GameObject>
+        {
+            prefab
+        };
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        UnityEngine.Object.Destroy(obj);
+        UnityEngine.Object.Destroy(parentObject);
+        UnityEngine.Object.Destroy(prefab);
+    }
+
     [UnityTest]
     public IEnumerator Pool_unpool_visibleObject_should_success()
     {
-        var obj = new GameObject();
-        var pool = new GameObject().AddComponent<ObjectPool>();
         //check object is active
         Assert.IsTrue(obj.activeSelf);
         yield return null;
@@ -28,7 +52,6 @@ public class ObjectPoolTest
     [UnityTest]
     public IEnumerator Unpool_newObject_noParentArgument_should_fail()
     {
-        var pool = new GameObject().AddComponent<ObjectPool>();
         Assert.Throws<InvalidOperationException>(() => pool.GetObjectFromPool("name of object"));
         yield return null;
     }
@@ -36,13 +59,6 @@ public class ObjectPoolTest
     [UnityTest]
     public IEnumerator Unpool_pool_newObject_should_success()
     {
-        var parentObject = new GameObject();
-        var pool = new GameObject().AddComponent<ObjectPool>();
-        var prefab = new GameObject("object's name");
-        pool.PrefabsForPool = new List<GameObject>
-        {
-            prefab
-        };
 
         //create prefabInstance
         var prefabInstance = pool.GetObjectFromPool(prefab.name, parentObject.transform);
@@ -76,7 +92,6 @@ public class ObjectPoolTest
         //check prefabInstance3 is indeed a new gameobject
         Assert.AreNotEqual(prefabInstance, prefabInstance3);
             
-
         yield return null;
     }
 }

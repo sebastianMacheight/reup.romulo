@@ -5,14 +5,28 @@ using UnityEngine.TestTools;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
+    private GameObject character;
+    private Rigidbody rb;
+    private CharacterPositionManager posManager;
+
+    [SetUp]
+    public void SetUp()
+    {
+        character = new GameObject();
+        rb = character.AddComponent<Rigidbody>();
+        rb.useGravity = false;
+        posManager = character.AddComponent<CharacterPositionManager>();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        Object.Destroy(character);
+    }
+
     [UnityTest]
     public IEnumerator SliceToTarget_should_success()
     {
-        var character = new GameObject();
-        var rb = character.AddComponent<Rigidbody>();
-        rb.useGravity = false;
-        var posManager = character.AddComponent<CharacterPositionManager>();
-
         //check original character's position
         Assert.AreEqual(Vector3.zero, character.transform.position);
 
@@ -29,11 +43,6 @@ public class CharacterPositionManagerTest : MonoBehaviour
     [UnityTest]
     public IEnumerator WalkToTarget_should_success()
     {
-        var character = new GameObject();
-        var rb = character.AddComponent<Rigidbody>();
-        rb.useGravity = false;
-        var posManager = character.AddComponent<CharacterPositionManager>();
-
         //check original character's position
         Assert.AreEqual(Vector3.zero, character.transform.position);
 
