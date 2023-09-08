@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterPositionManager : MonoBehaviour
@@ -12,23 +11,8 @@ public class CharacterPositionManager : MonoBehaviour
     [SerializeField]
     private float bodyDrag = 5f;
 
-    private float _stopDistance;
-    private float stopDistance {
-        get
-        {
-            return _stopDistance;
-        }
-        set
-        {
-            if (value < 0.01f)
-            {
-                _stopDistance = 0.01f;
-            }
-            else
-            {
-                _stopDistance = value;
-            }
-        } }
+    float _stopDistance = 0.5f;
+
 
     Vector3 _characterPosition
     {
@@ -42,7 +26,7 @@ public class CharacterPositionManager : MonoBehaviour
         }
     }
 
-    void Start ()
+    void Awake ()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -58,14 +42,14 @@ public class CharacterPositionManager : MonoBehaviour
     }
     public void WalkToTarget(Vector3 target)
     {
-        stopDistance = (target.y > _characterPosition.y - floorDistanceThreshold) ? 0.5f : 0.05f;
         target.y = _characterPosition.y;
         MoveToTarget(target);
     }
     public void SliceToTarget(Vector3 target)
     {
-        stopDistance = 0;
-        MoveToTarget(target);
+        //put target _stopdistance meters futher away
+        var newTarget = target + Vector3.Normalize(target - _characterPosition) * _stopDistance;
+        MoveToTarget(newTarget);
     }
 
     public void MoveToTarget(Vector3 target)
@@ -77,12 +61,12 @@ public class CharacterPositionManager : MonoBehaviour
     private IEnumerator MoveToTargetCoroutine(Vector3 target)
     {
         rb.isKinematic = true;
-        while(Vector3.Distance(target, _characterPosition) > stopDistance)
+        while(Vector3.Distance(target, _characterPosition) > _stopDistance)
         {
             _characterPosition = Vector3.Lerp(_characterPosition, target, movementForceMultiplier * Time.deltaTime / 10);
             yield return null;
         }
         rb.isKinematic = false;
     }
-
 }
+
