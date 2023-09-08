@@ -1,0 +1,18 @@
+{
+    "name": "ManagersEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3639ec8e5d915f9478836469db1530ab"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
