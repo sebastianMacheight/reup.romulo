@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SphereContainerCreator : MaterialsContainerCreator
+public class SpheresMaterialContainerCreator : MaterialsContainerCreator
 {
-    //public Material[] testMaterialsList; // todo obtain the material list from the object hit by the raycast
     public GameObject materialsContainerPrefab;
     public GameObject materialsSpherePrefab;
     public float spheresZDistance = 0.14f;
@@ -15,21 +14,22 @@ public class SphereContainerCreator : MaterialsContainerCreator
 
     private IObjectPool _objectPool;
 
-    private void Start()
+    private void Awake()
     {
         _objectPool = ObjectFinder.FindObjectPool();
         _mainCamera = Camera.main;
     }
 
-    public override void CreateContainer(Material[] selectableMaterials)
+    public override GameObject CreateContainer(Material[] selectableMaterials)
     {
         // If materials container is showing, don't do anything
         if (materialsContainerInstance != null)
         {
-            return;
+            return null;
         }
         materialsContainerInstance = _objectPool.GetObjectFromPool(materialsContainerPrefab.name, _mainCamera.transform);
         PlaceSpheresAroundCamera(selectableMaterials);
+        return materialsContainerInstance;
     }
 
     private float CameraHorizontalAngle()
@@ -39,7 +39,7 @@ public class SphereContainerCreator : MaterialsContainerCreator
         return horizontalRadAngle * Mathf.Rad2Deg;
 	}
 
-    public void PlaceSpheresAroundCamera(Material[] selectableMaterials)
+    void PlaceSpheresAroundCamera(Material[] selectableMaterials)
     { 
         int materialsCount = selectableMaterials.Length;
         //get horizontal angle of camera

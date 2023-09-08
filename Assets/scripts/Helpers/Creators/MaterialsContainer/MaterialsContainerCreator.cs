@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public abstract class MaterialsContainerCreator : MonoBehaviour, IMaterialsContainerCreator
 {
     public GameObject materialsContainerInstance { get; set; } = null;
-    public abstract void CreateContainer(Material[] selectableMaterials);
+    public abstract GameObject CreateContainer(Material[] selectableMaterials);
     public abstract void HideContainer();
 
     private bool _prevMaterialsContainerInstance;

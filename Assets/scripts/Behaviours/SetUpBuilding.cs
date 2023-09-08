@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using ReupVirtualTwin.Helpers;
 
 public class SetUpBuilding : MonoBehaviour
 {

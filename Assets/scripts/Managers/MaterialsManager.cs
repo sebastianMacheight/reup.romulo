@@ -4,20 +4,14 @@ using UnityEngine;
 
 public class MaterialsManager : MonoBehaviour
 {
-    private IMaterialsContainerCreator _containerCreator;
     private List<GameObject> selectedObjects;
     private int[] selectedMaterialIndexes;
 
-    private void Start()
-    {
-      _containerCreator = GetComponent<IMaterialsContainerCreator>();
-    }
 
-    public void ShowMaterialsContainer(List<GameObject> objs, int[] materialIndexes, Material[] selectableMaterials)
+    public void SelectObjects(List<GameObject> objs, int[] materialIndexes)
     {
         selectedObjects = objs;
         selectedMaterialIndexes = materialIndexes;
-        _containerCreator.CreateContainer(selectableMaterials);
     }
 
     public void SetNewMaterial(Material material)
