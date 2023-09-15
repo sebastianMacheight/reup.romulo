@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PointerRotation : MonoBehaviour
 {
-    public float sensitivity = 1f;
+    public float sensitivity = 0.4f;
 
     private CharacterRotationManager _characterRotationManager;
     private InputProvider _inputProvider;
