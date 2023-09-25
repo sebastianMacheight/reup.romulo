@@ -70,17 +70,3 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
-
-builds/
-Assets/scripts/Helpers/tests*
-Assets/Scenes/TestScenes*
-Assets/ModelImports*
-Assets/BakeryLightmaps*
-Assets/Bakery*
-Assets/prefabs/SimplifiedModels*
-Assets/prefabs/TestPrefabs*
-Assets/Editor/x64/Bakery*
-Assets/Bakery*
-Assets/BakeryLightmaps*
-Assets/prefabs/Lights/Models_lights*
-Assets/scripts/Experiments*
