@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 5726295418143816050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.52}
-  m_LocalScale: {x: 0.44794545, y: 0.44794545, z: 0.44794545}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.44, y: 0.44, z: 0.44}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8861393047989018340}
   m_RootOrder: 0
@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 6780924485396627223}
   - component: {fileID: 698175634432712274}
   - component: {fileID: 8139121206638145068}
+  - component: {fileID: 5542747498088598121}
   m_Layer: 0
   m_Name: MaterialSelectionTrigger
   m_TagString: Trigger
@@ -198,3 +199,15 @@ MonoBehaviour:
   materialObjects: []
   materialIndexes: 
   selectableMaterials: []
+--- !u!114 &5542747498088598121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6345775631997959587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a06b3de2de84fb4888f1f13e0ad975e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
