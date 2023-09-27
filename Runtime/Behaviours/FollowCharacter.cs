@@ -3,17 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowCharacter : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-    GameObject _character;
-    void Start()
+    public class FollowCharacter : MonoBehaviour
     {
-        _character = ObjectFinder.FindCharacter();
-    }
+        GameObject _character;
+        void Start()
+        {
+            _character = ObjectFinder.FindCharacter();
+        }
 
-    void Update()
-    {
-        Vector3 lookDirection = _character.transform.position - transform.position;
-        transform.rotation = Quaternion.LookRotation(lookDirection);
+        void Update()
+        {
+            Vector3 lookDirection = _character.transform.position - transform.position;
+            transform.rotation = Quaternion.LookRotation(lookDirection);
+        }
     }
 }

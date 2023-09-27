@@ -7,7 +7,8 @@
         "reup.romulo.helpers",
         "reup.romulo.enums",
         "reup.romulo.charactermovement",
-        "reup.modulo.managers"
+        "reup.modulo.managers",
+        "reup.romulo.behaviours"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
