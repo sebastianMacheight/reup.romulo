@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ReupVirtualTwin.helpers;
-using System;
 
 public class DragManager : MonoBehaviour
 {
