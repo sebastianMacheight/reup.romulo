@@ -41,16 +41,7 @@ public class DragManager : MonoBehaviour
         prevSelectInputInUI = selectInputInUI;
         if (_selectInput && dragging == false)
         {
-            //dragging = Vector2.Distance(_inputProvider.PointerInput(), _selectPosition) > dragDitanceThreshold;
-            if ( Vector2.Distance(_inputProvider.PointerInput(), _selectPosition) > _dragDistanceThreshold)
-            {
-                dragging = true;
-                Debug.Log("sii");
-            }
-            else
-            {
-                dragging = false;
-            }
+            dragging = Vector2.Distance(_inputProvider.PointerInput(), _selectPosition) > _dragDistanceThreshold;
         }
     }
 
