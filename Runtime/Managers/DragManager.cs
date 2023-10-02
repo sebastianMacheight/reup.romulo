@@ -1,18 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ReupVirtualTwin.helpers;
+using System;
 
 public class DragManager : MonoBehaviour
 {
+    [HideInInspector]
     public bool dragging = false;
+    [HideInInspector]
     public bool prevDragging = false;
-    public float dragDitanceThreshold = 10f;
+    [HideInInspector]
     public bool selectInputInUI = false;
+    [HideInInspector]
     public bool prevSelectInputInUI = false;
 
     private bool _selectInput = false;
     private Vector2 _selectPosition;
     private InputProvider _inputProvider;
+    private float _dragDistanceThreshold = 2.0f;
 
     private void Awake()
     {
@@ -33,57 +38,20 @@ public class DragManager : MonoBehaviour
 
     void Update()
     {
-        //todo:
-        //this is weird, check if there is a way to implement this withouth the need to check in every frame
-        //may this helps
-        //https://answers.unity.com/questions/1879168/check-if-ui-was-clicked-with-unity-new-input-syste.html
-
-        //// Check for mouse input
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    // Check if the cursor is over a UI element
-        //    if (EventSystem.current.IsPointerOverGameObject())
-        //    {
-        //        // Cursor is over a UI element
-        //        Debug.Log("Cursor is over a UI element!");
-        //    }
-        //    else
-        //    {
-        //        // Cursor is NOT over a UI element
-        //        Debug.Log("Cursor is NOT over a UI element!");
-        //    }
-        //}
-
-        //// Check for touch input
-        //if (Input.touchCount > 0)
-        //{
-        //    Touch touch = Input.GetTouch(0);
-        //    // Check if the touch is over a UI element
-        //    if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-        //    {
-        //        // Touch is over a UI element
-        //        Debug.Log("Touch is over a UI element!");
-        //    }
-        //    else
-        //    {
-        //        // Touch is NOT over a UI element
-        //        Debug.Log("Touch is NOT over a UI element!");
-        //    }
-        //}
-
-        //pointerUnderUi = EventSystem.current != null ? EventSystem.current.IsPointerOverGameObject() : false;
-        //Debug.Log($"the pointer Under UI is {pointerUnderUi}");
-
         prevDragging = dragging;
         prevSelectInputInUI = selectInputInUI;
-        //if (_selectInput && dragging == false && !pointerUnderUi)
         if (_selectInput && dragging == false)
         {
-            dragging = Vector2.Distance(_inputProvider.PointerInput(), _selectPosition) > dragDitanceThreshold;
-            //if ( dragging )
-            //{
-            //    Debug.Log($"while dragging the pointer Under UI is {pointerUnderUi}");
-            //}
+            //dragging = Vector2.Distance(_inputProvider.PointerInput(), _selectPosition) > dragDitanceThreshold;
+            if ( Vector2.Distance(_inputProvider.PointerInput(), _selectPosition) > _dragDistanceThreshold)
+            {
+                dragging = true;
+                Debug.Log("sii");
+            }
+            else
+            {
+                dragging = false;
+            }
         }
     }
 
