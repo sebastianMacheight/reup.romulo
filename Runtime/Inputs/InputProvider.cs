@@ -42,20 +42,12 @@ public class InputProvider
 
     public void Enable()
     {
-        _input.Player.RotateView.Enable();
-        _input.Player.RotateViewKeyboard.Enable();
-        _input.Player.Movement.Enable();
-        _input.Player.Select.Enable();
-        _input.Player.Pointer.Enable();
+        _input.Player.Enable();
     }
 
     public void Disable()
     {
-        _input.Player.RotateView.Disable();
-        _input.Player.RotateViewKeyboard.Disable();
-        _input.Player.Movement.Disable();
-        _input.Player.Select.Disable();
-        _input.Player.Pointer.Disable();
+        _input.Player.Disable();
     }
 
     public Vector2 RotateViewInput()
