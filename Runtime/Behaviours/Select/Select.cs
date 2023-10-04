@@ -18,13 +18,13 @@ public abstract class Select : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputProvider.selectCanceled += OnSelect;
+        _inputProvider.selectPerformed += OnSelect;
     }
 
 
     private void OnDisable()
     {
-        _inputProvider.selectCanceled -= OnSelect;
+        _inputProvider.selectPerformed -= OnSelect;
     }
 
 

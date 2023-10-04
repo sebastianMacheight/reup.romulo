@@ -10,7 +10,7 @@ public class DragManager : MonoBehaviour
     public bool selectInputInUI = false;
     public bool prevSelectInputInUI = false;
 
-    private bool _selectInput = false;
+    private bool _isHolding = false;
     private Vector2 _selectPosition;
     private InputProvider _inputProvider;
 
@@ -21,14 +21,14 @@ public class DragManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputProvider.selectPerformed += OnPress;
-        _inputProvider.selectCanceled += OnPressCanceled;
+        _inputProvider.holdStarted += OnHold;
+        _inputProvider.holdCanceled += OnHoldCanceled;
     }
 
     private void OnDisable()
     {
-        _inputProvider.selectPerformed -= OnPress;
-        _inputProvider.selectCanceled -= OnPressCanceled;
+        _inputProvider.holdStarted -= OnHold;
+        _inputProvider.holdCanceled -= OnHoldCanceled;
     }
 
     void Update()
@@ -76,18 +76,15 @@ public class DragManager : MonoBehaviour
 
         prevDragging = dragging;
         prevSelectInputInUI = selectInputInUI;
-        //if (_selectInput && dragging == false && !pointerUnderUi)
-        if (_selectInput && dragging == false)
+        if (_isHolding == true && dragging == false)
         {
-            dragging = Vector2.Distance(_inputProvider.PointerInput(), _selectPosition) > dragDitanceThreshold;
-            //if ( dragging )
-            //{
-            //    Debug.Log($"while dragging the pointer Under UI is {pointerUnderUi}");
-            //}
+            var pointer = _inputProvider.PointerInput();
+            var distance = Vector2.Distance(pointer, _selectPosition);
+            dragging = distance > dragDitanceThreshold;
         }
     }
 
-    private void OnPress(InputAction.CallbackContext obj)
+    private void OnHold(InputAction.CallbackContext obj)
     {
         if (OverUICheck.PointerOverUI())
         {
@@ -95,14 +92,14 @@ public class DragManager : MonoBehaviour
         }
         else
         {
-            _selectInput = true;
+            _isHolding = true;
             _selectPosition = _inputProvider.PointerInput();
         }
     }
 
-    private void OnPressCanceled(InputAction.CallbackContext obj)
+    private void OnHoldCanceled(InputAction.CallbackContext obj)
     {
-        _selectInput = false;
+        _isHolding = false;
         dragging = false;
         selectInputInUI = false;
     }
