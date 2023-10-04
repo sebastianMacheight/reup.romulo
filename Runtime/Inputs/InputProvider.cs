@@ -40,6 +40,39 @@ public class InputProvider
 		}
     }
 
+    public event Action<InputAction.CallbackContext> holdStarted
+    {
+        add
+	    {
+            _input.Player.Hold.started += value;
+		}
+        remove
+	    {
+            _input.Player.Hold.started -= value;
+		}
+    }
+    public event Action<InputAction.CallbackContext> holdPerformed
+    {
+        add
+	    {
+            _input.Player.Hold.performed += value;
+		}
+        remove
+	    {
+            _input.Player.Hold.performed -= value;
+		}
+    }
+    public event Action<InputAction.CallbackContext> holdCanceled
+    {
+        add
+	    {
+            _input.Player.Hold.canceled += value;
+		}
+        remove
+	    {
+            _input.Player.Hold.canceled -= value;
+		}
+    }
     public void Enable()
     {
         _input.Player.Enable();
@@ -66,7 +99,12 @@ public class InputProvider
     }
 
     public Vector2 PointerInput()
-    { 
+    {
         return _input.Player.Pointer.ReadValue<Vector2>();
+    }
+
+    public InputControl PointerInputActiveControl()
+    {
+        return _input.Player.Pointer.activeControl;
     }
 }
