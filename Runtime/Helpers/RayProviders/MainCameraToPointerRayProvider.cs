@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using TMPro;
 public class MainCameraToPointerRayProvider : MonoBehaviour, IRayProvider
 {
     private InputProvider _inputProvider;
