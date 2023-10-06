@@ -102,9 +102,4 @@ public class InputProvider
     {
         return _input.Player.Pointer.ReadValue<Vector2>();
     }
-
-    public InputControl PointerInputActiveControl()
-    {
-        return _input.Player.Pointer.activeControl;
-    }
 }
