@@ -40,22 +40,47 @@ public class InputProvider
 		}
     }
 
+    public event Action<InputAction.CallbackContext> holdStarted
+    {
+        add
+	    {
+            _input.Player.Hold.started += value;
+		}
+        remove
+	    {
+            _input.Player.Hold.started -= value;
+		}
+    }
+    public event Action<InputAction.CallbackContext> holdPerformed
+    {
+        add
+	    {
+            _input.Player.Hold.performed += value;
+		}
+        remove
+	    {
+            _input.Player.Hold.performed -= value;
+		}
+    }
+    public event Action<InputAction.CallbackContext> holdCanceled
+    {
+        add
+	    {
+            _input.Player.Hold.canceled += value;
+		}
+        remove
+	    {
+            _input.Player.Hold.canceled -= value;
+		}
+    }
     public void Enable()
     {
-        _input.Player.RotateView.Enable();
-        _input.Player.RotateViewKeyboard.Enable();
-        _input.Player.Movement.Enable();
-        _input.Player.Select.Enable();
-        _input.Player.Pointer.Enable();
+        _input.Player.Enable();
     }
 
     public void Disable()
     {
-        _input.Player.RotateView.Disable();
-        _input.Player.RotateViewKeyboard.Disable();
-        _input.Player.Movement.Disable();
-        _input.Player.Select.Disable();
-        _input.Player.Pointer.Disable();
+        _input.Player.Disable();
     }
 
     public Vector2 RotateViewInput()
@@ -74,7 +99,7 @@ public class InputProvider
     }
 
     public Vector2 PointerInput()
-    { 
+    {
         return _input.Player.Pointer.ReadValue<Vector2>();
     }
 }
