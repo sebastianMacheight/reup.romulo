@@ -13,7 +13,7 @@ public class DragManager : MonoBehaviour
     [HideInInspector]
     public bool prevSelectInputInUI = false;
 
-    private bool _selectInput = false;
+    private bool _isHolding = false;
     private Vector2 _selectPosition;
     private InputProvider _inputProvider;
     private float _dragDistanceThreshold = 2.0f;
@@ -25,27 +25,29 @@ public class DragManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputProvider.selectPerformed += OnPress;
-        _inputProvider.selectCanceled += OnPressCanceled;
+        _inputProvider.holdStarted += OnHold;
+        _inputProvider.holdCanceled += OnHoldCanceled;
     }
 
     private void OnDisable()
     {
-        _inputProvider.selectPerformed -= OnPress;
-        _inputProvider.selectCanceled -= OnPressCanceled;
+        _inputProvider.holdStarted -= OnHold;
+        _inputProvider.holdCanceled -= OnHoldCanceled;
     }
 
     void Update()
     {
         prevDragging = dragging;
         prevSelectInputInUI = selectInputInUI;
-        if (_selectInput && dragging == false)
+        if (_isHolding == true && dragging == false)
         {
-            dragging = Vector2.Distance(_inputProvider.PointerInput(), _selectPosition) > _dragDistanceThreshold;
+            var pointer = _inputProvider.PointerInput();
+            var distance = Vector2.Distance(pointer, _selectPosition);
+            dragging = distance > _dragDistanceThreshold;
         }
     }
 
-    private void OnPress(InputAction.CallbackContext obj)
+    private void OnHold(InputAction.CallbackContext obj)
     {
         if (OverUICheck.PointerOverUI())
         {
@@ -53,14 +55,14 @@ public class DragManager : MonoBehaviour
         }
         else
         {
-            _selectInput = true;
+            _isHolding = true;
             _selectPosition = _inputProvider.PointerInput();
         }
     }
 
-    private void OnPressCanceled(InputAction.CallbackContext obj)
+    private void OnHoldCanceled(InputAction.CallbackContext obj)
     {
-        _selectInput = false;
+        _isHolding = false;
         dragging = false;
         selectInputInUI = false;
     }
