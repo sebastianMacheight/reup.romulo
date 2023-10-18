@@ -88,11 +88,6 @@ public class InputProvider
         return _input.Player.RotateView.ReadValue<Vector2>() * -1;
     }
 
-    public Vector2 RotateViewKeyboardInput()
-    { 
-        return _input.Player.RotateViewKeyboard.ReadValue<Vector2>();
-    }
-
     public Vector2 MovementInput()
     { 
         return _input.Player.Movement.ReadValue<Vector2>();
