@@ -31,27 +31,7 @@ namespace ReupVirtualTwin.characterMovement
         public void GoToSpace()
         {
             var spaceSelectorPosition = spaceSelector.transform.position;
-            var floorPlane = GetClosestFloorPlane(spaceSelectorPosition);
-            var newPosition = spaceSelectorPosition;
-            newPosition.y = floorPlane.gameObject.transform.position.y;
-            _characterPositionManager.SliceToTarget(newPosition);
-        }
-
-        FloorPlane GetClosestFloorPlane(Vector3 position)
-        {
-            var height = position.y;
-            float minDistance = Mathf.Infinity;
-            FloorPlane closestPlane = null;
-            float distance;
-            foreach (var plane in _spacesRecord.floorPlanes)
-            {
-                if ((distance = Mathf.Abs(height - plane.gameObject.transform.position.y)) < minDistance)
-                {
-                    closestPlane = plane;
-                    minDistance = distance;
-                }
-            }
-            return closestPlane;
+            _characterPositionManager.SliceToTarget(spaceSelectorPosition);
         }
     }
 }
