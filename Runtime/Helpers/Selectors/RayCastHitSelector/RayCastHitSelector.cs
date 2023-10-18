@@ -11,7 +11,7 @@ namespace ReupVirtualTwin
             if (CastRay(ray, out hit))
             {
                 GameObject obj = hit.collider.gameObject;
-                if (!obj.CompareTag(TagsEnum.trigger) && !obj.CompareTag(TagsEnum.materialSelection))
+                if (IsSelectable(obj))
                 {
                     return hit;
                 }
