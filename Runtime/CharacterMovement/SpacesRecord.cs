@@ -8,14 +8,8 @@ namespace ReupVirtualTwin.characterMovement
     public class SpacesRecord : MonoBehaviour
     {
         public List<SpaceJumpPoint> jumpPoints;
-        public List<FloorPlane> floorPlanes;
         [HideInInspector]
         public bool drawSpacesGizmos = true;
-
-        void Start()
-        {
-            UpdatePlanes();
-        }
 
         public void UpdateSpaces()
         {
@@ -25,16 +19,6 @@ namespace ReupVirtualTwin.characterMovement
             {
                 var roomSelector = room.GetComponent<SpaceJumpPoint>();
                 jumpPoints.Add(roomSelector);
-            }
-        }
-        public void UpdatePlanes()
-        {
-            GameObject[] planes = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelectorPlane);
-            floorPlanes.Clear();
-            foreach (GameObject plane in planes)
-            {
-                var spaceSelectorPlane = plane.GetComponent<FloorPlane>();
-                floorPlanes.Add(spaceSelectorPlane);
             }
         }
     }
