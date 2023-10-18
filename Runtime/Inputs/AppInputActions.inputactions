@@ -33,15 +33,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "RotateViewKeyboard",
-                    "type": "Value",
-                    "id": "9901281f-1d24-49be-83ba-9d7aaabe009e",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Pointer",
                     "type": "PassThrough",
                     "id": "b0e1ebbd-c551-4318-a0b7-472e7499937e",
@@ -114,17 +105,6 @@
                     "groups": "KeyboardAndMouse",
                     "action": "Pointer",
                     "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Arrows",
-                    "id": "def07d04-5232-404b-aed0-f0020aaaf7ad",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RotateViewKeyboard",
-                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
