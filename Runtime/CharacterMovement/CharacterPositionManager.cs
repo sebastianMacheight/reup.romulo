@@ -18,7 +18,7 @@ namespace ReupVirtualTwin.characterMovement
         float _stopDistance = 0.5f;
 
 
-        Vector3 _characterPosition
+        Vector3 characterPosition
         {
             get
             {
@@ -46,13 +46,13 @@ namespace ReupVirtualTwin.characterMovement
         }
         public void WalkToTarget(Vector3 target)
         {
-            target.y = _characterPosition.y;
+            target.y = characterPosition.y;
             MoveToTarget(target);
         }
         public void SliceToTarget(Vector3 target)
         {
             //put target _stopdistance meters futher away
-            var newTarget = target + Vector3.Normalize(target - _characterPosition) * _stopDistance;
+            var newTarget = target + Vector3.Normalize(target - characterPosition) * _stopDistance;
             MoveToTarget(newTarget);
         }
 
@@ -65,12 +65,32 @@ namespace ReupVirtualTwin.characterMovement
         private IEnumerator MoveToTargetCoroutine(Vector3 target)
         {
             rb.isKinematic = true;
-            while (Vector3.Distance(target, _characterPosition) > _stopDistance)
+            while (Vector3.Distance(target, characterPosition) > _stopDistance)
             {
-                _characterPosition = Vector3.Lerp(_characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
+                characterPosition = Vector3.Lerp(characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
                 yield return null;
             }
             rb.isKinematic = false;
+        }
+
+        public void MoveToHeight(float height)
+        {
+            StopCoroutine("MoveToHeightCoroutine");
+            StartCoroutine("MoveToHeightCoroutine", height);
+        }
+
+        private IEnumerator MoveToHeightCoroutine(float height)
+        {
+            var STOP_HEIGHT_THRESHOLD = 0.001f;
+            float CHANGE_HEIGHT_MOVEMENT_MULTIPLIER = 5.0f;
+            while (Mathf.Abs(height - characterPosition.y) > STOP_HEIGHT_THRESHOLD)
+            {
+                var positionWithNewHeight = new Vector3(characterPosition.x, height, characterPosition.z);
+                characterPosition = Vector3.Lerp(characterPosition,
+                    positionWithNewHeight,
+                    CHANGE_HEIGHT_MOVEMENT_MULTIPLIER * Time.deltaTime);
+                yield return null;
+            }
         }
     }
 
