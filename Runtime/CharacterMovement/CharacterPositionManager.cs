@@ -15,7 +15,10 @@ namespace ReupVirtualTwin.characterMovement
         [SerializeField]
         private float bodyDrag = 5f;
 
-        float _stopDistance = 0.5f;
+        float STOP_WALK_THRESHOLD = 0.5f;
+        float STOP_MOVEMENT_THRESHOLD = 0.001f;
+        float CHANGE_HEIGHT_MOVEMENT_MULTIPLIER = 5.0f;
+        bool slicing = false;
 
 
         Vector3 characterPosition
@@ -39,59 +42,78 @@ namespace ReupVirtualTwin.characterMovement
 
         public void MovePositionByStepInDirection(Vector3 direction)
         {
-            StopCoroutine("MoveToTargetCoroutine");
+            StopAllCoroutines();
             rb.isKinematic = false;
             var step = direction * movementForceMultiplier;
             rb.AddForce(step, ForceMode.Force);
         }
         public void WalkToTarget(Vector3 target)
         {
-            target.y = characterPosition.y;
-            MoveToTarget(target);
+            StopCoroutine("HorizontalyWalkToTargetCoroutine");
+            StartCoroutine("HorizontalyWalkToTargetCoroutine", target);
         }
+        private IEnumerator HorizontalyWalkToTargetCoroutine(Vector3 target)
+        {
+            while (ShouldKeepWalking(target))
+            {
+                var nextPositionToTarget = Vector3.Lerp(characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
+                characterPosition = new Vector3(nextPositionToTarget.x, characterPosition.y, nextPositionToTarget.z);
+                yield return null;
+            }
+        }
+
         public void SliceToTarget(Vector3 target)
         {
-            //put target _stopdistance meters futher away
-            var newTarget = target + Vector3.Normalize(target - characterPosition) * _stopDistance;
-            MoveToTarget(newTarget);
+            StopAllCoroutines();
+            StartCoroutine("SliceToTargetCoroutine", target);
         }
-
-        public void MoveToTarget(Vector3 target)
-        {
-            StopCoroutine("MoveToTargetCoroutine");
-            StartCoroutine("MoveToTargetCoroutine", target);
-        }
-
-        private IEnumerator MoveToTargetCoroutine(Vector3 target)
+        private IEnumerator SliceToTargetCoroutine(Vector3 target)
         {
             rb.isKinematic = true;
-            while (Vector3.Distance(target, characterPosition) > _stopDistance)
+            slicing = true;
+            while (Vector3.Distance(target, characterPosition) > STOP_MOVEMENT_THRESHOLD)
             {
                 characterPosition = Vector3.Lerp(characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
                 yield return null;
             }
+            slicing = false;
             rb.isKinematic = false;
         }
 
         public void MoveToHeight(float height)
         {
-            StopCoroutine("MoveToHeightCoroutine");
-            StartCoroutine("MoveToHeightCoroutine", height);
+            if (ShouldSetHeight(height))
+            {
+                StopCoroutine("MoveToHeightCoroutine");
+                StartCoroutine("MoveToHeightCoroutine", height);
+            }
         }
 
         private IEnumerator MoveToHeightCoroutine(float height)
         {
-            var STOP_HEIGHT_THRESHOLD = 0.001f;
-            float CHANGE_HEIGHT_MOVEMENT_MULTIPLIER = 5.0f;
-            while (Mathf.Abs(height - characterPosition.y) > STOP_HEIGHT_THRESHOLD)
+            while (ShouldSetHeight(height))
             {
-                var positionWithNewHeight = new Vector3(characterPosition.x, height, characterPosition.z);
+                var newHeightPosition = new Vector3(characterPosition.x,
+                                                        height,
+                                                        characterPosition.z);
                 characterPosition = Vector3.Lerp(characterPosition,
-                    positionWithNewHeight,
-                    CHANGE_HEIGHT_MOVEMENT_MULTIPLIER * Time.deltaTime);
+                                                 newHeightPosition,
+                                                 CHANGE_HEIGHT_MOVEMENT_MULTIPLIER * Time.deltaTime);
                 yield return null;
             }
         }
-    }
 
+        private bool ShouldSetHeight(float height)
+        {
+            float distanceToHeight = Mathf.Abs(height - characterPosition.y);
+            bool thereIsDistanceToTarget = distanceToHeight > STOP_MOVEMENT_THRESHOLD;
+            return thereIsDistanceToTarget && slicing == false;
+        }
+        private bool ShouldKeepWalking(Vector3 target)
+        {
+            var sameHeightTarget = new Vector3(target.x, characterPosition.y, target.z);
+            bool thereIsDistanceToTarget = Vector3.Distance(sameHeightTarget, characterPosition) > STOP_WALK_THRESHOLD;
+            return thereIsDistanceToTarget && slicing == false;
+        }
+    }
 }
