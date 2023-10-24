@@ -9,7 +9,7 @@ namespace ReupVirtualTwin.behaviours
     public class HeightKeeper : MonoBehaviour
     {
         private ISensor _sensor;
-        private float _characterHeight = 1.5f;
+        private float CHARACTER_HEIGHT = 1.65f;
         [SerializeField]
         CharacterPositionManager _characterPositionManager;
         void Start()
@@ -33,7 +33,7 @@ namespace ReupVirtualTwin.behaviours
         void KeepCharacterHeightFromGround(RaycastHit groundHit)
         {
             var groundHeight = groundHit.point.y;
-            var newHeight = groundHeight + _characterHeight;
+            var newHeight = groundHeight + CHARACTER_HEIGHT;
             _characterPositionManager.MoveToHeight(newHeight);
         }
     }
