@@ -7,10 +7,8 @@ namespace ReupVirtualTwin.characterMovement
     {
         [SerializeField]
         private float movementForceMultiplier = 10f;
+        private float slideMovementSpeedMultiplier = 2.0f;
         [SerializeField]
-        private float slideMovementSpeedMultiplier = 2f;
-        [SerializeField]
-        private float floorDistanceThreshold = 0.7f;
         private Rigidbody rb;
         [SerializeField]
         private float bodyDrag = 5f;
@@ -54,12 +52,14 @@ namespace ReupVirtualTwin.characterMovement
         }
         private IEnumerator HorizontalyWalkToTargetCoroutine(Vector3 target)
         {
+            rb.isKinematic = true;
             while (ShouldKeepWalking(target))
             {
                 var nextPositionToTarget = Vector3.Lerp(characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
                 characterPosition = new Vector3(nextPositionToTarget.x, characterPosition.y, nextPositionToTarget.z);
                 yield return null;
             }
+            rb.isKinematic = false;
         }
 
         public void SliceToTarget(Vector3 target)
