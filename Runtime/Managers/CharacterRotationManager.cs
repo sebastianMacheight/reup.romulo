@@ -1,34 +1,62 @@
 
 
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterRotationManager : MonoBehaviour
 {
-    public float verticalRotation { get; set; } = 0f;
-    public float horizontalRotation { get; set; }
+    float ROTATION_SPEED = 10f;
+    float ANGLE_THRESHOLD = 0.01f;
+    float _verticalRotation = 0f;
+    float _horizontalRotation = 0f;
+    Quaternion _desiredRotation;
 
-    public float smoothness = 10f;
-
-    private Quaternion desiredRotation;
-
-    private void Start()
+    [SerializeField]
+    Transform _characterBodyTransform;
+    public float verticalRotation
     {
-        horizontalRotation = transform.localEulerAngles.y;
+        get
+        {
+            return _verticalRotation;
+        }
+        set
+        {
+            if (value > 180f) value -= 360f;
+            _verticalRotation = Mathf.Clamp(value, -90f, 90f);
+            SetDesiredRotation();
+        }
+    }
+    public float horizontalRotation {
+        get
+        {
+            return _horizontalRotation;
+        }
+        set
+        {
+            _horizontalRotation = value;
+            SetDesiredRotation();
+        }
     }
 
     void Update()
     {
-        if (verticalRotation > 180f) verticalRotation -= 360f;
-        verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
-
-        desiredRotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);
+        if (ShouldRotate())
+        {
+            Rotate();
+        }
+    }
+    void SetDesiredRotation ()
+    {
+            _desiredRotation = Quaternion.Euler(_verticalRotation, _horizontalRotation, 0);
     }
 
-    void LateUpdate()
+    bool ShouldRotate()
     {
+        return Quaternion.Angle(_desiredRotation, _characterBodyTransform.rotation) > ANGLE_THRESHOLD;
+    }
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, smoothness * Time.deltaTime);
+    void Rotate()
+    {
+        _characterBodyTransform.rotation = Quaternion.Slerp(_characterBodyTransform.rotation, _desiredRotation, ROTATION_SPEED * Time.deltaTime);
     }
 }
