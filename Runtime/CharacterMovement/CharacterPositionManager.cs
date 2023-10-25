@@ -5,12 +5,9 @@ namespace ReupVirtualTwin.characterMovement
 {
     public class CharacterPositionManager : MonoBehaviour
     {
-        [SerializeField]
         private float movementForceMultiplier = 10f;
         private float slideMovementSpeedMultiplier = 2.0f;
-        [SerializeField]
         private Rigidbody rb;
-        [SerializeField]
         private float bodyDrag = 5f;
 
         float STOP_WALK_THRESHOLD = 0.5f;
