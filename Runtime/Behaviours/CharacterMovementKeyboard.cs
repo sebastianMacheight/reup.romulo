@@ -9,7 +9,10 @@ public class CharacterMovementKeyboard : MonoBehaviour
 {
 
     private InputProvider _inputProvider;
-    private CharacterPositionManager _characterPositionManager; 
+    private CharacterPositionManager _characterPositionManager;
+    [SerializeField]
+    private Transform _characterBodyTransform;
+
 
     private void Awake()
     {
@@ -35,13 +38,13 @@ public class CharacterMovementKeyboard : MonoBehaviour
 
     private Vector3 GetCharacterRight()
     {
-        Vector3 right = transform.right;
+        Vector3 right = _characterBodyTransform.right;
         right.y = 0;
         return right;
     }
     private Vector3 GetCharacterForward()
     {
-        Vector3 forward = transform.forward;
+        Vector3 forward = _characterBodyTransform.forward;
         forward.y = 0;
         return forward;
     }
