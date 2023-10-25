@@ -3,7 +3,7 @@ using UnityEngine;
 namespace ReupVirtualTwin.behaviours
 {
 
-    public class CreateCharacterCollider : MonoBehaviour
+    public class CreateBoxCharacterCollider : MonoBehaviour
     {
         [SerializeField]
         GameObject character;
@@ -11,17 +11,16 @@ namespace ReupVirtualTwin.behaviours
         HeightKeeper heightKeeper;
 
         float FREE_SPACE_BELOW_IN_METERS = 0.8f;
-        float COLLIDER_RADIUS_IN_METERS = 0.2f;
+        float COLLIDER_FRONT_IN_METERS = 0.01f;
+        float COLLIDER_SIDE_IN_METERS = 0.2f;
 
         private void Start()
         {
-            var collider = character.AddComponent<CapsuleCollider>();
+            var collider = character.AddComponent<BoxCollider>();
             var colliderHeight = heightKeeper.CHARACTER_HEIGHT - FREE_SPACE_BELOW_IN_METERS;
             var colliderYCenter = -1 * colliderHeight / 2;
-            collider.radius = COLLIDER_RADIUS_IN_METERS;
-            collider.height = colliderHeight;
+            collider.size = new Vector3(COLLIDER_FRONT_IN_METERS, colliderHeight, COLLIDER_SIDE_IN_METERS);
             collider.center = new Vector3(0, colliderYCenter, 0);
         }
-
     }
 }

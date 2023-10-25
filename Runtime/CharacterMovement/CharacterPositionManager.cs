@@ -49,14 +49,12 @@ namespace ReupVirtualTwin.characterMovement
         }
         private IEnumerator HorizontalyWalkToTargetCoroutine(Vector3 target)
         {
-            rb.isKinematic = true;
             while (ShouldKeepWalking(target))
             {
                 var nextPositionToTarget = Vector3.Lerp(characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
                 characterPosition = new Vector3(nextPositionToTarget.x, characterPosition.y, nextPositionToTarget.z);
                 yield return null;
             }
-            rb.isKinematic = false;
         }
 
         public void SliceToTarget(Vector3 target)
