@@ -9,7 +9,8 @@ namespace ReupVirtualTwin.behaviours
     public class HeightKeeper : MonoBehaviour
     {
         private ISensor _sensor;
-        private float CHARACTER_HEIGHT = 1.65f;
+        [HideInInspector]
+        public float CHARACTER_HEIGHT = 1.65f;
         [SerializeField]
         CharacterPositionManager _characterPositionManager;
         void Start()
