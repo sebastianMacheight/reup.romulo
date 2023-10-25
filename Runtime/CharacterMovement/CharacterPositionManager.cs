@@ -40,10 +40,10 @@ namespace ReupVirtualTwin.characterMovement
 
         public void MovePositionByStepInDirection(Vector3 direction)
         {
-            StopAllCoroutines();
+            StopCoroutine("HorizontalyWalkToTargetCoroutine");
             rb.isKinematic = false;
-            var step = direction * movementForceMultiplier;
-            rb.AddForce(step, ForceMode.Force);
+            var force = direction * movementForceMultiplier;
+            rb.AddForce(force, ForceMode.Force);
         }
         public void WalkToTarget(Vector3 target)
         {
