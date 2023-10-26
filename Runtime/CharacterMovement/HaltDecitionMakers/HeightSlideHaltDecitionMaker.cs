@@ -20,6 +20,7 @@ namespace ReupVirtualTwin.characterMovement
             {
                 Debug.Log($"current height: {characterPositionManager.characterPosition.y}");
                 Debug.Log($"current target: {target}");
+                Debug.Log($"distanceToHeight : {distanceToHeight}");
             }
             return thereIsDistanceToTarget;
         }

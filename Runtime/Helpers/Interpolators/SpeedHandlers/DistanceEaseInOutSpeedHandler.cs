@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
 {
-    public class DistanceSpeedHandler : SpeedHandler
+    public class DistanceEaseInOutSpeedHandler : SpeedHandler
     {
         readonly float totalDistance;
         readonly float maxSpeedInMetersPerSecond;
@@ -11,7 +11,7 @@ namespace ReupVirtualTwin.helpers
         readonly float distanceToMinSpeed;
         readonly float changeSlopeFraction;
 
-        public DistanceSpeedHandler(float distance, float maxSpeed, float minSpeed, float distanceToMax, float distanceToMin)
+        public DistanceEaseInOutSpeedHandler(float distance, float maxSpeed, float minSpeed, float distanceToMax, float distanceToMin)
         {
             totalDistance = distance;
             maxSpeedInMetersPerSecond = maxSpeed;

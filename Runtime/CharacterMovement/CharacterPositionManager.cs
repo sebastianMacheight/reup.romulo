@@ -5,12 +5,12 @@ namespace ReupVirtualTwin.characterMovement
 {
     public class CharacterPositionManager : MonoBehaviour
     {
-        private float movementForceMultiplier = 10f;
+        private float movementForce = 10f;
         private Rigidbody rb;
         private float bodyDrag = 5f;
 
         float STOP_WALK_THRESHOLD = 0.5f;
-        float STOP_MOVEMENT_THRESHOLD = 0.01f;
+        float STOP_MOVEMENT_THRESHOLD = 0.02f;
 
         SpaceSlider walkSlider;
         SpaceSlider spaceSlider;
@@ -67,9 +67,9 @@ namespace ReupVirtualTwin.characterMovement
 
         public void MovePositionByStepInDirection(Vector3 direction)
         {
-            StopCoroutine("HorizontalyWalkToTargetCoroutine");
+            walkSlider.StopMovement();
             rb.isKinematic = false;
-            var force = direction * movementForceMultiplier;
+            var force = Vector3.Normalize(direction) * movementForce;
             rb.AddForce(force, ForceMode.Force);
         }
         public void WalkToTarget(Vector3 target)
@@ -88,14 +88,27 @@ namespace ReupVirtualTwin.characterMovement
         }
 
 
-        public void StopWalking()
-        {
-            walkSlider.StopMovement();
-        }
-
         public bool ShouldSetHeight(float target)
         {
+            if (IsHeightDifferenceTooBig(target))
+            {
+                return false;
+            }
             return heightSlider.ShouldKeepMoving(target);
+        }
+
+        private bool IsHeightDifferenceTooBig(float target)
+        {
+            if (Mathf.Abs(target - characterPosition.y) > 0.5f)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void StopRigidBody()
+        {
+            rb.velocity = Vector3.zero;
         }
 
     }

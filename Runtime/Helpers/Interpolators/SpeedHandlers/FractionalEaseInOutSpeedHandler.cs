@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
 {
-    public class FractionalSpeedHandler : SpeedHandler
+    public class FractionalEaseInOutSpeedHandler : SpeedHandler
     {
         readonly float totalDistance;
         readonly float maxSpeedInMetersPerSecond;
@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.helpers
         readonly float fractionToMaxSpeed;
         readonly float fractionToMinSpeed;
 
-        public FractionalSpeedHandler(float distance, float maxSpeed, float minSpeed, float fracToMax, float fracToMin)
+        public FractionalEaseInOutSpeedHandler(float distance, float maxSpeed, float minSpeed, float fracToMax, float fracToMin)
         {
             totalDistance = distance;
             maxSpeedInMetersPerSecond = maxSpeed;
