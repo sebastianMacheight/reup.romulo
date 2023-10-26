@@ -54,7 +54,7 @@ namespace ReupVirtualTwin.characterMovement
             var spaceSlideHaltDecitionMaker = new SpaceSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
             spaceSlider.movementDecitionMaker = spaceSlideHaltDecitionMaker;
             spaceSlider.isKinematicWhileMoving = true;
-            spaceSlider.interpolator = new SlideInterpolator();
+            spaceSlider.interpolator = new SpacesInterpolator();
         }
         void DefineHeightSlider()
         {
