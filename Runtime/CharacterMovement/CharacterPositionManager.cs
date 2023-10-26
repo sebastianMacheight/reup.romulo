@@ -5,9 +5,12 @@ namespace ReupVirtualTwin.characterMovement
 {
     public class CharacterPositionManager : MonoBehaviour
     {
+        bool _allowSetHeight = true;
+        bool _allowWalking = true;
         private float movementForce = 10f;
         private Rigidbody rb;
         private float bodyDrag = 5f;
+        private float bodyMass = 1f;
 
         float STOP_WALK_THRESHOLD = 0.5f;
         float STOP_MOVEMENT_THRESHOLD = 0.02f;
@@ -16,6 +19,30 @@ namespace ReupVirtualTwin.characterMovement
         SpaceSlider spaceSlider;
         LinearSlider heightSlider;
 
+        public bool allowWalking
+        {
+            get { return _allowWalking; }
+            set
+            {
+                if (value == false)
+                {
+                    walkSlider.StopMovement();
+                }
+                _allowWalking=value;
+            }
+        }
+        public bool allowSetHeight
+        {
+            get { return _allowSetHeight; }
+            set
+            {
+                if (value == false)
+                {
+                    heightSlider.StopMovement();
+                }
+                _allowSetHeight=value;
+            }
+        }
 
         public Vector3 characterPosition
         {
@@ -25,6 +52,7 @@ namespace ReupVirtualTwin.characterMovement
             }
             set
             {
+                //Debug.Log($"setting character pos to {value}");
                 transform.position = value;
             }
         }
@@ -34,6 +62,7 @@ namespace ReupVirtualTwin.characterMovement
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
             rb.drag = bodyDrag;
+            rb.mass = bodyMass;
             DefineWalkSlider();
             DefineSpaceSlider();
             DefineHeightSlider();
@@ -45,7 +74,7 @@ namespace ReupVirtualTwin.characterMovement
             walkSlider = transform.gameObject.AddComponent<SpaceSlider>();
             var walkHaltDecitionMaker = new WalkHaltDecitionMaker(this, STOP_WALK_THRESHOLD);
             walkSlider.movementDecitionMaker = walkHaltDecitionMaker;
-            walkSlider.isKinematicWhileMoving = false;
+            //walkSlider.isKinematicWhileMoving = false;
             walkSlider.interpolator = new WalkInterpolator();
         }
         void DefineSpaceSlider()
@@ -53,7 +82,7 @@ namespace ReupVirtualTwin.characterMovement
             spaceSlider = transform.gameObject.AddComponent<SpaceSlider>();
             var spaceSlideHaltDecitionMaker = new SpaceSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
             spaceSlider.movementDecitionMaker = spaceSlideHaltDecitionMaker;
-            spaceSlider.isKinematicWhileMoving = true;
+            //spaceSlider.isKinematicWhileMoving = true;
             spaceSlider.interpolator = new SpacesInterpolator();
         }
         void DefineHeightSlider()
@@ -61,14 +90,20 @@ namespace ReupVirtualTwin.characterMovement
             heightSlider = transform.gameObject.AddComponent<LinearSlider>();
             var heighSlideHaltDecitionMaker = new HeightSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
             heightSlider.movementDecitionMaker = heighSlideHaltDecitionMaker;
-            heightSlider.isKinematicWhileMoving = false;
+            //heightSlider.isKinematicWhileMoving = false;
             heightSlider.interpolator = new HeightInterpolator();
         }
 
         public void MovePositionByStepInDirection(Vector3 direction)
         {
             walkSlider.StopMovement();
-            rb.isKinematic = false;
+            var normalizedDirection = Vector3.Normalize(direction);
+            characterPosition = characterPosition + normalizedDirection * 0.01f;
+        }
+        public void ApplyForceInDirection(Vector3 direction)
+        {
+            walkSlider.StopMovement();
+            //rb.isKinematic = false;
             var force = Vector3.Normalize(direction) * movementForce;
             rb.AddForce(force, ForceMode.Force);
         }
@@ -90,7 +125,7 @@ namespace ReupVirtualTwin.characterMovement
 
         public bool ShouldSetHeight(float target)
         {
-            if (IsHeightDifferenceTooBig(target))
+            if (IsHeightDifferenceTooBig(target) && _allowSetHeight)
             {
                 return false;
             }
@@ -109,6 +144,20 @@ namespace ReupVirtualTwin.characterMovement
         public void StopRigidBody()
         {
             rb.velocity = Vector3.zero;
+        }
+
+        public void StopWalking()
+        {
+            walkSlider.StopMovement();
+        }
+
+        public void MakeKinematic()
+        {
+            rb.isKinematic = true;
+        }
+        public void UndoKinematic()
+        {
+            rb.isKinematic = false;
         }
 
     }

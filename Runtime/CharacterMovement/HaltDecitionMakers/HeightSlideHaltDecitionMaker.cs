@@ -18,9 +18,9 @@ namespace ReupVirtualTwin.characterMovement
             bool thereIsDistanceToTarget = distanceToHeight > stopMovementThreshold;
             if (thereIsDistanceToTarget)
             {
-                Debug.Log($"current height: {characterPositionManager.characterPosition.y}");
-                Debug.Log($"current target: {target}");
-                Debug.Log($"distanceToHeight : {distanceToHeight}");
+                //Debug.Log($"current height: {characterPositionManager.characterPosition.y}");
+                //Debug.Log($"current target: {target}");
+                //Debug.Log($"distanceToHeight : {distanceToHeight}");
             }
             return thereIsDistanceToTarget;
         }

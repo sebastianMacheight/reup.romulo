@@ -9,6 +9,8 @@ namespace ReupVirtualTwin.behaviours
         GameObject character;
         [SerializeField]
         HeightKeeper heightKeeper;
+        [SerializeField]
+        PhysicMaterial physicMaterial;
 
         float FREE_SPACE_BELOW_IN_METERS = 0.4f;
         float COLLIDER_RADIUS_IN_METERS = 0.05f;
@@ -21,6 +23,7 @@ namespace ReupVirtualTwin.behaviours
             collider.radius = COLLIDER_RADIUS_IN_METERS;
             collider.height = colliderHeight;
             collider.center = new Vector3(0, colliderYCenter, 0);
+            collider.material = physicMaterial;
         }
 
     }
