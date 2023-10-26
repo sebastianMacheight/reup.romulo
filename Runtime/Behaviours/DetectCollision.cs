@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.behaviours
 
         private void OnCollisionEnter(Collision collision)
         {
-            _positionManager.StopAllCoroutines();
+            _positionManager.StopWalking();
         }
     }
 }

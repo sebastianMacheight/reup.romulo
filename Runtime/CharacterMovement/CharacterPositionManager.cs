@@ -1,22 +1,23 @@
-using System.Collections;
 using UnityEngine;
+using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwin.characterMovement
 {
     public class CharacterPositionManager : MonoBehaviour
     {
         private float movementForceMultiplier = 10f;
-        private float slideMovementSpeedMultiplier = 2.0f;
         private Rigidbody rb;
         private float bodyDrag = 5f;
 
         float STOP_WALK_THRESHOLD = 0.5f;
-        float STOP_MOVEMENT_THRESHOLD = 0.001f;
-        float CHANGE_HEIGHT_MOVEMENT_MULTIPLIER = 5.0f;
-        bool slicing = false;
+        float STOP_MOVEMENT_THRESHOLD = 0.01f;
+
+        SpaceSlider walkSlider;
+        SpaceSlider spaceSlider;
+        LinearSlider heightSlider;
 
 
-        Vector3 characterPosition
+        public Vector3 characterPosition
         {
             get
             {
@@ -33,6 +34,35 @@ namespace ReupVirtualTwin.characterMovement
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
             rb.drag = bodyDrag;
+            DefineWalkSlider();
+            DefineSpaceSlider();
+            DefineHeightSlider();
+        }
+
+
+        void DefineWalkSlider()
+        {
+            walkSlider = transform.gameObject.AddComponent<SpaceSlider>();
+            var walkHaltDecitionMaker = new WalkHaltDecitionMaker(this, STOP_WALK_THRESHOLD);
+            walkSlider.movementDecitionMaker = walkHaltDecitionMaker;
+            walkSlider.isKinematicWhileMoving = false;
+            walkSlider.interpolator = new WalkInterpolator();
+        }
+        void DefineSpaceSlider()
+        {
+            spaceSlider = transform.gameObject.AddComponent<SpaceSlider>();
+            var spaceSlideHaltDecitionMaker = new SpaceSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
+            spaceSlider.movementDecitionMaker = spaceSlideHaltDecitionMaker;
+            spaceSlider.isKinematicWhileMoving = true;
+            spaceSlider.interpolator = new SlideInterpolator();
+        }
+        void DefineHeightSlider()
+        {
+            heightSlider = transform.gameObject.AddComponent<LinearSlider>();
+            var heighSlideHaltDecitionMaker = new HeightSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
+            heightSlider.movementDecitionMaker = heighSlideHaltDecitionMaker;
+            heightSlider.isKinematicWhileMoving = false;
+            heightSlider.interpolator = new HeightInterpolator();
         }
 
         public void MovePositionByStepInDirection(Vector3 direction)
@@ -44,71 +74,29 @@ namespace ReupVirtualTwin.characterMovement
         }
         public void WalkToTarget(Vector3 target)
         {
-            StopCoroutine("HorizontalyWalkToTargetCoroutine");
-            StartCoroutine("HorizontalyWalkToTargetCoroutine", target);
-        }
-        private IEnumerator HorizontalyWalkToTargetCoroutine(Vector3 target)
-        {
-            while (ShouldKeepWalking(target))
-            {
-                var nextPositionToTarget = Vector3.Lerp(characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
-                characterPosition = new Vector3(nextPositionToTarget.x, characterPosition.y, nextPositionToTarget.z);
-                yield return null;
-            }
+            walkSlider.SlideToTarget(target);
         }
 
-        public void SliceToTarget(Vector3 target)
+        public void SlideToTarget(Vector3 target)
         {
-            StopAllCoroutines();
-            StartCoroutine("SliceToTargetCoroutine", target);
-        }
-        private IEnumerator SliceToTargetCoroutine(Vector3 target)
-        {
-            rb.isKinematic = true;
-            slicing = true;
-            while (Vector3.Distance(target, characterPosition) > STOP_MOVEMENT_THRESHOLD)
-            {
-                characterPosition = Vector3.Lerp(characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
-                yield return null;
-            }
-            slicing = false;
-            rb.isKinematic = false;
+            spaceSlider.SlideToTarget(target);
         }
 
         public void MoveToHeight(float height)
         {
-            if (ShouldSetHeight(height))
-            {
-                StopCoroutine("MoveToHeightCoroutine");
-                StartCoroutine("MoveToHeightCoroutine", height);
-            }
+            heightSlider.SlideToTarget(height);
         }
 
-        private IEnumerator MoveToHeightCoroutine(float height)
+
+        public void StopWalking()
         {
-            while (ShouldSetHeight(height))
-            {
-                var newHeightPosition = new Vector3(characterPosition.x,
-                                                        height,
-                                                        characterPosition.z);
-                characterPosition = Vector3.Lerp(characterPosition,
-                                                 newHeightPosition,
-                                                 CHANGE_HEIGHT_MOVEMENT_MULTIPLIER * Time.deltaTime);
-                yield return null;
-            }
+            walkSlider.StopMovement();
         }
 
-        private bool ShouldSetHeight(float height)
+        public bool ShouldSetHeight(float target)
         {
-            float distanceToHeight = Mathf.Abs(height - characterPosition.y);
-            bool thereIsDistanceToTarget = distanceToHeight > STOP_MOVEMENT_THRESHOLD;
-            return thereIsDistanceToTarget && slicing == false;
+            return heightSlider.ShouldKeepMoving(target);
         }
-        private bool ShouldKeepWalking(Vector3 target)
-        {
-            var sameHeightTarget = new Vector3(target.x, characterPosition.y, target.z);
-            bool thereIsDistanceToTarget = Vector3.Distance(sameHeightTarget, characterPosition) > STOP_WALK_THRESHOLD;
-            return thereIsDistanceToTarget && slicing == false;
-        }
+
     }
 }
