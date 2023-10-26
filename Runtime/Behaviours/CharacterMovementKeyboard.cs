@@ -30,9 +30,9 @@ public class CharacterMovementKeyboard : MonoBehaviour
         Vector2 inputValue = _inputProvider.MovementInput().normalized;
         Vector3 movementDirection = inputValue.x * GetCharacterRight() +
                             inputValue.y * GetCharacterForward();
-        if (movementDirection != Vector3.zero)
+        if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
         {
-            _characterPositionManager.MovePositionByStepInDirection(movementDirection);
+            _characterPositionManager.ApplyForceInDirection(movementDirection);
         }
     }
 
