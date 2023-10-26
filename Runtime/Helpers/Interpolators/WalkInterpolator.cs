@@ -9,18 +9,24 @@ namespace ReupVirtualTwin.helpers
         Vector3 sameHeightTarget;
         Vector3 direction;
         Vector3 sameHeightcurrentPosition;
-        float totalDistance;
         float MAX_SPEED_IN_METERS_PER_SECOND = 3f;
         float MIN_SPEED_IN_METERS_PER_SECOND = 1.5f;
-        float FRACTION_TO_MAX_SPEED = 0.2f;
-        float FRACTION_TO_SLOW_DOWN = 0.85f;
+        float DISTANCE_TO_MAX_SPEED = 2f;
+        float DISTANCE_TO_MIN_SPEED = 3f;
+
+        SpeedHandler speedHandler;
 
         public void DefineOriginAndTarget(Vector3 originalPostion, Vector3 targetPostion)
         {
             origin = originalPostion;
             sameHeightTarget = new Vector3(targetPostion.x, origin.y, targetPostion.z);
             sameHeightcurrentPosition = originalPostion;
-            totalDistance = Vector3.Distance(origin, sameHeightTarget);
+            var totalDistance = Vector3.Distance(origin, sameHeightTarget);
+            speedHandler = new DistanceSpeedHandler(totalDistance,
+                MAX_SPEED_IN_METERS_PER_SECOND,
+                MIN_SPEED_IN_METERS_PER_SECOND,
+                DISTANCE_TO_MAX_SPEED,
+                DISTANCE_TO_MIN_SPEED);
             direction = Vector3.Normalize(sameHeightTarget - origin);
             if (direction.y != 0)
             {
@@ -30,32 +36,12 @@ namespace ReupVirtualTwin.helpers
 
         public Vector3 Interpolate(Vector3 currentValue)
         {
-            //Debug.Log($"in Walk interpolate in is {currentValue}");
             var sameHeightCurrentValue = new Vector3(currentValue.x, origin.y, currentValue.z);
             float traveledDistance = Vector3.Distance(sameHeightCurrentValue, origin);
-            float traveledFraction = traveledDistance / totalDistance;
-            float speed = GetSpeed(traveledFraction);
+            float speed = speedHandler.GetSpeedInMetersPerSecond(traveledDistance);
             sameHeightcurrentPosition += direction * speed * Time.deltaTime;
             var currentPosition = new Vector3(sameHeightcurrentPosition.x, currentValue.y, sameHeightcurrentPosition.z);
-            //Debug.Log($"at the end in Walk interpolate out is {currentPosition}");
             return currentPosition;
-        }
-
-        private float GetSpeed(float travelFraction)
-        {
-            if (travelFraction < FRACTION_TO_MAX_SPEED)
-            {
-                float growingSlope = (MAX_SPEED_IN_METERS_PER_SECOND - MIN_SPEED_IN_METERS_PER_SECOND) / FRACTION_TO_MAX_SPEED;
-                float growingSpeed = growingSlope * travelFraction  + MIN_SPEED_IN_METERS_PER_SECOND;
-                return growingSpeed;
-            }
-            if (travelFraction < FRACTION_TO_SLOW_DOWN)
-            {
-                return MAX_SPEED_IN_METERS_PER_SECOND;
-            }
-            float decreasingSlope = (MIN_SPEED_IN_METERS_PER_SECOND - MAX_SPEED_IN_METERS_PER_SECOND) / (1 - FRACTION_TO_SLOW_DOWN);
-            float decreasingSpeed = decreasingSlope * (travelFraction - 1) + MIN_SPEED_IN_METERS_PER_SECOND; 
-            return Mathf.Max(decreasingSpeed, MIN_SPEED_IN_METERS_PER_SECOND);
         }
     }
 }
