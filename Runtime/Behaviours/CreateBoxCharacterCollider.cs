@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.behaviours
         [SerializeField]
         HeightKeeper heightKeeper;
 
-        float FREE_SPACE_BELOW_IN_METERS = 0.8f;
+        float FREE_SPACE_BELOW_IN_METERS = 0.4f;
         float COLLIDER_FRONT_IN_METERS = 0.05f;
         float COLLIDER_SIDE_IN_METERS = 0.2f;
 
