@@ -21,7 +21,7 @@ namespace ReupVirtualTwin.helpers
             target = targetPostion;
             currentPosition = originalPostion;
             totalDistance = Vector3.Distance(origin, target);
-            speedHandler = new FractionalSpeedHandler(totalDistance,
+            speedHandler = new FractionalEaseInOutSpeedHandler(totalDistance,
                 MAX_SPEED_IN_METERS_PER_SECOND,
                 MIN_SPEED_IN_METERS_PER_SECOND,
                 FRACTION_TO_MAX_SPEED,

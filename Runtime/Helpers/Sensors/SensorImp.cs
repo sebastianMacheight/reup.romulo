@@ -17,7 +17,7 @@ namespace ReupVirtualTwin.helpers
         public RaycastHit? Sense()
         {
             var ray = _rayProvider.GetRay();
-            Debug.DrawRay(ray.origin, ray.direction, Color.green, 5, true);
+            Debug.DrawRay(ray.origin, ray.direction, new Color(0,1,0,0.5f), 100, true);
 
             var hit = _hitSelector.GetHit(ray);
             return hit;
