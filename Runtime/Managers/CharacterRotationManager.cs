@@ -9,7 +9,8 @@ public class CharacterRotationManager : MonoBehaviour
     float ANGLE_THRESHOLD = 0.01f;
     float _verticalRotation = 0f;
     float _horizontalRotation = 0f;
-    Quaternion _desiredRotation;
+    Quaternion _desiredBodyRotation;
+    Quaternion _onlyHorizontalCharacterRotation;
 
     [SerializeField]
     Transform _characterBodyTransform;
@@ -47,16 +48,20 @@ public class CharacterRotationManager : MonoBehaviour
     }
     void SetDesiredRotation ()
     {
-            _desiredRotation = Quaternion.Euler(_verticalRotation, _horizontalRotation, 0);
+            _desiredBodyRotation = Quaternion.Euler(_verticalRotation, _horizontalRotation, 0);
+            _onlyHorizontalCharacterRotation = Quaternion.Euler(0, _horizontalRotation, 0);
     }
 
     bool ShouldRotate()
     {
-        return Quaternion.Angle(_desiredRotation, _characterBodyTransform.rotation) > ANGLE_THRESHOLD;
+        return Quaternion.Angle(_desiredBodyRotation, _characterBodyTransform.rotation) > ANGLE_THRESHOLD;
     }
 
     void Rotate()
     {
-        _characterBodyTransform.rotation = Quaternion.Slerp(_characterBodyTransform.rotation, _desiredRotation, ROTATION_SPEED * Time.deltaTime);
+        var rotationStep = ROTATION_SPEED * Time.deltaTime;
+        _characterBodyTransform.rotation = Quaternion.Slerp(_characterBodyTransform.rotation, _desiredBodyRotation, rotationStep);
+        transform.rotation = Quaternion.Slerp(transform.rotation, _onlyHorizontalCharacterRotation, rotationStep);
+
     }
 }

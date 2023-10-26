@@ -33,7 +33,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
 
         var targetPosition = new Vector3(10, 10, 10);
 
-        posManager.SliceToTarget(targetPosition);
+        posManager.SlideToTarget(targetPosition);
 
         yield return new WaitForSeconds(5);
 
