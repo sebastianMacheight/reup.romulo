@@ -30,6 +30,7 @@ namespace ReupVirtualTwin.characterMovement
 
         public void GoToSpace()
         {
+            _characterPositionManager.MakeKinematic();
             var spaceSelectorPosition = spaceSelector.transform.position;
             _characterPositionManager.SlideToTarget(spaceSelectorPosition);
         }

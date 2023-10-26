@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using ReupVirtualTwin.helpers;
 using System;
+using UnityEngine.Events;
 
 namespace ReupVirtualTwin.characterMovement
 {
@@ -11,16 +12,13 @@ namespace ReupVirtualTwin.characterMovement
         public bool sliding = false;
         public MovementHaltDecitionMaker<T> movementDecitionMaker;
         public Interpolator<T> interpolator;
-        //public bool isKinematicWhileMoving = false;
-
+        public UnityEvent endMovementEvent; 
         T currentTarget;
 
         CharacterPositionManager _positionManager;
 
-        Rigidbody rb;
         void Awake()
         {
-            rb = GetComponent<Rigidbody>();
             _positionManager = GetComponent<CharacterPositionManager>();
         }
         public void SlideToTarget(T target)
@@ -65,7 +63,7 @@ namespace ReupVirtualTwin.characterMovement
             //Debug.Log($"stoping slice in ${GetType().Name}");
             StopCoroutine("SliceToTargetCoroutine");
             sliding = false;
-            //rb.isKinematic = false;
+            endMovementEvent.Invoke();
         }
         public bool ShouldKeepMoving(T target)
         {

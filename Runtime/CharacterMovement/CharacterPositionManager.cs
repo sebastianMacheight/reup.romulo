@@ -1,5 +1,6 @@
 using UnityEngine;
 using ReupVirtualTwin.helpers;
+using UnityEngine.Events;
 
 namespace ReupVirtualTwin.characterMovement
 {
@@ -74,24 +75,27 @@ namespace ReupVirtualTwin.characterMovement
             walkSlider = transform.gameObject.AddComponent<SpaceSlider>();
             var walkHaltDecitionMaker = new WalkHaltDecitionMaker(this, STOP_WALK_THRESHOLD);
             walkSlider.movementDecitionMaker = walkHaltDecitionMaker;
-            //walkSlider.isKinematicWhileMoving = false;
             walkSlider.interpolator = new WalkInterpolator();
+            walkSlider.endMovementEvent = new UnityEvent();
+            walkSlider.endMovementEvent.AddListener(MakeKinematicIfNoMovement);
         }
         void DefineSpaceSlider()
         {
             spaceSlider = transform.gameObject.AddComponent<SpaceSlider>();
             var spaceSlideHaltDecitionMaker = new SpaceSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
             spaceSlider.movementDecitionMaker = spaceSlideHaltDecitionMaker;
-            //spaceSlider.isKinematicWhileMoving = true;
             spaceSlider.interpolator = new SpacesInterpolator();
+            spaceSlider.endMovementEvent = new UnityEvent();
+            spaceSlider.endMovementEvent.AddListener(MakeKinematicIfNoMovement);
         }
         void DefineHeightSlider()
         {
             heightSlider = transform.gameObject.AddComponent<LinearSlider>();
             var heighSlideHaltDecitionMaker = new HeightSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
             heightSlider.movementDecitionMaker = heighSlideHaltDecitionMaker;
-            //heightSlider.isKinematicWhileMoving = false;
             heightSlider.interpolator = new HeightInterpolator();
+            heightSlider.endMovementEvent = new UnityEvent();
+            heightSlider.endMovementEvent.AddListener(MakeKinematicIfNoMovement);
         }
 
         public void MovePositionByStepInDirection(Vector3 direction)
@@ -103,7 +107,6 @@ namespace ReupVirtualTwin.characterMovement
         public void ApplyForceInDirection(Vector3 direction)
         {
             walkSlider.StopMovement();
-            //rb.isKinematic = false;
             var force = Vector3.Normalize(direction) * movementForce;
             rb.AddForce(force, ForceMode.Force);
         }
@@ -158,6 +161,15 @@ namespace ReupVirtualTwin.characterMovement
         public void UndoKinematic()
         {
             rb.isKinematic = false;
+        }
+
+        private void MakeKinematicIfNoMovement()
+        {
+            Debug.Log("movement finished");
+            if (!walkSlider.sliding && !spaceSlider.sliding && !heightSlider.sliding)
+            {
+                rb.isKinematic = false;
+            }
         }
 
     }
