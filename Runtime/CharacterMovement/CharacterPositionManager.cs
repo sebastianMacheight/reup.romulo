@@ -126,7 +126,7 @@ namespace ReupVirtualTwin.characterMovement
 
         public bool ShouldSetHeight(float target)
         {
-            if (IsHeightDifferenceTooBig(target) && _allowSetHeight)
+            if (IsHeightDifferenceTooBig(target) || !_allowSetHeight || spaceSlider.sliding)
             {
                 return false;
             }
