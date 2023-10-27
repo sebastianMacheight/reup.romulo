@@ -7,11 +7,12 @@ using ReupVirtualTwin.characterMovement;
 [RequireComponent(typeof(CharacterPositionManager))]
 public class CharacterMovementKeyboard : MonoBehaviour
 {
+    [SerializeField]
+    private Transform _characterBodyTransform;
 
     private InputProvider _inputProvider;
     private CharacterPositionManager _characterPositionManager;
-    [SerializeField]
-    private Transform _characterBodyTransform;
+    private float _walkSpeed = 3f;
 
 
     private void Awake()
@@ -32,7 +33,7 @@ public class CharacterMovementKeyboard : MonoBehaviour
                             inputValue.y * GetCharacterForward();
         if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
         {
-            _characterPositionManager.ApplyForceInDirection(movementDirection);
+            _characterPositionManager.MovePositionByStepInDirection(movementDirection, _walkSpeed);
         }
     }
 

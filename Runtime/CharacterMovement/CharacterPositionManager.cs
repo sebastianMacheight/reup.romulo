@@ -8,7 +8,7 @@ namespace ReupVirtualTwin.characterMovement
     {
         bool _allowSetHeight = true;
         bool _allowWalking = true;
-        private float movementForce = 10f;
+        private float movementForce = 20f;
         private Rigidbody rb;
         private float bodyDrag = 5f;
         private float bodyMass = 1f;
@@ -92,11 +92,11 @@ namespace ReupVirtualTwin.characterMovement
             heightSlider.interpolator = new HeightInterpolator();
         }
 
-        public void MovePositionByStepInDirection(Vector3 direction)
+        public void MovePositionByStepInDirection(Vector3 direction, float speedInMetersPerSecond = 1f)
         {
             walkSlider.StopMovement();
             var normalizedDirection = Vector3.Normalize(direction);
-            characterPosition = characterPosition + normalizedDirection * 0.01f;
+            characterPosition = characterPosition + normalizedDirection * speedInMetersPerSecond * Time.deltaTime;
         }
         public void ApplyForceInDirection(Vector3 direction)
         {
