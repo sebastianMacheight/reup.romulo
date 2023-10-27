@@ -12,7 +12,8 @@ namespace ReupVirtualTwin.characterMovement
         public bool sliding = false;
         public MovementHaltDecitionMaker<T> movementDecitionMaker;
         public Interpolator<T> interpolator;
-        public UnityEvent endMovementEvent; 
+
+        UnityEvent endMovementEvent; 
         T currentTarget;
 
         CharacterPositionManager _positionManager;
@@ -20,6 +21,11 @@ namespace ReupVirtualTwin.characterMovement
         void Awake()
         {
             _positionManager = GetComponent<CharacterPositionManager>();
+        }
+        public void SlideToTarget(T target, UnityEvent endMovementEvent)
+        {
+            this.endMovementEvent = endMovementEvent;
+            SlideToTarget(target);
         }
         public void SlideToTarget(T target)
         {
@@ -56,6 +62,10 @@ namespace ReupVirtualTwin.characterMovement
                 yield return null;
             }
             StopMovement();
+            if (endMovementEvent != null)
+            {
+                endMovementEvent.Invoke();
+            }
         }
 
         public void StopMovement()
@@ -63,7 +73,6 @@ namespace ReupVirtualTwin.characterMovement
             //Debug.Log($"stoping slice in ${GetType().Name}");
             StopCoroutine("SliceToTargetCoroutine");
             sliding = false;
-            endMovementEvent.Invoke();
         }
         public bool ShouldKeepMoving(T target)
         {

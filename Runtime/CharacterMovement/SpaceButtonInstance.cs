@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using ReupVirtualTwin.helpers;
-using ReupVirtualTwin.models;
+using UnityEngine.Events;
 
 namespace ReupVirtualTwin.characterMovement
 {
@@ -32,7 +30,14 @@ namespace ReupVirtualTwin.characterMovement
         {
             _characterPositionManager.MakeKinematic();
             var spaceSelectorPosition = spaceSelector.transform.position;
-            _characterPositionManager.SlideToTarget(spaceSelectorPosition);
+            var endMovementEvent = new UnityEvent();
+            endMovementEvent.AddListener(GetToSpaceHandler);
+            _characterPositionManager.SlideToTarget(spaceSelectorPosition,endMovementEvent);
+        }
+        private void GetToSpaceHandler()
+        {
+            Debug.Log("movement finished");
+            _characterPositionManager.UndoKinematic();
         }
     }
 }

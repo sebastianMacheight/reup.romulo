@@ -76,8 +76,6 @@ namespace ReupVirtualTwin.characterMovement
             var walkHaltDecitionMaker = new WalkHaltDecitionMaker(this, STOP_WALK_THRESHOLD);
             walkSlider.movementDecitionMaker = walkHaltDecitionMaker;
             walkSlider.interpolator = new WalkInterpolator();
-            walkSlider.endMovementEvent = new UnityEvent();
-            walkSlider.endMovementEvent.AddListener(MakeKinematicIfNoMovement);
         }
         void DefineSpaceSlider()
         {
@@ -85,8 +83,6 @@ namespace ReupVirtualTwin.characterMovement
             var spaceSlideHaltDecitionMaker = new SpaceSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
             spaceSlider.movementDecitionMaker = spaceSlideHaltDecitionMaker;
             spaceSlider.interpolator = new SpacesInterpolator();
-            spaceSlider.endMovementEvent = new UnityEvent();
-            spaceSlider.endMovementEvent.AddListener(MakeKinematicIfNoMovement);
         }
         void DefineHeightSlider()
         {
@@ -94,8 +90,6 @@ namespace ReupVirtualTwin.characterMovement
             var heighSlideHaltDecitionMaker = new HeightSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
             heightSlider.movementDecitionMaker = heighSlideHaltDecitionMaker;
             heightSlider.interpolator = new HeightInterpolator();
-            heightSlider.endMovementEvent = new UnityEvent();
-            heightSlider.endMovementEvent.AddListener(MakeKinematicIfNoMovement);
         }
 
         public void MovePositionByStepInDirection(Vector3 direction)
@@ -115,6 +109,10 @@ namespace ReupVirtualTwin.characterMovement
             walkSlider.SlideToTarget(target);
         }
 
+        public void SlideToTarget(Vector3 target, UnityEvent endEvent)
+        {
+            spaceSlider.SlideToTarget(target, endEvent);
+        }
         public void SlideToTarget(Vector3 target)
         {
             spaceSlider.SlideToTarget(target);
@@ -163,14 +161,6 @@ namespace ReupVirtualTwin.characterMovement
             rb.isKinematic = false;
         }
 
-        private void MakeKinematicIfNoMovement()
-        {
-            Debug.Log("movement finished");
-            if (!walkSlider.sliding && !spaceSlider.sliding && !heightSlider.sliding)
-            {
-                rb.isKinematic = false;
-            }
-        }
 
     }
 }
