@@ -33,6 +33,7 @@ public class CharacterMovementKeyboard : MonoBehaviour
                             inputValue.y * GetCharacterForward();
         if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
         {
+            _characterPositionManager.StopWalking();
             _characterPositionManager.MovePositionByStepInDirection(movementDirection, _walkSpeed);
         }
     }

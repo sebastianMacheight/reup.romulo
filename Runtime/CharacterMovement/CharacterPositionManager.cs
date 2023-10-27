@@ -94,7 +94,6 @@ namespace ReupVirtualTwin.characterMovement
 
         public void MovePositionByStepInDirection(Vector3 direction, float speedInMetersPerSecond = 1f)
         {
-            walkSlider.StopMovement();
             var normalizedDirection = Vector3.Normalize(direction);
             characterPosition = characterPosition + normalizedDirection * speedInMetersPerSecond * Time.deltaTime;
         }
