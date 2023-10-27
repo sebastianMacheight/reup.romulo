@@ -14,12 +14,16 @@ namespace ReupVirtualTwin.behaviours
             _positionManager = ObjectFinder.FindCharacter().GetComponent<CharacterPositionManager>();
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter()
         {
+            //Debug.Log("collisiton entered");
             _positionManager.StopWalking();
             _positionManager.allowSetHeight = false;
             _positionManager.allowWalking = false;
-
+            _positionManager.StopRigidBody();
+        }
+        private void OnCollisionStay(Collision collision)
+        {
             var bounceDirection = Vector3.zero;
             foreach (ContactPoint contact in collision.contacts)
             {
@@ -33,6 +37,7 @@ namespace ReupVirtualTwin.behaviours
 
         private void OnCollisionExit()
         {
+            //Debug.Log("collisiton exited");
             _positionManager.allowSetHeight = true;
             _positionManager.allowWalking = true;
         }
