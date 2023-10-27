@@ -27,9 +27,11 @@ namespace ReupVirtualTwin.helpers
         public Vector3 Interpolate(Vector3 currentPosition)
         {
             var currentHeight = currentPosition.y;
-            //Debug.Log($"in Height interpolate in is {currentPosition.y}");
+            //Debug.Log($"in Height interpolate in is {currentHeight}");
+            //Debug.Log($"in Height interpolate origin is {origin}");
             var traveledDistance = Mathf.Abs(currentHeight - origin);
             var speed = speedHandler.GetSpeedInMetersPerSecond(traveledDistance);
+            //Debug.Log($"height change speed: {speed}");
             var direction = getDirection(currentHeight);
             //Debug.Log($"direction is {direction}");
             var addition = direction * speed * Time.deltaTime;

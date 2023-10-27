@@ -31,14 +31,12 @@ namespace ReupVirtualTwin.characterMovement
         {
             if (sliding)
             {
-                if (currentTarget.Equals(target))
+                if(currentTarget.Equals(target))
                 {
-                    //Debug.Log("targets are the same");
                     return;
                 }
                 else
                 {
-                    //Debug.Log("targets are not the same");
                     StopCoroutine("SliceToTargetCoroutine");
                 }
             }
