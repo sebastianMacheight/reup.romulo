@@ -1,13 +1,22 @@
 using UnityEngine;
 using ReupVirtualTwin.characterMovement;
+using ReupVirtualTwin.helpers;
 
-public class CharacterMovementSelectPosition : SelectPoint
+namespace ReupVirtualTwin.behaviours
 {
-    [SerializeField]
-    CharacterPositionManager _characterPositionManager;
 
-    public override void HandleHit(RaycastHit hit)
+    public class CharacterMovementSelectPosition : SelectPoint
     {
-        _characterPositionManager.WalkToTarget(hit.point);
+        CharacterPositionManager _characterPositionManager;
+
+        private void Start()
+        {
+            _characterPositionManager = ObjectFinder.FindCharacter().GetComponent<CharacterPositionManager>();
+        }
+
+        public override void HandleHit(RaycastHit hit)
+        {
+            _characterPositionManager.WalkToTarget(hit.point);
+        }
     }
 }
