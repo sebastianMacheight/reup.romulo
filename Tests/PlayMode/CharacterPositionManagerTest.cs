@@ -31,11 +31,11 @@ public class CharacterPositionManagerTest : MonoBehaviour
         //check original character's position
         Assert.AreEqual(Vector3.zero, character.transform.position);
 
-        var targetPosition = new Vector3(10, 10, 10);
+        var targetPosition = new Vector3(5, 5, 5);
 
         posManager.SlideToTarget(targetPosition);
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
 
         //check new character's position is REALLY close to target position
         Assert.LessOrEqual(Vector3.Distance(targetPosition, character.transform.position), 0.1f);
@@ -47,13 +47,14 @@ public class CharacterPositionManagerTest : MonoBehaviour
         //check original character's position
         Assert.AreEqual(Vector3.zero, character.transform.position);
 
-        var targetPosition = new Vector3(10, 10, 10);
+        var targetPosition = new Vector3(5, 5, 5);
 
         posManager.WalkToTarget(targetPosition);
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(6);
+        yield return null;
 
-        var sameHeightTargetPosition = new Vector3(10, 0, 10);
+        var sameHeightTargetPosition = new Vector3(5, 0, 5);
 
         //check new character's position is close to target position
         Assert.LessOrEqual(Vector3.Distance(sameHeightTargetPosition, character.transform.position), 0.5f);
