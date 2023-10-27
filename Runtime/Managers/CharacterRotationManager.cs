@@ -1,6 +1,3 @@
-
-
-using System.Collections;
 using UnityEngine;
 
 public class CharacterRotationManager : MonoBehaviour
@@ -10,7 +7,6 @@ public class CharacterRotationManager : MonoBehaviour
     float _verticalRotation = 0f;
     float _horizontalRotation = 0f;
     Quaternion _desiredBodyRotation;
-    Quaternion _onlyHorizontalCharacterRotation;
 
     [SerializeField]
     Transform _characterBodyTransform;
@@ -49,7 +45,6 @@ public class CharacterRotationManager : MonoBehaviour
     void SetDesiredRotation ()
     {
             _desiredBodyRotation = Quaternion.Euler(_verticalRotation, _horizontalRotation, 0);
-            _onlyHorizontalCharacterRotation = Quaternion.Euler(0, _horizontalRotation, 0);
     }
 
     bool ShouldRotate()
@@ -61,7 +56,6 @@ public class CharacterRotationManager : MonoBehaviour
     {
         var rotationStep = ROTATION_SPEED * Time.deltaTime;
         _characterBodyTransform.rotation = Quaternion.Slerp(_characterBodyTransform.rotation, _desiredBodyRotation, rotationStep);
-        transform.rotation = Quaternion.Slerp(transform.rotation, _onlyHorizontalCharacterRotation, rotationStep);
 
     }
 }
