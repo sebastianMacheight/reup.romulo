@@ -30,6 +30,7 @@ namespace ReupVirtualTwin.helpers
         {
             Debug.Log($"traveled Distance {traveledDistance}");
             var travelFraction = traveledDistance / totalDistance;
+            Debug.Log($"total distance {totalDistance}");
             Debug.Log($"traveled fraction {travelFraction}");
             Debug.Log($"change fraction {changeSlopeFraction}");
             if (travelFraction < changeSlopeFraction)
