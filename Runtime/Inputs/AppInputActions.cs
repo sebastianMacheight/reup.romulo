@@ -55,15 +55,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""RotateViewKeyboard"",
-                    ""type"": ""Value"",
-                    ""id"": ""9901281f-1d24-49be-83ba-9d7aaabe009e"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Pointer"",
                     ""type"": ""PassThrough"",
                     ""id"": ""b0e1ebbd-c551-4318-a0b7-472e7499937e"",
@@ -136,17 +127,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
                     ""groups"": ""KeyboardAndMouse"",
                     ""action"": ""Pointer"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Arrows"",
-                    ""id"": ""def07d04-5232-404b-aed0-f0020aaaf7ad"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateViewKeyboard"",
-                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
@@ -431,7 +411,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
         m_Player_RotateView = m_Player.FindAction("RotateView", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
-        m_Player_RotateViewKeyboard = m_Player.FindAction("RotateViewKeyboard", throwIfNotFound: true);
         m_Player_Pointer = m_Player.FindAction("Pointer", throwIfNotFound: true);
         m_Player_Hold = m_Player.FindAction("Hold", throwIfNotFound: true);
         // UI
@@ -503,7 +482,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RotateView;
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Select;
-    private readonly InputAction m_Player_RotateViewKeyboard;
     private readonly InputAction m_Player_Pointer;
     private readonly InputAction m_Player_Hold;
     public struct PlayerActions
@@ -513,7 +491,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
         public InputAction @RotateView => m_Wrapper.m_Player_RotateView;
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Select => m_Wrapper.m_Player_Select;
-        public InputAction @RotateViewKeyboard => m_Wrapper.m_Player_RotateViewKeyboard;
         public InputAction @Pointer => m_Wrapper.m_Player_Pointer;
         public InputAction @Hold => m_Wrapper.m_Player_Hold;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -534,9 +511,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
-            @RotateViewKeyboard.started += instance.OnRotateViewKeyboard;
-            @RotateViewKeyboard.performed += instance.OnRotateViewKeyboard;
-            @RotateViewKeyboard.canceled += instance.OnRotateViewKeyboard;
             @Pointer.started += instance.OnPointer;
             @Pointer.performed += instance.OnPointer;
             @Pointer.canceled += instance.OnPointer;
@@ -556,9 +530,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
-            @RotateViewKeyboard.started -= instance.OnRotateViewKeyboard;
-            @RotateViewKeyboard.performed -= instance.OnRotateViewKeyboard;
-            @RotateViewKeyboard.canceled -= instance.OnRotateViewKeyboard;
             @Pointer.started -= instance.OnPointer;
             @Pointer.performed -= instance.OnPointer;
             @Pointer.canceled -= instance.OnPointer;
@@ -667,7 +638,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
         void OnRotateView(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
-        void OnRotateViewKeyboard(InputAction.CallbackContext context);
         void OnPointer(InputAction.CallbackContext context);
         void OnHold(InputAction.CallbackContext context);
     }
