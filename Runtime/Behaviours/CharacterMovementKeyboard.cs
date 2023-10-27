@@ -12,7 +12,7 @@ public class CharacterMovementKeyboard : MonoBehaviour
 
     private InputProvider _inputProvider;
     private CharacterPositionManager _characterPositionManager;
-    private float _walkSpeed = 3f;
+    private float _walkSpeed = 3.5f;
 
 
     private void Awake()

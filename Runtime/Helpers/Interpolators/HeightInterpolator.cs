@@ -6,10 +6,10 @@ namespace ReupVirtualTwin.helpers
     {
         float origin;
         float target;
-        float MAX_SPEED_IN_METERS_PER_SECOND = 4f;
+        float MAX_SPEED_IN_METERS_PER_SECOND = 3f;
         float MIN_SPEED_IN_METERS_PER_SECOND = 1f;
-        float DISTANCE_TO_MAX_SPEED = 0.1f;
-        float DISTANCE_TO_MIN_SPEED = 0.9f;
+        float DISTANCE_TO_MAX_SPEED = 0.05f;
+        float DISTANCE_TO_MIN_SPEED = 0.1f;
         SpeedHandler speedHandler;
 
         public void DefineOriginAndTarget(Vector3 originalPostion, float targetHeight)

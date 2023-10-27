@@ -9,9 +9,9 @@ namespace ReupVirtualTwin.helpers
         Vector3 sameHeightTarget;
         Vector3 direction;
         Vector3 sameHeightcurrentPosition;
-        float MAX_SPEED_IN_METERS_PER_SECOND = 2.5f;
-        float MIN_SPEED_IN_METERS_PER_SECOND = 1.5f;
-        float DISTANCE_TO_MAX_SPEED = 2f;
+        float MAX_SPEED_IN_METERS_PER_SECOND = 3.5f;
+        float MIN_SPEED_IN_METERS_PER_SECOND = 0.05f;
+        float DISTANCE_TO_MAX_SPEED = 1f;
         float DISTANCE_TO_MIN_SPEED = 3f;
 
         SpeedHandler speedHandler;
@@ -40,6 +40,7 @@ namespace ReupVirtualTwin.helpers
             }
             float traveledDistance = Vector3.Distance(sameHeightCurrentValue, origin);
             float speed = speedHandler.GetSpeedInMetersPerSecond(traveledDistance);
+            Debug.Log($"walk speed {speed}");
             sameHeightcurrentPosition += direction * speed * Time.deltaTime;
             var currentPosition = new Vector3(sameHeightcurrentPosition.x, currentValue.y, sameHeightcurrentPosition.z);
             return currentPosition;
