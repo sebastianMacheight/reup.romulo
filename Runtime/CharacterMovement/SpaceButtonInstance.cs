@@ -1,7 +1,5 @@
 using UnityEngine;
 using TMPro;
-using ReupVirtualTwin.helpers;
-using UnityEngine.Events;
 
 namespace ReupVirtualTwin.characterMovement
 {
@@ -9,8 +7,6 @@ namespace ReupVirtualTwin.characterMovement
     {
         public SpaceJumpPoint spaceSelector;
 
-        CharacterPositionManager _characterPositionManager;
-        SpacesRecord _spacesRecord;
         public string spaceName
         {
             get { return nameField.text; }
@@ -19,25 +15,5 @@ namespace ReupVirtualTwin.characterMovement
 
         [SerializeField]
         TMP_Text nameField;
-
-        private void Start()
-        {
-            _characterPositionManager = ObjectFinder.FindCharacter().GetComponent<CharacterPositionManager>();
-            _spacesRecord = ObjectFinder.FindSpacesRecord().GetComponent<SpacesRecord>();
-        }
-
-        public void GoToSpace()
-        {
-            _characterPositionManager.MakeKinematic();
-            var spaceSelectorPosition = spaceSelector.transform.position;
-            var endMovementEvent = new UnityEvent();
-            endMovementEvent.AddListener(GetToSpaceHandler);
-            _characterPositionManager.SlideToTarget(spaceSelectorPosition,endMovementEvent);
-        }
-        private void GetToSpaceHandler()
-        {
-            Debug.Log("movement finished");
-            _characterPositionManager.UndoKinematic();
-        }
     }
 }

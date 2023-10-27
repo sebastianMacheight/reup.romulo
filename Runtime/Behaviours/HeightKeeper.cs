@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.behaviours
     {
         private Sensor _sensor;
         [HideInInspector]
-        public float CHARACTER_HEIGHT = 1.65f;
+        public static float CHARACTER_HEIGHT = 1.65f;
         [SerializeField]
         CharacterPositionManager _characterPositionManager;
         void Start()
@@ -29,12 +29,17 @@ namespace ReupVirtualTwin.behaviours
 
         void KeepCharacterHeightFromGround(RaycastHit groundHit)
         {
-            var groundHeight = groundHit.point.y;
-            var newHeight = groundHeight + CHARACTER_HEIGHT;
+            var newHeight = GetDesiredHeight(groundHit);
             if (_characterPositionManager.ShouldSetHeight(newHeight))
             {
                 _characterPositionManager.MoveToHeight(newHeight);
             }
+        }
+
+        public static float GetDesiredHeight(RaycastHit groundHit)
+        {
+            var groundHeight = groundHit.point.y;
+            return groundHeight + CHARACTER_HEIGHT;
         }
     }
 }

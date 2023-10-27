@@ -111,6 +111,8 @@ namespace ReupVirtualTwin.characterMovement
 
         public void SlideToTarget(Vector3 target, UnityEvent endEvent)
         {
+            walkSlider.StopMovement();
+            heightSlider.StopMovement();
             spaceSlider.SlideToTarget(target, endEvent);
         }
         public void SlideToTarget(Vector3 target)
