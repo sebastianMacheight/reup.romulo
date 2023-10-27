@@ -30,10 +30,7 @@ namespace ReupVirtualTwin.behaviours
         void KeepCharacterHeightFromGround(RaycastHit groundHit)
         {
             var newHeight = GetDesiredHeight(groundHit);
-            if (_characterPositionManager.ShouldSetHeight(newHeight))
-            {
-                _characterPositionManager.MoveToHeight(newHeight);
-            }
+            _characterPositionManager.KeepHeight(newHeight);
         }
 
         public static float GetDesiredHeight(RaycastHit groundHit)

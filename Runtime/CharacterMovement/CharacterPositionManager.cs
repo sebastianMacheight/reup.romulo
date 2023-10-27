@@ -120,13 +120,20 @@ namespace ReupVirtualTwin.characterMovement
             spaceSlider.SlideToTarget(target);
         }
 
-        public void MoveToHeight(float height)
+        public void KeepHeight(float height)
+        {
+            if (ShouldSetHeight(height))
+            {
+                MoveToHeight(height);
+            }
+        }
+
+        private void MoveToHeight(float height)
         {
             heightSlider.SlideToTarget(height);
         }
 
-
-        public bool ShouldSetHeight(float target)
+        bool ShouldSetHeight(float target)
         {
             if (IsHeightDifferenceTooBig(target) || !_allowSetHeight || spaceSlider.sliding)
             {
