@@ -8,7 +8,7 @@ namespace ReupVirtualTwin.behaviours
     public class DetectCollision : MonoBehaviour
     {
         CharacterPositionManager _positionManager;
-        float SMALL_JUMP_FORCE_AT_COLLISION = 0.1f;
+        float SMALL_JUMP_FORCE_AT_COLLISION = 0.01f;
 
         private void Start()
         {
@@ -17,14 +17,12 @@ namespace ReupVirtualTwin.behaviours
 
         private void OnCollisionEnter()
         {
-            Debug.Log("collisiton entered");
             _positionManager.allowSetHeight = false;
             _positionManager.allowWalking = false;
             _positionManager.StopRigidBody();
         }
         private void OnCollisionStay(Collision collision)
         {
-            Debug.Log($"collisiton stay, number of collisions: {collision.contacts.Length}");
             var bounceDirection = Vector3.zero;
             foreach (ContactPoint contact in collision.contacts)
             {
@@ -32,15 +30,13 @@ namespace ReupVirtualTwin.behaviours
             }
 
             bounceDirection.y = SMALL_JUMP_FORCE_AT_COLLISION;
-            Debug.Log($"bounce direction: {bounceDirection}");
-            Debug.DrawRay(_positionManager.characterPosition, bounceDirection, Color.red, 100);
-            _positionManager.MovePositionByStepInDirection(bounceDirection);
+            //Debug.DrawRay(_positionManager.characterPosition, bounceDirection, Color.red, 10);
+            _positionManager.MoveDistanceInDirection(0.02f, bounceDirection);
             _positionManager.ApplyForceInDirection(bounceDirection);
         }
 
         private void OnCollisionExit()
         {
-            Debug.Log("collisiton exited");
             _positionManager.allowSetHeight = true;
             _positionManager.allowWalking = true;
         }

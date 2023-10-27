@@ -34,7 +34,7 @@ public class CharacterMovementKeyboard : MonoBehaviour
         if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
         {
             _characterPositionManager.StopWalking();
-            _characterPositionManager.MovePositionByStepInDirection(movementDirection, _walkSpeed);
+            _characterPositionManager.MoveInDirection(movementDirection, _walkSpeed);
         }
     }
 

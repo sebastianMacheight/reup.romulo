@@ -15,6 +15,7 @@ namespace ReupVirtualTwin.characterMovement
 
         float STOP_WALK_THRESHOLD = 0.5f;
         float STOP_MOVEMENT_THRESHOLD = 0.02f;
+        float MAX_STEP_UP = 0.21f;
 
         SpaceSlider walkSlider;
         SpaceSlider spaceSlider;
@@ -92,7 +93,13 @@ namespace ReupVirtualTwin.characterMovement
             heightSlider.interpolator = new HeightInterpolator();
         }
 
-        public void MovePositionByStepInDirection(Vector3 direction, float speedInMetersPerSecond = 1f)
+        public void MoveDistanceInDirection(float distance, Vector3 direction)
+        {
+            var normalizedDirection = Vector3.Normalize(direction);
+            characterPosition = characterPosition + normalizedDirection * distance;
+        }
+
+        public void MoveInDirection(Vector3 direction, float speedInMetersPerSecond = 1f)
         {
             var normalizedDirection = Vector3.Normalize(direction);
             characterPosition = characterPosition + normalizedDirection * speedInMetersPerSecond * Time.deltaTime;
@@ -134,16 +141,15 @@ namespace ReupVirtualTwin.characterMovement
 
         bool ShouldSetHeight(float target)
         {
-            if (IsHeightDifferenceTooBig(target) || !_allowSetHeight || spaceSlider.sliding)
+            if (!_allowSetHeight || spaceSlider.sliding || IsStronglyGoingUp(target))
             {
                 return false;
             }
             return heightSlider.ShouldKeepMoving(target);
         }
-
-        private bool IsHeightDifferenceTooBig(float target)
+        private bool IsStronglyGoingUp(float target)
         {
-            if (Mathf.Abs(target - characterPosition.y) > 0.5f)
+            if (target - characterPosition.y > MAX_STEP_UP)
             {
                 return true;
             }
