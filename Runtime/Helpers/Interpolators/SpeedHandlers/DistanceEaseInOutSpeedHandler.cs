@@ -18,7 +18,7 @@ namespace ReupVirtualTwin.helpers
             minSpeedInMetersPerSecond = minSpeed;
             distanceToMaxSpeed = distanceToMax;
             distanceToMinSpeed = distanceToMin;
-            changeSlopeFraction = distanceToMax / (distanceToMaxSpeed + distanceToMinSpeed);
+            changeSlopeFraction = distanceToMaxSpeed / (distanceToMaxSpeed + distanceToMinSpeed);
         }
 
         public float GetSpeedInMetersPerSecond(float traveledDistance)
@@ -28,7 +28,10 @@ namespace ReupVirtualTwin.helpers
         }
         private float GetSpeedNoMax(float traveledDistance)
         {
+            Debug.Log($"traveled Distance {traveledDistance}");
             var travelFraction = traveledDistance / totalDistance;
+            Debug.Log($"traveled fraction {travelFraction}");
+            Debug.Log($"change fraction {changeSlopeFraction}");
             if (travelFraction < changeSlopeFraction)
             {
                 float growingSlope = (maxSpeedInMetersPerSecond - minSpeedInMetersPerSecond) / distanceToMaxSpeed;
