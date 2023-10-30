@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.helpers
         Vector3 direction;
         Vector3 sameHeightcurrentPosition;
         float MAX_SPEED_IN_METERS_PER_SECOND = 3.5f;
-        float MIN_SPEED_IN_METERS_PER_SECOND = 0.05f;
+        float MIN_SPEED_IN_METERS_PER_SECOND = 1f;
         float DISTANCE_TO_MAX_SPEED = 1f;
         float DISTANCE_TO_MIN_SPEED = 3f;
 
