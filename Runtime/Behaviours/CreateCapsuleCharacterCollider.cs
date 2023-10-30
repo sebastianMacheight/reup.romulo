@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.behaviours
         [SerializeField]
         PhysicMaterial physicMaterial;
 
-        float FREE_SPACE_BELOW_IN_METERS = 0.4f;
+        float FREE_SPACE_BELOW_IN_METERS = 1f;
         float COLLIDER_RADIUS_IN_METERS = 0.05f;
 
         private void Start()
