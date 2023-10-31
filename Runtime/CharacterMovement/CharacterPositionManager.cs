@@ -6,6 +6,8 @@ namespace ReupVirtualTwin.characterMovement
 {
     public class CharacterPositionManager : MonoBehaviour
     {
+        public float maxStepHeight = 0.25f;
+
         bool _allowSetHeight = true;
         bool _allowWalking = true;
         private float movementForce = 20f;
@@ -15,8 +17,7 @@ namespace ReupVirtualTwin.characterMovement
 
         float STOP_WALK_THRESHOLD = 0.5f;
         float STOP_MOVEMENT_THRESHOLD = 0.02f;
-        [SerializeField]
-        float MAX_STEP_UP = 0.25f;
+
 
         SpaceSlider walkSlider;
         SpaceSlider spaceSlider;
@@ -147,7 +148,7 @@ namespace ReupVirtualTwin.characterMovement
         }
         private bool IsStronglyGoingUp(float target)
         {
-            if (target - characterPosition.y > MAX_STEP_UP)
+            if (target - characterPosition.y > maxStepHeight)
             {
                 return true;
             }
