@@ -1,18 +1,82 @@
-using System.Collections;
-using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
+using UnityEditor;
+using System.Collections;
+using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.characterMovement;
 
 public class MaintainHeightTest : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Character.prefab");
+    GameObject widePlatformPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/WidePlatform0.prefab");
+    GameObject character;
+    GameObject widePlatform;
+
+    float HEIGHT_CLOSENESS_THRESHOLD = 0.02f;
+
+    [SetUp]
+    public void SetUp()
     {
-        
+        character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
+        var posManager = character.GetComponent<CharacterPositionManager>();
+        posManager.maxStepHeight = 0.25f;
+        widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(widePlatformPrefab);
+        SetPlatformAtZeroLevel();
     }
 
-    // Update is called once per frame
-    void Update()
+    [TearDown]
+    public void TearDown()
     {
-        
+        Destroy(character);
+        Destroy(widePlatform);
+    }
+
+    [UnityTest]
+    public IEnumerator CharacterShouldFallToDesiredHeight()
+    {
+        character.transform.position = new Vector3(0, 4, 0);
+        yield return new WaitForSeconds(1);
+        var distanceToDesiredHeight = MaintainHeight.CHARACTER_HEIGHT - character.transform.position.y;
+        Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
+    }
+
+    [UnityTest]
+    public IEnumerator CharacterShouldRiseToDesiredHeight()
+    {
+        character.transform.position = new Vector3(0, 1.5f, 0);
+        yield return new WaitForSeconds(0.2f);
+        var distanceToDesiredHeight = MaintainHeight.CHARACTER_HEIGHT - character.transform.position.y;
+        Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
+    }
+
+    [UnityTest]
+    public IEnumerator CharacterShouldRiseToDesiredHeightWhenPlatformRises()
+    {
+        character.transform.position = new Vector3(0, 1.5f, 0);
+        yield return new WaitForSeconds(0.2f);
+        var upDistance = 0.1f;
+        widePlatform.transform.position = new Vector3(0, upDistance, 0);
+        yield return new WaitForSeconds(0.2f);
+        var distanceToDesiredHeight = MaintainHeight.CHARACTER_HEIGHT + upDistance - character.transform.position.y;
+        Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
+    }
+
+    [UnityTest]
+    public IEnumerator CharacterShouldNotRiseIfDistanceIsTooBig()
+    {
+        character.transform.position = new Vector3(0, 1.5f, 0);
+        yield return new WaitForSeconds(0.2f);
+        var upDistance = 0.3f;
+        widePlatform.transform.position = new Vector3(0, upDistance, 0);
+        yield return new WaitForSeconds(0.1f);
+        var distanceToDesiredHeight = MaintainHeight.CHARACTER_HEIGHT - character.transform.position.y;
+        Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
+    }
+
+    private void SetPlatformAtZeroLevel()
+    {
+        widePlatform.transform.position = new Vector3(0, -0.05f, 0);
+        widePlatform.transform.localScale = new Vector3(1, 0.1f, 1);
     }
 }
