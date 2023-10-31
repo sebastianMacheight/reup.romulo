@@ -35,6 +35,12 @@ public class CharacterRotationManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        verticalRotation = transform.rotation.eulerAngles.x;
+        horizontalRotation = transform.rotation.eulerAngles.y;
+    }
+
     void Update()
     {
         if (ShouldRotate())
