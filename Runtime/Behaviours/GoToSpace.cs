@@ -38,7 +38,7 @@ namespace ReupVirtualTwin.behaviours
             {
                 throw new Exception("No Ground below Space selector");
             }
-            return HeightKeeper.GetDesiredHeight((RaycastHit)groundHit);
+            return MaintainHeight.GetDesiredHeight((RaycastHit)groundHit);
         }
 
         private RaycastHit? GetGroundHit()

@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.behaviours
         private void Start()
         {
             var collider = character.AddComponent<CapsuleCollider>();
-            var colliderHeight = HeightKeeper.CHARACTER_HEIGHT - FREE_SPACE_BELOW_IN_METERS;
+            var colliderHeight = MaintainHeight.CHARACTER_HEIGHT - FREE_SPACE_BELOW_IN_METERS;
             var colliderYCenter = -1 * colliderHeight / 2;
             collider.radius = COLLIDER_RADIUS_IN_METERS;
             collider.height = colliderHeight;

@@ -15,7 +15,7 @@ namespace ReupVirtualTwin.behaviours
         private void Start()
         {
             var collider = character.AddComponent<BoxCollider>();
-            var colliderHeight = HeightKeeper.CHARACTER_HEIGHT - FREE_SPACE_BELOW_IN_METERS;
+            var colliderHeight = MaintainHeight.CHARACTER_HEIGHT - FREE_SPACE_BELOW_IN_METERS;
             var colliderYCenter = -1 * colliderHeight / 2;
             collider.size = new Vector3(COLLIDER_FRONT_IN_METERS, colliderHeight, COLLIDER_SIDE_IN_METERS);
             collider.center = new Vector3(0, colliderYCenter, 0);
