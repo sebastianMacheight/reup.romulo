@@ -6,7 +6,7 @@ namespace ReupVirtualTwin.behaviours
 {
 
     [RequireComponent(typeof(Sensor))]
-    public class HeightKeeper : MonoBehaviour
+    public class MaintainHeight : MonoBehaviour
     {
         private Sensor _sensor;
         [HideInInspector]
