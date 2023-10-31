@@ -15,7 +15,8 @@ namespace ReupVirtualTwin.characterMovement
 
         float STOP_WALK_THRESHOLD = 0.5f;
         float STOP_MOVEMENT_THRESHOLD = 0.02f;
-        float MAX_STEP_UP = 0.21f;
+        [SerializeField]
+        float MAX_STEP_UP = 0.25f;
 
         SpaceSlider walkSlider;
         SpaceSlider spaceSlider;
