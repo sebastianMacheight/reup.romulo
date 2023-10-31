@@ -74,24 +74,21 @@ namespace ReupVirtualTwin.characterMovement
 
         void DefineWalkSlider()
         {
-            walkSlider = transform.gameObject.AddComponent<SpaceSlider>();
-            var walkHaltDecitionMaker = new WalkHaltDecitionMaker(this, STOP_WALK_THRESHOLD);
-            walkSlider.movementDecitionMaker = walkHaltDecitionMaker;
-            walkSlider.interpolator = new WalkInterpolator();
+            walkSlider = (SpaceSlider)transform.gameObject.AddComponent<SpaceSlider>()
+                .SetHaltDecitionMaker(new WalkHaltDecitionMaker(this, STOP_WALK_THRESHOLD))
+                .SetInterpolator(new WalkInterpolator());
         }
         void DefineSpaceSlider()
         {
-            spaceSlider = transform.gameObject.AddComponent<SpaceSlider>();
-            var spaceSlideHaltDecitionMaker = new SpaceSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
-            spaceSlider.movementDecitionMaker = spaceSlideHaltDecitionMaker;
-            spaceSlider.interpolator = new SpacesInterpolator();
+            spaceSlider = (SpaceSlider)transform.gameObject.AddComponent<SpaceSlider>()
+                .SetHaltDecitionMaker(new SpaceSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD))
+                .SetInterpolator(new SpacesInterpolator());
         }
         void DefineHeightSlider()
         {
-            heightSlider = transform.gameObject.AddComponent<LinearSlider>();
-            var heighSlideHaltDecitionMaker = new HeightSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD);
-            heightSlider.movementDecitionMaker = heighSlideHaltDecitionMaker;
-            heightSlider.interpolator = new HeightInterpolator();
+            heightSlider = (LinearSlider)transform.gameObject.AddComponent<LinearSlider>()
+                .SetHaltDecitionMaker(new HeightSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD))
+                .SetInterpolator(new HeightInterpolator());
         }
 
         public void MoveDistanceInDirection(float distance, Vector3 direction)
