@@ -19,6 +19,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
     public void SetUp()
     {
         character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
+        character.transform.position = Vector3.zero;
         posManager = character.GetComponent<CharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
     }
