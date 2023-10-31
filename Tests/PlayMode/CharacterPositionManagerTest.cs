@@ -3,11 +3,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
 using ReupVirtualTwin.characterMovement;
+using UnityEditor;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
+    private GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Character.prefab");
     private GameObject character;
-    private Rigidbody rb;
     private CharacterPositionManager posManager;
 
     float HEIGHT_CLOSENESS_THRESHOLD = 0.02f;
@@ -17,10 +18,8 @@ public class CharacterPositionManagerTest : MonoBehaviour
     [SetUp]
     public void SetUp()
     {
-        character = new GameObject();
-        rb = character.AddComponent<Rigidbody>();
-        rb.useGravity = false;
-        posManager = character.AddComponent<CharacterPositionManager>();
+        character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
+        posManager = character.GetComponent<CharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
     }
 
@@ -68,7 +67,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
     public IEnumerator HeightToTargetShouldSuccessIfFallingDown()
     {
         //check original character's position
-        Assert.AreEqual(Vector3.zero, character.transform.position);
+        Assert.AreEqual(character.transform.position, Vector3.zero);
 
         posManager.KeepHeight(-1f);
 
@@ -98,7 +97,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
     public IEnumerator HeightToTargetShouldFailIfStepingTooMuchUp()
     {
         //check original character's position
-        Assert.AreEqual(Vector3.zero, character.transform.position);
+        Assert.AreEqual(character.transform.position, Vector3.zero);
 
         posManager.KeepHeight(0.35f);
 
