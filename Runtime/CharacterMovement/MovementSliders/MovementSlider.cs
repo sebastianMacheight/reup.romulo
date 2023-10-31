@@ -47,14 +47,14 @@ namespace ReupVirtualTwin.characterMovement
                 }
                 else
                 {
-                    StopCoroutine("SliceToTargetCoroutine");
+                    StopCoroutine("SlideToTargetCoroutine");
                 }
             }
             //Debug.Log($"we were not sliding: sliding={sliding}");
             currentTarget = target;
-            StartCoroutine("SliceToTargetCoroutine", target);
+            StartCoroutine("SlideToTargetCoroutine", target);
         }
-        private IEnumerator SliceToTargetCoroutine(T target)
+        private IEnumerator SlideToTargetCoroutine(T target)
         {
             //Debug.Log($"start sliding in {GetType().Name}");
             //rb.isKinematic = isKinematicWhileMoving;
@@ -79,7 +79,7 @@ namespace ReupVirtualTwin.characterMovement
         public void StopMovement()
         {
             //Debug.Log($"stoping slice in ${GetType().Name}");
-            StopCoroutine("SliceToTargetCoroutine");
+            StopCoroutine("SlideToTargetCoroutine");
             sliding = false;
         }
         public bool ShouldKeepMoving(T target)
