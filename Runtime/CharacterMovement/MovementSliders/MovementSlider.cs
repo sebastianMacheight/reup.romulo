@@ -22,6 +22,16 @@ namespace ReupVirtualTwin.characterMovement
         {
             _positionManager = GetComponent<CharacterPositionManager>();
         }
+        public MovementSlider<T> SetHaltDecitionMaker(MovementHaltDecitionMaker<T> mhdm)
+        {
+            movementDecitionMaker = mhdm;
+            return this;
+        }
+        public MovementSlider<T> SetInterpolator(Interpolator<T> interp)
+        {
+            interpolator = interp;
+            return this;
+        }
         public void SlideToTarget(T target, UnityEvent endMovementEvent)
         {
             this.endMovementEvent = endMovementEvent;
