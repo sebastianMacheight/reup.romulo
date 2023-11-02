@@ -9,7 +9,19 @@ namespace ReupVirtualTwin.characterMovement
     {
         public List<SpaceJumpPoint> jumpPoints;
         [HideInInspector]
-        public bool drawSpacesGizmos = true;
+        bool _drawSpacesGizmos = true;
+        public bool drawSpacesGizmos
+        {
+            get
+            {
+                return _drawSpacesGizmos;
+            }
+            set
+            {
+                _drawSpacesGizmos = value;
+                UpdateSpaces();
+            }
+        }
 
         public void UpdateSpaces()
         {
@@ -18,6 +30,7 @@ namespace ReupVirtualTwin.characterMovement
             foreach (GameObject room in spaces)
             {
                 var roomSelector = room.GetComponent<SpaceJumpPoint>();
+                roomSelector.drawGizmo = drawSpacesGizmos;
                 jumpPoints.Add(roomSelector);
             }
         }
