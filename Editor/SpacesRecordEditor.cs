@@ -37,11 +37,6 @@ namespace ReupVirtualTwin.editor
             {
                 EditorGUILayout.LabelField($" - {spaceSelector.gameObject.name} ({spaceSelector.spaceName})");
             }
-
-            EditorGUILayout.Space(10f);
-
-            spacesRecord.drawSpacesGizmos = EditorGUILayout.Toggle("Draw spaces gizmos", spacesRecord.drawSpacesGizmos);
-
             DrawDefaultInspector();
         }
     }
