@@ -16,8 +16,6 @@ namespace ReupVirtualTwin.helpers
         {
             origin = originalPostion.y;
             target = targetHeight;
-            Debug.Log($"defining height interpolator origin: {origin}");
-            Debug.Log($"defining height interpolator target: {target}");
             var totalDistance = Mathf.Abs(target - origin);
             speedHandler = new DistanceEaseInOutSpeedHandler(totalDistance,
                 MAX_SPEED_IN_METERS_PER_SECOND,
@@ -29,18 +27,18 @@ namespace ReupVirtualTwin.helpers
         public Vector3 Interpolate(Vector3 currentPosition)
         {
             var currentHeight = currentPosition.y;
-            Debug.Log($"in Height interpolate in is {currentHeight}");
-            Debug.Log($"in Height interpolate origin is {origin}");
+            //Debug.Log($"in Height interpolate in is {currentHeight}");
+            //Debug.Log($"in Height interpolate origin is {origin}");
             var traveledDistance = Mathf.Abs(currentHeight - origin);
             var speed = speedHandler.GetSpeedInMetersPerSecond(traveledDistance);
-            Debug.Log($"height change speed: {speed}");
+            //Debug.Log($"height change speed: {speed}");
             var direction = getDirection(currentHeight);
-            Debug.Log($"direction is {direction}");
-            Debug.Log($"deltatime: {Time.deltaTime}");
+            //Debug.Log($"direction is {direction}");
+            //Debug.Log($"deltatime: {Time.deltaTime}");
             var addition = direction * speed * Time.deltaTime;
-            Debug.Log($"addition {addition}");
+            //Debug.Log($"addition {addition}");
             currentHeight += direction * speed * Time.deltaTime;
-            Debug.Log($"at the end in Height interpolate out is {currentHeight}");
+            //Debug.Log($"at the end in Height interpolate out is {currentHeight}");
             var newPosition = new Vector3(currentPosition.x, currentHeight, currentPosition.z);
             return newPosition;
         }

@@ -28,11 +28,11 @@ namespace ReupVirtualTwin.helpers
         }
         private float GetSpeedNoMax(float traveledDistance)
         {
-            Debug.Log($"traveled Distance {traveledDistance}");
+            //Debug.Log($"traveled Distance {traveledDistance}");
             var travelFraction = traveledDistance / totalDistance;
-            Debug.Log($"total distance {totalDistance}");
-            Debug.Log($"traveled fraction {travelFraction}");
-            Debug.Log($"change fraction {changeSlopeFraction}");
+            //Debug.Log($"total distance {totalDistance}");
+            //Debug.Log($"traveled fraction {travelFraction}");
+            //Debug.Log($"change fraction {changeSlopeFraction}");
             if (travelFraction < changeSlopeFraction)
             {
                 float growingSlope = (maxSpeedInMetersPerSecond - minSpeedInMetersPerSecond) / distanceToMaxSpeed;

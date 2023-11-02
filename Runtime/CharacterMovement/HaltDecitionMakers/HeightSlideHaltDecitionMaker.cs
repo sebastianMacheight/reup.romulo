@@ -16,12 +16,6 @@ namespace ReupVirtualTwin.characterMovement
         {
             float distanceToHeight = Mathf.Abs(target - characterPositionManager.characterPosition.y);
             bool thereIsDistanceToTarget = distanceToHeight > stopMovementThreshold;
-            if (thereIsDistanceToTarget)
-            {
-                //Debug.Log($"current height: {characterPositionManager.characterPosition.y}");
-                //Debug.Log($"current target: {target}");
-                //Debug.Log($"distanceToHeight : {distanceToHeight}");
-            }
             return thereIsDistanceToTarget;
         }
 

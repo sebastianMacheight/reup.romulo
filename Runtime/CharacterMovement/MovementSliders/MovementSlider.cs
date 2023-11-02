@@ -50,23 +50,17 @@ namespace ReupVirtualTwin.characterMovement
                     StopCoroutine("SlideToTargetCoroutine");
                 }
             }
-            //Debug.Log($"we were not sliding: sliding={sliding}");
             currentTarget = target;
             StartCoroutine("SlideToTargetCoroutine", target);
         }
         private IEnumerator SlideToTargetCoroutine(T target)
         {
-            //Debug.Log($"start sliding in {GetType().Name}");
-            //rb.isKinematic = isKinematicWhileMoving;
             sliding = true;
             interpolator.DefineOriginAndTarget(_positionManager.characterPosition, target);
             while (movementDecitionMaker.ShouldKeepMoving(target))
             {
-                //Debug.Log($"current pos in {GetType().Name}: {_positionManager.characterPosition}");
                 var nextPos = interpolator.Interpolate(_positionManager.characterPosition);
-                //Debug.Log($"nextPos: {nextPos}");
                 _positionManager.characterPosition = nextPos;
-                //Debug.Log($"newPost: {_positionManager.characterPosition}");
                 yield return null;
             }
             StopMovement();
@@ -78,7 +72,6 @@ namespace ReupVirtualTwin.characterMovement
 
         public void StopMovement()
         {
-            //Debug.Log($"stoping slice in ${GetType().Name}");
             StopCoroutine("SlideToTargetCoroutine");
             sliding = false;
         }
