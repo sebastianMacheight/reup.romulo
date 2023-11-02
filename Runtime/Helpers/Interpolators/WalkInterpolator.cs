@@ -40,7 +40,7 @@ namespace ReupVirtualTwin.helpers
             }
             float traveledDistance = Vector3.Distance(sameHeightCurrentValue, origin);
             float speed = speedHandler.GetSpeedInMetersPerSecond(traveledDistance);
-            Debug.Log($"walk speed {speed}");
+            //Debug.Log($"walk speed {speed}");
             sameHeightcurrentPosition += direction * speed * Time.deltaTime;
             var currentPosition = new Vector3(sameHeightcurrentPosition.x, currentValue.y, sameHeightcurrentPosition.z);
             return currentPosition;

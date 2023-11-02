@@ -56,7 +56,6 @@ namespace ReupVirtualTwin.characterMovement
             }
             set
             {
-                //Debug.Log($"setting character pos to {value}");
                 transform.position = value;
             }
         }
@@ -105,7 +104,6 @@ namespace ReupVirtualTwin.characterMovement
         }
         public void ApplyForceInDirection(Vector3 direction)
         {
-            walkSlider.StopMovement();
             var force = Vector3.Normalize(direction) * movementForce;
             rb.AddForce(force, ForceMode.Force);
         }

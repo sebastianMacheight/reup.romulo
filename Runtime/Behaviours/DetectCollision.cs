@@ -30,7 +30,6 @@ namespace ReupVirtualTwin.behaviours
             }
 
             bounceDirection.y = SMALL_JUMP_FORCE_AT_COLLISION;
-            //Debug.DrawRay(_positionManager.characterPosition, bounceDirection, Color.red, 10);
             _positionManager.MoveDistanceInDirection(0.02f, bounceDirection);
             _positionManager.ApplyForceInDirection(bounceDirection);
         }
