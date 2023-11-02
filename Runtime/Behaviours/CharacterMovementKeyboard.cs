@@ -5,7 +5,7 @@ using ReupVirtualTwin.characterMovement;
 public class CharacterMovementKeyboard : MonoBehaviour
 {
     [SerializeField]
-    private Transform _characterBodyTransform;
+    private Transform _innerCharacterTransform;
 
     private InputProvider _inputProvider;
     private CharacterPositionManager _characterPositionManager;
@@ -37,13 +37,13 @@ public class CharacterMovementKeyboard : MonoBehaviour
 
     private Vector3 GetCharacterRight()
     {
-        Vector3 right = _characterBodyTransform.right;
+        Vector3 right = _innerCharacterTransform.right;
         right.y = 0;
         return right;
     }
     private Vector3 GetCharacterForward()
     {
-        Vector3 forward = _characterBodyTransform.forward;
+        Vector3 forward = _innerCharacterTransform.forward;
         forward.y = 0;
         return forward;
     }
