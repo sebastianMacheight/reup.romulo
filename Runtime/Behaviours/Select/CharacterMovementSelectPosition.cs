@@ -16,7 +16,10 @@ namespace ReupVirtualTwin.behaviours
 
         public override void HandleHit(RaycastHit hit)
         {
-            _characterPositionManager.WalkToTarget(hit.point);
+            if (_characterPositionManager.allowWalking)
+            {
+                _characterPositionManager.WalkToTarget(hit.point);
+            }
         }
     }
 }

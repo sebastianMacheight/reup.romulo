@@ -138,7 +138,7 @@ namespace ReupVirtualTwin.characterMovement
 
         bool ShouldSetHeight(float target)
         {
-            if (!_allowSetHeight || spaceSlider.sliding || IsStronglyGoingUp(target))
+            if (!allowSetHeight || spaceSlider.sliding || IsStronglyGoingUp(target))
             {
                 return false;
             }
