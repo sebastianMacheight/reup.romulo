@@ -9,7 +9,7 @@ using ReupVirtualTwin.characterMovement;
 public class MaintainHeightTest : MonoBehaviour
 {
     GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Character.prefab");
-    GameObject widePlatformPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/WidePlatform0.prefab");
+    GameObject cubePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/Cube.prefab");
     GameObject character;
     GameObject widePlatform;
 
@@ -21,8 +21,8 @@ public class MaintainHeightTest : MonoBehaviour
         character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
         var posManager = character.GetComponent<CharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
-        widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(widePlatformPrefab);
-        SetPlatformAtZeroLevel();
+        widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(cubePrefab);
+        SetPlatform();
     }
 
     [TearDown]
@@ -74,9 +74,9 @@ public class MaintainHeightTest : MonoBehaviour
         Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
     }
 
-    private void SetPlatformAtZeroLevel()
+    private void SetPlatform()
     {
+        widePlatform.transform.localScale = new Vector3(10, 0.1f, 10);
         widePlatform.transform.position = new Vector3(0, -0.05f, 0);
-        widePlatform.transform.localScale = new Vector3(1, 0.1f, 1);
     }
 }
