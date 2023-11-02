@@ -23,12 +23,16 @@ namespace ReupVirtualTwin.behaviours
             spaceSelectorPosition.y = GetDesiredHeight();
             var endMovementEvent = new UnityEvent();
             endMovementEvent.AddListener(EndMovementHandler);
+            _characterPositionManager.allowWalking = false;
+            _characterPositionManager.allowSetHeight = false;
             _characterPositionManager.SlideToTarget(spaceSelectorPosition,endMovementEvent);
         }
 
         private void EndMovementHandler()
         {
             _characterPositionManager.UndoKinematic();
+            _characterPositionManager.allowWalking = true;
+            _characterPositionManager.allowSetHeight = true;
         }
 
         private float GetDesiredHeight()
