@@ -419,7 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eb52daedc22e4777bcd8f7ef4b53861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterBodyTransform: {fileID: 4912725852084423976}
+  _bodyTransform: {fileID: 4912725852084423976}
 --- !u!114 &2420710140368993907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -972,7 +972,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2721092845200583677}
-  - component: {fileID: 2922253802895725718}
+  - component: {fileID: 1243151728}
   m_Layer: 7
   m_Name: CreateCharacterCollider
   m_TagString: Untagged
@@ -995,7 +995,7 @@ Transform:
   m_Father: {fileID: 8380427711663556094}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2922253802895725718
+--- !u!114 &1243151728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1004,11 +1004,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4125742121506657584}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e7dcd7ec4e572c43b8a4e30dd63d045, type: 3}
+  m_Script: {fileID: 11500000, guid: e09f35918db49e545acca7d154608a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 151350736762601885}
-  physicMaterial: {fileID: 13400000, guid: 57bbbef18920ae345bd26785ec5f3614, type: 2}
 --- !u!1 &5209944040320321953
 GameObject:
   m_ObjectHideFlags: 0

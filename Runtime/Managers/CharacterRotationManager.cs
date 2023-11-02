@@ -7,9 +7,10 @@ public class CharacterRotationManager : MonoBehaviour
     float _verticalRotation = 0f;
     float _horizontalRotation = 0f;
     Quaternion _desiredBodyRotation;
+    Quaternion _desiredHorizontalRotation;
 
     [SerializeField]
-    Transform _characterBodyTransform;
+    Transform _bodyTransform;
     public float verticalRotation
     {
         get
@@ -20,7 +21,7 @@ public class CharacterRotationManager : MonoBehaviour
         {
             if (value > 180f) value -= 360f;
             _verticalRotation = Mathf.Clamp(value, -90f, 90f);
-            SetDesiredRotation();
+            SetDesiredBodyRotation();
         }
     }
     public float horizontalRotation {
@@ -31,7 +32,7 @@ public class CharacterRotationManager : MonoBehaviour
         set
         {
             _horizontalRotation = value;
-            SetDesiredRotation();
+            SetDesiredHorizontalRotation();
         }
     }
 
@@ -48,20 +49,35 @@ public class CharacterRotationManager : MonoBehaviour
             Rotate();
         }
     }
-    void SetDesiredRotation ()
+    void SetDesiredHorizontalRotation ()
     {
-            _desiredBodyRotation = Quaternion.Euler(_verticalRotation, _horizontalRotation, 0);
+        _desiredHorizontalRotation = Quaternion.Euler(0, _horizontalRotation, 0);
+    }
+    void SetDesiredBodyRotation()
+    {
+        _desiredBodyRotation = Quaternion.Euler(_verticalRotation, transform.rotation.eulerAngles.y, 0);
     }
 
     bool ShouldRotate()
     {
-        return Quaternion.Angle(_desiredBodyRotation, _characterBodyTransform.rotation) > ANGLE_THRESHOLD;
+        var shouldRotateVertically = Quaternion.Angle(_desiredBodyRotation, _bodyTransform.rotation) > ANGLE_THRESHOLD;
+        var shouldRotateHorizontally = Quaternion.Angle(_desiredHorizontalRotation, transform.rotation) > ANGLE_THRESHOLD;
+        return shouldRotateVertically || shouldRotateHorizontally;
     }
 
     void Rotate()
     {
         var rotationStep = ROTATION_SPEED * Time.deltaTime;
-        _characterBodyTransform.rotation = Quaternion.Slerp(_characterBodyTransform.rotation, _desiredBodyRotation, rotationStep);
-
+        RotateCharacter(rotationStep);
+        RotateBody(rotationStep);
+    }
+    void RotateBody(float rotationStep)
+    {
+        SetDesiredBodyRotation();
+        _bodyTransform.rotation = Quaternion.Slerp(_bodyTransform.rotation, _desiredBodyRotation, rotationStep);
+    }
+    void RotateCharacter(float rotationStep)
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation, _desiredHorizontalRotation, rotationStep);
     }
 }
