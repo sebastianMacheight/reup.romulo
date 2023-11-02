@@ -22,11 +22,11 @@ namespace ReupVirtualTwin.behaviours
             var spaceSelectorPosition = spaceSelector.transform.position;
             spaceSelectorPosition.y = GetDesiredHeight();
             var endMovementEvent = new UnityEvent();
-            endMovementEvent.AddListener(GetToSpaceHandler);
+            endMovementEvent.AddListener(EndMovementHandler);
             _characterPositionManager.SlideToTarget(spaceSelectorPosition,endMovementEvent);
         }
 
-        private void GetToSpaceHandler()
+        private void EndMovementHandler()
         {
             _characterPositionManager.UndoKinematic();
         }
