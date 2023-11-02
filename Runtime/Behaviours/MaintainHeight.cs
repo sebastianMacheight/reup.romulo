@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.behaviours
     {
         private Sensor _sensor;
         [HideInInspector]
-        public static float CHARACTER_HEIGHT = 1.65f;
+        public static float CHARACTER_HEIGHT = 1.75f;
         [SerializeField]
         CharacterPositionManager _characterPositionManager;
         void Start()
