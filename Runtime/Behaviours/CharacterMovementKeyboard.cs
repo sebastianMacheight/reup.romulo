@@ -1,13 +1,13 @@
 using UnityEngine;
 using ReupVirtualTwin.characterMovement;
 
-[RequireComponent(typeof(CharacterPositionManager))]
 public class CharacterMovementKeyboard : MonoBehaviour
 {
     [SerializeField]
     private Transform _innerCharacterTransform;
 
     private InputProvider _inputProvider;
+    [SerializeField]
     private CharacterPositionManager _characterPositionManager;
     private float _walkSpeed = 3.5f;
 
@@ -15,7 +15,6 @@ public class CharacterMovementKeyboard : MonoBehaviour
     private void Awake()
     {
         _inputProvider = new InputProvider();
-        _characterPositionManager = GetComponent<CharacterPositionManager>();
     }
 
     private void Update()
