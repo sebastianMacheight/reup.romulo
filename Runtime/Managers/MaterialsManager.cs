@@ -8,10 +8,10 @@ public class MaterialsManager : MonoBehaviour
     private int[] selectedMaterialIndexes;
 
 
-    public void SelectObjects(List<GameObject> objs, int[] materialIndexes)
+    public void SelectObjects(List<GameObject> objs, int[] objectsMaterialIndexes)
     {
         selectedObjects = objs;
-        selectedMaterialIndexes = materialIndexes;
+        selectedMaterialIndexes = objectsMaterialIndexes;
     }
 
     public void SetNewMaterial(Material material)
