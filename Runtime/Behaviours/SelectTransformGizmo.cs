@@ -5,9 +5,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using RuntimeHandle;
 
-//Frist import the package then
-//Create a empty gameobject called SelectTransformGizmo and attach this gameobject to it
-
 public class SelectTransformGizmo : MonoBehaviour
 {
     public Material highlightMaterial;
@@ -47,9 +44,14 @@ public class SelectTransformGizmo : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit)) //Make sure you have EventSystem in the hierarchy before using EventSystem
         {
+            if (SelectParent(raycastHit.transform) != null)
+            {
+                highlight = SelectParent(raycastHit.transform);
+            }
+            else {
+                highlight = raycastHit.transform;
+            }
             
-            highlight = raycastHit.transform;
-            print(highlight);
             if (highlight.CompareTag("Selectable") && highlight != selection)
             {
                 if (highlight.GetComponent<MeshRenderer>().material != highlightMaterial)
@@ -67,7 +69,6 @@ public class SelectTransformGizmo : MonoBehaviour
         // Selection
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            
             ApplyLayerToChildren(runtimeTransformGameObj);
             if (Physics.Raycast(ray, out raycastHit))
             {
@@ -80,7 +81,15 @@ public class SelectTransformGizmo : MonoBehaviour
                     {
                         selection.GetComponent<MeshRenderer>().material = originalMaterialSelection;
                     }
-                    selection = raycastHit.transform;
+                    if (SelectParent(raycastHit.transform) != null)
+                    {
+                        selection = SelectParent(raycastHit.transform);
+                    }
+                    else
+                    {
+                        selection = raycastHit.transform;
+                    }
+                    
                     if (selection.GetComponent<MeshRenderer>().material != selectionMaterial)
                     {
                         originalMaterialSelection = originalMaterialHighlight;
@@ -142,6 +151,24 @@ public class SelectTransformGizmo : MonoBehaviour
         }
 
     }
+
+    public Transform SelectParent(Transform transform)
+    {
+        if (transform.parent == null)
+        {
+            return transform;
+        }
+        else if (transform.parent.CompareTag("Selectable"))
+        {
+            return transform.parent;
+        }
+        else
+        {
+            return SelectParent(transform.parent);
+        }
+    }
+
+
 
 
     private void ApplyLayerToChildren(GameObject parentGameObj)
