@@ -1,21 +1,27 @@
 using UnityEngine;
 using ReupVirtualTwin.helpers;
 
-public class SetUpBuilding : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-
-    [SerializeField]
-    GameObject building;
-
-    void Start()
+    public class SetUpBuilding : MonoBehaviour
     {
-        if (building != null)
+
+        public GameObject building;
+
+        void Start()
         {
-            AddCollidersToBuilding.AddColliders(building);
-        }
-        else
-        {
-            Debug.LogError("Building object not set up");
+            if (building != null)
+            {
+                AddCollidersToBuilding.AddColliders(building);
+            }
+            else
+            {
+                Debug.LogError("Building object not set up");
+            }
+            if (building.GetComponent<UniqueId>() == null)
+            {
+                Debug.LogError("Building objects still don't have Ids");
+            }
         }
     }
 }
