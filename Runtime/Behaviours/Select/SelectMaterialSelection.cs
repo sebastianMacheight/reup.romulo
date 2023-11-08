@@ -1,16 +1,16 @@
 using ReupVirtualTwin.helpers;
 using UnityEngine;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.behaviours
 {
-    public class ClickMaterialSelection : SelectObject
+    public class SelectMaterialSelection : SelectObject
     {
         IMaterialsContainerCreator _materialContainerCreator;
         MaterialsManager _materialsManager;
 
         private void Start()
         {
-            _materialContainerCreator = ObjectFinder.FindMaterialsContainerCreator();
+            _materialContainerCreator = ObjectFinder.FindMaterialsContainerCreator().GetComponent<IMaterialsContainerCreator>();
             _materialsManager = ObjectFinder.FindMaterialsManager().GetComponent<MaterialsManager>();
         }
         public override void HandleObject(GameObject materialSelectionObject)

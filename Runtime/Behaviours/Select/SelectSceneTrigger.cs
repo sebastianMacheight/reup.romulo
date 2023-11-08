@@ -2,9 +2,9 @@ using ReupVirtualTwin.helpers;
 using UnityEngine;
 using ReupVirtualTwin.models;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.behaviours
 {
-    public class ClickSceneTrigger : SelectObject
+    public class SelectSceneTrigger : SelectObject
     {
         private IMaterialsContainerCreator _containerCreator;
         private MaterialsManager _materialsManager;
@@ -16,6 +16,7 @@ namespace ReupVirtualTwin
         }
         public override void HandleObject(GameObject triggerObject)
         {
+            Debug.Log("selectin trigger");
             var materialSelectionTrigger = triggerObject.GetComponent<MaterialSelectionTrigger>();
             _materialsManager.SelectObjects(materialSelectionTrigger.materialObjects, materialSelectionTrigger.objectsMaterialIndexes);
             _containerCreator.CreateContainer(materialSelectionTrigger.selectableMaterials.ToArray());

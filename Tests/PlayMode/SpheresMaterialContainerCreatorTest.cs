@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.behaviours;
 
 public class SpheresMaterialContainerCreatorTest
 {
