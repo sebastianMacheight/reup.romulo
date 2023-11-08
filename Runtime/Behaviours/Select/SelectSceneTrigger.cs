@@ -16,7 +16,6 @@ namespace ReupVirtualTwin.behaviours
         }
         public override void HandleObject(GameObject triggerObject)
         {
-            Debug.Log("selectin trigger");
             var materialSelectionTrigger = triggerObject.GetComponent<MaterialSelectionTrigger>();
             _materialsManager.SelectObjects(materialSelectionTrigger.materialObjects, materialSelectionTrigger.objectsMaterialIndexes);
             _containerCreator.CreateContainer(materialSelectionTrigger.selectableMaterials.ToArray());

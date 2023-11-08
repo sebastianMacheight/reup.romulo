@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using ReupVirtualTwin.models;
 
-namespace ReupVirtualTwin.behaviours
+namespace ReupVirtualTwin.models
 {
     public class ObjectRegistry : MonoBehaviour
     {
-        public List<GameObject> objects = new List<GameObject>();
+        List<GameObject> objects = new List<GameObject>();
 
         public void AddTree(GameObject parent)
         {
@@ -22,6 +21,11 @@ namespace ReupVirtualTwin.behaviours
             {
                 AddTree(child.gameObject);
             }
+        }
+
+        public void AddItem(GameObject item)
+        {
+            objects.Add(item);
         }
 
         public GameObject GetObjectWithGuid(string guid)
