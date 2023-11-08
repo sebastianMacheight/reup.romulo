@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Runtime.InteropServices;
+using ReupVirtualTwin.models;
 
 namespace ReupVirtualTwin.managers
 {
@@ -8,14 +9,11 @@ namespace ReupVirtualTwin.managers
 
 #if UNITY_WEBGL
         [DllImport("__Internal")]
-        private static extern void SendMessageToWeb(string msg);
-#endif
+        private static extern void SendStringToWeb(string msg);
 
-#if UNITY_WEBGL
-        public void DoComplexCalculus(int number)
+        public void SendWebMessage(WebMessage webMessage)
         {
-            var otherNumber = number + 1;
-            SendMessageToWeb(otherNumber.ToString());
+            SendStringToWeb(JsonUtility.ToJson(webMessage));
         }
 #endif
     }
