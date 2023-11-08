@@ -7,15 +7,12 @@ namespace ReupVirtualTwin.behaviours
     {
         public GameObject building;
 
-        ObjectRegistry _objectRegistry;
 
         void Start()
         {
-            _objectRegistry = ObjectFinder.FindObjectRegistry().GetComponent<ObjectRegistry>();
             if (building != null)
             {
                 AddCollidersToBuilding.AddColliders(building);
-                _objectRegistry.AddTree(building);
             }
             else
             {

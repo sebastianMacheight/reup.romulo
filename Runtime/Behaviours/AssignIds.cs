@@ -7,9 +7,9 @@ namespace ReupVirtualTwin.behaviours
     {
         public static void AssignToTree(GameObject parent)
         {
-            if (parent.GetComponent<UniqueId>() == null)
+            if (parent.GetComponent<UniqueIdentifer>() == null)
             {
-                parent.AddComponent<UniqueId>();
+                parent.AddComponent<RegisteredIdentifier>();
             }
 
             foreach (Transform child in parent.transform)
