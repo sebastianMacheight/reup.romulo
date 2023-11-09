@@ -2,21 +2,21 @@ using System.Collections;
 using NUnit.Framework;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.models;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 public class ObjectRegistryTest : MonoBehaviour
 {
-    GameObject testObj;
+    GameObject ObjectRegistryPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/ScriptHolders/ObjectRegistry.prefab");
     GameObject objectRegistryGameObject;
     ObjectRegistry objectRegistry;
+    GameObject testObj;
 
     [SetUp]
     public void SetUp()
     {
-        objectRegistryGameObject = new GameObject("ObjectRegistry");
-        objectRegistryGameObject.tag = "ObjectRegistry";
-        objectRegistryGameObject.AddComponent<ObjectRegistry>();
+        objectRegistryGameObject = (GameObject)PrefabUtility.InstantiatePrefab(ObjectRegistryPrefab);
         testObj = new GameObject("testObj");
         testObj.AddComponent<RegisteredIdentifier>();
         objectRegistry = ObjectFinder.FindObjectRegistry().GetComponent<ObjectRegistry>();
