@@ -7,7 +7,6 @@ namespace ReupVirtualTwin.behaviours
     {
         public GameObject building;
 
-
         void Start()
         {
             if (building != null)
@@ -16,7 +15,7 @@ namespace ReupVirtualTwin.behaviours
             }
             else
             {
-                Debug.LogError("Building object not set up");
+                Debug.LogWarning("Building object not set up");
             }
         }
     }

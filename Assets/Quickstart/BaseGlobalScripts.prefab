@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7399657085a0e724ab7767499ee940d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objects: []
 --- !u!1 &5630746703695442140
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,7 +56,7 @@ GameObject:
   - component: {fileID: 4850121315665083910}
   m_Layer: 0
   m_Name: WebMessages
-  m_TagString: Untagged
+  m_TagString: WebMessages
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -469,6 +468,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7145843182074020279, guid: 281dfd7f67fa78441a885554dcd44052, type: 3}
       propertyPath: m_Name
+      value: SetUpBuilding
+      objectReference: {fileID: 0}
+    - target: {fileID: 7145843182074020279, guid: 281dfd7f67fa78441a885554dcd44052, type: 3}
+      propertyPath: m_TagString
       value: SetUpBuilding
       objectReference: {fileID: 0}
     m_RemovedComponents: []

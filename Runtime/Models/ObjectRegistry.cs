@@ -6,7 +6,8 @@ namespace ReupVirtualTwin.models
 {
     public class ObjectRegistry : MonoBehaviour
     {
-        List<GameObject> objects = new List<GameObject>();
+        [HideInInspector]
+        public List<GameObject> objects = new List<GameObject>();
 
         public void AddTree(GameObject parent)
         {
@@ -32,6 +33,7 @@ namespace ReupVirtualTwin.models
         {
             foreach (GameObject obj in objects)
             {
+                if (obj == null) continue;
                 var uniqueIdentifier = obj.GetComponent<UniqueIdentifer>();
                 if (uniqueIdentifier.isIdCorrect(guid))
                 {

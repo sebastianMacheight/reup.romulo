@@ -8,9 +8,9 @@ namespace ReupVirtualTwin.behaviours
     {
         private IMaterialsContainerCreator _containerCreator;
         private MaterialsManager _materialsManager;
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
             _containerCreator = GetComponent<IMaterialsContainerCreator>();
             _materialsManager = ObjectFinder.FindMaterialsManager().GetComponent<MaterialsManager>();
         }
