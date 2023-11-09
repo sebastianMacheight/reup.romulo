@@ -12,9 +12,9 @@ namespace ReupVirtualTwin
     {
         private IObjectSelector _objectSelector;
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
             _objectSelector = GetComponent<IObjectSelector>();
         }
 

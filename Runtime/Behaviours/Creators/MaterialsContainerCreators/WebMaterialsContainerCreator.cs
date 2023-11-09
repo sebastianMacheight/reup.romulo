@@ -13,7 +13,7 @@ namespace ReupVirtualTwin.behaviours
         IObjectPool _objectPool;
         GameObject webMaterialsHandler;
 
-        private void Awake()
+        private void Start()
         {
             _objectPool = ObjectFinder.FindObjectPool();
             _webMessageManager = ObjectFinder.FindWebMessagesManager().GetComponent<WebMessagesManager>();

@@ -7,8 +7,9 @@ using ReupVirtualTwin.characterMovement;
 public class CharacterMovementSelectPosition : SelectPoint
 {
     CharacterPositionManager _characterPositionManager;
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         _characterPositionManager = GetComponent<CharacterPositionManager>();
     }
     public override void HandleHit(RaycastHit hit)

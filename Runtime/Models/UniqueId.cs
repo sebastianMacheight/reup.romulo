@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ReupVirtualTwin.models
@@ -16,7 +17,16 @@ namespace ReupVirtualTwin.models
 
         public bool isIdCorrect(string id)
         {
-            return id != uniqueId;
+            return id == uniqueId;
+        }
+
+        protected virtual void Start()
+        {
+            if (uniqueId == null)
+            {
+                Guid guid = Guid.NewGuid();
+                uniqueId = guid.ToString();
+            }
         }
     }
 }
