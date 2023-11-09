@@ -7,7 +7,7 @@ namespace ReupVirtualTwin.behaviours
     {
         public static void AssignToTree(GameObject parent)
         {
-            if (parent.GetComponent<UniqueIdentifer>() == null)
+            if (parent.GetComponent<IUniqueIdentifer>() == null)
             {
                 parent.AddComponent<RegisteredIdentifier>();
             }
@@ -19,7 +19,7 @@ namespace ReupVirtualTwin.behaviours
         }
         public static void RemoveFromTree(GameObject parent)
         {
-            var identifier = parent.GetComponent<UniqueIdentifer>();
+            var identifier = parent.GetComponent<IUniqueIdentifer>();
             if (identifier != null)
             {
                 Object.DestroyImmediate((Object)identifier);

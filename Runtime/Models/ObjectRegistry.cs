@@ -18,7 +18,7 @@ namespace ReupVirtualTwin.models
             foreach (GameObject obj in objects)
             {
                 if (obj == null) continue;
-                var uniqueIdentifier = obj.GetComponent<UniqueIdentifer>();
+                var uniqueIdentifier = obj.GetComponent<IUniqueIdentifer>();
                 if (uniqueIdentifier.isIdCorrect(guid))
                 {
                     return obj;
