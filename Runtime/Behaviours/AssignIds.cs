@@ -17,5 +17,18 @@ namespace ReupVirtualTwin.behaviours
                 AssignToTree(child.gameObject);
             }
         }
+        public static void RemoveFromTree(GameObject parent)
+        {
+            var identifier = parent.GetComponent<UniqueIdentifer>();
+            if (identifier != null)
+            {
+                Object.DestroyImmediate((Object)identifier);
+            }
+
+            foreach (Transform child in parent.transform)
+            {
+                RemoveFromTree(child.gameObject);
+            }
+        }
     }
 }
