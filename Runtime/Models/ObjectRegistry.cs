@@ -9,21 +9,6 @@ namespace ReupVirtualTwin.models
         [HideInInspector]
         public List<GameObject> objects = new List<GameObject>();
 
-        public void AddTree(GameObject parent)
-        {
-            if (parent.GetComponent<UniqueIdentifer>() == null)
-            {
-                throw new Exception($"object {parent.name} does not have a uniqueId component");
-            }
-
-            objects.Add(parent);
-
-            foreach (Transform child in parent.transform)
-            {
-                AddTree(child.gameObject);
-            }
-        }
-
         public void AddItem(GameObject item)
         {
             objects.Add(item);

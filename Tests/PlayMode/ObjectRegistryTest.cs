@@ -1,28 +1,22 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.models;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 public class ObjectRegistryTest : MonoBehaviour
 {
-    GameObject baseGlobalScriptsPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/BaseGlobalScripts.prefab");
-    GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Character.prefab");
-    GameObject character;
-    GameObject baseGlobalScripts;
     GameObject testObj;
+    GameObject objectRegistryGameObject;
     ObjectRegistry objectRegistry;
 
     [SetUp]
     public void SetUp()
     {
-        baseGlobalScripts = (GameObject)PrefabUtility.InstantiatePrefab(baseGlobalScriptsPrefab);
-        character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
+        objectRegistryGameObject = new GameObject("ObjectRegistry");
+        objectRegistryGameObject.tag = "ObjectRegistry";
+        objectRegistryGameObject.AddComponent<ObjectRegistry>();
         testObj = new GameObject("testObj");
         testObj.AddComponent<RegisteredIdentifier>();
         objectRegistry = ObjectFinder.FindObjectRegistry().GetComponent<ObjectRegistry>();
@@ -31,9 +25,8 @@ public class ObjectRegistryTest : MonoBehaviour
     [TearDown]
     public void TearDown()
     {
-        Destroy(baseGlobalScripts);
         Destroy(testObj);
-        Destroy(character);
+        Destroy(objectRegistryGameObject);
     }
 
     [UnityTest]
@@ -49,7 +42,7 @@ public class ObjectRegistryTest : MonoBehaviour
     {
         var id = testObj.GetComponent<RegisteredIdentifier>().getId();
         var obtainedObj = objectRegistry.GetObjectWithGuid(id);
-        Assert.AreEqual(obtainedObj, testObj);
+        Assert.AreEqual(testObj, obtainedObj);
         yield return null;
     }
 
