@@ -8,8 +8,9 @@ namespace ReupVirtualTwin.behaviours
         IMaterialsContainerCreator _materialContainerCreator;
         MaterialsManager _materialsManager;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             _materialContainerCreator = ObjectFinder.FindMaterialsContainerCreator().GetComponent<IMaterialsContainerCreator>();
             _materialsManager = ObjectFinder.FindMaterialsManager().GetComponent<MaterialsManager>();
         }
