@@ -5,7 +5,7 @@ namespace ReupVirtualTwin.models
 {
 	public class UniqueIdentifierAttribute : PropertyAttribute { }
 
-	public class UniqueId : MonoBehaviour, UniqueIdentifer
+	public class UniqueId : MonoBehaviour, IUniqueIdentifer
 	{
 		[UniqueIdentifier]
 		public string uniqueId;
