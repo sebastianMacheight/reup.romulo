@@ -4,7 +4,7 @@ using UnityEngine;
 using ReupVirtualTwin.models;
 
 [CustomEditor(typeof(MaterialSelectionTrigger))]
-public class MaterialSelectorTriggerEditor : Editor
+public class MaterialSelectionTriggerEditor : Editor
 {
     MaterialSelectionTrigger trigger;
 
@@ -13,12 +13,12 @@ public class MaterialSelectorTriggerEditor : Editor
         DrawDefaultInspector();
         trigger = (MaterialSelectionTrigger)target;
 
-        if (trigger.materialObjects.Count != 0)
+        if (trigger.objects.Count != 0)
         {
-            if (trigger.objectsMaterialIndexes.Length != trigger.materialObjects.Count)
-                trigger.objectsMaterialIndexes = new int[trigger.materialObjects.Count];
+            if (trigger.objectsMaterialIndexes.Length != trigger.objects.Count)
+                trigger.objectsMaterialIndexes = new int[trigger.objects.Count];
             EditorGUI.BeginChangeCheck();
-            foreach (var (obj, j) in trigger.materialObjects.Select((v, i) => (v, i)))
+            foreach (var (obj, j) in trigger.objects.Select((v, i) => (v, i)))
             {
                 if (obj != null)
                 {

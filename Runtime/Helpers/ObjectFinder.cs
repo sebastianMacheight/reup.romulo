@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.helpers
             return GameObject.FindGameObjectWithTag(TagsEnum.objectPool).GetComponent<IObjectPool>();
         }
 
-        public static GameObject FindMaterialsContainerCreator()
+        public static GameObject FindMaterialsContainerHandler()
         {
             return GameObject.FindGameObjectWithTag(TagsEnum.extensionsTriggers);
         }
@@ -26,10 +26,6 @@ namespace ReupVirtualTwin.helpers
             return GameObject.FindGameObjectWithTag(TagsEnum.character);
         }
 
-        public static GameObject FindMaterialsManager()
-        {
-            return GameObject.FindGameObjectWithTag(TagsEnum.materialsManager);
-        }
         public static GameObject FindSetUpBuilding()
         {
             return GameObject.FindGameObjectWithTag(TagsEnum.setUpBuilding);

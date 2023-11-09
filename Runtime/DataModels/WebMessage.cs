@@ -1,6 +1,5 @@
-namespace ReupVirtualTwin.models
+namespace ReupVirtualTwin.dataModels
 {
-
     public class WebMessage
     {
         public string operation;

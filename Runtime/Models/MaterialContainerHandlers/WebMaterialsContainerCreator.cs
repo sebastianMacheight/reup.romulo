@@ -1,11 +1,11 @@
 using UnityEngine;
 using ReupVirtualTwin.managers;
-using ReupVirtualTwin.models;
 using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.dataModels;
 
-namespace ReupVirtualTwin.behaviours
+namespace ReupVirtualTwin.models
 {
-    public class WebMaterialsContainerCreator : MonoBehaviour, IMaterialsContainerCreator
+    public class WebMaterialsContainerCreator : MonoBehaviour, IMaterialsContainerHider
     {
         [SerializeField]
         GameObject webMaterialHandlerPrefab;

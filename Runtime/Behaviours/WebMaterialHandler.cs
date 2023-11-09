@@ -8,12 +8,12 @@ namespace ReupVirtualTwin.behaviours
     {
         InputProvider _inputProvider;
         DragManager _dragManager;
-        IMaterialsContainerCreator _materialContainerCreator;
+        //IMaterialsContainerCreator _materialContainerCreator;
 
         protected virtual void Awake()
         {
             _inputProvider = new InputProvider();
-            _materialContainerCreator = ObjectFinder.FindMaterialsContainerCreator().GetComponent<IMaterialsContainerCreator>();
+            //_materialContainerCreator = ObjectFinder.FindMaterialsContainerCreator().GetComponent<IMaterialsContainerCreator>();
             _dragManager = ObjectFinder.FindCharacter().GetComponent<DragManager>();
         }
 
@@ -33,7 +33,7 @@ namespace ReupVirtualTwin.behaviours
         {
             if (!_dragManager.dragging && !_dragManager.prevDragging)
             {
-                _materialContainerCreator.HideContainer();
+                //_materialContainerCreator.HideContainer();
             }
         }
     }

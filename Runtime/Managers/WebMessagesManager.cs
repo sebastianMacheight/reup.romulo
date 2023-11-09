@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Runtime.InteropServices;
-using ReupVirtualTwin.models;
+using ReupVirtualTwin.dataModels;
 
 namespace ReupVirtualTwin.managers
 {

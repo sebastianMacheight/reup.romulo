@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
 using ReupVirtualTwin.helpers;
+using System.Collections.Generic;
 
-namespace ReupVirtualTwin.behaviours
+namespace ReupVirtualTwin.models
 {
-    public class SpheresMaterialContainerCreator : MonoBehaviour, IMaterialsContainerCreator
+    public class SpheresMaterialContainerHandler : MonoBehaviour, IMaterialContainerHandler
     {
         public GameObject materialsContainerPrefab;
         public GameObject materialsSpherePrefab;
@@ -15,15 +16,14 @@ namespace ReupVirtualTwin.behaviours
         Camera _mainCamera;
 
         private IObjectPool _objectPool;
+        private List<GameObject> selectedObjects;
+        private int[] selectedMaterialIndexes;
 
-        private void Awake()
+        public GameObject CreateContainer(MaterialSelectionTrigger trigger)
         {
-            _objectPool = ObjectFinder.FindObjectPool();
-            _mainCamera = Camera.main;
-        }
-
-        public GameObject CreateContainer(Material[] selectableMaterials)
-        {
+            selectedObjects = trigger.objects;
+            selectedMaterialIndexes = trigger.objectsMaterialIndexes;
+            var selectableMaterials = trigger.selectableMaterials.ToArray();
             // If materials container is showing, don't do anything
             if (materialsContainerInstance != null)
             {
@@ -32,6 +32,17 @@ namespace ReupVirtualTwin.behaviours
             materialsContainerInstance = _objectPool.GetObjectFromPool(materialsContainerPrefab.name, _mainCamera.transform);
             PlaceSpheresAroundCamera(selectableMaterials);
             return materialsContainerInstance;
+        }
+
+        public void SetNewMaterial(Material material)
+        {
+            MaterialsHelper.SetNewMaterial(selectedObjects, selectedMaterialIndexes, material);
+        }
+
+        private void Start()
+        {
+            _objectPool = ObjectFinder.FindObjectPool();
+            _mainCamera = Camera.main;
         }
 
         private float CameraHorizontalAngle()
@@ -75,5 +86,7 @@ namespace ReupVirtualTwin.behaviours
             _objectPool.PoolObject(materialsContainerInstance);
             materialsContainerInstance = null;
         }
+
+
     }
 }
