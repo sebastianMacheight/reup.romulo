@@ -18,5 +18,20 @@ namespace ReupVirtualTwin.behaviours
                 Debug.LogWarning("Building object not set up");
             }
         }
+
+        public void AssignIdsToBuilding()
+        {
+            AssignIds.AssignToTree(building);
+        }
+        public void RemoveIdsOfBuilding()
+        {
+            AssignIds.RemoveFromTree(building);
+        }
+        public void ResetIdsOfBuilding()
+        {
+            RemoveIdsOfBuilding();
+            AssignIdsToBuilding();
+        }
+
     }
 }
