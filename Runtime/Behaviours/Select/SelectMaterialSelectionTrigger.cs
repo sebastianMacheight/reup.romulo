@@ -3,7 +3,7 @@ using ReupVirtualTwin.models;
 
 namespace ReupVirtualTwin.behaviours
 {
-    public class SelectSceneTrigger : SelectObject
+    public class SelectMaterialSelectionTrigger : SelectObject
     {
         public override void HandleObject(GameObject triggerObject)
         {
