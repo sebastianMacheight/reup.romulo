@@ -26,7 +26,7 @@ namespace ReupVirtualTwin.models
             var message = new WebMessage
             {
                 operation = "showMaterialsOptions",
-                text = triggerIdentifier.getId()
+                body = triggerIdentifier.getId()
             };
             return message;
         }
