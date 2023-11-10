@@ -22,7 +22,7 @@ namespace ReupVirtualTwin.models
         public GameObject CreateContainer(MaterialSelectionTrigger trigger)
         {
             selectedObjects = trigger.objects;
-            selectedMaterialIndexes = trigger.objectsMaterialIndexes;
+            selectedMaterialIndexes = trigger.submeshIndexes;
             var selectableMaterials = trigger.selectableMaterials.ToArray();
             // If materials container is showing, don't do anything
             if (materialsContainerInstance != null)
