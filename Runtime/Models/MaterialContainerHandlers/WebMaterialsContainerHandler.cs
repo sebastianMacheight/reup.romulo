@@ -25,11 +25,6 @@ namespace ReupVirtualTwin.models
             return webMaterialsHandler;
         }
 
-        public void SetNewMaterial()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void HideContainer()
         {
             _objectPool.PoolObject(webMaterialsHandler);
