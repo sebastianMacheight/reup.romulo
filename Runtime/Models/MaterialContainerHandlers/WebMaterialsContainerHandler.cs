@@ -18,7 +18,7 @@ namespace ReupVirtualTwin.models
         {
             if (webMaterialsHandler != null)
             {
-                return webMaterialsHandler;
+                return null;
             }
             webMaterialsHandler = _objectPool.GetObjectFromPool(webMaterialHandlerPrefab.name, transform);
             webMaterialsHandler.transform.position = Vector3.zero;

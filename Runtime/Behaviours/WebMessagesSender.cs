@@ -13,7 +13,8 @@ namespace ReupVirtualTwin.behaviours
 
         public static void SendWebMessage(WebMessage webMessage)
         {
-            //SendStringToWeb(JsonUtility.ToJson(webMessage));
+            string serializedMessage = JsonUtility.ToJson(webMessage);
+            SendStringToWeb(serializedMessage);
         }
 #endif
     }

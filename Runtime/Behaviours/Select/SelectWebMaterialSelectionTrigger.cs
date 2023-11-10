@@ -8,12 +8,15 @@ namespace ReupVirtualTwin.behaviours
         public override void HandleObject(GameObject triggerObject)
         {
             var trigger = triggerObject.GetComponent<IWebMaterialSelectionTrigger>();
-            CreateContainer(trigger);
-            SendCreateWebContainerMessage(trigger);
+            var container = CreateContainer(trigger);
+            if (container != null)
+            {
+                SendCreateWebContainerMessage(trigger);
+            }
         }
-        void CreateContainer(IWebMaterialSelectionTrigger trigger)
+        GameObject CreateContainer(IWebMaterialSelectionTrigger trigger)
         {
-            trigger.CreateContainer();
+            return trigger.CreateContainer();
         }
         void SendCreateWebContainerMessage(IWebMaterialSelectionTrigger trigger)
         {
