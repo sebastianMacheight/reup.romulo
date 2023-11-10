@@ -1,17 +1,17 @@
-using UnityEngine;
 using System.Runtime.InteropServices;
 using ReupVirtualTwin.dataModels;
+using UnityEngine;
 
-namespace ReupVirtualTwin.managers
+namespace ReupVirtualTwin.behaviours
 {
-    public class WebMessagesManager : MonoBehaviour
+    public static class WebMessagesSender
     {
 
 #if UNITY_WEBGL
         [DllImport("__Internal")]
         private static extern void SendStringToWeb(string msg);
 
-        public void SendWebMessage(WebMessage webMessage)
+        public static void SendWebMessage(WebMessage webMessage)
         {
             //SendStringToWeb(JsonUtility.ToJson(webMessage));
         }
