@@ -2,28 +2,31 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MaterialsManager : MonoBehaviour
+namespace ReupVirtualTwin.managers
 {
-    private List<GameObject> selectedObjects;
-    private int[] selectedMaterialIndexes;
-
-
-    public void SelectObjects(List<GameObject> objs, int[] objectsMaterialIndexes)
+    public class MaterialsManager : MonoBehaviour
     {
-        selectedObjects = objs;
-        selectedMaterialIndexes = objectsMaterialIndexes;
-    }
+        private List<GameObject> selectedObjects;
+        private int[] selectedMaterialIndexes;
 
-    public void SetNewMaterial(Material material)
-    {
-        foreach (var (obj, i) in selectedObjects.Select((v, i) => (v, i)))
+
+        public void SelectObjects(List<GameObject> objs, int[] objectsMaterialIndexes)
         {
-            var materials = obj.GetComponent<Renderer>().materials;
-            Material[] newMaterials = new Material[materials.Length];
-            newMaterials = materials;
-            newMaterials[selectedMaterialIndexes[i]] = material;
-            obj.GetComponent<Renderer>().materials = newMaterials;
+            selectedObjects = objs;
+            selectedMaterialIndexes = objectsMaterialIndexes;
         }
 
+        public void SetNewMaterial(Material material)
+        {
+            foreach (var (obj, i) in selectedObjects.Select((v, i) => (v, i)))
+            {
+                var materials = obj.GetComponent<Renderer>().materials;
+                Material[] newMaterials = new Material[materials.Length];
+                newMaterials = materials;
+                newMaterials[selectedMaterialIndexes[i]] = material;
+                obj.GetComponent<Renderer>().materials = newMaterials;
+            }
+
+        }
     }
 }

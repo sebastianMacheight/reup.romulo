@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ObjectSelector : Selector, IObjectSelector
+namespace ReupVirtualTwin.selectors.objectselectors
 {
-    public GameObject GetObject(Ray ray)
+    public abstract class ObjectSelector : Selector, IObjectSelector
     {
-        RaycastHit hit;
-        if (CastRay(ray, out hit))
+        public GameObject GetObject(Ray ray)
         {
-            GameObject obj = hit.collider.gameObject;
-            if (IsSelectable(obj))
+            RaycastHit hit;
+            if (CastRay(ray, out hit))
             {
-                return obj;
+                GameObject obj = hit.collider.gameObject;
+                if (IsSelectable(obj))
+                {
+                    return obj;
+                }
             }
+            return null;
         }
-        return null;
-    }
 
+    }
 }

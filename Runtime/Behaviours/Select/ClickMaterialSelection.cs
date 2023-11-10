@@ -1,7 +1,7 @@
 using ReupVirtualTwin.helpers;
 using UnityEngine;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.behaviours.select
 {
     public class ClickMaterialSelection : SelectObject
     {

@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetUpCamera : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-    [SerializeField] private Camera _camera;
-    void Start()
+    public class SetUpCamera : MonoBehaviour
     {
-        var cameras = Camera.allCameras;
-
-        foreach (var cam in cameras)
+        [SerializeField] private Camera _camera;
+        void Start()
         {
-            var camComponent = cam.GetComponent<Camera>();
-            camComponent.enabled = false;
+            var cameras = Camera.allCameras;
+
+            foreach (var cam in cameras)
+            {
+                var camComponent = cam.GetComponent<Camera>();
+                camComponent.enabled = false;
+            }
+            _camera.enabled = true;
         }
-        _camera.enabled = true;
     }
 }

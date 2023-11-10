@@ -2,27 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShowSlidingPanel : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-    public GameObject panel;
-
-    private IObjectPool _objectPool;
-
-    void Start()
+    public class ShowSlidingPanel : MonoBehaviour
     {
-        _objectPool = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<IObjectPool>();
-        _objectPool.PoolObject(panel);
-    }
-    
-    public void ShowPanel()
-    {
-        _objectPool.GetObjectFromPool(panel.name);
-        _objectPool.PoolObject(gameObject);
-    }
+        public GameObject panel;
 
-    public void HidePanel()
-    {
-        _objectPool.PoolObject(panel);
-        _objectPool.GetObjectFromPool(gameObject.name);
+        private IObjectPool _objectPool;
+
+        void Start()
+        {
+            _objectPool = GameObject.FindGameObjectWithTag("ObjectPool").GetComponent<IObjectPool>();
+            _objectPool.PoolObject(panel);
+        }
+        
+        public void ShowPanel()
+        {
+            _objectPool.GetObjectFromPool(panel.name);
+            _objectPool.PoolObject(gameObject);
+        }
+
+        public void HidePanel()
+        {
+            _objectPool.PoolObject(panel);
+            _objectPool.GetObjectFromPool(gameObject.name);
+        }
     }
 }

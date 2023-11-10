@@ -2,7 +2,7 @@ using ReupVirtualTwin.helpers;
 using UnityEngine;
 using ReupVirtualTwin.models;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.behaviours.select
 {
     public class ClickSceneTrigger : SelectObject
     {

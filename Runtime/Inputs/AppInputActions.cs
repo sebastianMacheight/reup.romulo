@@ -15,636 +15,639 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @AppInputActions: IInputActionCollection2, IDisposable
+namespace ReupVirtualTwin.inputs
 {
-    public InputActionAsset asset { get; }
-    public @AppInputActions()
+    public partial class @AppInputActions: IInputActionCollection2, IDisposable
     {
-        asset = InputActionAsset.FromJson(@"{
-    ""name"": ""AppInputActions"",
-    ""maps"": [
+        public InputActionAsset asset { get; }
+        public @AppInputActions()
         {
-            ""name"": ""Player"",
-            ""id"": ""e802d882-c0c7-4181-8e8a-98ee0a1d31b6"",
-            ""actions"": [
-                {
-                    ""name"": ""RotateView"",
-                    ""type"": ""Value"",
-                    ""id"": ""bcff9012-19bb-47e0-b5f0-c22d224031c2"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Movement"",
-                    ""type"": ""Value"",
-                    ""id"": ""7ef3b963-4e50-4b26-9575-c7358f576d52"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Select"",
-                    ""type"": ""Button"",
-                    ""id"": ""0cf5327d-1f71-414b-ba75-ccf345bda25c"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Pointer"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""b0e1ebbd-c551-4318-a0b7-472e7499937e"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Hold"",
-                    ""type"": ""Button"",
-                    ""id"": ""fa5ebd44-1144-43eb-a323-b9ce37fa43ad"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""9efac98a-919e-40e3-bdb0-d34ca51c61b2"",
-                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
-                    ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=0.2,y=0.2)"",
-                    ""groups"": ""Touchscreen"",
-                    ""action"": ""RotateView"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""93a9c1e8-d5d5-4fc0-8c68-89843672807f"",
-                    ""path"": ""<Pen>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RotateView"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""79812bdb-eca7-4e2d-b977-9cd0f507ddaf"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": ""InvertVector2"",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""RotateView"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7209ec38-8250-437e-998a-dbd77063f3ff"",
-                    ""path"": ""<Touchscreen>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touchscreen"",
-                    ""action"": ""Pointer"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""690d2d1d-b28e-4c53-8fcf-b2fd782c395a"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Pointer"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""wasd"",
-                    ""id"": ""d111dde3-9997-4806-bbb6-70824107c680"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""7d338a69-a683-453c-a9d3-db6d53786159"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""805eff14-9233-41a3-91c3-e2037ec14a8c"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""50c6aee5-6aa3-4d1f-9325-1f2e60d9a871"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""c5e50053-b5ae-4c27-ab04-4473789df490"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""b2c386c5-0bd1-4527-bcb8-593ebd589a54"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""5ee0aa40-01ac-40f6-a448-e34f35094d53"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""3b0b34e1-0d73-4c3d-81cd-91a1f35ee5c3"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""804f3ff8-a70d-4f7b-b4e6-5aff95ac11ae"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""92d8b3a2-731a-4c82-b3bd-f0aaf9811666"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Tap"",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cc02bb05-f6bc-4c04-b81f-09e76ba0eadd"",
-                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touchscreen"",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""df59acf7-5825-4c96-9019-1083cd30e72f"",
-                    ""path"": ""<Pen>/press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9ed6589d-77e6-43a8-9c7a-6614781abb7b"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold"",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Hold"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7a507e70-ff3a-42a5-b736-6bc436865ed5"",
-                    ""path"": ""<Touchscreen>/Press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touchscreen"",
-                    ""action"": ""Hold"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""UI"",
-            ""id"": ""46924f64-9f3c-4047-a1d6-f2e7333bec2b"",
-            ""actions"": [
-                {
-                    ""name"": ""Click"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""1e014d1d-4b11-4d67-8ccb-85b7fe674e58"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Point"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""4cc946b1-913e-4068-a066-39ff6bfb0d5c"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""ScrollWheel"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""2069370a-ad9f-40f0-9532-ed5cd514c3e9"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""1807b97b-5646-46c9-97f3-a3370dc8bd8e"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""517be2f2-2058-40df-86a5-e44031b1408f"",
-                    ""path"": ""<Touchscreen>/touch*/Press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Touchscreen"",
-                    ""action"": ""Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""350dfaf7-3f3b-48b6-ba45-0aa30ac69a42"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Point"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e97212b1-f87f-4629-a099-11476cc80039"",
-                    ""path"": ""<Touchscreen>/touch0/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Point"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1ff699dd-17fb-4a46-a125-723c8900a03b"",
-                    ""path"": ""<Mouse>/scroll"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""ScrollWheel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
+            asset = InputActionAsset.FromJson(@"{
+        ""name"": ""AppInputActions"",
+        ""maps"": [
+            {
+                ""name"": ""Player"",
+                ""id"": ""e802d882-c0c7-4181-8e8a-98ee0a1d31b6"",
+                ""actions"": [
+                    {
+                        ""name"": ""RotateView"",
+                        ""type"": ""Value"",
+                        ""id"": ""bcff9012-19bb-47e0-b5f0-c22d224031c2"",
+                        ""expectedControlType"": ""Vector2"",
+                        ""processors"": """",
+                        ""interactions"": """",
+                        ""initialStateCheck"": true
+                    },
+                    {
+                        ""name"": ""Movement"",
+                        ""type"": ""Value"",
+                        ""id"": ""7ef3b963-4e50-4b26-9575-c7358f576d52"",
+                        ""expectedControlType"": ""Vector2"",
+                        ""processors"": """",
+                        ""interactions"": """",
+                        ""initialStateCheck"": true
+                    },
+                    {
+                        ""name"": ""Select"",
+                        ""type"": ""Button"",
+                        ""id"": ""0cf5327d-1f71-414b-ba75-ccf345bda25c"",
+                        ""expectedControlType"": ""Button"",
+                        ""processors"": """",
+                        ""interactions"": """",
+                        ""initialStateCheck"": true
+                    },
+                    {
+                        ""name"": ""Pointer"",
+                        ""type"": ""PassThrough"",
+                        ""id"": ""b0e1ebbd-c551-4318-a0b7-472e7499937e"",
+                        ""expectedControlType"": ""Vector2"",
+                        ""processors"": """",
+                        ""interactions"": """",
+                        ""initialStateCheck"": true
+                    },
+                    {
+                        ""name"": ""Hold"",
+                        ""type"": ""Button"",
+                        ""id"": ""fa5ebd44-1144-43eb-a323-b9ce37fa43ad"",
+                        ""expectedControlType"": ""Button"",
+                        ""processors"": """",
+                        ""interactions"": """",
+                        ""initialStateCheck"": true
+                    }
+                ],
+                ""bindings"": [
+                    {
+                        ""name"": """",
+                        ""id"": ""9efac98a-919e-40e3-bdb0-d34ca51c61b2"",
+                        ""path"": ""<Touchscreen>/primaryTouch/delta"",
+                        ""interactions"": """",
+                        ""processors"": ""ScaleVector2(x=0.2,y=0.2)"",
+                        ""groups"": ""Touchscreen"",
+                        ""action"": ""RotateView"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""93a9c1e8-d5d5-4fc0-8c68-89843672807f"",
+                        ""path"": ""<Pen>/delta"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": """",
+                        ""action"": ""RotateView"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""79812bdb-eca7-4e2d-b977-9cd0f507ddaf"",
+                        ""path"": ""<Mouse>/delta"",
+                        ""interactions"": """",
+                        ""processors"": ""InvertVector2"",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""RotateView"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""7209ec38-8250-437e-998a-dbd77063f3ff"",
+                        ""path"": ""<Touchscreen>/position"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""Touchscreen"",
+                        ""action"": ""Pointer"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""690d2d1d-b28e-4c53-8fcf-b2fd782c395a"",
+                        ""path"": ""<Mouse>/position"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Pointer"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": ""wasd"",
+                        ""id"": ""d111dde3-9997-4806-bbb6-70824107c680"",
+                        ""path"": ""2DVector"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": """",
+                        ""action"": ""Movement"",
+                        ""isComposite"": true,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": ""up"",
+                        ""id"": ""7d338a69-a683-453c-a9d3-db6d53786159"",
+                        ""path"": ""<Keyboard>/w"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Movement"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": true
+                    },
+                    {
+                        ""name"": ""down"",
+                        ""id"": ""805eff14-9233-41a3-91c3-e2037ec14a8c"",
+                        ""path"": ""<Keyboard>/s"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Movement"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": true
+                    },
+                    {
+                        ""name"": ""left"",
+                        ""id"": ""50c6aee5-6aa3-4d1f-9325-1f2e60d9a871"",
+                        ""path"": ""<Keyboard>/a"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Movement"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": true
+                    },
+                    {
+                        ""name"": ""right"",
+                        ""id"": ""c5e50053-b5ae-4c27-ab04-4473789df490"",
+                        ""path"": ""<Keyboard>/d"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Movement"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": true
+                    },
+                    {
+                        ""name"": ""up"",
+                        ""id"": ""b2c386c5-0bd1-4527-bcb8-593ebd589a54"",
+                        ""path"": ""<Keyboard>/upArrow"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Movement"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": true
+                    },
+                    {
+                        ""name"": ""down"",
+                        ""id"": ""5ee0aa40-01ac-40f6-a448-e34f35094d53"",
+                        ""path"": ""<Keyboard>/downArrow"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Movement"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": true
+                    },
+                    {
+                        ""name"": ""left"",
+                        ""id"": ""3b0b34e1-0d73-4c3d-81cd-91a1f35ee5c3"",
+                        ""path"": ""<Keyboard>/leftArrow"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Movement"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": true
+                    },
+                    {
+                        ""name"": ""right"",
+                        ""id"": ""804f3ff8-a70d-4f7b-b4e6-5aff95ac11ae"",
+                        ""path"": ""<Keyboard>/rightArrow"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Movement"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": true
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""92d8b3a2-731a-4c82-b3bd-f0aaf9811666"",
+                        ""path"": ""<Mouse>/leftButton"",
+                        ""interactions"": ""Tap"",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Select"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""cc02bb05-f6bc-4c04-b81f-09e76ba0eadd"",
+                        ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""Touchscreen"",
+                        ""action"": ""Select"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""df59acf7-5825-4c96-9019-1083cd30e72f"",
+                        ""path"": ""<Pen>/press"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": """",
+                        ""action"": ""Select"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""9ed6589d-77e6-43a8-9c7a-6614781abb7b"",
+                        ""path"": ""<Mouse>/leftButton"",
+                        ""interactions"": ""Hold"",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Hold"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""7a507e70-ff3a-42a5-b736-6bc436865ed5"",
+                        ""path"": ""<Touchscreen>/Press"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""Touchscreen"",
+                        ""action"": ""Hold"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    }
+                ]
+            },
+            {
+                ""name"": ""UI"",
+                ""id"": ""46924f64-9f3c-4047-a1d6-f2e7333bec2b"",
+                ""actions"": [
+                    {
+                        ""name"": ""Click"",
+                        ""type"": ""PassThrough"",
+                        ""id"": ""1e014d1d-4b11-4d67-8ccb-85b7fe674e58"",
+                        ""expectedControlType"": ""Button"",
+                        ""processors"": """",
+                        ""interactions"": """",
+                        ""initialStateCheck"": true
+                    },
+                    {
+                        ""name"": ""Point"",
+                        ""type"": ""PassThrough"",
+                        ""id"": ""4cc946b1-913e-4068-a066-39ff6bfb0d5c"",
+                        ""expectedControlType"": ""Vector2"",
+                        ""processors"": """",
+                        ""interactions"": """",
+                        ""initialStateCheck"": true
+                    },
+                    {
+                        ""name"": ""ScrollWheel"",
+                        ""type"": ""PassThrough"",
+                        ""id"": ""2069370a-ad9f-40f0-9532-ed5cd514c3e9"",
+                        ""expectedControlType"": ""Vector2"",
+                        ""processors"": """",
+                        ""interactions"": """",
+                        ""initialStateCheck"": false
+                    }
+                ],
+                ""bindings"": [
+                    {
+                        ""name"": """",
+                        ""id"": ""1807b97b-5646-46c9-97f3-a3370dc8bd8e"",
+                        ""path"": ""<Mouse>/leftButton"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Click"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""517be2f2-2058-40df-86a5-e44031b1408f"",
+                        ""path"": ""<Touchscreen>/touch*/Press"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""Touchscreen"",
+                        ""action"": ""Click"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""350dfaf7-3f3b-48b6-ba45-0aa30ac69a42"",
+                        ""path"": ""<Mouse>/position"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""Point"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""e97212b1-f87f-4629-a099-11476cc80039"",
+                        ""path"": ""<Touchscreen>/touch0/position"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": """",
+                        ""action"": ""Point"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    },
+                    {
+                        ""name"": """",
+                        ""id"": ""1ff699dd-17fb-4a46-a125-723c8900a03b"",
+                        ""path"": ""<Mouse>/scroll"",
+                        ""interactions"": """",
+                        ""processors"": """",
+                        ""groups"": ""KeyboardAndMouse"",
+                        ""action"": ""ScrollWheel"",
+                        ""isComposite"": false,
+                        ""isPartOfComposite"": false
+                    }
+                ]
+            }
+        ],
+        ""controlSchemes"": [
+            {
+                ""name"": ""KeyboardAndMouse"",
+                ""bindingGroup"": ""KeyboardAndMouse"",
+                ""devices"": [
+                    {
+                        ""devicePath"": ""<Keyboard>"",
+                        ""isOptional"": false,
+                        ""isOR"": false
+                    },
+                    {
+                        ""devicePath"": ""<Mouse>"",
+                        ""isOptional"": false,
+                        ""isOR"": false
+                    }
+                ]
+            },
+            {
+                ""name"": ""Touchscreen"",
+                ""bindingGroup"": ""Touchscreen"",
+                ""devices"": [
+                    {
+                        ""devicePath"": ""<Touchscreen>"",
+                        ""isOptional"": false,
+                        ""isOR"": false
+                    }
+                ]
+            }
+        ]
+    }");
+            // Player
+            m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
+            m_Player_RotateView = m_Player.FindAction("RotateView", throwIfNotFound: true);
+            m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
+            m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
+            m_Player_Pointer = m_Player.FindAction("Pointer", throwIfNotFound: true);
+            m_Player_Hold = m_Player.FindAction("Hold", throwIfNotFound: true);
+            // UI
+            m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+            m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
+            m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
+            m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         }
-    ],
-    ""controlSchemes"": [
+
+        public void Dispose()
         {
-            ""name"": ""KeyboardAndMouse"",
-            ""bindingGroup"": ""KeyboardAndMouse"",
-            ""devices"": [
-                {
-                    ""devicePath"": ""<Keyboard>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                },
-                {
-                    ""devicePath"": ""<Mouse>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Touchscreen"",
-            ""bindingGroup"": ""Touchscreen"",
-            ""devices"": [
-                {
-                    ""devicePath"": ""<Touchscreen>"",
-                    ""isOptional"": false,
-                    ""isOR"": false
-                }
-            ]
+            UnityEngine.Object.Destroy(asset);
         }
-    ]
-}");
+
+        public InputBinding? bindingMask
+        {
+            get => asset.bindingMask;
+            set => asset.bindingMask = value;
+        }
+
+        public ReadOnlyArray<InputDevice>? devices
+        {
+            get => asset.devices;
+            set => asset.devices = value;
+        }
+
+        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+        public bool Contains(InputAction action)
+        {
+            return asset.Contains(action);
+        }
+
+        public IEnumerator<InputAction> GetEnumerator()
+        {
+            return asset.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Enable()
+        {
+            asset.Enable();
+        }
+
+        public void Disable()
+        {
+            asset.Disable();
+        }
+
+        public IEnumerable<InputBinding> bindings => asset.bindings;
+
+        public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+        {
+            return asset.FindAction(actionNameOrId, throwIfNotFound);
+        }
+
+        public int FindBinding(InputBinding bindingMask, out InputAction action)
+        {
+            return asset.FindBinding(bindingMask, out action);
+        }
+
         // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_RotateView = m_Player.FindAction("RotateView", throwIfNotFound: true);
-        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
-        m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
-        m_Player_Pointer = m_Player.FindAction("Pointer", throwIfNotFound: true);
-        m_Player_Hold = m_Player.FindAction("Hold", throwIfNotFound: true);
+        private readonly InputActionMap m_Player;
+        private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
+        private readonly InputAction m_Player_RotateView;
+        private readonly InputAction m_Player_Movement;
+        private readonly InputAction m_Player_Select;
+        private readonly InputAction m_Player_Pointer;
+        private readonly InputAction m_Player_Hold;
+        public struct PlayerActions
+        {
+            private @AppInputActions m_Wrapper;
+            public PlayerActions(@AppInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @RotateView => m_Wrapper.m_Player_RotateView;
+            public InputAction @Movement => m_Wrapper.m_Player_Movement;
+            public InputAction @Select => m_Wrapper.m_Player_Select;
+            public InputAction @Pointer => m_Wrapper.m_Player_Pointer;
+            public InputAction @Hold => m_Wrapper.m_Player_Hold;
+            public InputActionMap Get() { return m_Wrapper.m_Player; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
+            public void AddCallbacks(IPlayerActions instance)
+            {
+                if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
+                @RotateView.started += instance.OnRotateView;
+                @RotateView.performed += instance.OnRotateView;
+                @RotateView.canceled += instance.OnRotateView;
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
+                @Pointer.started += instance.OnPointer;
+                @Pointer.performed += instance.OnPointer;
+                @Pointer.canceled += instance.OnPointer;
+                @Hold.started += instance.OnHold;
+                @Hold.performed += instance.OnHold;
+                @Hold.canceled += instance.OnHold;
+            }
+
+            private void UnregisterCallbacks(IPlayerActions instance)
+            {
+                @RotateView.started -= instance.OnRotateView;
+                @RotateView.performed -= instance.OnRotateView;
+                @RotateView.canceled -= instance.OnRotateView;
+                @Movement.started -= instance.OnMovement;
+                @Movement.performed -= instance.OnMovement;
+                @Movement.canceled -= instance.OnMovement;
+                @Select.started -= instance.OnSelect;
+                @Select.performed -= instance.OnSelect;
+                @Select.canceled -= instance.OnSelect;
+                @Pointer.started -= instance.OnPointer;
+                @Pointer.performed -= instance.OnPointer;
+                @Pointer.canceled -= instance.OnPointer;
+                @Hold.started -= instance.OnHold;
+                @Hold.performed -= instance.OnHold;
+                @Hold.canceled -= instance.OnHold;
+            }
+
+            public void RemoveCallbacks(IPlayerActions instance)
+            {
+                if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IPlayerActions instance)
+            {
+                foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public PlayerActions @Player => new PlayerActions(this);
+
         // UI
-        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
-        m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
-        m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
-    }
-
-    public void Dispose()
-    {
-        UnityEngine.Object.Destroy(asset);
-    }
-
-    public InputBinding? bindingMask
-    {
-        get => asset.bindingMask;
-        set => asset.bindingMask = value;
-    }
-
-    public ReadOnlyArray<InputDevice>? devices
-    {
-        get => asset.devices;
-        set => asset.devices = value;
-    }
-
-    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-    public bool Contains(InputAction action)
-    {
-        return asset.Contains(action);
-    }
-
-    public IEnumerator<InputAction> GetEnumerator()
-    {
-        return asset.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    public void Enable()
-    {
-        asset.Enable();
-    }
-
-    public void Disable()
-    {
-        asset.Disable();
-    }
-
-    public IEnumerable<InputBinding> bindings => asset.bindings;
-
-    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
-    {
-        return asset.FindAction(actionNameOrId, throwIfNotFound);
-    }
-
-    public int FindBinding(InputBinding bindingMask, out InputAction action)
-    {
-        return asset.FindBinding(bindingMask, out action);
-    }
-
-    // Player
-    private readonly InputActionMap m_Player;
-    private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_RotateView;
-    private readonly InputAction m_Player_Movement;
-    private readonly InputAction m_Player_Select;
-    private readonly InputAction m_Player_Pointer;
-    private readonly InputAction m_Player_Hold;
-    public struct PlayerActions
-    {
-        private @AppInputActions m_Wrapper;
-        public PlayerActions(@AppInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @RotateView => m_Wrapper.m_Player_RotateView;
-        public InputAction @Movement => m_Wrapper.m_Player_Movement;
-        public InputAction @Select => m_Wrapper.m_Player_Select;
-        public InputAction @Pointer => m_Wrapper.m_Player_Pointer;
-        public InputAction @Hold => m_Wrapper.m_Player_Hold;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerActions instance)
+        private readonly InputActionMap m_UI;
+        private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+        private readonly InputAction m_UI_Click;
+        private readonly InputAction m_UI_Point;
+        private readonly InputAction m_UI_ScrollWheel;
+        public struct UIActions
         {
-            if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @RotateView.started += instance.OnRotateView;
-            @RotateView.performed += instance.OnRotateView;
-            @RotateView.canceled += instance.OnRotateView;
-            @Movement.started += instance.OnMovement;
-            @Movement.performed += instance.OnMovement;
-            @Movement.canceled += instance.OnMovement;
-            @Select.started += instance.OnSelect;
-            @Select.performed += instance.OnSelect;
-            @Select.canceled += instance.OnSelect;
-            @Pointer.started += instance.OnPointer;
-            @Pointer.performed += instance.OnPointer;
-            @Pointer.canceled += instance.OnPointer;
-            @Hold.started += instance.OnHold;
-            @Hold.performed += instance.OnHold;
-            @Hold.canceled += instance.OnHold;
-        }
+            private @AppInputActions m_Wrapper;
+            public UIActions(@AppInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Click => m_Wrapper.m_UI_Click;
+            public InputAction @Point => m_Wrapper.m_UI_Point;
+            public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
+            public InputActionMap Get() { return m_Wrapper.m_UI; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+            public void AddCallbacks(IUIActions instance)
+            {
+                if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
+                @Point.started += instance.OnPoint;
+                @Point.performed += instance.OnPoint;
+                @Point.canceled += instance.OnPoint;
+                @ScrollWheel.started += instance.OnScrollWheel;
+                @ScrollWheel.performed += instance.OnScrollWheel;
+                @ScrollWheel.canceled += instance.OnScrollWheel;
+            }
 
-        private void UnregisterCallbacks(IPlayerActions instance)
-        {
-            @RotateView.started -= instance.OnRotateView;
-            @RotateView.performed -= instance.OnRotateView;
-            @RotateView.canceled -= instance.OnRotateView;
-            @Movement.started -= instance.OnMovement;
-            @Movement.performed -= instance.OnMovement;
-            @Movement.canceled -= instance.OnMovement;
-            @Select.started -= instance.OnSelect;
-            @Select.performed -= instance.OnSelect;
-            @Select.canceled -= instance.OnSelect;
-            @Pointer.started -= instance.OnPointer;
-            @Pointer.performed -= instance.OnPointer;
-            @Pointer.canceled -= instance.OnPointer;
-            @Hold.started -= instance.OnHold;
-            @Hold.performed -= instance.OnHold;
-            @Hold.canceled -= instance.OnHold;
-        }
+            private void UnregisterCallbacks(IUIActions instance)
+            {
+                @Click.started -= instance.OnClick;
+                @Click.performed -= instance.OnClick;
+                @Click.canceled -= instance.OnClick;
+                @Point.started -= instance.OnPoint;
+                @Point.performed -= instance.OnPoint;
+                @Point.canceled -= instance.OnPoint;
+                @ScrollWheel.started -= instance.OnScrollWheel;
+                @ScrollWheel.performed -= instance.OnScrollWheel;
+                @ScrollWheel.canceled -= instance.OnScrollWheel;
+            }
 
-        public void RemoveCallbacks(IPlayerActions instance)
-        {
-            if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
+            public void RemoveCallbacks(IUIActions instance)
+            {
+                if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
 
-        public void SetCallbacks(IPlayerActions instance)
-        {
-            foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
+            public void SetCallbacks(IUIActions instance)
+            {
+                foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
         }
-    }
-    public PlayerActions @Player => new PlayerActions(this);
-
-    // UI
-    private readonly InputActionMap m_UI;
-    private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
-    private readonly InputAction m_UI_Click;
-    private readonly InputAction m_UI_Point;
-    private readonly InputAction m_UI_ScrollWheel;
-    public struct UIActions
-    {
-        private @AppInputActions m_Wrapper;
-        public UIActions(@AppInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Click => m_Wrapper.m_UI_Click;
-        public InputAction @Point => m_Wrapper.m_UI_Point;
-        public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
-        public InputActionMap Get() { return m_Wrapper.m_UI; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
-        public void AddCallbacks(IUIActions instance)
+        public UIActions @UI => new UIActions(this);
+        private int m_KeyboardAndMouseSchemeIndex = -1;
+        public InputControlScheme KeyboardAndMouseScheme
         {
-            if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
-            @Click.started += instance.OnClick;
-            @Click.performed += instance.OnClick;
-            @Click.canceled += instance.OnClick;
-            @Point.started += instance.OnPoint;
-            @Point.performed += instance.OnPoint;
-            @Point.canceled += instance.OnPoint;
-            @ScrollWheel.started += instance.OnScrollWheel;
-            @ScrollWheel.performed += instance.OnScrollWheel;
-            @ScrollWheel.canceled += instance.OnScrollWheel;
+            get
+            {
+                if (m_KeyboardAndMouseSchemeIndex == -1) m_KeyboardAndMouseSchemeIndex = asset.FindControlSchemeIndex("KeyboardAndMouse");
+                return asset.controlSchemes[m_KeyboardAndMouseSchemeIndex];
+            }
         }
-
-        private void UnregisterCallbacks(IUIActions instance)
+        private int m_TouchscreenSchemeIndex = -1;
+        public InputControlScheme TouchscreenScheme
         {
-            @Click.started -= instance.OnClick;
-            @Click.performed -= instance.OnClick;
-            @Click.canceled -= instance.OnClick;
-            @Point.started -= instance.OnPoint;
-            @Point.performed -= instance.OnPoint;
-            @Point.canceled -= instance.OnPoint;
-            @ScrollWheel.started -= instance.OnScrollWheel;
-            @ScrollWheel.performed -= instance.OnScrollWheel;
-            @ScrollWheel.canceled -= instance.OnScrollWheel;
+            get
+            {
+                if (m_TouchscreenSchemeIndex == -1) m_TouchscreenSchemeIndex = asset.FindControlSchemeIndex("Touchscreen");
+                return asset.controlSchemes[m_TouchscreenSchemeIndex];
+            }
         }
-
-        public void RemoveCallbacks(IUIActions instance)
+        public interface IPlayerActions
         {
-            if (m_Wrapper.m_UIActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
+            void OnRotateView(InputAction.CallbackContext context);
+            void OnMovement(InputAction.CallbackContext context);
+            void OnSelect(InputAction.CallbackContext context);
+            void OnPointer(InputAction.CallbackContext context);
+            void OnHold(InputAction.CallbackContext context);
         }
-
-        public void SetCallbacks(IUIActions instance)
+        public interface IUIActions
         {
-            foreach (var item in m_Wrapper.m_UIActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_UIActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
+            void OnClick(InputAction.CallbackContext context);
+            void OnPoint(InputAction.CallbackContext context);
+            void OnScrollWheel(InputAction.CallbackContext context);
         }
-    }
-    public UIActions @UI => new UIActions(this);
-    private int m_KeyboardAndMouseSchemeIndex = -1;
-    public InputControlScheme KeyboardAndMouseScheme
-    {
-        get
-        {
-            if (m_KeyboardAndMouseSchemeIndex == -1) m_KeyboardAndMouseSchemeIndex = asset.FindControlSchemeIndex("KeyboardAndMouse");
-            return asset.controlSchemes[m_KeyboardAndMouseSchemeIndex];
-        }
-    }
-    private int m_TouchscreenSchemeIndex = -1;
-    public InputControlScheme TouchscreenScheme
-    {
-        get
-        {
-            if (m_TouchscreenSchemeIndex == -1) m_TouchscreenSchemeIndex = asset.FindControlSchemeIndex("Touchscreen");
-            return asset.controlSchemes[m_TouchscreenSchemeIndex];
-        }
-    }
-    public interface IPlayerActions
-    {
-        void OnRotateView(InputAction.CallbackContext context);
-        void OnMovement(InputAction.CallbackContext context);
-        void OnSelect(InputAction.CallbackContext context);
-        void OnPointer(InputAction.CallbackContext context);
-        void OnHold(InputAction.CallbackContext context);
-    }
-    public interface IUIActions
-    {
-        void OnClick(InputAction.CallbackContext context);
-        void OnPoint(InputAction.CallbackContext context);
-        void OnScrollWheel(InputAction.CallbackContext context);
     }
 }

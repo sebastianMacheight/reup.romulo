@@ -5,31 +5,35 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using ReupVirtualTwin.helpers;
 
-[RequireComponent(typeof(IRayCastHitSelector))]
-public abstract class SelectPoint : Select
+
+namespace ReupVirtualTwin.behaviours.select
 {
-    private IRayCastHitSelector _hitSelector;
-
-    protected override void Awake()
+    [RequireComponent(typeof(IRayCastHitSelector))]
+    public abstract class SelectPoint : Select
     {
-        base.Awake();
-        _hitSelector = GetComponent<IRayCastHitSelector>();
-    }
+        private IRayCastHitSelector _hitSelector;
 
-    public override void OnSelect(InputAction.CallbackContext ctx)
-    {
-        if (!_dragManager.prevDragging && !OverUICheck.PointerOverUI() && !_dragManager.prevSelectInputInUI)
+        protected override void Awake()
         {
-            Ray ray = _rayProvider.GetRay();
-            RaycastHit? hit = _hitSelector.GetHit(ray);
-            if (hit != null)
-            {
-                HandleHit((RaycastHit)hit);
-                return;
-            }
+            base.Awake();
+            _hitSelector = GetComponent<IRayCastHitSelector>();
         }
-        MissHit();
+
+        public override void OnSelect(InputAction.CallbackContext ctx)
+        {
+            if (!_dragManager.prevDragging && !OverUICheck.PointerOverUI() && !_dragManager.prevSelectInputInUI)
+            {
+                Ray ray = _rayProvider.GetRay();
+                RaycastHit? hit = _hitSelector.GetHit(ray);
+                if (hit != null)
+                {
+                    HandleHit((RaycastHit)hit);
+                    return;
+                }
+            }
+            MissHit();
+        }
+        public abstract void HandleHit(RaycastHit hit);
+        public virtual void MissHit() { }
     }
-    public abstract void HandleHit(RaycastHit hit);
-    public virtual void MissHit() { }
 }

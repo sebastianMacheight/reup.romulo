@@ -6,7 +6,7 @@ using TB;
 using UnityEngine.UIElements;
 using ReupVirtualTwin.helpers;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.editor
 {
     public class SimplifyMesh : EditorWindow
     {
