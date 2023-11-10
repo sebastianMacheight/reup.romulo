@@ -7,7 +7,7 @@ using ReupVirtualTwin.enums;
 using UnityEditor;
 using ReupVirtualTwin.models;
 
-public class ExtensionsSceneTriggersTest
+public class SphereMaterialContainerHandlerTest
 {
     private GameObject objectPoolPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/ScriptHolders/ObjectPool.prefab");
     private GameObject materialContainerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/MaterialContainerTest.prefab");
