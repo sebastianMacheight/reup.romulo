@@ -1,7 +1,10 @@
 ﻿using System;
 using UnityEngine;
-public interface IRayProvider
-{
-    public Ray GetRay();
-}
 
+namespace ReupVirtualTwin.helpers.creators.materialscontainer
+{
+    public interface IRayProvider
+    {
+        public Ray GetRay();
+    }
+}

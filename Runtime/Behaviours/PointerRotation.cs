@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public class PointerRotation : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-    public float sensitivity = 0.4f;
-
-    private CharacterRotationManager _characterRotationManager;
-    private InputProvider _inputProvider;
-    private DragManager _dragManager;
-
-    private void Awake()
+    public class PointerRotation : MonoBehaviour
     {
-        _inputProvider = new InputProvider();
-        _dragManager = GetComponent<DragManager>();
-        _characterRotationManager = GetComponent<CharacterRotationManager>();
-    }
+        public float sensitivity = 0.4f;
 
-    void Update()
-    {
-        if (_dragManager.dragging)
+        private CharacterRotationManager _characterRotationManager;
+        private InputProvider _inputProvider;
+        private DragManager _dragManager;
+
+        private void Awake()
         {
-            Vector2 look = _inputProvider.RotateViewInput();
-            _characterRotationManager.horizontalRotation += (look.x * sensitivity);
-            _characterRotationManager.verticalRotation += (look.y * sensitivity * -1f);
+            _inputProvider = new InputProvider();
+            _dragManager = GetComponent<DragManager>();
+            _characterRotationManager = GetComponent<CharacterRotationManager>();
         }
-    }
 
+        void Update()
+        {
+            if (_dragManager.dragging)
+            {
+                Vector2 look = _inputProvider.RotateViewInput();
+                _characterRotationManager.horizontalRotation += (look.x * sensitivity);
+                _characterRotationManager.verticalRotation += (look.y * sensitivity * -1f);
+            }
+        }
+
+    }
 }

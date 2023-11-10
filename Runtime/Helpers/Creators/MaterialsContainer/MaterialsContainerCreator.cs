@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public abstract class MaterialsContainerCreator : MonoBehaviour, IMaterialsContainerCreator
+namespace ReupVirtualTwin.helpers.creators.materialscontainer
 {
-    public GameObject materialsContainerInstance { get; set; } = null;
-    public abstract GameObject CreateContainer(Material[] selectableMaterials);
-    public abstract void HideContainer();
-
-    private bool _prevMaterialsContainerInstance;
-    private InputProvider _inputProvider;
-
-    protected void OnSelect(InputAction.CallbackContext obj)
+    public abstract class MaterialsContainerCreator : MonoBehaviour, IMaterialsContainerCreator
     {
+        public GameObject materialsContainerInstance { get; set; } = null;
+        public abstract GameObject CreateContainer(Material[] selectableMaterials);
+        public abstract void HideContainer();
+
+        private bool _prevMaterialsContainerInstance;
+        private InputProvider _inputProvider;
+
+        protected void OnSelect(InputAction.CallbackContext obj)
+        {
+        }
     }
 }

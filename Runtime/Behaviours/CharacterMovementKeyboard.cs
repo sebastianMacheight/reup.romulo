@@ -4,45 +4,48 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using ReupVirtualTwin.characterMovement;
 
-[RequireComponent(typeof(CharacterPositionManager))]
-public class CharacterMovementKeyboard : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-
-    private InputProvider _inputProvider;
-    private CharacterPositionManager _characterPositionManager; 
-
-    private void Awake()
+    [RequireComponent(typeof(CharacterPositionManager))]
+    public class CharacterMovementKeyboard : MonoBehaviour
     {
-        _inputProvider = new InputProvider();
-        _characterPositionManager = GetComponent<CharacterPositionManager>();
-    }
 
-    private void Update()
-    {
-        UpdatePosition();
-    }
+        private InputProvider _inputProvider;
+        private CharacterPositionManager _characterPositionManager; 
 
-    private void UpdatePosition()
-    {
-        Vector2 inputValue = _inputProvider.MovementInput().normalized;
-        Vector3 movementDirection = inputValue.x * GetCharacterRight() +
-                            inputValue.y * GetCharacterForward();
-        if (movementDirection != Vector3.zero)
+        private void Awake()
         {
-            _characterPositionManager.MovePositionByStepInDirection(movementDirection);
+            _inputProvider = new InputProvider();
+            _characterPositionManager = GetComponent<CharacterPositionManager>();
         }
-    }
 
-    private Vector3 GetCharacterRight()
-    {
-        Vector3 right = transform.right;
-        right.y = 0;
-        return right;
-    }
-    private Vector3 GetCharacterForward()
-    {
-        Vector3 forward = transform.forward;
-        forward.y = 0;
-        return forward;
+        private void Update()
+        {
+            UpdatePosition();
+        }
+
+        private void UpdatePosition()
+        {
+            Vector2 inputValue = _inputProvider.MovementInput().normalized;
+            Vector3 movementDirection = inputValue.x * GetCharacterRight() +
+                                inputValue.y * GetCharacterForward();
+            if (movementDirection != Vector3.zero)
+            {
+                _characterPositionManager.MovePositionByStepInDirection(movementDirection);
+            }
+        }
+
+        private Vector3 GetCharacterRight()
+        {
+            Vector3 right = transform.right;
+            right.y = 0;
+            return right;
+        }
+        private Vector3 GetCharacterForward()
+        {
+            Vector3 forward = transform.forward;
+            forward.y = 0;
+            return forward;
+        }
     }
 }

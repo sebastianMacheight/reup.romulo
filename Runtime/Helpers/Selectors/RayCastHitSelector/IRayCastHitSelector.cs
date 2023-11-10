@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.selectors.raycasthitselector
 {
     public interface IRayCastHitSelector
     {
