@@ -26,6 +26,15 @@ namespace ReupVirtualTwin.models
             }
             return null;
         }
+        public List<GameObject> GetObjectsWithGuids(string[] guids)
+        {
+            var findObjects = new List<GameObject>();
+            foreach(string  guid in guids)
+            {
+                findObjects.Add(GetObjectWithGuid(guid));
+            }
+            return findObjects;
+        }
 
     }
 }
