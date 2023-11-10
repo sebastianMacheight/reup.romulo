@@ -9,7 +9,7 @@ namespace ReupVirtualTwin.models
         public List<Material> selectableMaterials;
         public List<GameObject> objects;
         [HideInInspector]
-        public int[] objectsMaterialIndexes;
+        public int[] submeshIndexes;
 
 
         IMaterialContainerHandler _containerHandler;

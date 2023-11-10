@@ -15,8 +15,8 @@ public class MaterialSelectionTriggerEditor : Editor
 
         if (trigger.objects.Count != 0)
         {
-            if (trigger.objectsMaterialIndexes.Length != trigger.objects.Count)
-                trigger.objectsMaterialIndexes = new int[trigger.objects.Count];
+            if (trigger.submeshIndexes.Length != trigger.objects.Count)
+                trigger.submeshIndexes = new int[trigger.objects.Count];
             EditorGUI.BeginChangeCheck();
             foreach (var (obj, j) in trigger.objects.Select((v, i) => (v, i)))
             {
@@ -33,8 +33,8 @@ public class MaterialSelectionTriggerEditor : Editor
                             materialOptions[i] = materials[i].name;
                         }
                         var infoMessage = $"Material to change for {obj.name}";
-                        trigger.objectsMaterialIndexes[j] = EditorGUILayout.Popup(infoMessage,
-                                                                                  trigger.objectsMaterialIndexes[j],
+                        trigger.submeshIndexes[j] = EditorGUILayout.Popup(infoMessage,
+                                                                                  trigger.submeshIndexes[j],
                                                                                   materialOptions);
                     }
                     checkIndexOutOfMaterialsArray(j, materials);
@@ -48,9 +48,9 @@ public class MaterialSelectionTriggerEditor : Editor
     }
     private void checkIndexOutOfMaterialsArray(int index, Material[] materials)
     {
-        if (trigger.objectsMaterialIndexes[index] >= materials.Length)
+        if (trigger.submeshIndexes[index] >= materials.Length)
         {
-            trigger.objectsMaterialIndexes[index] = 0;
+            trigger.submeshIndexes[index] = 0;
         }
     }
 }
