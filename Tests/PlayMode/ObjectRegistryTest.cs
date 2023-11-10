@@ -41,7 +41,7 @@ public class ObjectRegistryTest : MonoBehaviour
     public IEnumerator ObjectRegistryContainsTestObj()
     {
         var id = testObj.GetComponent<RegisteredIdentifier>().getId();
-        var obtainedObj = objectRegistry.GetObjectWithGuid(id);
+        var obtainedObj = objectRegistry.GetItemWithGuid(id);
         Assert.AreEqual(testObj, obtainedObj);
         yield return null;
     }
@@ -49,7 +49,7 @@ public class ObjectRegistryTest : MonoBehaviour
     [UnityTest]
     public IEnumerator NoObjectIsReturnedIfIncorrectId()
     {
-        var obtainedObj = objectRegistry.GetObjectWithGuid("an-incorrect-id");
+        var obtainedObj = objectRegistry.GetItemWithGuid("an-incorrect-id");
         Assert.AreEqual(obtainedObj, null);
         yield return null;
     }
