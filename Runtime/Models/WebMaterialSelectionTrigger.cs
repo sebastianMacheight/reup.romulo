@@ -4,24 +4,18 @@ using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwin.models
 {
-    //public class WebMaterialSelectionTrigger : MonoBehaviour, IMaterialSelectionTrigger
-    public class WebMaterialSelectionTrigger : MonoBehaviour
+    public class WebMaterialSelectionTrigger : MonoBehaviour, IMaterialSelectionTrigger
     {
-        public List<Material> selectableMaterials;
-        public List<GameObject> objects;
-        [HideInInspector]
-        public int[] objectsMaterialIndexes;
-
-        //IWebMaterialContainerHandler _containerHandler;
+        IWebMaterialContainerHandler _containerHandler;
 
         private void Start()
         {
-            //_containerHandler = ObjectFinder.FindMaterialsContainerHandler().GetComponent<IWebMaterialContainerHandler>();
+            _containerHandler = ObjectFinder.FindextensionsTriggers().GetComponent<IWebMaterialContainerHandler>();
         }
 
-        //public GameObject CreateContainer()
-        //{
-        //    return _containerHandler.CreateContainer(this);
-        //}
+        public GameObject CreateContainer()
+        {
+            return _containerHandler.CreateContainer(this);
+        }
     }
 }
