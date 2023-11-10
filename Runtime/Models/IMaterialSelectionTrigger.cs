@@ -7,6 +7,5 @@ namespace ReupVirtualTwin.models
     public interface IMaterialSelectionTrigger
     {
         public GameObject CreateContainer();
-        public void HideContainer();
     }
 }

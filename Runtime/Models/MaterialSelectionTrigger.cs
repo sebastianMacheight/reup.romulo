@@ -23,10 +23,5 @@ namespace ReupVirtualTwin.models
         {
             return _containerHandler.CreateContainer(this);
         }
-
-        public void HideContainer()
-        {
-            _containerHandler.HideContainer();
-        }
     }
 }
