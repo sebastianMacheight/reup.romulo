@@ -13,7 +13,7 @@ namespace ReupVirtualTwin.managers
 
         public void SendWebMessage(WebMessage webMessage)
         {
-            SendStringToWeb(JsonUtility.ToJson(webMessage));
+            //SendStringToWeb(JsonUtility.ToJson(webMessage));
         }
 #endif
     }

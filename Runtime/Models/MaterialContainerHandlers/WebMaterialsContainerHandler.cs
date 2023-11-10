@@ -5,33 +5,41 @@ using ReupVirtualTwin.dataModels;
 
 namespace ReupVirtualTwin.models
 {
-    public class WebMaterialsContainerCreator : MonoBehaviour, IMaterialsContainerHider
+    public class WebMaterialsContainerHandler : MonoBehaviour, IWebMaterialContainerHandler
     {
         [SerializeField]
         GameObject webMaterialHandlerPrefab;
         WebMessagesManager _webMessageManager;
         IObjectPool _objectPool;
         GameObject webMaterialsHandler;
+        IUniqueIdentifer triggerIdentifier;
 
         private void Start()
         {
             _objectPool = ObjectFinder.FindObjectPool();
             _webMessageManager = ObjectFinder.FindWebMessagesManager().GetComponent<WebMessagesManager>();
         }
-        public GameObject CreateContainer(Material[] selectableMaterials)
+        public GameObject CreateContainer(WebMaterialSelectionTrigger trigger)
         {
+            triggerIdentifier = trigger.gameObject.GetComponent<IUniqueIdentifer>();
             if (webMaterialsHandler != null)
             {
                 return webMaterialsHandler;
             }
             var message = new WebMessage
             {
-                operation = "showMaterialsOptions"
+                operation = "showMaterialsOptions",
+                text = triggerIdentifier.getId()
             };
             _webMessageManager.SendWebMessage(message);
             webMaterialsHandler = _objectPool.GetObjectFromPool(webMaterialHandlerPrefab.name, transform);
             webMaterialsHandler.transform.position = Vector3.zero;
             return webMaterialsHandler;
+        }
+
+        public void SetNewMaterial()
+        {
+            throw new System.NotImplementedException();
         }
 
         public void HideContainer()

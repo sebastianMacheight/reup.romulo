@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.models
 
         private void Start()
         {
-            _containerHandler = ObjectFinder.FindMaterialsContainerHandler().GetComponent<IMaterialContainerHandler>();
+            _containerHandler = ObjectFinder.FindextensionsTriggers().GetComponent<IMaterialContainerHandler>();
         }
 
         public GameObject CreateContainer()

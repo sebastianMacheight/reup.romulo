@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.helpers
             return GameObject.FindGameObjectWithTag(TagsEnum.objectPool).GetComponent<IObjectPool>();
         }
 
-        public static GameObject FindMaterialsContainerHandler()
+        public static GameObject FindextensionsTriggers()
         {
             return GameObject.FindGameObjectWithTag(TagsEnum.extensionsTriggers);
         }
