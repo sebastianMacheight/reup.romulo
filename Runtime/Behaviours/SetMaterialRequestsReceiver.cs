@@ -4,7 +4,6 @@ using ReupVirtualTwin.models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ReupVirtualTwin.behaviours
 {
@@ -15,6 +14,20 @@ namespace ReupVirtualTwin.behaviours
         List<GameObject> objects;
 
         IRegistry registry;
+        IWebRequestTexture _webRequestTexture;
+
+        public IWebRequestTexture webRequestTexture
+        {
+            get
+            {
+                if (_webRequestTexture == null)
+                {
+                    _webRequestTexture = new WebRequestTexture();
+                }
+                return _webRequestTexture;
+            }
+            set => _webRequestTexture = value;
+        }
 
         private void Start()
         {
@@ -32,16 +45,15 @@ namespace ReupVirtualTwin.behaviours
 
 
         IEnumerator LoadTextureFromUrl (string url) {
-            var image = UnityWebRequestTexture.GetTexture(url);
-            yield return image.SendWebRequest();
-            if (image.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError(image.error);
-            }
-            else
-            {
-                texture = DownloadHandlerTexture.GetContent(image);
-            }
+            yield return webRequestTexture.GetTexture(url,
+                onSuccess: texture =>
+                {
+                    this.texture = texture;
+                },
+                onError: error =>
+                {
+                    Debug.LogError("Error downloading texture: " + error);
+                });
         }
         void CreateMaterialWithTexture()
         {
