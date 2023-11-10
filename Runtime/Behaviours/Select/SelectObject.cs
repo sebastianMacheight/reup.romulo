@@ -33,7 +33,7 @@ namespace ReupVirtualTwin
             }
             MissObject();
         }
-        public abstract void HandleObject(GameObject obj);
+        public virtual void HandleObject(GameObject obj) { }
         public virtual void MissObject() { }
     }
 }
