@@ -9,7 +9,8 @@
         "reup.romulo.charactermovement",
         "reup.modulo.managers",
         "reup.romulo.behaviours",
-        "reup.romulo.models"
+        "reup.romulo.models",
+        "reup.remulo.dataModels"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
