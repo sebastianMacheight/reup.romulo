@@ -22,7 +22,7 @@ public class MaterialsHelperTest : MonoBehaviour
         Assert.AreNotEqual(materialToSelect, obj0.GetComponent<Renderer>().sharedMaterial);
 
         //materialsManager.SetNewMaterial(materialToSelect);
-        MaterialsHelper.SetNewMaterialToObject(new List<GameObject>() { obj0 }, new int[1] { 0 }, materialToSelect);
+        MaterialsHelper.SetNewMaterialToObjects(new List<GameObject>() { obj0 }, new int[1] { 0 }, materialToSelect);
         Assert.AreEqual(materialToSelect, obj0.GetComponent<Renderer>().sharedMaterial);
 
         yield return null;
@@ -50,7 +50,7 @@ public class MaterialsHelperTest : MonoBehaviour
             Assert.AreNotEqual(materialToSelect, objectsList[i].GetComponent<Renderer>().sharedMaterial);
         }
 
-        MaterialsHelper.SetNewMaterialToObject(objectsList, indexesList, materialToSelect);
+        MaterialsHelper.SetNewMaterialToObjects(objectsList, indexesList, materialToSelect);
         for (int i = 0; i < objectsList.Count; i++)
         {
             Assert.AreEqual(materialToSelect, objectsList[i].GetComponent<Renderer>().sharedMaterial);

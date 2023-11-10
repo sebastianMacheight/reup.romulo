@@ -36,7 +36,7 @@ namespace ReupVirtualTwin.models
 
         public void SetNewMaterial(Material material)
         {
-            MaterialsHelper.SetNewMaterialToObject(selectedObjects, selectedMaterialIndexes, material);
+            MaterialsHelper.SetNewMaterialToObjects(selectedObjects, selectedMaterialIndexes, material);
         }
 
         private void Start()
