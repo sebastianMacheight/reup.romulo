@@ -8,9 +8,6 @@ namespace ReupVirtualTwin.helpers
     {
         public void SetNewMaterialToObjects(List<GameObject> objs, int[] submeshIndexes, Material material)
         {
-            Debug.Log(objs);
-            Debug.Log(submeshIndexes);
-            Debug.Log(submeshIndexes.Length);
             foreach (var (obj, i) in objs.Select((v, i) => (v, i)))
             {
                 SetNewMaterialToObject(obj, submeshIndexes[i], material);

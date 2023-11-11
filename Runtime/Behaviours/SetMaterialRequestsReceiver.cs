@@ -31,6 +31,8 @@ namespace ReupVirtualTwin.behaviours
         private void Start()
         {
             registry = ObjectFinder.FindObjectRegistry().GetComponent<IRegistry>();
+            webRequestTexture = GetComponent<IWebRequestTexture>();
+            materialChanger = GetComponent<IMaterialChanger>();
         }
 
         public IEnumerator ReceiveSetMaterialRequest(string serializedRequest)
