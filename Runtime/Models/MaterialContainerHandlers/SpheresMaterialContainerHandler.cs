@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace ReupVirtualTwin.models
 {
+    [RequireComponent(typeof(IMaterialChanger))]
     public class SpheresMaterialContainerHandler : MonoBehaviour, IMaterialContainerHandler
     {
         public GameObject materialsContainerPrefab;
@@ -17,12 +18,17 @@ namespace ReupVirtualTwin.models
 
         private IObjectPool _objectPool;
         private List<GameObject> selectedObjects;
-        private int[] selectedMaterialIndexes;
+        private int[] selectedSubmeshIndexes;
+        IMaterialChanger _materialChanger;
+        public IMaterialChanger materialChanger
+        {
+            set => _materialChanger = value;
+        }
 
         public GameObject CreateContainer(MaterialSelectionTrigger trigger)
         {
             selectedObjects = trigger.objects;
-            selectedMaterialIndexes = trigger.submeshIndexes;
+            selectedSubmeshIndexes = trigger.submeshIndexes;
             var selectableMaterials = trigger.selectableMaterials.ToArray();
             // If materials container is showing, don't do anything
             if (materialsContainerInstance != null)
@@ -36,13 +42,14 @@ namespace ReupVirtualTwin.models
 
         public void SetNewMaterial(Material material)
         {
-            MaterialsHelper.SetNewMaterialToObjects(selectedObjects, selectedMaterialIndexes, material);
+            _materialChanger.SetNewMaterialToObjects(selectedObjects, selectedSubmeshIndexes, material);
         }
 
         private void Start()
         {
             _objectPool = ObjectFinder.FindObjectPool();
             _mainCamera = Camera.main;
+            _materialChanger = GetComponent<IMaterialChanger>();
         }
 
         private float CameraHorizontalAngle()

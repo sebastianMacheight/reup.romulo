@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 namespace ReupVirtualTwin.behaviours
 {
-    public class WebRequestTexture : IWebRequestTexture
+    public class WebRequestTexture : MonoBehaviour, IWebRequestTexture
     {
         public IEnumerator GetTexture(string url, Action<Texture2D> onSuccess, Action<string> onError)
         {

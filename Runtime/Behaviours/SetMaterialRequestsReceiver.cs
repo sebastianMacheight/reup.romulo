@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
+    [RequireComponent(typeof(IMaterialChanger))]
+    [RequireComponent(typeof(IWebRequestTexture))]
     public class SetMaterialRequestsReceiver : MonoBehaviour
     {
         Texture2D texture;
@@ -15,18 +17,15 @@ namespace ReupVirtualTwin.behaviours
 
         IRegistry registry;
         IWebRequestTexture _webRequestTexture;
+        IMaterialChanger _materialChanger;
 
         public IWebRequestTexture webRequestTexture
         {
-            get
-            {
-                if (_webRequestTexture == null)
-                {
-                    _webRequestTexture = new WebRequestTexture();
-                }
-                return _webRequestTexture;
-            }
             set => _webRequestTexture = value;
+        }
+        public IMaterialChanger materialChanger
+        {
+            set => _materialChanger = value;
         }
 
         private void Start()
@@ -40,12 +39,11 @@ namespace ReupVirtualTwin.behaviours
             yield return StartCoroutine(LoadTextureFromUrl(request.texturesUrl));
             CreateMaterialWithTexture();
             FindObjects(request.objectsIds);
-            MaterialsHelper.SetNewMaterialToObjects(objects, request.submeshIndexes, material);
+            _materialChanger.SetNewMaterialToObjects(objects, request.submeshIndexes, material);
         }
 
-
         IEnumerator LoadTextureFromUrl (string url) {
-            yield return webRequestTexture.GetTexture(url,
+            yield return _webRequestTexture.GetTexture(url,
                 onSuccess: texture =>
                 {
                     this.texture = texture;

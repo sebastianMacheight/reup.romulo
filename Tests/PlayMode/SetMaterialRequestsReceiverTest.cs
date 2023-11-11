@@ -8,6 +8,7 @@ using System;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.models;
 using ReupVirtualTwin.dataModels;
+using ReupVirtualTwin.helpers;
 
 public class SetMaterialRequestsReceiverTest : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class SetMaterialRequestsReceiverTest : MonoBehaviour
         requestReceiverGameObject = new GameObject();
         requestReceiver = requestReceiverGameObject.AddComponent<SetMaterialRequestsReceiver>(); 
         requestReceiver.webRequestTexture = new MockWebRequestTexture(testTexture);
+        requestReceiver.materialChanger = new MaterialChanger();
         objectRegistryGameObject = (GameObject)PrefabUtility.InstantiatePrefab(ObjectRegistryPrefab);
         testObj0 = new GameObject("testObj0");
         SetObject(testObj0);
