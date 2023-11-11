@@ -4,17 +4,19 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
 {
-    public static class MaterialsHelper
+    public class MaterialChanger : MonoBehaviour, IMaterialChanger
     {
-
-        public static void SetNewMaterialToObjects(List<GameObject> objs, int[] submeshIndexes, Material material)
+        public void SetNewMaterialToObjects(List<GameObject> objs, int[] submeshIndexes, Material material)
         {
+            Debug.Log(objs);
+            Debug.Log(submeshIndexes);
+            Debug.Log(submeshIndexes.Length);
             foreach (var (obj, i) in objs.Select((v, i) => (v, i)))
             {
                 SetNewMaterialToObject(obj, submeshIndexes[i], material);
             }
         }
-        public static void SetNewMaterialToObject(GameObject obj, int submeshIndex, Material material)
+        public void SetNewMaterialToObject(GameObject obj, int submeshIndex, Material material)
         {
             var materials = obj.GetComponent<Renderer>().materials;
             Material[] newMaterials = new Material[materials.Length];
