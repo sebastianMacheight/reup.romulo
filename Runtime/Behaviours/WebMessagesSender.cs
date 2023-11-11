@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
-    public static class WebMessagesSender
+    public class WebMessagesSender : MonoBehaviour, IWebMessagesSender
     {
 
 #if UNITY_WEBGL
         [DllImport("__Internal")]
         private static extern void SendStringToWeb(string msg);
 
-        public static void SendWebMessage(WebMessage webMessage)
+        public void SendWebMessage(WebMessage webMessage)
         {
             string serializedMessage = JsonUtility.ToJson(webMessage);
             SendStringToWeb(serializedMessage);
