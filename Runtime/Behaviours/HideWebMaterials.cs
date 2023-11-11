@@ -1,17 +1,22 @@
+using UnityEngine;
+
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.models;
 using ReupVirtualTwin.dataModels;
 
 namespace ReupVirtualTwin.behaviours
 {
+    [RequireComponent(typeof(IWebMessagesSender))]
     public class HideWebMaterials : SelectObject
     {
         IMaterialsContainerHider _webMaterialContainerHider;
+        IWebMessagesSender _webMessagesSender;
 
         protected override void Start()
         {
             base.Start();
             _webMaterialContainerHider = ObjectFinder.FindextensionsTriggers().GetComponent<IMaterialsContainerHider>();
+            _webMessagesSender = GetComponent<IWebMessagesSender>();
         }
 
         public override void MissObject()
@@ -26,7 +31,7 @@ namespace ReupVirtualTwin.behaviours
             {
                 operation = "hideMaterialsOptions"
             };
-            WebMessagesSender.SendWebMessage(message);
+            _webMessagesSender.SendWebMessage(message);
         }
         void HideContainer()
         {

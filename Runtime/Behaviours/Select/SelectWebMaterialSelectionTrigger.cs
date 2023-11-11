@@ -3,8 +3,17 @@ using ReupVirtualTwin.models;
 
 namespace ReupVirtualTwin.behaviours
 {
+    [RequireComponent(typeof(IWebMessagesSender))]
     public class SelectWebMaterialSelectionTrigger : SelectObject
     {
+        IWebMessagesSender _webMessagesSender;
+
+        protected override void Start()
+        {
+            base.Start();
+            _webMessagesSender = GetComponent<IWebMessagesSender>();
+        }
+
         public override void HandleObject(GameObject triggerObject)
         {
             var trigger = triggerObject.GetComponent<IWebMaterialSelectionTrigger>();
@@ -21,7 +30,7 @@ namespace ReupVirtualTwin.behaviours
         void SendCreateWebContainerMessage(IWebMaterialSelectionTrigger trigger)
         {
             var createWebMaterialsContainerMessage = trigger.GetWebContainerMessage();
-            WebMessagesSender.SendWebMessage(createWebMaterialsContainerMessage);
+            _webMessagesSender.SendWebMessage(createWebMaterialsContainerMessage);
         }
     }
 }
