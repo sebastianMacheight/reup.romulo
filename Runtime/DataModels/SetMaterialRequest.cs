@@ -7,6 +7,6 @@ namespace ReupVirtualTwin.dataModels
     {
         public string[] objectsIds;
         public int[] submeshIndexes;
-        public string texturesUrl;
+        public string textureUrl;
     }
 }
