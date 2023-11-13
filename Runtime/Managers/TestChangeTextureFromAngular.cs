@@ -8,20 +8,27 @@ public class TestChangeTextureFromAngular : MonoBehaviour
 {
     public GameObject objectToChange;
 
-    //MaterialsHelper _materialsManager;
     Texture2D texture;
+    IMaterialChanger materialChanger;
 
     void Start()
     {
+        materialChanger = GetComponent<IMaterialChanger>();
         //_materialsManager = ObjectFinder.FindMaterialsManager().GetComponent<MaterialsHelper>();
         //_materialsManager.SelectObjects(new List<GameObject> { objectToChange }, new int[] { 0 });
     }
     public IEnumerator TestChangeTexture(string url)
     {
+        Debug.Log("la url en test es");
+        Debug.Log(url);
         yield return StartCoroutine(LoadTextureFromUrl(url));
+        Debug.Log("the texture");
+        Debug.Log(texture);
         var material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         material.SetTexture("_BaseMap", texture);
-        //_materialsManager.SetNewMaterial(material);
+        materialChanger.SetNewMaterialToObjects(new List<GameObject> {objectToChange},
+            new int[1] {0},
+            material);
     }
 
     IEnumerator LoadTextureFromUrl (string url) {
