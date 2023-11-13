@@ -38,7 +38,7 @@ namespace ReupVirtualTwin.behaviours
         public IEnumerator ReceiveSetMaterialRequest(string serializedRequest)
         {
             SetMaterialRequest request = JsonUtility.FromJson<SetMaterialRequest>(serializedRequest);
-            yield return StartCoroutine(LoadTextureFromUrl(request.texturesUrl));
+            yield return StartCoroutine(LoadTextureFromUrl(request.textureUrl));
             CreateMaterialWithTexture();
             FindObjects(request.objectsIds);
             _materialChanger.SetNewMaterialToObjects(objects, request.submeshIndexes, material);

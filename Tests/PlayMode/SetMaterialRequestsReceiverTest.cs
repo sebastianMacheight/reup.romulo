@@ -63,7 +63,7 @@ public class SetMaterialRequestsReceiverTest : MonoBehaviour
         {
             objectsIds = new string[] { id0, id1 },
             submeshIndexes = new int[] { 0, 0},
-            texturesUrl = "http://a-texture.url.png"
+            textureUrl = "http://a-texture.url.png"
         };
         string serializedRequest = JsonUtility.ToJson(request);
         yield return requestReceiver.ReceiveSetMaterialRequest(serializedRequest);
