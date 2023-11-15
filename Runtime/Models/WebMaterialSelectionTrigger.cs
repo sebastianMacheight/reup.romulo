@@ -21,7 +21,7 @@ namespace ReupVirtualTwin.models
             return _containerHandler.CreateContainer(this);
         }
 
-        public WebMessage GetWebContainerMessage()
+        public WebMessage GetCreateWebContainerMessage()
         {
             triggerIdentifier = gameObject.GetComponent<IUniqueIdentifer>();
             var message = new WebMessage
