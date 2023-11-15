@@ -9,7 +9,7 @@ namespace ReupVirtualTwin.behaviours
 {
     [RequireComponent(typeof(IMaterialChanger))]
     [RequireComponent(typeof(IWebRequestTexture))]
-    public class SetMaterialRequestsReceiver : MonoBehaviour
+    public class SetMaterialChangeRequestsReceiver : MonoBehaviour
     {
         Texture2D texture;
         Material material;
