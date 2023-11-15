@@ -3,6 +3,7 @@ using UnityEngine;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.models;
 using ReupVirtualTwin.dataModels;
+using ReupVirtualTwin.enums;
 
 namespace ReupVirtualTwin.behaviours
 {
@@ -29,7 +30,7 @@ namespace ReupVirtualTwin.behaviours
 
             var message = new WebMessage
             {
-                operation = "hideMaterialsOptions"
+                operation = WebOperationsEnum.hideMaterialsOptions
             };
             _webMessagesSender.SendWebMessage(message);
         }
