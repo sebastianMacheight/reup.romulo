@@ -14,7 +14,7 @@ namespace ReupVirtualTwin.models
         {
             _objectPool = ObjectFinder.FindObjectPool();
         }
-        public GameObject CreateContainer(WebMaterialSelectionTrigger trigger)
+        public GameObject CreateContainer()
         {
             if (webMaterialsHandler != null)
             {

@@ -18,7 +18,7 @@ namespace ReupVirtualTwin.models
 
         public GameObject CreateContainer()
         {
-            return _containerHandler.CreateContainer(this);
+            return _containerHandler.CreateContainer();
         }
 
         public WebMessage GetCreateWebContainerMessage()
