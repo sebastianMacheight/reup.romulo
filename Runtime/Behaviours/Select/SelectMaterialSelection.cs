@@ -11,7 +11,7 @@ namespace ReupVirtualTwin.behaviours
         protected override void Start()
         {
             base.Start();
-            _materialContainerHandler = ObjectFinder.FindextensionsTriggers().GetComponent<IMaterialContainerHandler>();
+            _materialContainerHandler = ObjectFinder.FindExtensionsTriggers().GetComponent<IMaterialContainerHandler>();
         }
         public override void HandleObject(GameObject materialSelectionObject)
         {

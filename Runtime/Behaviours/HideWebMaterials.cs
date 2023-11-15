@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.behaviours
         protected override void Start()
         {
             base.Start();
-            _webMaterialContainerHider = ObjectFinder.FindextensionsTriggers().GetComponent<IMaterialsContainerHider>();
+            _webMaterialContainerHider = ObjectFinder.FindExtensionsTriggers().GetComponent<IMaterialsContainerHider>();
             _webMessagesSender = GetComponent<IWebMessagesSender>();
         }
 
