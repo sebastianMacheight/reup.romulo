@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.helpers
             return GameObject.FindGameObjectWithTag(TagsEnum.objectPool).GetComponent<IObjectPool>();
         }
 
-        public static GameObject FindextensionsTriggers()
+        public static GameObject FindExtensionsTriggers()
         {
             return GameObject.FindGameObjectWithTag(TagsEnum.extensionsTriggers);
         }
@@ -26,17 +26,9 @@ namespace ReupVirtualTwin.helpers
             return GameObject.FindGameObjectWithTag(TagsEnum.character);
         }
 
-        public static GameObject FindSetUpBuilding()
-        {
-            return GameObject.FindGameObjectWithTag(TagsEnum.setUpBuilding);
-        }
         public static GameObject FindSpacesRecord()
         {
             return GameObject.FindGameObjectWithTag(TagsEnum.spacesRecord);
-        }
-        public static GameObject FindWebMessagesManager()
-        {
-            return GameObject.FindGameObjectWithTag(TagsEnum.webMessages);
         }
         public static GameObject FindObjectRegistry()
         {
