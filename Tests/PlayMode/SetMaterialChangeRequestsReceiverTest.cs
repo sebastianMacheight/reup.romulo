@@ -59,7 +59,7 @@ public class SetMaterialChangeRequestsReceiverTest : MonoBehaviour
         string id0 = testObj0.GetComponent<RegisteredIdentifier>().getId();
         string id1 = testObj1.GetComponent<RegisteredIdentifier>().getId();
 
-        SetMaterialRequest request = new SetMaterialRequest
+        MaterialChangeRequest request = new MaterialChangeRequest
         {
             objectsIds = new string[] { id0, id1 },
             submeshIndexes = new int[] { 0, 0},
