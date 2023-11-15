@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.dataModels;
+using ReupVirtualTwin.enums;
 
 namespace ReupVirtualTwin.models
 {
@@ -25,7 +26,7 @@ namespace ReupVirtualTwin.models
             triggerIdentifier = gameObject.GetComponent<IUniqueIdentifer>();
             var message = new WebMessage
             {
-                operation = "showMaterialsOptions",
+                operation = WebOperationsEnum.showMaterialsOptions,
                 body = triggerIdentifier.getId()
             };
             return message;
