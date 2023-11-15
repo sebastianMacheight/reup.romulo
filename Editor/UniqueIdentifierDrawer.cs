@@ -5,7 +5,6 @@ using ReupVirtualTwin.models;
 
 namespace ReupVirtualTwin.editor
 {
-	// Place this file inside Assets/Editor
 	[CustomPropertyDrawer(typeof(UniqueIdentifierAttribute))]
 	public class UniqueIdentifierDrawer : PropertyDrawer
 	{
