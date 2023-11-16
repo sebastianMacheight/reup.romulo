@@ -1,24 +1,54 @@
-using System.Collections;
 using UnityEngine;
+using ReupVirtualTwin.helpers;
+using UnityEngine.Events;
 
 namespace ReupVirtualTwin.characterMovement
 {
     public class CharacterPositionManager : MonoBehaviour
     {
-        [SerializeField]
-        private float movementForceMultiplier = 10f;
-        [SerializeField]
-        private float slideMovementSpeedMultiplier = 2f;
-        [SerializeField]
-        private float floorDistanceThreshold = 0.7f;
+        public float maxStepHeight = 0.25f;
+
+        bool _allowSetHeight = true;
+        bool _allowWalking = true;
+        private float movementForce = 20f;
         private Rigidbody rb;
-        [SerializeField]
         private float bodyDrag = 5f;
+        private float bodyMass = 1f;
 
-        float _stopDistance = 0.5f;
+        float STOP_WALK_THRESHOLD = 0.5f;
+        float STOP_MOVEMENT_THRESHOLD = 0.02f;
 
 
-        Vector3 _characterPosition
+        SpaceSlider walkSlider;
+        SpaceSlider spaceSlider;
+        LinearSlider heightSlider;
+
+        public bool allowWalking
+        {
+            get { return _allowWalking; }
+            set
+            {
+                if (value == false)
+                {
+                    walkSlider.StopMovement();
+                }
+                _allowWalking=value;
+            }
+        }
+        public bool allowSetHeight
+        {
+            get { return _allowSetHeight; }
+            set
+            {
+                if (value == false)
+                {
+                    heightSlider.StopMovement();
+                }
+                _allowSetHeight=value;
+            }
+        }
+
+        public Vector3 characterPosition
         {
             get
             {
@@ -35,43 +65,113 @@ namespace ReupVirtualTwin.characterMovement
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
             rb.drag = bodyDrag;
+            rb.mass = bodyMass;
+            DefineWalkSlider();
+            DefineSpaceSlider();
+            DefineHeightSlider();
         }
 
-        public void MovePositionByStepInDirection(Vector3 direction)
+
+        void DefineWalkSlider()
         {
-            StopCoroutine("MoveToTargetCoroutine");
-            rb.isKinematic = false;
-            var step = direction * movementForceMultiplier;
-            rb.AddForce(step, ForceMode.Force);
+            walkSlider = (SpaceSlider)transform.gameObject.AddComponent<SpaceSlider>()
+                .SetHaltDecitionMaker(new WalkHaltDecitionMaker(this, STOP_WALK_THRESHOLD))
+                .SetInterpolator(new WalkInterpolator());
+        }
+        void DefineSpaceSlider()
+        {
+            spaceSlider = (SpaceSlider)transform.gameObject.AddComponent<SpaceSlider>()
+                .SetHaltDecitionMaker(new SpaceSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD))
+                .SetInterpolator(new SpacesInterpolator());
+        }
+        void DefineHeightSlider()
+        {
+            heightSlider = (LinearSlider)transform.gameObject.AddComponent<LinearSlider>()
+                .SetHaltDecitionMaker(new HeightSlideHaltDecitionMaker(this, STOP_MOVEMENT_THRESHOLD))
+                .SetInterpolator(new HeightInterpolator());
+        }
+
+        public void MoveDistanceInDirection(float distance, Vector3 direction)
+        {
+            var normalizedDirection = Vector3.Normalize(direction);
+            characterPosition = characterPosition + normalizedDirection * distance;
+        }
+
+        public void MoveInDirection(Vector3 direction, float speedInMetersPerSecond = 1f)
+        {
+            var normalizedDirection = Vector3.Normalize(direction);
+            characterPosition = characterPosition + normalizedDirection * speedInMetersPerSecond * Time.deltaTime;
+        }
+        public void ApplyForceInDirection(Vector3 direction)
+        {
+            var force = Vector3.Normalize(direction) * movementForce;
+            rb.AddForce(force, ForceMode.Force);
         }
         public void WalkToTarget(Vector3 target)
         {
-            target.y = _characterPosition.y;
-            MoveToTarget(target);
-        }
-        public void SliceToTarget(Vector3 target)
-        {
-            //put target _stopdistance meters futher away
-            var newTarget = target + Vector3.Normalize(target - _characterPosition) * _stopDistance;
-            MoveToTarget(newTarget);
+            walkSlider.SlideToTarget(target);
         }
 
-        public void MoveToTarget(Vector3 target)
+        public void SlideToTarget(Vector3 target, UnityEvent endEvent)
         {
-            StopCoroutine("MoveToTargetCoroutine");
-            StartCoroutine("MoveToTargetCoroutine", target);
+            spaceSlider.SlideToTarget(target, endEvent);
+        }
+        public void SlideToTarget(Vector3 target)
+        {
+            walkSlider.StopMovement();
+            heightSlider.StopMovement();
+            spaceSlider.SlideToTarget(target);
         }
 
-        private IEnumerator MoveToTargetCoroutine(Vector3 target)
+        public void KeepHeight(float height)
+        {
+            if (ShouldSetHeight(height))
+            {
+                MoveToHeight(height);
+            }
+        }
+
+        private void MoveToHeight(float height)
+        {
+            heightSlider.SlideToTarget(height);
+        }
+
+        bool ShouldSetHeight(float target)
+        {
+            if (!allowSetHeight || spaceSlider.sliding || IsStronglyGoingUp(target))
+            {
+                return false;
+            }
+            return heightSlider.ShouldKeepMoving(target);
+        }
+        private bool IsStronglyGoingUp(float target)
+        {
+            if (target - characterPosition.y > maxStepHeight)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void StopRigidBody()
+        {
+            rb.velocity = Vector3.zero;
+        }
+
+        public void StopWalking()
+        {
+            walkSlider.StopMovement();
+        }
+
+        public void MakeKinematic()
         {
             rb.isKinematic = true;
-            while (Vector3.Distance(target, _characterPosition) > _stopDistance)
-            {
-                _characterPosition = Vector3.Lerp(_characterPosition, target, slideMovementSpeedMultiplier * Time.deltaTime);
-                yield return null;
-            }
+        }
+        public void UndoKinematic()
+        {
             rb.isKinematic = false;
         }
-    }
 
+
+    }
 }

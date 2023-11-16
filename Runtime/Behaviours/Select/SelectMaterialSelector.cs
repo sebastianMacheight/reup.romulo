@@ -4,7 +4,7 @@ using ReupVirtualTwin.models;
 
 namespace ReupVirtualTwin.behaviours.select
 {
-    public class ClickSceneTrigger : SelectObject
+    public class SelectMaterialSelector : SelectObject
     {
         private IMaterialsContainerCreator _containerCreator;
         private MaterialsManager _materialsManager;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using ReupVirtualTwin.enums;
 
-namespace ReupVirtualTwin.selectors.raycasthitselector
+namespace ReupVirtualTwin.helpers
 {
     public class MoveToHitSelector : RayCastHitSelector
     {
