@@ -6,7 +6,6 @@ using UnityEngine.Events;
 
 namespace ReupVirtualTwin.characterMovement
 {
-
     public class MovementSlider<T> : MonoBehaviour where T : IEquatable<T>
     {
         public bool sliding = false;
