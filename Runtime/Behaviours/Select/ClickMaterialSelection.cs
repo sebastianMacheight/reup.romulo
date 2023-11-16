@@ -15,7 +15,6 @@ namespace ReupVirtualTwin
         }
         public override void HandleObject(GameObject materialSelectionObject)
         {
-            //Debug.Log("you clicked the material Selection object " + materialSelectionObject);
             var material = materialSelectionObject.GetComponent<Renderer>().material;
             _materialsManager.SetNewMaterial(material);
         }
@@ -23,7 +22,6 @@ namespace ReupVirtualTwin
         {
             if (!_dragManager.dragging && !_dragManager.prevDragging)
             {
-                //Debug.Log("Miss material selection, so hiding materials");
                 _materialContainerCreator.HideContainer();
             }
         }
