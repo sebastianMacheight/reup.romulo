@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -38,25 +37,6 @@ namespace ReupVirtualTwin.editor
             {
                 EditorGUILayout.LabelField($" - {spaceSelector.gameObject.name} ({spaceSelector.spaceName})");
             }
-
-            EditorGUILayout.Space(10f);
-
-            GameObject[] spacePlanes = GameObject.FindGameObjectsWithTag(TagsEnum.spaceSelectorPlane);
-            if (ListCheck<FloorPlane>(spacesRecord.floorPlanes, spacePlanes.Length))
-            {
-                Debug.Log("updateing planes");
-                spacesRecord.UpdatePlanes();
-            }
-
-            EditorGUILayout.LabelField("List of spaces floor planes in the scene: ", EditorStyles.boldLabel);
-            foreach (FloorPlane spaceSelectorPlane in spacesRecord.floorPlanes)
-            {
-                EditorGUILayout.LabelField($" - {spaceSelectorPlane.gameObject.name} ({spaceSelectorPlane.planeName})");
-            }
-            EditorGUILayout.Space(10f);
-
-            spacesRecord.drawSpacesGizmos = EditorGUILayout.Toggle("Draw spaces gizmos", spacesRecord.drawSpacesGizmos);
-
             DrawDefaultInspector();
         }
     }

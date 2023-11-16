@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 4690271077178968159}
   - component: {fileID: 4690271077178968152}
   - component: {fileID: 7617775428353571079}
+  - component: {fileID: 2700626417817783174}
   m_Layer: 5
   m_Name: SpaceButton
   m_TagString: Untagged
@@ -258,9 +259,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7617775428353571079}
-        m_TargetAssemblyTypeName: SpaceButtonInstance, Main
-        m_MethodName: GoToSpace
+      - m_Target: {fileID: 2700626417817783174}
+        m_TargetAssemblyTypeName: ReupVirtualTwin.behaviours.GoToSpace, reup.romulo.behaviours
+        m_MethodName: Go
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -284,3 +285,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spaceSelector: {fileID: 0}
   nameField: {fileID: 4690271076812403945}
+--- !u!114 &2700626417817783174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4690271077178968154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734521f6c7cf6ef4eb9d13cff22e9be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
