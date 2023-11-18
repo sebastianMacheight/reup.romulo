@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReupVirtualTwin.helpers.uihelpers
+namespace ReupVirtualTwin.helpers
 {
     [CreateAssetMenu(fileName = "Color", menuName ="Color")]
     public class ColorSO : ScriptableObject

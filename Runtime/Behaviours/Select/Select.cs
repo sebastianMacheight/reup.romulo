@@ -1,8 +1,10 @@
 using UnityEngine;
 using ReupVirtualTwin.helpers;
 using UnityEngine.InputSystem;
+using ReupVirtualTwin.inputs;
+using ReupVirtualTwin.managers;
 
-namespace ReupVirtualTwin.behaviours.select
+namespace ReupVirtualTwin.behaviours
 {
     [RequireComponent(typeof(IRayProvider))]
     public abstract class Select : MonoBehaviour

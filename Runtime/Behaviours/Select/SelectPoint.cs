@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using ReupVirtualTwin.helpers;
 
 
-namespace ReupVirtualTwin.behaviours.select
+namespace ReupVirtualTwin.behaviours
 {
     [RequireComponent(typeof(IRayCastHitSelector))]
     public abstract class SelectPoint : Select

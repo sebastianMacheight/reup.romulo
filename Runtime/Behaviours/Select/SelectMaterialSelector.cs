@@ -1,8 +1,9 @@
 using ReupVirtualTwin.helpers;
 using UnityEngine;
 using ReupVirtualTwin.models;
+using ReupVirtualTwin.managers;
 
-namespace ReupVirtualTwin.behaviours.select
+namespace ReupVirtualTwin.behaviours
 {
     public class SelectMaterialSelector : SelectObject
     {

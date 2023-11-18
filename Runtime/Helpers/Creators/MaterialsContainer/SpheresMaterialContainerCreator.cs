@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReupVirtualTwin.helpers.creators.materialscontainer
+namespace ReupVirtualTwin.helpers
 {
     public class SpheresMaterialContainerCreator : MaterialsContainerCreator
     {

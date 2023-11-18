@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace ReupVirtualTwin.helpers.uihelpers
+namespace ReupVirtualTwin.helpers
 {
     public static class OverUICheck
     {

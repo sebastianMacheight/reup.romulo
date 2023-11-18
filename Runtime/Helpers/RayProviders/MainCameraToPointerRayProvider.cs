@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ReupVirtualTwin.inputs;
+using System;
 using UnityEngine;
 
-namespace ReupVirtualTwin.helpers.rayproviders
+namespace ReupVirtualTwin.helpers
 {
     public class MainCameraToPointerRayProvider : MonoBehaviour, IRayProvider
     {

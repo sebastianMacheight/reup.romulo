@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReupVirtualTwin.selectors.objectselectors
+namespace ReupVirtualTwin.helpers
 {
     public abstract class ObjectSelector : Selector, IObjectSelector
     {
