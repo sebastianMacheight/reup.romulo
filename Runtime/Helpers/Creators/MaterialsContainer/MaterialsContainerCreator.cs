@@ -1,9 +1,10 @@
+using ReupVirtualTwin.inputs;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace ReupVirtualTwin.helpers.creators.materialscontainer
+namespace ReupVirtualTwin.helpers
 {
     public abstract class MaterialsContainerCreator : MonoBehaviour, IMaterialsContainerCreator
     {

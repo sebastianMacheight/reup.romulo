@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.inputs;
 
 namespace ReupVirtualTwin.managers
 {

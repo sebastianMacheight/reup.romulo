@@ -1,9 +1,13 @@
 using UnityEngine;
 
-public class DownRayProvider : MonoBehaviour, IRayProvider
+
+namespace ReupVirtualTwin.helpers
 {
-    public Ray GetRay()
+    public class DownRayProvider : MonoBehaviour, IRayProvider
     {
-        return new Ray(transform.position, Vector3.down);
-	}
+        public Ray GetRay()
+        {
+            return new Ray(transform.position, Vector3.down);
+        }
+    }
 }
