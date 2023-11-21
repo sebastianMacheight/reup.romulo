@@ -11,7 +11,7 @@ namespace ReupVirtualTwin.editor
 		public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
 		{
 			// Generate a unique ID, defaults to an empty string if nothing has been serialized yet
-			if (prop.stringValue == "")
+			if (string.IsNullOrEmpty(prop.stringValue))
 			{
 				Guid guid = Guid.NewGuid();
 				prop.stringValue = guid.ToString();
