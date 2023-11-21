@@ -10,11 +10,11 @@ using ReupVirtualTwin.models;
 using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.helpers;
 
-public class SetMaterialChangeRequestsReceiverTest : MonoBehaviour
+public class MaterialChangeRequestsReceiverTest : MonoBehaviour
 {
     GameObject ObjectRegistryPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/ScriptHolders/ObjectRegistry.prefab");
     GameObject objectRegistryGameObject, testObj0, testObj1, requestReceiverGameObject;
-    SetMaterialChangeRequestsReceiver requestReceiver;
+    MaterialChangeRequestsReceiver requestReceiver;
     Texture2D testTexture;
 
     [SetUp]
@@ -25,7 +25,7 @@ public class SetMaterialChangeRequestsReceiverTest : MonoBehaviour
         requestReceiverGameObject.AddComponent<MaterialChanger>();
         MockWebRequestTexture webRequestTexture = requestReceiverGameObject.AddComponent<MockWebRequestTexture>();
         webRequestTexture.returnTexture = testTexture;
-        requestReceiver = requestReceiverGameObject.AddComponent<SetMaterialChangeRequestsReceiver>(); 
+        requestReceiver = requestReceiverGameObject.AddComponent<MaterialChangeRequestsReceiver>(); 
         objectRegistryGameObject = (GameObject)PrefabUtility.InstantiatePrefab(ObjectRegistryPrefab);
         testObj0 = new GameObject("testObj0");
         testObj1 = new GameObject("testObj1");
