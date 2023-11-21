@@ -44,7 +44,7 @@ namespace ReupVirtualTwin.behaviours
             _materialChanger.SetNewMaterialToObjects(objects, request.submeshIndexes, material);
         }
 
-        IEnumerator LoadTextureFromUrl (string url) {
+        private IEnumerator LoadTextureFromUrl (string url) {
             yield return _webRequestTexture.GetTexture(url,
                 onSuccess: texture =>
                 {
