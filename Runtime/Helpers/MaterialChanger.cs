@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +16,11 @@ namespace ReupVirtualTwin.helpers
         }
         public void SetNewMaterialToObject(GameObject obj, int submeshIndex, Material material)
         {
+            Renderer renderer = obj.GetComponent<Renderer>();
+            if (renderer == null)
+            {
+                throw new Exception($"Object {obj.name} has not renderer attached");
+            }
             var materials = obj.GetComponent<Renderer>().materials;
             Material[] newMaterials = new Material[materials.Length];
             newMaterials = materials;
