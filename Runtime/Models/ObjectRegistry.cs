@@ -28,12 +28,12 @@ namespace ReupVirtualTwin.models
         }
         public List<GameObject> GetItemsWithGuids(string[] guids)
         {
-            var findObjects = new List<GameObject>();
+            var foundObjects = new List<GameObject>();
             foreach(string  guid in guids)
             {
-                findObjects.Add(GetItemWithGuid(guid));
+                foundObjects.Add(GetItemWithGuid(guid));
             }
-            return findObjects;
+            return foundObjects;
         }
 
     }
