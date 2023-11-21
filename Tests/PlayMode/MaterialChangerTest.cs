@@ -4,8 +4,9 @@ using NUnit.Framework;
 using UnityEngine.TestTools;
 using System.Collections.Generic;
 using ReupVirtualTwin.helpers;
+using System;
 
-public class MaterialsHelperTest : MonoBehaviour
+public class MaterialChangerTest : MonoBehaviour
 {
     IMaterialChanger changer;
 
@@ -54,6 +55,22 @@ public class MaterialsHelperTest : MonoBehaviour
         {
             Assert.AreEqual(materialToSelect, objectsList[i].GetComponent<Renderer>().sharedMaterial);
         }
+
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ChangeMaterialOfObjectWithoutRendererShouldFail()
+    {
+        var obj0 = new GameObject();
+
+        var materialToSelect = new Material(Shader.Find("Standard"));
+
+
+        Assert.That(
+            () => changer.SetNewMaterialToObjects(new List<GameObject>() { obj0 }, new int[1] { 0 }, materialToSelect),
+            Throws.TypeOf<Exception>()
+         );
 
         yield return null;
     }
