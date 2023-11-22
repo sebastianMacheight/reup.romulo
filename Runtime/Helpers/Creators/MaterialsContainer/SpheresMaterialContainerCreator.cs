@@ -28,6 +28,7 @@ public class SpheresMaterialContainerCreator : MaterialsContainerCreator
             return null;
         }
         materialsContainerInstance = _objectPool.GetObjectFromPool(materialsContainerPrefab.name, _mainCamera.transform);
+        materialsContainerInstance.transform.localPosition = new Vector3(0, 0, 0.02f);
         PlaceSpheresAroundCamera(selectableMaterials);
         return materialsContainerInstance;
     }
