@@ -11,7 +11,8 @@ public class CharacterMovementKeyboard : MonoBehaviour
     private CharacterPositionManager _characterPositionManager;
     [SerializeField]
     private CharacterRotationManager _characterRotationManager;
-    private float _walkSpeed = 3.5f;
+    private float WALK_SPEED_M_PER_SECOND = 3.5f;
+    private float ROTATION_SPEED_DEG_PER_SECOND = 180f;
 
 
     private void Awake()
@@ -35,7 +36,8 @@ public class CharacterMovementKeyboard : MonoBehaviour
         if (direction != 0f)
         {
             Debug.Log($"the direction is {direction}");
-            _characterRotationManager.horizontalRotation += direction;
+            float angleDelta = direction * ROTATION_SPEED_DEG_PER_SECOND * Time.deltaTime;
+            _characterRotationManager.horizontalRotation += angleDelta;
         }
     }
 
@@ -45,7 +47,7 @@ public class CharacterMovementKeyboard : MonoBehaviour
         if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
         {
             _characterPositionManager.StopWalking();
-            _characterPositionManager.MoveInDirection(movementDirection, _walkSpeed);
+            _characterPositionManager.MoveInDirection(movementDirection, WALK_SPEED_M_PER_SECOND);
         }
     }
 
