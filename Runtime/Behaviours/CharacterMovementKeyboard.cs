@@ -9,6 +9,8 @@ public class CharacterMovementKeyboard : MonoBehaviour
     private InputProvider _inputProvider;
     [SerializeField]
     private CharacterPositionManager _characterPositionManager;
+    [SerializeField]
+    private CharacterRotationManager _characterRotationManager;
     private float _walkSpeed = 3.5f;
 
 
@@ -25,8 +27,21 @@ public class CharacterMovementKeyboard : MonoBehaviour
     private void UpdatePosition()
     {
         Vector2 inputValue = _inputProvider.MovementInput().normalized;
-        Vector3 movementDirection = inputValue.x * GetCharacterRight() +
-                            inputValue.y * GetCharacterForward();
+        PerformForwardBackwardMovement(inputValue.y);
+        PerformRotation(inputValue.x);
+    }
+    private void PerformRotation(float direction)
+    {
+        if (direction != 0f)
+        {
+            Debug.Log($"the direction is {direction}");
+            _characterRotationManager.horizontalRotation += direction;
+        }
+    }
+
+    private void PerformForwardBackwardMovement(float direction)
+    {
+        Vector3 movementDirection =  direction * GetCharacterForward();
         if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
         {
             _characterPositionManager.StopWalking();
@@ -34,12 +49,6 @@ public class CharacterMovementKeyboard : MonoBehaviour
         }
     }
 
-    private Vector3 GetCharacterRight()
-    {
-        Vector3 right = _innerCharacterTransform.right;
-        right.y = 0;
-        return right;
-    }
     private Vector3 GetCharacterForward()
     {
         Vector3 forward = _innerCharacterTransform.forward;
