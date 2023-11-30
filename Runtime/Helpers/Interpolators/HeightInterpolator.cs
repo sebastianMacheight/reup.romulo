@@ -10,6 +10,7 @@ namespace ReupVirtualTwin.helpers
         float MIN_SPEED_IN_METERS_PER_SECOND = 1f;
         float DISTANCE_TO_MAX_SPEED = 0.05f;
         float DISTANCE_TO_MIN_SPEED = 0.1f;
+        float MAX_DELTA = 0.1f;
         SpeedHandler speedHandler;
 
         public void DefineOriginAndTarget(Vector3 originalPostion, float targetHeight)
@@ -26,11 +27,16 @@ namespace ReupVirtualTwin.helpers
 
         public Vector3 Interpolate(Vector3 currentPosition)
         {
-            var currentHeight = currentPosition.y;
-            var traveledDistance = Mathf.Abs(currentHeight - origin);
-            var speed = speedHandler.GetSpeedInMetersPerSecond(traveledDistance);
-            var direction = getDirection(currentHeight);
-            currentHeight += direction * speed * Time.deltaTime;
+            float currentHeight = currentPosition.y;
+            float traveledDistance = Mathf.Abs(currentHeight - origin);
+            float speed = speedHandler.GetSpeedInMetersPerSecond(traveledDistance);
+            int direction = getDirection(currentHeight);
+            float delta = direction * speed * Time.deltaTime;
+            if (Mathf.Abs(delta) > MAX_DELTA)
+            {
+                delta = MAX_DELTA * direction;
+            }
+            currentHeight += delta;
             var newPosition = new Vector3(currentPosition.x, currentHeight, currentPosition.z);
             return newPosition;
         }
