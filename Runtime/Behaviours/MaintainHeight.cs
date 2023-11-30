@@ -6,13 +6,22 @@ namespace ReupVirtualTwin.behaviours
 {
 
     [RequireComponent(typeof(Sensor))]
-    public class MaintainHeight : MonoBehaviour
+    public class MaintainHeight : MonoBehaviour, IMaintainHeight
     {
-        private Sensor _sensor;
-        [HideInInspector]
-        public static float CHARACTER_HEIGHT = 1.75f;
         [SerializeField]
         CharacterPositionManager _characterPositionManager;
+
+        private static float CHARACTER_HEIGHT;
+        public float characterHeight
+        {
+            set
+            {
+                CHARACTER_HEIGHT = value;
+            }
+        }
+
+        private Sensor _sensor;
+
         void Start()
         {
             _sensor = GetComponent<Sensor>();
@@ -29,13 +38,12 @@ namespace ReupVirtualTwin.behaviours
 
         void KeepCharacterHeightFromGround(RaycastHit groundHit)
         {
-            var newHeight = GetDesiredHeight(groundHit);
+            var newHeight = GetDesiredHeightInGround(groundHit.point.y);
             _characterPositionManager.KeepHeight(newHeight);
         }
 
-        public static float GetDesiredHeight(RaycastHit groundHit)
+        public static float GetDesiredHeightInGround(float groundHeight)
         {
-            var groundHeight = groundHit.point.y;
             return groundHeight + CHARACTER_HEIGHT;
         }
     }
