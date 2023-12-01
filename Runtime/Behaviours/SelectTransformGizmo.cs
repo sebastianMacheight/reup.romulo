@@ -44,9 +44,9 @@ public class SelectTransformGizmo : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(ray, out raycastHit)) //Make sure you have EventSystem in the hierarchy before using EventSystem
         {
-            if (SelectParent(raycastHit.transform) != null)
+            if (findFirstSelectable(raycastHit.transform) != null)
             {
-                highlight = SelectParent(raycastHit.transform);
+                highlight = findFirstSelectable(raycastHit.transform);
             }
             else {
                 highlight = raycastHit.transform;
@@ -81,9 +81,9 @@ public class SelectTransformGizmo : MonoBehaviour
                     {
                         selection.GetComponent<MeshRenderer>().material = originalMaterialSelection;
                     }
-                    if (SelectParent(raycastHit.transform) != null)
+                    if (findFirstSelectable(raycastHit.transform) != null)
                     {
-                        selection = SelectParent(raycastHit.transform);
+                        selection = findFirstSelectable(raycastHit.transform);
                     }
                     else
                     {
@@ -152,9 +152,9 @@ public class SelectTransformGizmo : MonoBehaviour
 
     }
 
-    public Transform SelectParent(Transform transform)
+    public Transform findFirstSelectable(Transform transform)
     {
-        if (transform.parent == null)
+        if (transform.parent == null && transform.CompareTag("Selectable"))
         {
             return transform;
         }
@@ -164,7 +164,7 @@ public class SelectTransformGizmo : MonoBehaviour
         }
         else
         {
-            return SelectParent(transform.parent);
+            return findFirstSelectable(transform.parent);
         }
     }
 
