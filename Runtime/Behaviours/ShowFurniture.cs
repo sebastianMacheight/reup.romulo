@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class ShowFurniture : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-    [SerializeField]
-    GameObject furniture;
+    public class ShowFurniture : MonoBehaviour
+    {
+        [SerializeField]
+        GameObject furniture;
 
-    public void toggleShowFurniture(bool toggle) {
-        furniture.SetActive(toggle);
+        public void toggleShowFurniture(bool toggle) {
+            furniture.SetActive(toggle);
+        }
     }
 }

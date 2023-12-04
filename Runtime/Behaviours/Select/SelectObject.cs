@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.behaviours
 {
 
     [RequireComponent(typeof(IObjectSelector))]
