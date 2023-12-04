@@ -5,16 +5,19 @@ using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using ReupVirtualTwin.helpers;
 
-
 namespace ReupVirtualTwin.behaviours
 {
-    private IRayCastHitSelector _hitSelector;
-
-    protected override void Start()
+    [RequireComponent(typeof(IRayCastHitSelector))]
+    public abstract class SelectPoint : Select
     {
-        base.Start();
-        _hitSelector = GetComponent<IRayCastHitSelector>();
-    }
+        private IRayCastHitSelector _hitSelector;
+
+
+        protected override void Start()
+        {
+            base.Start();
+            _hitSelector = GetComponent<IRayCastHitSelector>();
+        }
 
         protected override void Awake()
         {
