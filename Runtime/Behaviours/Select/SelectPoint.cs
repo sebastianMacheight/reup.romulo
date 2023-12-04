@@ -10,9 +10,9 @@ public abstract class SelectPoint : Select
 {
     private IRayCastHitSelector _hitSelector;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         _hitSelector = GetComponent<IRayCastHitSelector>();
     }
 
