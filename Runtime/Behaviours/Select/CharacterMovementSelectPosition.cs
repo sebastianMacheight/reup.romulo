@@ -9,8 +9,9 @@ namespace ReupVirtualTwin.behaviours
     {
         CharacterPositionManager _characterPositionManager;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             _characterPositionManager = ObjectFinder.FindCharacter().GetComponent<CharacterPositionManager>();
         }
 

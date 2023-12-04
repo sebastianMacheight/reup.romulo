@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace ReupVirtualTwin.enums
 {
     public class TagsEnum
@@ -13,12 +9,14 @@ namespace ReupVirtualTwin.enums
         public const string objectPool = "ObjectPool";
         public const string mainCamera = "MainCamera";
         public const string extensionsTriggers = "ExtensionsTriggers";
+        public const string objectRegistry = "ObjectRegistry";
+        public const string setUpBuilding = "SetUpBuilding";
 
         // managers
         public const string dragManager = "DragManager";
-        public const string materialsManager = "MaterialsManager";
         public const string spacesRecord = "SpacesRecord";
         public const string characterPositionManager = "CharacterPositionManager";
+        public const string webMessages = "WebMessages";
 
         public const string character = "Character";
     }

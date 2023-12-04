@@ -5,9 +5,7 @@ namespace ReupVirtualTwin.behaviours
 {
     public class SetUpBuilding : MonoBehaviour
     {
-
-        [SerializeField]
-        GameObject building;
+        public GameObject building;
 
         void Start()
         {
@@ -17,8 +15,23 @@ namespace ReupVirtualTwin.behaviours
             }
             else
             {
-                Debug.LogError("Building object not set up");
+                Debug.LogWarning("Building object not set up");
             }
         }
+
+        public void AssignIdsToBuilding()
+        {
+            AssignIds.AssignToTree(building);
+        }
+        public void RemoveIdsOfBuilding()
+        {
+            AssignIds.RemoveFromTree(building);
+        }
+        public void ResetIdsOfBuilding()
+        {
+            RemoveIdsOfBuilding();
+            AssignIdsToBuilding();
+        }
+
     }
 }

@@ -12,9 +12,9 @@ namespace ReupVirtualTwin.behaviours
     {
         private IObjectSelector _objectSelector;
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
             _objectSelector = GetComponent<IObjectSelector>();
         }
 
@@ -33,7 +33,7 @@ namespace ReupVirtualTwin.behaviours
             }
             MissObject();
         }
-        public abstract void HandleObject(GameObject obj);
+        public virtual void HandleObject(GameObject obj) { }
         public virtual void MissObject() { }
     }
 }

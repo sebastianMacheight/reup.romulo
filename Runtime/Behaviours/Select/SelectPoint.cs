@@ -8,10 +8,13 @@ using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwin.behaviours
 {
-    [RequireComponent(typeof(IRayCastHitSelector))]
-    public abstract class SelectPoint : Select
+    private IRayCastHitSelector _hitSelector;
+
+    protected override void Start()
     {
-        private IRayCastHitSelector _hitSelector;
+        base.Start();
+        _hitSelector = GetComponent<IRayCastHitSelector>();
+    }
 
         protected override void Awake()
         {
