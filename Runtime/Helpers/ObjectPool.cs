@@ -7,9 +7,14 @@ namespace ReupVirtualTwin.helpers
 {
     public class ObjectPool : MonoBehaviour, IObjectPool
     {
-        public List<GameObject> PrefabsForPool;
+        public List<GameObject> prefabsForPool;
 
         private List<GameObject> _pooledObjects = new List<GameObject>();
+
+        public void AddPrefabType(GameObject prefabType)
+        {
+            prefabsForPool.Add(prefabType);
+        }
 
         public GameObject GetObjectFromPool(string objectName, Transform parent = null)
         {
@@ -27,7 +32,7 @@ namespace ReupVirtualTwin.helpers
             {
                 throw new InvalidOperationException("object not in pool, and parent to instantiate new object not specified");
             }
-            var prefab = PrefabsForPool.FirstOrDefault(obj => obj.name == objectName);
+            var prefab = prefabsForPool.FirstOrDefault(obj => obj.name == objectName);
             if (prefab != null)
             {
                 var newInstance = Instantiate(prefab, parent);

@@ -13,6 +13,9 @@ public abstract class Select : MonoBehaviour
     {
         _inputProvider = new InputProvider();
         _rayProvider = GetComponent<IRayProvider>();
+    }
+    protected virtual void Start()
+    {
         _dragManager = ObjectFinder.FindCharacter().GetComponent<DragManager>();
     }
 
