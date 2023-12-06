@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public abstract class Selector : MonoBehaviour
@@ -19,5 +18,8 @@ public abstract class Selector : MonoBehaviour
     /// <param name="obj">object to check</param>
     /// <returns>True if obj is the object we want to return, false otherwise </returns>
     /// <exception cref="System.NotImplementedException"></exception>
-    protected abstract bool IsSelectable(GameObject obj);
+    protected virtual bool IsSelectable(GameObject obj)
+    {
+        throw new Exception("IsSelectable not implemented");
+    }
 }
