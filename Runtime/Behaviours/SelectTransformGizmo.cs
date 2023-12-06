@@ -7,6 +7,7 @@ using RuntimeHandle;
 
 public class SelectTransformGizmo : MonoBehaviour
 {
+    
     public Material highlightMaterial;
     public Material selectionMaterial;
 
