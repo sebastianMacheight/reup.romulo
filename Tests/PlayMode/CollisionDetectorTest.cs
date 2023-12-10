@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEditor;
 using System.Collections;
-using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.characterMovement;
 
 public class CollisionDetectorTest : MonoBehaviour
