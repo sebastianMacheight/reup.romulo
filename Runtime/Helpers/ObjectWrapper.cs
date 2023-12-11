@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ReupVirtualTwin.dataModels;
@@ -18,7 +17,6 @@ namespace ReupVirtualTwin.helpers
 
         public GameObject WrapObject(GameObject obj)
         {
-            Debug.Log($"wrapping obj {obj.name}");
             wrappedObjects.Add(new WrappedObjectInfo
             {
                 originalParent = obj.transform.parent,
