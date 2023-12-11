@@ -3,10 +3,10 @@ using UnityEngine.EventSystems;
 using RuntimeHandle;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.managers;
 
 public class SelectTransformGizmo2 : MonoBehaviour
 {
-    
     private Transform selection;
     private RaycastHit raycastHit;
     private RaycastHit raycastHitHandle; //This is actually never used, but eeeh
@@ -15,6 +15,15 @@ public class SelectTransformGizmo2 : MonoBehaviour
     private int runtimeTransformLayer = 6;
     private int runtimeTransformLayerMask;
     private ObjectWrapper objectWrapper;
+    private IEditModeManager _editModeModeManager;
+
+    public IEditModeManager editModeManager
+    {
+        set
+        {
+            _editModeModeManager = value;
+        }
+    }
 
     private void Start()
     {
@@ -32,7 +41,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && _editModeModeManager.editMode == true)
         {
             ApplyLayerToChildren(runtimeTransformGameObj);
             if (Physics.Raycast(ray, out raycastHit))
@@ -63,6 +72,10 @@ public class SelectTransformGizmo2 : MonoBehaviour
                     Deselect();
                 }
             }
+        }
+        if (_editModeModeManager.editMode == false)
+        {
+            Deselect();
         }
 
         //Hot Keys for move, rotate, scale, local and Global/World transform
