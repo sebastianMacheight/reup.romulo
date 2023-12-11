@@ -5,47 +5,22 @@ using UnityEngine;
 
 public class TestLoader : MonoBehaviour
 {
-    
     // Lets the user load a new model by clicking a GUI button.
-    private void OnGUI()
+
+    public void uploadFromUrl(string  url)
     {
-        // Displays a button to begin the model loading process.
-        if (GUILayout.Button("Load Model from File"))
-        {
-            // Creates an AssetLoaderOptions instance.
-            // AssetLoaderOptions is a class used to configure many aspects of the loading process.
-            // We won't change the default settings this time, so we can use the instance as it is.
-            var assetLoaderOptions = AssetLoader.CreateDefaultLoaderOptions();
-
-            // Creates the AssetLoaderFilePicker instance.
-            // AssetLoaderFilePicker is a class that allows users to select models from the local file system.
-            var assetLoaderFilePicker = AssetLoaderFilePicker.Create();
-
-            // Shows the model selection file-picker.
-            assetLoaderFilePicker.LoadModelFromFilePickerAsync("Select a File", OnLoad, OnMaterialsLoad, OnProgress, OnBeginLoad, OnError, null, assetLoaderOptions);
-        }
-    }
-
-    public void callFilePicker() {
         // Creates an AssetLoaderOptions instance.
         // AssetLoaderOptions is a class used to configure many aspects of the loading process.
         // We won't change the default settings this time, so we can use the instance as it is.
         var assetLoaderOptions = AssetLoader.CreateDefaultLoaderOptions();
 
-        // Creates the AssetLoaderFilePicker instance.
-        // AssetLoaderFilePicker is a class that allows users to select models from the local file system.
-        var assetLoaderFilePicker = AssetLoaderFilePicker.Create();
+        // Creates the web-request.
+        // The web-request contains information on how to download the model.
+        var webRequest = AssetDownloader.CreateWebRequest(url);
 
         // Shows the model selection file-picker.
-        assetLoaderFilePicker.LoadModelFromFilePickerAsync("Select a File", OnLoad, OnMaterialsLoad, OnProgress, OnBeginLoad, OnError, null, assetLoaderOptions);
-    }
-
-    // This event is called when the model is about to be loaded.
-    // You can use this event to do some loading preparation, like showing a loading screen in platforms without threading support.
-    // This event receives a Boolean indicating if any file has been selected on the file-picker dialog.
-    private void OnBeginLoad(bool anyModelSelected)
-    {
-
+        // Important: If you're downloading models from files that are not Zipped, you must pass the model extension as the last parameter from this call (Eg: "fbx")
+        AssetDownloader.LoadModelFromUri(webRequest, OnLoad, OnMaterialsLoad, OnProgress, OnError, null, assetLoaderOptions, null, "fbx");
     }
 
     // This event is called when the model loading progress changes.
@@ -83,6 +58,5 @@ public class TestLoader : MonoBehaviour
         var myLoadedGameObject = assetLoaderContext.RootGameObject;
         myLoadedGameObject.SetActive(true);
     }
-    
 }
 */
