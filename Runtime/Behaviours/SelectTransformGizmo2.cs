@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using RuntimeHandle;
 using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.enums;
 
 public class SelectTransformGizmo2 : MonoBehaviour
 {
@@ -42,7 +43,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
                 }
                 else
                 {
-                    Transform hitObject = findFirstSelectable(raycastHit.transform);
+                    Transform hitObject = FindFirstSelectable(raycastHit.transform);
                     if (hitObject != null)
                     {
                         selection = objectWrapper.WrapObject(hitObject.gameObject).transform;
@@ -100,9 +101,9 @@ public class SelectTransformGizmo2 : MonoBehaviour
         runtimeTransformGameObj.SetActive(false);
     }
 
-    public Transform findFirstSelectable(Transform transform)
+    public Transform FindFirstSelectable(Transform transform)
     {
-        if (transform.CompareTag("Selectable"))
+        if (transform.CompareTag(TagsEnum.selectableObject))
         {
             return transform;
         }
@@ -110,7 +111,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
         {
             return null;
         }
-        return findFirstSelectable(transform.parent);
+        return FindFirstSelectable(transform.parent);
     }
 
     private void ApplyLayerToChildren(GameObject parentGameObj)
