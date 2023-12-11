@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ReupVirtualTwin.dataModels;
@@ -23,11 +21,8 @@ namespace ReupVirtualTwin.helpers
             }
             foreach (Transform child in parent.transform)
             {
-                Debug.Log($"parent border of {parent.name} is: {parentBorder?.minBorders} {parentBorder?.maxBorders}");
                 ObjectBorder? childBorder = GetObjectTreeBorder(child.gameObject);
-                Debug.Log($"child border of {child.name} is: {childBorder?.minBorders} {childBorder?.maxBorders}");
                 parentBorder = ExtendBorder(parentBorder, childBorder);
-                Debug.Log($"parent border of {parent.name} after extend is: {parentBorder?.minBorders} {parentBorder?.maxBorders}");
             }
             return parentBorder;
         }
