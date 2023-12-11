@@ -11,6 +11,7 @@ namespace ReupVirtualTwin.enums
         public const string extensionsTriggers = "ExtensionsTriggers";
         public const string objectRegistry = "ObjectRegistry";
         public const string setUpBuilding = "SetUpBuilding";
+        public const string selectableObject = "Selectable";
 
         // managers
         public const string dragManager = "DragManager";
