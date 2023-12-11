@@ -18,6 +18,7 @@ namespace ReupVirtualTwin.enums
         public const string spacesRecord = "SpacesRecord";
         public const string characterPositionManager = "CharacterPositionManager";
         public const string webMessages = "WebMessages";
+        public const string editModeManager = "EditModeManager";
 
         public const string character = "Character";
     }
