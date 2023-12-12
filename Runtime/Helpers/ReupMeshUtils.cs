@@ -7,24 +7,35 @@ namespace ReupVirtualTwin.helpers
     public static class ReupMeshUtils
     {
         #nullable enable
-        public static ObjectBorder? GetObjectTreeBorder(GameObject parent)
+        public static ObjectBorder? GetObjectTreeBorder(GameObject obj)
         {
             ObjectBorder? parentBorder = null;
-            MeshFilter parentMeshFilter = parent.GetComponent<MeshFilter>();
-            if (parentMeshFilter == null && parent.transform.childCount == 0)
+            MeshFilter parentMeshFilter = obj.GetComponent<MeshFilter>();
+            if (parentMeshFilter == null && obj.transform.childCount == 0)
             {
                 return null;
             }
             if (parentMeshFilter != null)
             {
-                parentBorder = Border(parent);
+                parentBorder = GetObjectBorder(obj);
             }
-            foreach (Transform child in parent.transform)
+            foreach (Transform child in obj.transform)
             {
+                //ObjectBorder? childBorder = GetPositionatedChildBorder(child.gameObject);
                 ObjectBorder? childBorder = GetObjectTreeBorder(child.gameObject);
                 parentBorder = ExtendBorder(parentBorder, childBorder);
             }
             return parentBorder;
+        }
+        private static ObjectBorder? GetPositionatedChildBorder(GameObject child)
+        {
+            ObjectBorder? childBorder = GetObjectTreeBorder(child.gameObject);
+            if (childBorder != null)
+            {
+                childBorder.minBorders += child.transform.localPosition;
+                childBorder.maxBorders += child.transform.localPosition;
+            }
+            return childBorder;
         }
         public static ObjectBorder? ExtendBorder(ObjectBorder parentBorder, ObjectBorder childBorder)
         {
@@ -116,52 +127,55 @@ namespace ReupVirtualTwin.helpers
             return size;
         }
 
-        public static ObjectBorder? Border(GameObject obj)
+        public static ObjectBorder? GetObjectBorder(GameObject obj)
         {
             MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
             if (meshFilter == null) return null;
             Transform transform = obj.transform;
-            return Border(meshFilter.sharedMesh, transform);
+            return GetObjectBorder(meshFilter.sharedMesh, transform);
         }
-        public static ObjectBorder? Border(Mesh mesh, Transform transform)
+        public static ObjectBorder? GetObjectBorder(Mesh mesh, Transform transform)
         {
-            var vertices = mesh.vertices;
+            Vector3[] vertices = mesh.vertices;
+
             if (vertices == null || vertices.Length == 0)
             {
                 return null;
             }
-            float xmax = vertices[0].x;
-            float ymax = vertices[0].y;
-            float zmax = vertices[0].z;
-            float xmin = vertices[0].x;
-            float ymin = vertices[0].y;
-            float zmin = vertices[0].z;
 
-            foreach (Vector3 vertex in vertices)
+            int vertexJump = (int)(vertices.Length / DecideNumberOfVertexToCheck(vertices.Length));
+            int numberOfTransformedVertices = (int)Mathf.Floor(((vertices.Length - 1) / vertexJump) + 1);
+
+            Vector3[] transformedVertices = new Vector3[numberOfTransformedVertices];
+
+            Quaternion rotation = transform.rotation;
+            for(int i=0;  i<vertices.Length; i = i + vertexJump)
             {
-                if (vertex.x < xmin) xmin = vertex.x;
-                if (vertex.x > xmax) xmax = vertex.x;
-                if (vertex.y < ymin) ymin = vertex.y;
-                if (vertex.y > ymax) ymax = vertex.y;
-                if (vertex.z < zmin) zmin = vertex.z;
-                if (vertex.z > zmax) zmax = vertex.z;
+                Vector3 vertex = vertices[i];
+                vertex = MultiplyVectors(vertex, transform.lossyScale);
+                vertex = rotation * vertex;
+                vertex = vertex + transform.position;
+                transformedVertices[i / vertexJump] = vertex;
             }
 
-            xmin = xmin * Mathf.Abs(transform.GetTotalScale().x);
-            xmax = xmax * Mathf.Abs(transform.GetTotalScale().x);
-            ymin = ymin * Mathf.Abs(transform.GetTotalScale().y);
-            ymax = ymax * Mathf.Abs(transform.GetTotalScale().y);
-            zmin = zmin * Mathf.Abs(transform.GetTotalScale().z);
-            zmax = zmax * Mathf.Abs(transform.GetTotalScale().z);
+            float xmax = transformedVertices[0].x;
+            float ymax = transformedVertices[0].y;
+            float zmax = transformedVertices[0].z;
+            float xmin = transformedVertices[0].x;
+            float ymin = transformedVertices[0].y;
+            float zmin = transformedVertices[0].z;
+            foreach (Vector3 transformedVertex in transformedVertices)
+            {
+                if (transformedVertex.x < xmin) xmin = transformedVertex.x;
+                if (transformedVertex.x > xmax) xmax = transformedVertex.x;
+                if (transformedVertex.y < ymin) ymin = transformedVertex.y;
+                if (transformedVertex.y > ymax) ymax = transformedVertex.y;
+                if (transformedVertex.z < zmin) zmin = transformedVertex.z;
+                if (transformedVertex.z > zmax) zmax = transformedVertex.z;
+            }
 
             var minBorder = new Vector3(xmin, ymin, zmin);
             var maxBorder = new Vector3(xmax, ymax, zmax);
-
-            //Since the we are not rotating the wirecube gizmo, rotating this
-            //borders is pointless
-            //var rotation = Quaternion.Euler(transform.localEulerAngles);
-            //minBorder = rotation * minBorder;
-            //maxBorder = rotation * maxBorder;
 
             return new ObjectBorder
             {
@@ -169,6 +183,7 @@ namespace ReupVirtualTwin.helpers
                 maxBorders = maxBorder
             };
         }
+
 
         public static void GeneratePlanarUVMapping(Mesh mesh)
         {
@@ -200,6 +215,23 @@ namespace ReupVirtualTwin.helpers
 
             // Assign UV coordinates to the mesh
             mesh.uv = uvCoords;
+        }
+        static Vector3 MultiplyVectors(Vector3 v1, Vector3 v2)
+        {
+            float x = v1.x * v2.x;
+            float y = v1.y * v2.y;
+            float z = v1.z * v2.z;
+
+            return new Vector3(x, y, z);
+        }
+        static int DecideNumberOfVertexToCheck(int vertexCount)
+        {
+            int logCount = (int)(10 * Mathf.Log(vertexCount));
+            if (logCount > vertexCount)
+            {
+                return vertexCount;
+            }
+            return logCount;
         }
     }
 }
