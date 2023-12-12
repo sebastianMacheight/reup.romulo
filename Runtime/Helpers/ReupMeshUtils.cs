@@ -27,16 +27,6 @@ namespace ReupVirtualTwin.helpers
             }
             return parentBorder;
         }
-        private static ObjectBorder? GetPositionatedChildBorder(GameObject child)
-        {
-            ObjectBorder? childBorder = GetObjectTreeBorder(child.gameObject);
-            if (childBorder != null)
-            {
-                childBorder.minBorders += child.transform.localPosition;
-                childBorder.maxBorders += child.transform.localPosition;
-            }
-            return childBorder;
-        }
         public static ObjectBorder? ExtendBorder(ObjectBorder parentBorder, ObjectBorder childBorder)
         {
             if (parentBorder == null && childBorder == null)
