@@ -6,11 +6,15 @@ namespace ReupVirtualTwin.helpers
     {
         public static void AddColliders(GameObject parent)
         {
-            // Add collider to the parent object
-            if (parent.GetComponent<Collider>() == null)
+            Collider collider = parent.GetComponent<Collider>();
+            if (collider == null)
             {
-                var meshColider = parent.AddComponent<MeshCollider>();
-                meshColider.convex = false;
+                MeshFilter meshFilter = parent.GetComponent<MeshFilter>();
+                if (meshFilter != null && meshFilter.sharedMesh != null)
+                {
+                    var meshColider = parent.AddComponent<MeshCollider>();
+                    meshColider.convex = false;
+                }
             }
 
             // Iterate through all the child objects
