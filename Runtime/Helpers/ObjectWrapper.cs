@@ -73,7 +73,7 @@ namespace ReupVirtualTwin.helpers
             }
             Vector3 meshCenter = objectBorder.TransformToCenterSize().center;
             Vector3 objectPosition = obj.transform.position;
-            Vector3 positionatedMeshCenter = meshCenter + objectPosition;
+            Vector3 positionatedMeshCenter = meshCenter;
             return positionatedMeshCenter;
         }
 
