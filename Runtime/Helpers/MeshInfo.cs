@@ -48,7 +48,7 @@ namespace ReupVirtualTwin.helpers
             {
                 mesh = obj.GetComponent<MeshFilter>().sharedMesh;
             }
-            borders = ReupMeshUtils.Border(mesh, obj.transform);
+            borders = ReupMeshUtils.GetObjectBorder(mesh, obj.transform);
             if (borders == null) return;
             size = borders.TransformToCenterSize().size;
             vertexCount = mesh.vertexCount;
