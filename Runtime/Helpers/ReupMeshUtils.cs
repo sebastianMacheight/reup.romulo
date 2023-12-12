@@ -17,7 +17,7 @@ namespace ReupVirtualTwin.helpers
             }
             if (parentMeshFilter != null)
             {
-                parentBorder = Border(parent);
+                parentBorder = GetObjectBorder(parent);
             }
             foreach (Transform child in parent.transform)
             {
@@ -116,52 +116,55 @@ namespace ReupVirtualTwin.helpers
             return size;
         }
 
-        public static ObjectBorder? Border(GameObject obj)
+        public static ObjectBorder? GetObjectBorder(GameObject obj)
         {
             MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
             if (meshFilter == null) return null;
             Transform transform = obj.transform;
-            return Border(meshFilter.sharedMesh, transform);
+            return GetObjectBorder(meshFilter.sharedMesh, transform);
         }
-        public static ObjectBorder? Border(Mesh mesh, Transform transform)
+        public static ObjectBorder? GetObjectBorder(Mesh mesh, Transform transform)
         {
-            var vertices = mesh.vertices;
+            Vector3[] vertices = mesh.vertices;
+
             if (vertices == null || vertices.Length == 0)
             {
                 return null;
             }
-            float xmax = vertices[0].x;
-            float ymax = vertices[0].y;
-            float zmax = vertices[0].z;
-            float xmin = vertices[0].x;
-            float ymin = vertices[0].y;
-            float zmin = vertices[0].z;
 
-            foreach (Vector3 vertex in vertices)
+            Vector3[] transformedVertices = new Vector3[vertices.Length];
+
+            Quaternion rotation = Quaternion.Euler(transform.localEulerAngles);
+            for(int i=0;  i<vertices.Length; i++)
             {
-                if (vertex.x < xmin) xmin = vertex.x;
-                if (vertex.x > xmax) xmax = vertex.x;
-                if (vertex.y < ymin) ymin = vertex.y;
-                if (vertex.y > ymax) ymax = vertex.y;
-                if (vertex.z < zmin) zmin = vertex.z;
-                if (vertex.z > zmax) zmax = vertex.z;
+                Vector3 originalVertex = vertices[i];
+                Vector3 scaledVectex = MultiplyVectors(originalVertex, transform.localScale);
+                Vector3 rotatedScaledVertex = rotation * scaledVectex;
+                transformedVertices[i] = rotatedScaledVertex;
             }
 
-            xmin = xmin * Mathf.Abs(transform.GetTotalScale().x);
-            xmax = xmax * Mathf.Abs(transform.GetTotalScale().x);
-            ymin = ymin * Mathf.Abs(transform.GetTotalScale().y);
-            ymax = ymax * Mathf.Abs(transform.GetTotalScale().y);
-            zmin = zmin * Mathf.Abs(transform.GetTotalScale().z);
-            zmax = zmax * Mathf.Abs(transform.GetTotalScale().z);
+            float xmax = transformedVertices[0].x;
+            float ymax = transformedVertices[0].y;
+            float zmax = transformedVertices[0].z;
+            float xmin = transformedVertices[0].x;
+            float ymin = transformedVertices[0].y;
+            float zmin = transformedVertices[0].z;
+            foreach (Vector3 rotatedVertex in transformedVertices)
+            {
+                if (rotatedVertex.x < xmin) xmin = rotatedVertex.x;
+                if (rotatedVertex.x > xmax) xmax = rotatedVertex.x;
+                if (rotatedVertex.y < ymin) ymin = rotatedVertex.y;
+                if (rotatedVertex.y > ymax) ymax = rotatedVertex.y;
+                if (rotatedVertex.z < zmin) zmin = rotatedVertex.z;
+                if (rotatedVertex.z > zmax) zmax = rotatedVertex.z;
+            }
 
             var minBorder = new Vector3(xmin, ymin, zmin);
             var maxBorder = new Vector3(xmax, ymax, zmax);
 
-            //Since the we are not rotating the wirecube gizmo, rotating this
-            //borders is pointless
-            //var rotation = Quaternion.Euler(transform.localEulerAngles);
-            //minBorder = rotation * minBorder;
-            //maxBorder = rotation * maxBorder;
+            Debug.Log($"borders of {transform.name} before rotation:");
+            Debug.Log($"min Borders: {minBorder}");
+            Debug.Log($"max Borders: {maxBorder}");
 
             return new ObjectBorder
             {
@@ -200,6 +203,14 @@ namespace ReupVirtualTwin.helpers
 
             // Assign UV coordinates to the mesh
             mesh.uv = uvCoords;
+        }
+        static Vector3 MultiplyVectors(Vector3 v1, Vector3 v2)
+        {
+            float x = v1.x * v2.x;
+            float y = v1.y * v2.y;
+            float z = v1.z * v2.z;
+
+            return new Vector3(x, y, z);
         }
     }
 }
