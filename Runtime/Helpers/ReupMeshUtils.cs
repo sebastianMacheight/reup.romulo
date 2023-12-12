@@ -6,25 +6,37 @@ namespace ReupVirtualTwin.helpers
 {
     public static class ReupMeshUtils
     {
+        static int vertexJump = 1;
         #nullable enable
-        public static ObjectBorder? GetObjectTreeBorder(GameObject parent)
+        public static ObjectBorder? GetObjectTreeBorder(GameObject obj)
         {
             ObjectBorder? parentBorder = null;
-            MeshFilter parentMeshFilter = parent.GetComponent<MeshFilter>();
-            if (parentMeshFilter == null && parent.transform.childCount == 0)
+            MeshFilter parentMeshFilter = obj.GetComponent<MeshFilter>();
+            if (parentMeshFilter == null && obj.transform.childCount == 0)
             {
                 return null;
             }
             if (parentMeshFilter != null)
             {
-                parentBorder = GetObjectBorder(parent);
+                parentBorder = GetObjectBorder(obj);
             }
-            foreach (Transform child in parent.transform)
+            foreach (Transform child in obj.transform)
             {
+                //ObjectBorder? childBorder = GetPositionatedChildBorder(child.gameObject);
                 ObjectBorder? childBorder = GetObjectTreeBorder(child.gameObject);
                 parentBorder = ExtendBorder(parentBorder, childBorder);
             }
             return parentBorder;
+        }
+        private static ObjectBorder? GetPositionatedChildBorder(GameObject child)
+        {
+            ObjectBorder? childBorder = GetObjectTreeBorder(child.gameObject);
+            if (childBorder != null)
+            {
+                childBorder.minBorders += child.transform.localPosition;
+                childBorder.maxBorders += child.transform.localPosition;
+            }
+            return childBorder;
         }
         public static ObjectBorder? ExtendBorder(ObjectBorder parentBorder, ObjectBorder childBorder)
         {
@@ -121,9 +133,9 @@ namespace ReupVirtualTwin.helpers
             MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
             if (meshFilter == null) return null;
             Transform transform = obj.transform;
-            return GetObjectBorder(meshFilter.sharedMesh, transform);
+            return GetObjectBorder(meshFilter.sharedMesh, transform, obj.transform.parent);
         }
-        public static ObjectBorder? GetObjectBorder(Mesh mesh, Transform transform)
+        public static ObjectBorder? GetObjectBorder(Mesh mesh, Transform transform, Transform? parentTransform = null)
         {
             Vector3[] vertices = mesh.vertices;
 
@@ -132,16 +144,28 @@ namespace ReupVirtualTwin.helpers
                 return null;
             }
 
-            Vector3[] transformedVertices = new Vector3[vertices.Length];
+            int numberOfTransformedVertices = (int)Mathf.Floor(((vertices.Length - 1) / vertexJump) + 1);
+            Vector3[] transformedVertices = new Vector3[numberOfTransformedVertices];
 
-            Quaternion rotation = Quaternion.Euler(transform.localEulerAngles);
-            for(int i=0;  i<vertices.Length; i++)
+            Quaternion localRotation = Quaternion.Euler(transform.localEulerAngles);
+            for(int i=0;  i<vertices.Length; i = i + vertexJump)
             {
-                Vector3 originalVertex = vertices[i];
-                Vector3 scaledVectex = MultiplyVectors(originalVertex, transform.localScale);
-                Vector3 rotatedScaledVertex = rotation * scaledVectex;
-                transformedVertices[i] = rotatedScaledVertex;
+                Vector3 vertex = vertices[i];
+                vertex = MultiplyVectors(vertex, transform.localScale);
+                vertex = localRotation * vertex;
+                transformedVertices[i / vertexJump] = vertex;
             }
+            //if (parentTransform != null)
+            //{
+            //    Quaternion parentRotation = parentTransform.localRotation;
+            //    for (int i = 0; i < transformedVertices.Length; i++)
+            //    {
+            //        Vector3 vertex = transformedVertices[i];
+            //        vertex = MultiplyVectors(vertex, parentTransform.localScale);
+            //        vertex = parentRotation * vertex;
+            //        transformedVertices[i] = vertex;
+            //    }
+            //}
 
             float xmax = transformedVertices[0].x;
             float ymax = transformedVertices[0].y;
@@ -149,22 +173,18 @@ namespace ReupVirtualTwin.helpers
             float xmin = transformedVertices[0].x;
             float ymin = transformedVertices[0].y;
             float zmin = transformedVertices[0].z;
-            foreach (Vector3 rotatedVertex in transformedVertices)
+            foreach (Vector3 transformedVertex in transformedVertices)
             {
-                if (rotatedVertex.x < xmin) xmin = rotatedVertex.x;
-                if (rotatedVertex.x > xmax) xmax = rotatedVertex.x;
-                if (rotatedVertex.y < ymin) ymin = rotatedVertex.y;
-                if (rotatedVertex.y > ymax) ymax = rotatedVertex.y;
-                if (rotatedVertex.z < zmin) zmin = rotatedVertex.z;
-                if (rotatedVertex.z > zmax) zmax = rotatedVertex.z;
+                if (transformedVertex.x < xmin) xmin = transformedVertex.x;
+                if (transformedVertex.x > xmax) xmax = transformedVertex.x;
+                if (transformedVertex.y < ymin) ymin = transformedVertex.y;
+                if (transformedVertex.y > ymax) ymax = transformedVertex.y;
+                if (transformedVertex.z < zmin) zmin = transformedVertex.z;
+                if (transformedVertex.z > zmax) zmax = transformedVertex.z;
             }
 
             var minBorder = new Vector3(xmin, ymin, zmin);
             var maxBorder = new Vector3(xmax, ymax, zmax);
-
-            Debug.Log($"borders of {transform.name} before rotation:");
-            Debug.Log($"min Borders: {minBorder}");
-            Debug.Log($"max Borders: {maxBorder}");
 
             return new ObjectBorder
             {
