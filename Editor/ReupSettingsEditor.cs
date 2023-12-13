@@ -22,6 +22,7 @@ namespace ReupVirtualTwin.editor
         void AddShaders()
         {
             AddShaderUtil.AddAlwaysIncludedShader("sHTiF/HandleShader");
+            AddShaderUtil.AddAlwaysIncludedShader("sHTiF/AdvancedHandleShader");
         }
     }
 }
