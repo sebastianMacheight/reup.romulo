@@ -55,6 +55,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
                     Transform hitObject = FindFirstSelectable(raycastHit.transform);
                     if (hitObject != null)
                     {
+                        Debug.Log(hitObject.name);
                         selection = objectWrapper.WrapObject(hitObject.gameObject).transform;
                         runtimeTransformHandle.target = selection;
                         runtimeTransformGameObj.SetActive(true);
