@@ -13,6 +13,7 @@ namespace ReupVirtualTwin.enums
         public const string objectPool = "ObjectPool";
         public const string mainCamera = "MainCamera";
         public const string extensionsTriggers = "ExtensionsTriggers";
+        public const string setupBuilding = "SetupBuilding";
 
         // managers
         public const string dragManager = "DragManager";
