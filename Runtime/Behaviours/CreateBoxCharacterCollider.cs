@@ -9,7 +9,7 @@ namespace ReupVirtualTwin.behaviours
         GameObject character;
 
         float FREE_SPACE_BELOW_IN_METERS = 1f;
-        float MIN_COLLIDER_HEIGHT = 0.1f;
+        float MIN_COLLIDER_HEIGHT = 0.05f;
         float COLLIDER_FRONT_IN_METERS = 0.02f;
         float COLLIDER_SIDE_IN_METERS = 0.2f;
 
