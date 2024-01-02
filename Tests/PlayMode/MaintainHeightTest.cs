@@ -37,7 +37,7 @@ public class MaintainHeightTest : MonoBehaviour
     {
         character.transform.position = new Vector3(0, 4, 0);
         yield return new WaitForSeconds(1);
-        var distanceToDesiredHeight = MaintainHeight.CHARACTER_HEIGHT - character.transform.position.y;
+        var distanceToDesiredHeight = MaintainHeight.GetDesiredHeightInGround(0) - character.transform.position.y;
         Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
     }
 
@@ -46,7 +46,7 @@ public class MaintainHeightTest : MonoBehaviour
     {
         character.transform.position = new Vector3(0, 1.5f, 0);
         yield return new WaitForSeconds(0.2f);
-        var distanceToDesiredHeight = MaintainHeight.CHARACTER_HEIGHT - character.transform.position.y;
+        var distanceToDesiredHeight = MaintainHeight.GetDesiredHeightInGround(0) - character.transform.position.y;
         Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
     }
 
@@ -58,7 +58,7 @@ public class MaintainHeightTest : MonoBehaviour
         var upDistance = 0.1f;
         widePlatform.transform.position = new Vector3(0, upDistance, 0);
         yield return new WaitForSeconds(0.2f);
-        var distanceToDesiredHeight = MaintainHeight.CHARACTER_HEIGHT + upDistance - character.transform.position.y;
+        var distanceToDesiredHeight = MaintainHeight.GetDesiredHeightInGround(0) + upDistance - character.transform.position.y;
         Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
     }
 
@@ -70,7 +70,7 @@ public class MaintainHeightTest : MonoBehaviour
         var upDistance = 0.3f;
         widePlatform.transform.position = new Vector3(0, upDistance, 0);
         yield return new WaitForSeconds(0.1f);
-        var distanceToDesiredHeight = MaintainHeight.CHARACTER_HEIGHT - character.transform.position.y;
+        var distanceToDesiredHeight = MaintainHeight.GetDesiredHeightInGround(0) - character.transform.position.y;
         Assert.LessOrEqual(distanceToDesiredHeight, HEIGHT_CLOSENESS_THRESHOLD);
     }
 
