@@ -4,21 +4,17 @@ namespace ReupVirtualTwin.behaviours
 {
     public class HeightMediator : MonoBehaviour, IHeightMediator
     {
-        [SerializeField]
-        GameObject createColliderContainer;
-        private ICreateCollider createCollider;
-        [SerializeField]
-        GameObject maintainheightContainer;
-        private IMaintainHeight maintainHeight;
+        private ICreateCollider _createCollider;
+        private IMaintainHeight _maintainHeight;
+
+        public ICreateCollider createCollider { set { _createCollider = value; } }
+        public IMaintainHeight maintainHeight { set { _maintainHeight = value; } }
 
         [Range(0.1f, 3f)]
         public float characterHeight = 1.75f;
 
         private void Start()
         {
-            createCollider = createColliderContainer.GetComponent<ICreateCollider>();
-            maintainHeight = maintainheightContainer.GetComponent<IMaintainHeight>();
-
             updateHeight(characterHeight);
         }
 
@@ -31,8 +27,8 @@ namespace ReupVirtualTwin.behaviours
         }
         private void updateHeight(float height)
         {
-            createCollider.UpdateCollider(height);
-            maintainHeight.characterHeight = height;
+            _createCollider.UpdateCollider(height);
+            _maintainHeight.characterHeight = height;
         }
     }
 }

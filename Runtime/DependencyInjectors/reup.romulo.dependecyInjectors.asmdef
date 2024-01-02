@@ -1,0 +1,16 @@
+{
+    "name": "reup.romulo.dependecyInjectors",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1772869efacc54544ac5d329d23fc591"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
