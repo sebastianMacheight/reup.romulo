@@ -1,4 +1,4 @@
-using ReupVirtualTwin.ihelpers;
+using ReupVirtualTwin.helperInterfaces;
 using UnityEngine;
 
 namespace ReupVirtualTwin.helpers

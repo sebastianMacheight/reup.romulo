@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ReupVirtualTwin.ihelpers
+namespace ReupVirtualTwin.helperInterfaces
 {
     public interface IObjectHighlighter
     {
