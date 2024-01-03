@@ -21,13 +21,12 @@ namespace ReupVirtualTwin.helpers
             }
             foreach (Transform child in obj.transform)
             {
-                //ObjectBorder? childBorder = GetPositionatedChildBorder(child.gameObject);
                 ObjectBorder? childBorder = GetObjectTreeBorder(child.gameObject);
                 parentBorder = ExtendBorder(parentBorder, childBorder);
             }
             return parentBorder;
         }
-        public static ObjectBorder? ExtendBorder(ObjectBorder parentBorder, ObjectBorder childBorder)
+        public static ObjectBorder? ExtendBorder(ObjectBorder? parentBorder, ObjectBorder? childBorder)
         {
             if (parentBorder == null && childBorder == null)
             {
