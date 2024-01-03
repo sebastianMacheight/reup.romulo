@@ -1,5 +1,5 @@
 using ReupVirtualTwin.helpers;
-using ReupVirtualTwin.managers;
+using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
