@@ -1,5 +1,6 @@
+using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.enums;
-using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
 
@@ -16,12 +17,24 @@ namespace ReupVirtualTwin.managers
             set
             {
                 _editMode = value;
+                WebMessage message = new WebMessage
+                {
+                    operation = WebOperationsEnum.setEditMode,
+                    body = _editMode ? "true" : "false"
+                };
+                _webMessagesSender.SendWebMessage(message);
             }
         }
         private ICharacterRotationManager _characterRotationManager;
         public ICharacterRotationManager characterRotationManager
         {
             set { _characterRotationManager = value; }
+        }
+
+        IWebMessagesSender _webMessagesSender;
+        public IWebMessagesSender webMessageSender
+        {
+            set { _webMessagesSender = value; }
         }
 
         public void Notify(string eventName)
@@ -42,6 +55,11 @@ namespace ReupVirtualTwin.managers
         public void Notify(string eventName, string payload)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void SetEditMode(bool mode)
+        {
+            editMode = mode;
         }
     }
 }
