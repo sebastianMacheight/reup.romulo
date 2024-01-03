@@ -15,6 +15,10 @@ namespace ReupVirtualTwin.managers
             ICharacterRotationManager _characterRotationManager = ObjectFinder.FindCharacter().GetComponent<ICharacterRotationManager>();
             _editModeManager.characterRotationManager = _characterRotationManager;
             IWebMessagesSender webMessageSender = GetComponent<IWebMessagesSender>();
+            if (webMessageSender == null )
+            {
+                throw new System.Exception("WebMessageSender not found");
+            }
             _editModeManager.webMessageSender = webMessageSender;
         }
     }

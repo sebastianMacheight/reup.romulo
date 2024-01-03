@@ -7,7 +7,7 @@ namespace ReupVirtualTwin.behaviours
     [RequireComponent(typeof(SelectTransformGizmo2))]
     public class TranformGuizmoDependenciesInjector : MonoBehaviour
     {
-        void Start()
+        void Awake()
         {
             SelectTransformGizmo2 selectTransformGizmo = GetComponent<SelectTransformGizmo2>();
             IEditModeManager editModeManager = ObjectFinder.FindEditModeManager().GetComponent<IEditModeManager>();
