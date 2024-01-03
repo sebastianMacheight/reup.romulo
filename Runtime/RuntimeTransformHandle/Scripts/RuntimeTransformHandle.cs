@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ReupVirtualTwin.enums;
+using ReupVirtualTwin.managerInterfaces;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RuntimeHandle
@@ -34,6 +36,11 @@ namespace RuntimeHandle
         private ScaleHandle _scaleHandle;
 
         public Transform target;
+        private IMediator _mediator;
+        public IMediator mediator
+        {
+            set { _mediator = value; }
+        }
 
         void Start()
         {
@@ -101,11 +108,13 @@ namespace RuntimeHandle
             if (Input.GetMouseButtonDown(0) && handle != null)
             {
                 _draggingHandle = handle;
+                _mediator.Notify(EventsEnum.transformHandleStartIteraction);
                 _draggingHandle.StartInteraction(hitPoint);
             }
 
             if (Input.GetMouseButtonUp(0) && _draggingHandle != null)
             {
+                _mediator.Notify(EventsEnum.transformHandleStopIteraction);
                 _draggingHandle.EndInteraction();
                 _draggingHandle = null;
             }

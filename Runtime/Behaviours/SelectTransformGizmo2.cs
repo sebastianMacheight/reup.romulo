@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using RuntimeHandle;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.enums;
-using ReupVirtualTwin.managers;
+using ReupVirtualTwin.managerInterfaces;
 
 public class SelectTransformGizmo2 : MonoBehaviour
 {
@@ -15,13 +15,13 @@ public class SelectTransformGizmo2 : MonoBehaviour
     private int runtimeTransformLayer = 6;
     private int runtimeTransformLayerMask;
     private ObjectWrapper objectWrapper;
-    private IEditModeManager _editModeModeManager;
+    private IEditModeManager _editModeManager;
 
     public IEditModeManager editModeManager
     {
         set
         {
-            _editModeModeManager = value;
+            _editModeManager = value;
         }
     }
 
@@ -29,6 +29,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
     {
         runtimeTransformGameObj = new GameObject("TransformHandle");
         runtimeTransformHandle = runtimeTransformGameObj.AddComponent<RuntimeTransformHandle>();
+        runtimeTransformHandle.mediator = (IMediator)_editModeManager;
         runtimeTransformGameObj.layer = runtimeTransformLayer;
         runtimeTransformLayerMask = 1 << runtimeTransformLayer; //Layer number represented by a single bit in the 32-bit integer using bit shift
         runtimeTransformHandle.type = HandleType.POSITION;
@@ -41,7 +42,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && _editModeModeManager.editMode == true)
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && _editModeManager.editMode == true)
         {
             ApplyLayerToChildren(runtimeTransformGameObj);
             if (Physics.Raycast(ray, out raycastHit))
@@ -55,7 +56,6 @@ public class SelectTransformGizmo2 : MonoBehaviour
                     Transform hitObject = FindFirstSelectable(raycastHit.transform);
                     if (hitObject != null)
                     {
-                        Debug.Log(hitObject.name);
                         selection = objectWrapper.WrapObject(hitObject.gameObject).transform;
                         runtimeTransformHandle.target = selection;
                         runtimeTransformGameObj.SetActive(true);
@@ -74,7 +74,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
                 }
             }
         }
-        if (_editModeModeManager.editMode == false)
+        if (_editModeManager.editMode == false)
         {
             Deselect();
         }
