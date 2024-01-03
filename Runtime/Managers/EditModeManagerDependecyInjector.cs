@@ -6,11 +6,11 @@ namespace ReupVirtualTwin.managers
 {
     public class EditModeManagerDependecyInjector : MonoBehaviour
     {
-        IEditModeManager _editModeManager;
+        EditModeManager _editModeManager;
         
         private void Awake()
         {
-            _editModeManager = GetComponent<IEditModeManager>();
+            _editModeManager = GetComponent<EditModeManager>();
             ICharacterRotationManager _characterRotationManager = ObjectFinder.FindCharacter().GetComponent<ICharacterRotationManager>();
             _editModeManager.characterRotationManager = _characterRotationManager;
         }
