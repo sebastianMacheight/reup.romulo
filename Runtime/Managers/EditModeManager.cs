@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.managers
 {
-    public class EditModeManager : MonoBehaviour, IEditModeManager, IMediator
+    public class EditModeManager : MonoBehaviour, IEditModeManager, IMediator, IEditModeWebManager
     {
         private bool _editMode = false;
         public bool editMode {
@@ -57,7 +57,7 @@ namespace ReupVirtualTwin.managers
             throw new System.NotImplementedException();
         }
 
-        public void SetEditMode(bool mode)
+        public void ReceiveSetEditModeRequest(bool mode)
         {
             editMode = mode;
         }

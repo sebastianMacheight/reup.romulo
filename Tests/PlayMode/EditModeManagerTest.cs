@@ -27,13 +27,13 @@ namespace ReupVirtualTwin.test
         [UnityTest]
         public IEnumerator EditModeManagerShouldSendWebMessageOnModeSwitch()
         {
-            editModeManager.SetEditMode(true);
+            editModeManager.ReceiveSetEditModeRequest(true);
             Assert.AreEqual(WebOperationsEnum.setEditMode, mockWebMessageSender.sentMessage.operation);
             Assert.AreEqual("true", mockWebMessageSender.sentMessage.body);
             yield return null;
             mockWebMessageSender.sentMessage = null;
             yield return null;
-            editModeManager.SetEditMode(false);
+            editModeManager.ReceiveSetEditModeRequest(false);
             Assert.AreEqual(WebOperationsEnum.setEditMode, mockWebMessageSender.sentMessage.operation);
             Assert.AreEqual("false", mockWebMessageSender.sentMessage.body);
             yield return null;
