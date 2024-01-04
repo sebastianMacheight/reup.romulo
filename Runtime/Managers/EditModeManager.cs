@@ -57,9 +57,9 @@ namespace ReupVirtualTwin.managers
             throw new System.NotImplementedException();
         }
 
-        public void ReceiveSetEditModeRequest(bool mode)
+        public void ReceiveSetEditModeRequest(string mode)
         {
-            editMode = mode;
+            editMode = (mode == "true") ? true : false;
         }
     }
 }
