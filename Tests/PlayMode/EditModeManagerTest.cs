@@ -28,14 +28,14 @@ namespace ReupVirtualTwin.test
         public IEnumerator EditModeManagerShouldSendWebMessageOnModeSwitch()
         {
             editModeManager.ReceiveSetEditModeRequest("true");
-            Assert.AreEqual(WebOperationsEnum.setEditMode, mockWebMessageSender.sentMessage.operation);
-            Assert.AreEqual("true", mockWebMessageSender.sentMessage.body);
+            Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, mockWebMessageSender.sentMessage.type);
+            Assert.AreEqual("true", mockWebMessageSender.sentMessage.payload);
             yield return null;
             mockWebMessageSender.sentMessage = null;
             yield return null;
             editModeManager.ReceiveSetEditModeRequest("false");
-            Assert.AreEqual(WebOperationsEnum.setEditMode, mockWebMessageSender.sentMessage.operation);
-            Assert.AreEqual("false", mockWebMessageSender.sentMessage.body);
+            Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, mockWebMessageSender.sentMessage.type);
+            Assert.AreEqual("false", mockWebMessageSender.sentMessage.payload);
             yield return null;
         }
     }
