@@ -24,14 +24,7 @@ namespace ReupVirtualTwin.managers
                     type = WebOperationsEnum.setEditModeSuccess,
                     payload = payload
                 };
-                try
-                {
-                    _webMessagesSender.SendWebMessage(message);
-                }
-                catch
-                {
-                    Debug.LogWarning("web message sender failed in EditModeManager");
-                }
+                _webMessagesSender.SendWebMessage(message);
                 _mediator.Notify(Events.setEditMode, payload);
             }
         }
