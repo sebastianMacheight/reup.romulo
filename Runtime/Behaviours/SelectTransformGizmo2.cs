@@ -4,6 +4,7 @@ using RuntimeHandle;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
+using ReupVirtualTwin.helperInterfaces;
 
 public class SelectTransformGizmo2 : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class SelectTransformGizmo2 : MonoBehaviour
     private int runtimeTransformLayer = 6;
     private int runtimeTransformLayerMask;
     private ObjectWrapper objectWrapper;
+    private IEditModeManager editModeModeManager;
+    private IObjectHighlighter highlighter;
 
     private IEditModeManager _editModeManager;
     public IEditModeManager editModeManager
@@ -43,6 +46,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
         runtimeTransformHandle.autoScaleFactor = 1.0f;
         runtimeTransformGameObj.SetActive(false);
         objectWrapper = new ObjectWrapper();
+        highlighter = GetComponent<IObjectHighlighter>();
     }
 
     void Update()
@@ -63,6 +67,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
                     if (hitObject != null)
                     {
                         selection = objectWrapper.WrapObject(hitObject.gameObject).transform;
+                        highlighter.HighlightObject(selection.gameObject);
                         runtimeTransformHandle.target = selection;
                         runtimeTransformGameObj.SetActive(true);
                     }
@@ -116,6 +121,10 @@ public class SelectTransformGizmo2 : MonoBehaviour
 
     private void Deselect()
     {
+        if (selection != null)
+        {
+            highlighter.UnhighlightObject(selection.gameObject);
+        }
         selection = null;
         objectWrapper.DeWrapAll();
         runtimeTransformGameObj.SetActive(false);
