@@ -371,6 +371,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EditionMediator
       objectReference: {fileID: 0}
+    - target: {fileID: 7510122304204504903, guid: 0cda47605a736cf4195ac4447f195623, type: 3}
+      propertyPath: editionMediator
+      value: 
+      objectReference: {fileID: 5810216909219089537}
     - target: {fileID: 8983450742910279900, guid: 0cda47605a736cf4195ac4447f195623, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -420,6 +424,11 @@ PrefabInstance:
 --- !u!4 &1811976208241985313 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8983450742910279900, guid: 0cda47605a736cf4195ac4447f195623, type: 3}
+  m_PrefabInstance: {fileID: 7318013048841299965}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5810216909219089537 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3831656627378006908, guid: 0cda47605a736cf4195ac4447f195623, type: 3}
   m_PrefabInstance: {fileID: 7318013048841299965}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7771124988216657285

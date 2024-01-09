@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
 {
-    public class Outliner : MonoBehaviour, IObjectHighlighter
+    public class Outliner : IObjectHighlighter
     {
         public void HighlightObject(GameObject obj)
         {
@@ -17,7 +17,7 @@ namespace ReupVirtualTwin.helpers
             Outline outline = obj.GetComponent<Outline>();
             if (outline != null )
             {
-                Destroy(outline);
+                Object.Destroy(outline);
             }
         }
     }
