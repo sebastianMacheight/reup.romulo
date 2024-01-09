@@ -7,11 +7,14 @@ namespace ReupVirtualTwin.behaviours
     [RequireComponent(typeof(SelectTransformGizmo2))]
     public class TranformGuizmoDependenciesInjector : MonoBehaviour
     {
+        public GameObject editModeManager;
+        public GameObject mediator;
+
         void Awake()
         {
             SelectTransformGizmo2 selectTransformGizmo = GetComponent<SelectTransformGizmo2>();
-            IEditModeManager editModeManager = ObjectFinder.FindEditModeManager().GetComponent<IEditModeManager>();
-            selectTransformGizmo.editModeManager = editModeManager;
+            selectTransformGizmo.editModeManager = editModeManager.GetComponent<IEditModeManager>();
+            selectTransformGizmo.editionMediator = mediator.GetComponent<IMediator>();
         }
     }
 }
