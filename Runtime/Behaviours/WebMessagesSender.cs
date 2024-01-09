@@ -15,7 +15,14 @@ namespace ReupVirtualTwin.behaviours
         public void SendWebMessage(WebMessage webMessage)
         {
             string serializedMessage = JsonUtility.ToJson(webMessage);
-            SendStringToWeb(serializedMessage);
+            try
+            {
+                SendStringToWeb(serializedMessage);
+            }
+            catch
+            {
+                Debug.LogWarning($"web message sender failed to send: {serializedMessage}");
+            }
         }
 #endif
     }
