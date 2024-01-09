@@ -8,16 +8,18 @@ namespace ReupVirtualTwin.behaviours
     {
         public float sensitivity = 0.4f;
 
+
+        [SerializeField]
         private CharacterRotationManager _characterRotationManager;
-        private InputProvider _inputProvider;
+        [SerializeField]
         private DragManager _dragManager;
+        private InputProvider _inputProvider;
 
         private void Awake()
         {
             _inputProvider = new InputProvider();
-            _dragManager = GetComponent<DragManager>();
-            _characterRotationManager = GetComponent<CharacterRotationManager>();
         }
+
 
         void Update()
         {
