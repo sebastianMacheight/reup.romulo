@@ -6,6 +6,7 @@ using UnityEngine.TestTools;
 using ReupVirtualTwin.enums;
 using UnityEditor;
 using ReupVirtualTwin.models;
+using ReupVirtualTwin.helpers;
 
 public class SphereMaterialContainerHandlerTest
 {
