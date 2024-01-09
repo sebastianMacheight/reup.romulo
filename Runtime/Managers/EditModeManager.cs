@@ -3,6 +3,7 @@ using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace ReupVirtualTwin.managers
 {
@@ -17,20 +18,22 @@ namespace ReupVirtualTwin.managers
             set
             {
                 _editMode = value;
+                string payload = _editMode ? "true" : "false";
                 WebMessage message = new WebMessage
                 {
                     type = WebOperationsEnum.setEditModeSuccess,
-                    payload = _editMode ? "true" : "false"
+                    payload = payload
                 };
                 _webMessagesSender.SendWebMessage(message);
+                _mediator.Notify(Events.setEditMode, payload);
             }
         }
 
+        private IMediator _mediator;
+        public IMediator mediator { set { _mediator = value; } }
+
         IWebMessagesSender _webMessagesSender;
-        public IWebMessagesSender webMessageSender
-        {
-            set { _webMessagesSender = value; }
-        }
+        public IWebMessagesSender webMessageSender { set { _webMessagesSender = value; } }
 
 
     }

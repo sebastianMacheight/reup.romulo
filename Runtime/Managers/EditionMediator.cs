@@ -1,6 +1,7 @@
 using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
 using ReupVirtualTwin.enums;
+using System.Collections;
 
 namespace ReupVirtualTwin.managers
 {
@@ -19,23 +20,36 @@ namespace ReupVirtualTwin.managers
                 _editModeManager = value;
             }
         }
-        public void Notify(string eventName)
+        private ISelectedObjectsManager _selectedObjectsManager;
+        public ISelectedObjectsManager selectedObjectsManager { set { _selectedObjectsManager = value; } }
+
+        public void Notify(Events eventName)
         {
             switch (eventName)
             {
-                case EventsEnum.transformHandleStartIteraction:
+                case Events.transformHandleStartIteraction:
                     _characterRotationManager.allowRotation = false;
                     break;
-                case EventsEnum.transformHandleStopIteraction:
+                case Events.transformHandleStopIteraction:
                     _characterRotationManager.allowRotation = true;
                     break;
                 default:
                     throw new System.Exception($"no implementation for event: {eventName}");
             }
         }
-        public void Notify(string eventName, string payload)
+        public void Notify(Events eventName, string payload)
         {
-            throw new System.NotImplementedException();
+            switch(eventName)
+            {
+                case Events.setEditMode:
+                    if (payload == "false")
+                    {
+                        _selectedObjectsManager.ClearSelection();
+                    }
+                    break;
+                default:
+                    throw new System.Exception($"no implementation with payload for event: {eventName}");
+            }
         }
 
         public void ReceiveSetEditModeRequest(string mode)
