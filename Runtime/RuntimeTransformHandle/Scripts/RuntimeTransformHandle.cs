@@ -108,13 +108,13 @@ namespace RuntimeHandle
             if (Input.GetMouseButtonDown(0) && handle != null)
             {
                 _draggingHandle = handle;
-                _mediator.Notify(EventsEnum.transformHandleStartIteraction);
+                _mediator.Notify(Events.transformHandleStartIteraction);
                 _draggingHandle.StartInteraction(hitPoint);
             }
 
             if (Input.GetMouseButtonUp(0) && _draggingHandle != null)
             {
-                _mediator.Notify(EventsEnum.transformHandleStopIteraction);
+                _mediator.Notify(Events.transformHandleStopIteraction);
                 _draggingHandle.EndInteraction();
                 _draggingHandle = null;
             }
