@@ -1,6 +1,6 @@
 namespace ReupVirtualTwin.managerInterfaces
 {
-    public interface IEditModeWebManager
+    public interface IEditModeWebReceiber
     {
         public void ReceiveSetEditModeRequest(string editMode);
     }
