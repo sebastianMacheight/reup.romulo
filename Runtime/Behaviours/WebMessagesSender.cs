@@ -12,7 +12,7 @@ namespace ReupVirtualTwin.behaviours
         [DllImport("__Internal")]
         private static extern void SendStringToWeb(string msg);
 
-        public void SendWebMessage(WebMessage webMessage)
+        public void SendWebMessage<T>(WebMessage<T> webMessage)
         {
             string serializedMessage = JsonUtility.ToJson(webMessage);
             try

@@ -19,7 +19,7 @@ namespace ReupVirtualTwin.managers
             {
                 _editMode = value;
                 string payload = _editMode ? "true" : "false";
-                WebMessage message = new WebMessage
+                WebMessage<string> message = new WebMessage<string>
                 {
                     type = WebOperationsEnum.setEditModeSuccess,
                     payload = payload
