@@ -1,5 +1,5 @@
 
-namespace ReupVirtualTwin.models
+namespace ReupVirtualTwin.modelInterfaces
 {
     public interface IUniqueIdentifer
     {

@@ -21,29 +21,32 @@ public class EditionMediatorTest : MonoBehaviour
         editionMediator = containerGameObject.AddComponent<EditionMediator>();
         editModeManager = containerGameObject.AddComponent<EditModeManager>();
         editionMediator.editModeManager = editModeManager;
+        editModeManager.mediator = editionMediator;
         mockWebMessageSender = new MockWebMessageSender();
         editModeManager.webMessageSender = mockWebMessageSender;
     }
 
     [UnityTest]
-    public IEnumerator EditModeManagerShouldSendWebMessageOnModeSwitch()
+    public IEnumerator EditionMediatorShouldSendWebMessageOnEditModeSwitch()
     {
         editionMediator.ReceiveSetEditModeRequest("true");
-        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, mockWebMessageSender.sentMessage.type);
-        Assert.AreEqual("true", mockWebMessageSender.sentMessage.payload);
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
+        Assert.AreEqual("true", sentMessage.payload);
         yield return null;
         mockWebMessageSender.sentMessage = null;
         yield return null;
         editionMediator.ReceiveSetEditModeRequest("false");
-        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, mockWebMessageSender.sentMessage.type);
-        Assert.AreEqual("false", mockWebMessageSender.sentMessage.payload);
+        sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
+        Assert.AreEqual("false", sentMessage.payload);
         yield return null;
     }
 }
 public class MockWebMessageSender : IWebMessagesSender
 {
-    public WebMessage sentMessage;
-    public void SendWebMessage(WebMessage webWessage)
+    public object sentMessage;
+    public void SendWebMessage<T>(WebMessage<T> webWessage)
     {
         sentMessage = webWessage;
     }

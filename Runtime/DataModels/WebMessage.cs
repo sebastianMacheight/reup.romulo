@@ -1,8 +1,13 @@
+using System;
+
 namespace ReupVirtualTwin.dataModels
 {
-    public class WebMessage
+    [Serializable]
+    public class WebMessage<T>
     {
         public string type;
-        public string payload;
+# nullable enable
+        public T? payload;
+# nullable disable
     }
 }

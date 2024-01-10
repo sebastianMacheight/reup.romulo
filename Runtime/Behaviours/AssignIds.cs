@@ -1,5 +1,6 @@
 using ReupVirtualTwin.models;
 using UnityEngine;
+using ReupVirtualTwin.modelInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {

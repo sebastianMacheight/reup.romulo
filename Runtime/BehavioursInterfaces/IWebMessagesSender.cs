@@ -4,6 +4,6 @@ namespace ReupVirtualTwin.behaviourInterfaces
 {
     public interface IWebMessagesSender
     {
-        public void SendWebMessage(WebMessage webWessage);
+        public void SendWebMessage<T>(WebMessage<T> webWessage);
     }
 }
