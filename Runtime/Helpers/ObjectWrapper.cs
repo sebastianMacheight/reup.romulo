@@ -81,9 +81,7 @@ namespace ReupVirtualTwin.helpers
                 throw new System.Exception($"No mesh for selected object {obj.name}");
             }
             Vector3 meshCenter = objectBorder.TransformToCenterSize().center;
-            Vector3 objectPosition = obj.transform.position;
-            Vector3 positionatedMeshCenter = meshCenter;
-            return positionatedMeshCenter;
+            return meshCenter;
         }
 
         GameObject CreateCenteredWrapper(Vector3 center)
