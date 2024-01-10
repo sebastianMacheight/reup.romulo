@@ -15,7 +15,7 @@ namespace ReupVirtualTwin.helpers
         public ObjectBorder borders = null;
         public Vector3? position = null;
         public Vector3 size = Vector3.zero;
-        public float volumen = 0;
+        public float volume = 0;
         public float area = 0;
         public float volVertexDensity;
         public float arealVertexDensity;
@@ -56,7 +56,7 @@ namespace ReupVirtualTwin.helpers
             volVertexDensity = ReupMeshUtils.VolumetricVertexDensity(vertexCount, size);
             arealVertexDensity = ReupMeshUtils.ArealVertexDensity(vertexCount, size);
             area = ReupMeshUtils.Area(size);
-            volumen = ReupMeshUtils.Volumen(size);
+            volume = ReupMeshUtils.Volumen(size);
         }
     }
 }
