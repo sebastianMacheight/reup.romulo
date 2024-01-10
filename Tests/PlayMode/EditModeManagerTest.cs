@@ -1,11 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using ReupVirtualTwin.managers;
 using UnityEngine.TestTools;
 using NUnit.Framework;
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.enums;
 
