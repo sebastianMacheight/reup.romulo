@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.enums;
+using UnityEngine.UIElements;
+using System;
 
 namespace ReupVirtualTwin.managers
 {
@@ -35,6 +37,9 @@ namespace ReupVirtualTwin.managers
                 SendSetSelectedObjectsMessage();
             }
         }
+
+        private bool _allowSelection = false;
+        public bool allowSelection { get => _allowSelection; set => _allowSelection = value; }
 
         private void SendSetSelectedObjectsMessage()
         {
@@ -71,18 +76,21 @@ namespace ReupVirtualTwin.managers
 
         public GameObject AddObjectToSelection(GameObject selectedObject)
         {
+            if (!_allowSelection) return null;
             selection = _objectWrapper.WrapObject(selectedObject);
             return _selection;
         }
 
         public void ClearSelection()
         {
+            if (!_allowSelection) return;
             selection = null;
             _objectWrapper.DeWrapAll();
         }
 
         public GameObject RemoveObjectFromSelection(GameObject selectedObject)
         {
+            if (!_allowSelection) return null;
             selection = _objectWrapper.DeWrapObject(selectedObject);
             return _selection;
         }
