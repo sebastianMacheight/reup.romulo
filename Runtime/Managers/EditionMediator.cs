@@ -42,9 +42,14 @@ namespace ReupVirtualTwin.managers
             switch(eventName)
             {
                 case Events.setEditMode:
-                    if (payload == "false")
+                    if (payload == "true")
+                    {
+                        _selectedObjectsManager.allowSelection = true;
+                    }
+                    else
                     {
                         _selectedObjectsManager.ClearSelection();
+                        _selectedObjectsManager.allowSelection = false;
                     }
                     break;
                 default:
