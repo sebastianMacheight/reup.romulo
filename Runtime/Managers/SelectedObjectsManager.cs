@@ -3,23 +3,19 @@ using UnityEngine;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.helperInterfaces;
-using ReupVirtualTwin.behaviourInterfaces;
-using System.Collections.Generic;
-using ReupVirtualTwin.dataModels;
-using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.enums;
-using UnityEngine.UIElements;
-using System;
 
 namespace ReupVirtualTwin.managers
 {
     public class SelectedObjectsManager : MonoBehaviour, ISelectedObjectsManager
     {
         private IObjectWrapper _objectWrapper;
+        public IObjectWrapper objectWrapper { set =>  _objectWrapper = value; }
         private IObjectHighlighter _highlighter;
-        private IWebMessagesSender _webMessageSender;
+        public IObjectHighlighter highlighter { set => _highlighter = value; }
+        private IMediator _mediator;
+        public IMediator mediator { set { _mediator = value; } }
         private GameObject _selection;
-        public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
         public GameObject selection
         {
             get => _selection;
@@ -34,45 +30,18 @@ namespace ReupVirtualTwin.managers
                 {
                     _highlighter.HighlightObject(_selection);
                 }
-                SendSetSelectedObjectsMessage();
+                _mediator.Notify(Events.setSelectedObjects, _objectWrapper.wrappedObjects);
             }
         }
 
         private bool _allowSelection = false;
-        public bool allowSelection { get => _allowSelection; set => _allowSelection = value; }
-
-        private void SendSetSelectedObjectsMessage()
-        {
-            if (_selection == null)
+        public bool allowSelection { get => _allowSelection; set
             {
-                _webMessageSender.SendWebMessage(new WebMessage<string>
-                {
-                    type = WebOperationsEnum.setSelectedObjects,
-                    payload = "[]"
-                });
-                return;
+                ClearSelection();
+                _allowSelection = value;
             }
-            List<GameObject> selectedObjects = _objectWrapper.wrappedObjects;
-            List<ObjectDTO> selectedDTOObjects = new List<ObjectDTO>();
-            foreach (GameObject obj in selectedObjects)
-            {
-                string objId = obj.GetComponent<IUniqueIdentifer>().getId();
-                selectedDTOObjects.Add(new ObjectDTO { objectId = objId });
-            }
-            ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
-            WebMessage<ObjectDTO[]> message = new WebMessage<ObjectDTO[]>
-            {
-                type = WebOperationsEnum.setSelectedObjects,
-                payload = objectDTOs
-            };
-            _webMessageSender.SendWebMessage(message);
         }
 
-        private void Start()
-        {
-            _objectWrapper = new ObjectWrapper();
-            _highlighter = new Outliner();
-        }
 
         public GameObject AddObjectToSelection(GameObject selectedObject)
         {
@@ -84,8 +53,8 @@ namespace ReupVirtualTwin.managers
         public void ClearSelection()
         {
             if (!_allowSelection) return;
-            selection = null;
             _objectWrapper.DeWrapAll();
+            selection = null;
         }
 
         public GameObject RemoveObjectFromSelection(GameObject selectedObject)
