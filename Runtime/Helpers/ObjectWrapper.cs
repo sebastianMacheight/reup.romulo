@@ -26,7 +26,7 @@ namespace ReupVirtualTwin.helpers
             return objectWrapper;
         }
 
-        public GameObject DeWrapObject(GameObject obj)
+        public GameObject UnwrapObject(GameObject obj)
         {
             WrappedObjectInfo objectInfo = wrappedObjects.FirstOrDefault(x => x.wrappedObject == obj);
 
