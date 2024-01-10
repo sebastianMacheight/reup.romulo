@@ -13,7 +13,6 @@ public class EditModeManagerTest : MonoBehaviour
 {
     GameObject containerGameObject;
     EditModeManager editModeManager;
-    MockWebMessageSender mockWebMessageSender;
     MockMediator mockMediator;
 
     [SetUp]
@@ -23,51 +22,32 @@ public class EditModeManagerTest : MonoBehaviour
         editModeManager = containerGameObject.AddComponent<EditModeManager>();
         mockMediator = new MockMediator();
         editModeManager.mediator = mockMediator;
-        mockWebMessageSender = new MockWebMessageSender();
-        editModeManager.webMessageSender = mockWebMessageSender;
     }
 
     [UnityTest]
-    public IEnumerator EditModeManagerShouldSendMessageInSetEditModeToTrue()
+    public IEnumerator EditModeManagerShouldNotifyMediatorWhenSettingEditMode()
     {
         editModeManager.editMode = true;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
-        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
-        Assert.AreEqual("true", sentMessage.payload);
+        Assert.AreEqual(true, mockMediator.editMode);
         yield return null;
-    }
-    [UnityTest]
-    public IEnumerator EditModeManagerShouldSendMessageInSetEditModeToFalse()
-    {
         editModeManager.editMode = false;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
-        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
-        Assert.AreEqual("false", sentMessage.payload);
+        Assert.AreEqual(false, mockMediator.editMode);
         yield return null;
-    }
-
-    private class MockWebMessageSender : IWebMessagesSender
-    {
-        public object sentMessage;
-        public void SendWebMessage<T>(WebMessage<T> webWessage)
-        {
-            sentMessage = webWessage;
-        }
     }
 
     private class MockMediator : IMediator
     {
-        public string editMode = null;
+        public bool editMode;
         public void Notify(Events eventName)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Notify(Events eventName, string payload)
+        public void Notify<T>(Events eventName, T payload)
         {
             if (eventName == Events.setEditMode)
             {
-                editMode = payload;
+                editMode = (bool)(object)payload;
             }
         }
     }

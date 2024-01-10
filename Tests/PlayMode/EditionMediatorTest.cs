@@ -6,6 +6,8 @@ using UnityEngine.TestTools;
 using ReupVirtualTwin.managers;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.dataModels;
 
 public class EditionMediatorTest : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class EditionMediatorTest : MonoBehaviour
     EditionMediator editionMediator;
     MockEditModeManager mockEditModeManager;
     MockSelectedObjectsManager mockSelectedObjectsManager;
+    MockWebMessageSender mockWebMessageSender;
     [SetUp]
     public void SetUp()
     {
@@ -22,25 +25,48 @@ public class EditionMediatorTest : MonoBehaviour
         mockSelectedObjectsManager = new MockSelectedObjectsManager();
         editionMediator.editModeManager = mockEditModeManager;
         editionMediator.selectedObjectsManager = mockSelectedObjectsManager;
+        mockWebMessageSender = new MockWebMessageSender();
+        editionMediator.webMessageSender = mockWebMessageSender;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendMessageInSetEditModeToTrue()
+    {
+        editionMediator.Notify(Events.setEditMode, true);
+        WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
+        Assert.AreEqual(true, sentMessage.payload);
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator ShouldSendMessageInSetEditModeToFalse()
+    {
+        editionMediator.Notify(Events.setEditMode, false);
+        WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
+        Assert.AreEqual(false, sentMessage.payload);
+        yield return null;
     }
 
     [UnityTest]
     public IEnumerator EditionMediatorShouldSetEditModeWhenReceiveRequest()
     {
-        editionMediator.ReceiveSetEditModeRequest("true");
+        string message = dummyJsonCreator.createWebMessage(WebOperationsEnum.setEditMode, "true");
+        editionMediator.ReceiveWebMessage(message);
         Assert.AreEqual(mockEditModeManager.editMode, true);
         yield return null;
-        editionMediator.ReceiveSetEditModeRequest("false");
+        message = dummyJsonCreator.createWebMessage(WebOperationsEnum.setEditMode, "false");
+        editionMediator.ReceiveWebMessage(message);
         Assert.AreEqual(mockEditModeManager.editMode, false);
         yield return null;
     }
     [UnityTest]
     public IEnumerator EditionMediatorShouldAllowAndDisallowObjectSelection()
     {
-        editionMediator.Notify(Events.setEditMode, "true");
+        editionMediator.Notify(Events.setEditMode, true);
         Assert.AreEqual(mockSelectedObjectsManager.allowSelection, true);
         yield return null;
-        editionMediator.Notify(Events.setEditMode, "false");
+        editionMediator.Notify(Events.setEditMode, false);
         Assert.AreEqual(mockSelectedObjectsManager.allowSelection, false);
         yield return null;
     }
@@ -48,7 +74,7 @@ public class EditionMediatorTest : MonoBehaviour
     [UnityTest]
     public IEnumerator EditionMediatorShouldClearSelectionWhenEditModeIsSetToFalse()
     {
-        editionMediator.Notify(Events.setEditMode, "false");
+        editionMediator.Notify(Events.setEditMode, false);
         Assert.AreEqual(mockSelectedObjectsManager.selectionCleared, true);
         yield return null;
     }
@@ -81,4 +107,21 @@ public class EditionMediatorTest : MonoBehaviour
             throw new System.NotImplementedException();
         }
     }
+
+    private class MockWebMessageSender : IWebMessagesSender
+    {
+        public object sentMessage;
+        public void SendWebMessage<T>(WebMessage<T> webWessage)
+        {
+            sentMessage = webWessage;
+        }
+    }
+    private static class dummyJsonCreator
+    {
+        public static string createWebMessage(string type, string payload)
+        {
+            return $"{{\"type\":\"{type}\",\"payload\":{payload}}}";
+        }
+    }
+
 }

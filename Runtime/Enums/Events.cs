@@ -5,5 +5,6 @@ namespace ReupVirtualTwin.enums
         transformHandleStartIteraction,
         transformHandleStopIteraction,
         setEditMode,
+        setSelectedObjects,
     }
 }

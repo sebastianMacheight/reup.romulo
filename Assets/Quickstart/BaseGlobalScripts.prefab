@@ -367,6 +367,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6056801452590680388}
     m_Modifications:
+    - target: {fileID: 3802134444032951087, guid: 0cda47605a736cf4195ac4447f195623, type: 3}
+      propertyPath: mediator
+      value: 
+      objectReference: {fileID: 5810216909219089537}
     - target: {fileID: 3831656627378006908, guid: 0cda47605a736cf4195ac4447f195623, type: 3}
       propertyPath: m_Name
       value: EditionMediator

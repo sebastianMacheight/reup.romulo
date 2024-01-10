@@ -14,12 +14,6 @@ namespace ReupVirtualTwin.managers
         private void Awake()
         {
             _editModeManager = GetComponent<EditModeManager>();
-            IWebMessagesSender webMessageSender = GetComponent<IWebMessagesSender>();
-            if (webMessageSender == null )
-            {
-                throw new System.Exception("WebMessageSender not found");
-            }
-            _editModeManager.webMessageSender = webMessageSender;
             _editModeManager.mediator = editionMediator.GetComponent<IMediator>();
         }
     }
