@@ -12,9 +12,9 @@ namespace ReupVirtualTwin.behaviours
             _editModeManager = ObjectFinder.FindEditModeManager().GetComponent<IEditModeManager>();
         }
 
-        public void Toggle(bool value)
+        public void Toggle()
         {
-            _editModeManager.editMode = value;
+            _editModeManager.editMode = !_editModeManager.editMode;
         }
     }
 }
