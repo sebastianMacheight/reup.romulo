@@ -3,51 +3,37 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.managers;
-using ReupVirtualTwin.enums;
+using ReupVirtualTwin.managerInterfaces;
 
 public class EditionMediatorTest : MonoBehaviour
 {
-    EditionMediator editionMediator;
-    EditModeManager editModeManager;
-    MockWebMessageSender mockWebMessageSender;
     GameObject containerGameObject;
+    EditionMediator editionMediator;
+    MockEditModeManager mockEditModeManager;
     [SetUp]
     public void SetUp()
     {
         containerGameObject = new GameObject();
         editionMediator = containerGameObject.AddComponent<EditionMediator>();
-        editModeManager = containerGameObject.AddComponent<EditModeManager>();
-        editionMediator.editModeManager = editModeManager;
-        editModeManager.mediator = editionMediator;
-        mockWebMessageSender = new MockWebMessageSender();
-        editModeManager.webMessageSender = mockWebMessageSender;
+        mockEditModeManager = new MockEditModeManager();
+        editionMediator.editModeManager = mockEditModeManager;
     }
 
     [UnityTest]
-    public IEnumerator EditionMediatorShouldSendWebMessageOnEditModeSwitch()
+    public IEnumerator EditionMediatorShouldSetEditModeWhenReceiveRequest()
     {
         editionMediator.ReceiveSetEditModeRequest("true");
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
-        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
-        Assert.AreEqual("true", sentMessage.payload);
-        yield return null;
-        mockWebMessageSender.sentMessage = null;
+        Assert.AreEqual(mockEditModeManager.editMode, true);
         yield return null;
         editionMediator.ReceiveSetEditModeRequest("false");
-        sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
-        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
-        Assert.AreEqual("false", sentMessage.payload);
+        Assert.AreEqual(mockEditModeManager.editMode, false);
         yield return null;
     }
-}
-public class MockWebMessageSender : IWebMessagesSender
-{
-    public object sentMessage;
-    public void SendWebMessage<T>(WebMessage<T> webWessage)
+
+    private class MockEditModeManager : IEditModeManager
     {
-        sentMessage = webWessage;
+        private bool _editMode;
+        public bool editMode { get => _editMode; set => _editMode = value; }
     }
 }
