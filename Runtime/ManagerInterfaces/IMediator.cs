@@ -5,6 +5,6 @@ namespace ReupVirtualTwin.managerInterfaces
     public interface IMediator
     {
         public void Notify(Events eventName);
-        public void Notify(Events eventName, string payload);
+        public void Notify<T>(Events eventName, T payload);
     }
 }
