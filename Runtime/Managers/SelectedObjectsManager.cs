@@ -3,20 +3,16 @@ using UnityEngine;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.helperInterfaces;
-using ReupVirtualTwin.behaviourInterfaces;
-using System.Collections.Generic;
-using ReupVirtualTwin.dataModels;
-using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.enums;
-using UnityEngine.UIElements;
-using System;
 
 namespace ReupVirtualTwin.managers
 {
     public class SelectedObjectsManager : MonoBehaviour, ISelectedObjectsManager
     {
         private IObjectWrapper _objectWrapper;
+        public IObjectWrapper objectWrapper { set =>  _objectWrapper = value; }
         private IObjectHighlighter _highlighter;
+        public IObjectHighlighter highlighter { set => _highlighter = value; }
         private IMediator _mediator;
         public IMediator mediator { set { _mediator = value; } }
         private GameObject _selection;
@@ -46,11 +42,6 @@ namespace ReupVirtualTwin.managers
             }
         }
 
-        private void Start()
-        {
-            _objectWrapper = new ObjectWrapper();
-            _highlighter = new Outliner();
-        }
 
         public GameObject AddObjectToSelection(GameObject selectedObject)
         {
