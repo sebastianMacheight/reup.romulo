@@ -1,4 +1,5 @@
 using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace ReupVirtualTwin.managers
         {
             SelectedObjectsManager selectedObjectsManager = GetComponent<SelectedObjectsManager>();
             selectedObjectsManager.mediator = mediator.GetComponent<IMediator>();
+            selectedObjectsManager.objectWrapper = new ObjectWrapper();
+            selectedObjectsManager.highlighter = new Outliner();
         }
     }
 }
