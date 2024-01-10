@@ -55,17 +55,6 @@ namespace ReupVirtualTwin.managers
                 selectedDTOObjects.Add(new ObjectDTO { objectId = objId });
             }
             ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
-            //Arraydor<ObjectDTO> arraydor = new Arraydor<ObjectDTO>
-            //{
-            //    array = objectDTOs,
-            //};
-            //Debug.Log(arraydor);
-            //Debug.Log(JsonUtility.ToJson(arraydor));
-            //foreach (ObjectDTO obj in objectDTOs)
-            //{
-            //    Debug.Log(obj.objectId);
-            //    Debug.Log(obj.objectTags);
-            //}
             WebMessage<ObjectDTO[]> message = new WebMessage<ObjectDTO[]>
             {
                 type = WebOperationsEnum.setSelectedObjects,
@@ -73,10 +62,6 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
-        //private class Arraydor<T>
-        //{
-        //    public T[] array;
-        //}
 
         private void Start()
         {
