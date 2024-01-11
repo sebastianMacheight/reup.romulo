@@ -15,8 +15,8 @@ public class SelectTransformGizmo2 : MonoBehaviour
     private int runtimeTransformLayer = 6;
     private int runtimeTransformLayerMask;
     private ObjectWrapper objectWrapper;
-    private IEditModeManager _editModeManager;
 
+    private IEditModeManager _editModeManager;
     public IEditModeManager editModeManager
     {
         set
@@ -25,11 +25,17 @@ public class SelectTransformGizmo2 : MonoBehaviour
         }
     }
 
+    private IMediator _editionMediator;
+    public IMediator editionMediator
+    {
+        set { _editionMediator = value; }
+    }
+
     private void Start()
     {
         runtimeTransformGameObj = new GameObject("TransformHandle");
         runtimeTransformHandle = runtimeTransformGameObj.AddComponent<RuntimeTransformHandle>();
-        runtimeTransformHandle.mediator = (IMediator)_editModeManager;
+        runtimeTransformHandle.mediator = _editionMediator;
         runtimeTransformGameObj.layer = runtimeTransformLayer;
         runtimeTransformLayerMask = 1 << runtimeTransformLayer; //Layer number represented by a single bit in the 32-bit integer using bit shift
         runtimeTransformHandle.type = HandleType.POSITION;
