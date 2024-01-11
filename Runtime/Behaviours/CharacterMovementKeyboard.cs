@@ -9,7 +9,10 @@ public class CharacterMovementKeyboard : MonoBehaviour
     private InputProvider _inputProvider;
     [SerializeField]
     private CharacterPositionManager _characterPositionManager;
-    private float _walkSpeed = 3.5f;
+    [SerializeField]
+    private CharacterRotationManager _characterRotationManager;
+    private float WALK_SPEED_M_PER_SECOND = 3.5f;
+    private float ROTATION_SPEED_DEG_PER_SECOND = 180f;
 
 
     private void Awake()
@@ -25,21 +28,28 @@ public class CharacterMovementKeyboard : MonoBehaviour
     private void UpdatePosition()
     {
         Vector2 inputValue = _inputProvider.MovementInput().normalized;
-        Vector3 movementDirection = inputValue.x * GetCharacterRight() +
-                            inputValue.y * GetCharacterForward();
-        if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
+        PerformForwardBackwardMovement(inputValue.y);
+        PerformRotation(inputValue.x);
+    }
+    private void PerformRotation(float direction)
+    {
+        if (direction != 0f)
         {
-            _characterPositionManager.StopWalking();
-            _characterPositionManager.MoveInDirection(movementDirection, _walkSpeed);
+            float angleDelta = direction * ROTATION_SPEED_DEG_PER_SECOND * Time.deltaTime;
+            _characterRotationManager.horizontalRotation += angleDelta;
         }
     }
 
-    private Vector3 GetCharacterRight()
+    private void PerformForwardBackwardMovement(float direction)
     {
-        Vector3 right = _innerCharacterTransform.right;
-        right.y = 0;
-        return right;
+        Vector3 movementDirection =  direction * GetCharacterForward();
+        if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
+        {
+            _characterPositionManager.StopWalking();
+            _characterPositionManager.MoveInDirection(movementDirection, WALK_SPEED_M_PER_SECOND);
+        }
     }
+
     private Vector3 GetCharacterForward()
     {
         Vector3 forward = _innerCharacterTransform.forward;

@@ -8,7 +8,6 @@ namespace ReupVirtualTwin.behaviours
     {
         [SerializeField]
         GameObject building;
-
         private bool buildingSetup = false;
 
         event Action _onBuildingSetUp;
@@ -38,5 +37,20 @@ namespace ReupVirtualTwin.behaviours
             _onBuildingSetUp?.Invoke();
             buildingSetup = true;
         }
+
+        public void AssignIdsToBuilding()
+        {
+            AssignIds.AssignToTree(building);
+        }
+        public void RemoveIdsOfBuilding()
+        {
+            AssignIds.RemoveFromTree(building);
+        }
+        public void ResetIdsOfBuilding()
+        {
+            RemoveIdsOfBuilding();
+            AssignIdsToBuilding();
+        }
+
     }
 }
