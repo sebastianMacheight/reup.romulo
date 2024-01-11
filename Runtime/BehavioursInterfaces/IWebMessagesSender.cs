@@ -1,6 +1,6 @@
 using ReupVirtualTwin.dataModels;
 
-namespace ReupVirtualTwin.behaviours
+namespace ReupVirtualTwin.behaviourInterfaces
 {
     public interface IWebMessagesSender
     {

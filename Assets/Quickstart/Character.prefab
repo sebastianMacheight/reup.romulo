@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 203620776}
   - component: {fileID: 203620775}
   - component: {fileID: 203620774}
+  - component: {fileID: 5908476867254959470}
   m_Layer: 7
   m_Name: PointerMovement
   m_TagString: Untagged
@@ -71,6 +72,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d55b7107efa67f3468bac128bf7d5e4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5908476867254959470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203620772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 049ba9c4b7e7e8549914d79f8f11f3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1625360268
