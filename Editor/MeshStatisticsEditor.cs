@@ -32,7 +32,7 @@ public class MeshStatisticsEditor : Editor
             EditorGUILayout.LabelField("Vol Vertex Density: " + meshInfo.volVertexDensity);
             EditorGUILayout.LabelField("Mesh size: " + meshInfo.size);
             EditorGUILayout.LabelField("Mesh area: " + meshInfo.area);
-            EditorGUILayout.LabelField("Mesh volumen: " + meshInfo.volumen);
+            EditorGUILayout.LabelField("Mesh volumen: " + meshInfo.volume);
 
         }
     }

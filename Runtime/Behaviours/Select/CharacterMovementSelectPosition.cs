@@ -7,7 +7,7 @@ namespace ReupVirtualTwin.behaviours
     public class CharacterMovementSelectPosition : SelectPoint
     {
         private IEditModeManager _editModeManager;
-        CharacterPositionManager _characterPositionManager;
+        private CharacterPositionManager _characterPositionManager;
 
         public override void HandleHit(RaycastHit hit)
         {
