@@ -28,10 +28,10 @@ namespace ReupVirtualTwin.managers
         {
             switch (eventName)
             {
-                case EventsEnum.transformHandleStartIteraction:
+                case EventsEnum.transformHandleStartInteraction:
                     _characterRotationManager.allowRotation = false;
                     break;
-                case EventsEnum.transformHandleStopIteraction:
+                case EventsEnum.transformHandleStopInteraction:
                     _characterRotationManager.allowRotation = true;
                     break;
                 default:
