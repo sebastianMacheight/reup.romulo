@@ -38,5 +38,9 @@ namespace ReupVirtualTwin.helpers
         {
             return GameObject.FindGameObjectWithTag(TagsEnum.objectRegistry);
         }
+        public static GameObject FindEditModeManager()
+        {
+            return GameObject.FindGameObjectWithTag(TagsEnum.editModeManager);
+        }
     }
 }
