@@ -61,7 +61,7 @@ namespace ReupVirtualTwin.managers
                     {
                         throw new ArgumentException($"Payload must be a List<GameObject> for {eventName} events", nameof(payload));
                     }
-                    ProccessSelectedObjects((List<GameObject>)(object)payload);
+                    ProcessSelectedObjects((List<GameObject>)(object)payload);
 
                     break;
                 default:
@@ -101,7 +101,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
-        private void ProccessSelectedObjects(List<GameObject> selectedObjects)
+        private void ProcessSelectedObjects(List<GameObject> selectedObjects)
         {
             List<ObjectDTO> selectedDTOObjects = new List<ObjectDTO>();
             foreach (GameObject obj in selectedObjects)
