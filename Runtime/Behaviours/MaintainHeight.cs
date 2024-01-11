@@ -37,8 +37,16 @@ namespace ReupVirtualTwin.behaviours
 
         void KeepCharacterHeightFromGround(RaycastHit groundHit)
         {
+            this.groundHit = groundHit.point;
             var newHeight = GetDesiredHeightInGround(groundHit.point.y);
             _characterPositionManager.KeepHeight(newHeight);
+        }
+
+        Vector3 groundHit = Vector3.zero;
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(groundHit, 0.05f);
         }
 
         public static float GetDesiredHeightInGround(float groundHeight)

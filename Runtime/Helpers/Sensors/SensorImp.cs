@@ -8,7 +8,7 @@ namespace ReupVirtualTwin.helpers
     {
         protected IRayProvider _rayProvider;
         protected IRayCastHitSelector _hitSelector;
-        void Start()
+        void Awake()
         {
             _rayProvider = GetComponent<IRayProvider>();
             _hitSelector = GetComponent<IRayCastHitSelector>();
