@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.dataModels
 {
-    public class ObjectBorder
+    public struct ObjectBorder
     {
         public Vector3 maxBorders;
         public Vector3 minBorders;
@@ -28,7 +28,7 @@ namespace ReupVirtualTwin.dataModels
             };
         }
     }
-    public class CenteredObjectBorder
+    public struct CenteredObjectBorder
     {
         public Vector3 center;
         public Vector3 size;
