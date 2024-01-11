@@ -12,10 +12,10 @@ namespace ReupVirtualTwin.helpers
         public bool isMesh = false;
         public bool isMeshSerialized = false;
         public Vector3? meanVertex = null;
-        public ObjectBorder borders = null;
+        public ObjectBorder? borders;
         public Vector3? position = null;
         public Vector3 size = Vector3.zero;
-        public float volumen = 0;
+        public float volume = 0;
         public float area = 0;
         public float volVertexDensity;
         public float arealVertexDensity;
@@ -50,13 +50,13 @@ namespace ReupVirtualTwin.helpers
             }
             borders = ReupMeshUtils.GetObjectBorder(mesh, obj.transform);
             if (borders == null) return;
-            size = borders.TransformToCenterSize().size;
+            size = ((ObjectBorder)borders).TransformToCenterSize().size;
             vertexCount = mesh.vertexCount;
             triangleCount = mesh.triangles.Length / 3;
             volVertexDensity = ReupMeshUtils.VolumetricVertexDensity(vertexCount, size);
             arealVertexDensity = ReupMeshUtils.ArealVertexDensity(vertexCount, size);
             area = ReupMeshUtils.Area(size);
-            volumen = ReupMeshUtils.Volumen(size);
+            volume = ReupMeshUtils.Volumen(size);
         }
     }
 }

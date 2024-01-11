@@ -61,7 +61,7 @@ namespace ReupVirtualTwin.managers
 
         public GameObject RemoveObjectFromSelection(GameObject selectedObject)
         {
-            selection = _objectWrapper.DeWrapObject(selectedObject);
+            selection = _objectWrapper.UnwrapObject(selectedObject);
             return _selection;
         }
     }

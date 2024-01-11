@@ -21,6 +21,7 @@ namespace ReupVirtualTwin.editor
                 var arrayElem = arrayProp.GetArrayElementAtIndex(i);
                 if (shader == arrayElem.objectReferenceValue)
                 {
+                    Debug.LogWarning($"shader {shaderName} already exists in ProjectSettings/GraphicsSettings/AlwaysIncludedShaders");
                     hasShader = true;
                     break;
                 }
@@ -36,6 +37,7 @@ namespace ReupVirtualTwin.editor
                 serializedObject.ApplyModifiedProperties();
 
                 AssetDatabase.SaveAssets();
+                Debug.Log($"shader {shaderName} added to ProjectSettings/GraphicsSettings/AlwaysIncludedShaders");
             }
         }
     }

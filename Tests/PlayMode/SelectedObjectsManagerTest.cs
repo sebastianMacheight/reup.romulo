@@ -4,8 +4,6 @@ using UnityEngine;
 using ReupVirtualTwin.managers;
 using UnityEngine.TestTools;
 using NUnit.Framework;
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.models;
@@ -131,7 +129,7 @@ public class SelectedObjectsManagerTest : MonoBehaviour
             selectedObjects.Clear();
         }
 
-        public GameObject DeWrapObject(GameObject obj)
+        public GameObject UnwrapObject(GameObject obj)
         {
             selectedObjects.Remove(obj);
             return wrapper;
