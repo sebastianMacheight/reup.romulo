@@ -7,8 +7,17 @@ namespace ReupVirtualTwin.helpers
 {
     public class ObjectWrapper : IObjectWrapper
     {
-        List<WrappedObjectInfo> wrappedObjects = new List<WrappedObjectInfo>();
+        List<WrappedObjectInfo> _wrappedObjectsInfo = new List<WrappedObjectInfo>();
         GameObject objectWrapper;
+
+        public List<GameObject> wrappedObjects
+        {
+            get
+            {
+                return _wrappedObjectsInfo.Select(obj => obj.wrappedObject).ToList();
+            }
+        }
+
         private class WrappedObjectInfo
         {
             public Transform originalParent;
@@ -17,7 +26,7 @@ namespace ReupVirtualTwin.helpers
 
         public GameObject WrapObject(GameObject obj)
         {
-            wrappedObjects.Add(new WrappedObjectInfo
+            _wrappedObjectsInfo.Add(new WrappedObjectInfo
             {
                 originalParent = obj.transform.parent,
                 wrappedObject = obj
@@ -28,22 +37,22 @@ namespace ReupVirtualTwin.helpers
 
         public GameObject UnwrapObject(GameObject obj)
         {
-            WrappedObjectInfo objectInfo = wrappedObjects.FirstOrDefault(x => x.wrappedObject == obj);
+            WrappedObjectInfo objectInfo = _wrappedObjectsInfo.FirstOrDefault(x => x.wrappedObject == obj);
 
             ReturnObjectToParent(objectInfo);
-            wrappedObjects.Remove(objectInfo);
+            _wrappedObjectsInfo.Remove(objectInfo);
             UpdateWrapperCenter();
             return objectInfo.wrappedObject;
         }
         void UpdateWrapperCenter()
         {
-            if (wrappedObjects.Count == 0)
+            if (_wrappedObjectsInfo.Count == 0)
             {
                 return;
             }
             Vector3 selectionCenter = GetSelectionCenter();
             GameObject newWrapper = CreateCenteredWrapper(selectionCenter);
-            foreach(WrappedObjectInfo obj in wrappedObjects)
+            foreach(WrappedObjectInfo obj in _wrappedObjectsInfo)
             {
                 obj.wrappedObject.transform.SetParent(newWrapper.transform, true);
             }
@@ -57,7 +66,7 @@ namespace ReupVirtualTwin.helpers
         Vector3 GetSelectionCenter()
         {
             List<Vector3> centers = new List<Vector3>();
-            foreach(WrappedObjectInfo obj in wrappedObjects)
+            foreach(WrappedObjectInfo obj in _wrappedObjectsInfo)
             {
                 centers.Add(GetObjectCenter(obj.wrappedObject));
             }
@@ -72,9 +81,7 @@ namespace ReupVirtualTwin.helpers
                 throw new System.Exception($"No mesh for selected object {obj.name}");
             }
             Vector3 meshCenter = ((ObjectBorder)objectBorder).TransformToCenterSize().center;
-            Vector3 objectPosition = obj.transform.position;
-            Vector3 positionatedMeshCenter = meshCenter;
-            return positionatedMeshCenter;
+            return meshCenter;
         }
 
         GameObject CreateCenteredWrapper(Vector3 center)
@@ -95,11 +102,11 @@ namespace ReupVirtualTwin.helpers
 
         public void DeWrapAll()
         {
-            foreach(WrappedObjectInfo obj in wrappedObjects)
+            foreach(WrappedObjectInfo obj in _wrappedObjectsInfo)
             {
                 ReturnObjectToParent(obj);
             }
-            wrappedObjects.Clear();
+            _wrappedObjectsInfo.Clear();
         }
         void ReturnObjectToParent(WrappedObjectInfo objectInfo)
         {

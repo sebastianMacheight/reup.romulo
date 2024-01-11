@@ -4,6 +4,6 @@ namespace ReupVirtualTwin.models
 {
     public interface IWebMaterialSelectionTrigger: IMaterialSelectionTrigger
     {
-        public WebMessage GetCreateWebContainerMessage();
+        public WebMessage<string> GetCreateWebContainerMessage();
     }
 }

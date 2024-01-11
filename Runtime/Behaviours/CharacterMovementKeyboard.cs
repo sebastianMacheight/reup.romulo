@@ -1,5 +1,7 @@
 using UnityEngine;
 using ReupVirtualTwin.characterMovement;
+using ReupVirtualTwin.inputs;
+using ReupVirtualTwin.managers;
 
 public class CharacterMovementKeyboard : MonoBehaviour
 {

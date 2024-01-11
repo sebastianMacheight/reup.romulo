@@ -1,7 +1,7 @@
 using UnityEngine;
 using ReupVirtualTwin.enums;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.helpers
 {
     public class TriggerSelector : ObjectSelector
     {

@@ -82,7 +82,7 @@ public class MaintainHeightTest : MonoBehaviour
     }
     private void DestroyGameRelatedDependecyInjectors()
     {
-        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
+        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
         Destroy(movementSelectPosDependencyInjector);
     }
 }

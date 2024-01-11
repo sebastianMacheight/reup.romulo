@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
@@ -8,6 +9,6 @@ namespace ReupVirtualTwin.helpers
         GameObject UnwrapObject(GameObject obj);
         GameObject WrapObjects(GameObject[] obj);
         void DeWrapAll();
-
+        List<GameObject> wrappedObjects { get; }
     }
 }
