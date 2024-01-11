@@ -4,6 +4,7 @@ using RuntimeHandle;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managers;
+using ReupVirtualTwin.helperInterfaces;
 
 public class SelectTransformGizmo2 : MonoBehaviour
 {
@@ -15,13 +16,14 @@ public class SelectTransformGizmo2 : MonoBehaviour
     private int runtimeTransformLayer = 6;
     private int runtimeTransformLayerMask;
     private ObjectWrapper objectWrapper;
-    private IEditModeManager _editModeModeManager;
+    private IEditModeManager editModeModeManager;
+    private IObjectHighlighter highlighter;
 
     public IEditModeManager editModeManager
     {
         set
         {
-            _editModeModeManager = value;
+            editModeModeManager = value;
         }
     }
 
@@ -36,12 +38,13 @@ public class SelectTransformGizmo2 : MonoBehaviour
         runtimeTransformHandle.autoScaleFactor = 1.0f;
         runtimeTransformGameObj.SetActive(false);
         objectWrapper = new ObjectWrapper();
+        highlighter = GetComponent<IObjectHighlighter>();
     }
 
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && _editModeModeManager.editMode == true)
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && editModeModeManager.editMode == true)
         {
             ApplyLayerToChildren(runtimeTransformGameObj);
             if (Physics.Raycast(ray, out raycastHit))
@@ -57,6 +60,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
                     {
                         Debug.Log(hitObject.name);
                         selection = objectWrapper.WrapObject(hitObject.gameObject).transform;
+                        highlighter.HighlightObject(selection.gameObject);
                         runtimeTransformHandle.target = selection;
                         runtimeTransformGameObj.SetActive(true);
                     }
@@ -74,7 +78,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
                 }
             }
         }
-        if (_editModeModeManager.editMode == false)
+        if (editModeModeManager.editMode == false)
         {
             Deselect();
         }
@@ -110,6 +114,10 @@ public class SelectTransformGizmo2 : MonoBehaviour
 
     private void Deselect()
     {
+        if (selection != null)
+        {
+            highlighter.UnhighlightObject(selection.gameObject);
+        }
         selection = null;
         objectWrapper.DeWrapAll();
         runtimeTransformGameObj.SetActive(false);
