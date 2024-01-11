@@ -11,8 +11,8 @@ namespace ReupVirtualTwin.managers
         private void Awake()
         {
             _editModeManager = GetComponent<EditModeManager>();
-            ICharacterRotationManager _characterRotationManager = ObjectFinder.FindCharacter().GetComponent<ICharacterRotationManager>();
-            _editModeManager.characterRotationManager = _characterRotationManager;
+            ICharacterRotationManager characterRotationManager = ObjectFinder.FindCharacter().GetComponent<ICharacterRotationManager>();
+            _editModeManager.characterRotationManager = characterRotationManager;
         }
     }
 }
