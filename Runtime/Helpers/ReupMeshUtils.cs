@@ -21,13 +21,12 @@ namespace ReupVirtualTwin.helpers
             }
             foreach (Transform child in obj.transform)
             {
-                //ObjectBorder? childBorder = GetPositionatedChildBorder(child.gameObject);
                 ObjectBorder? childBorder = GetObjectTreeBorder(child.gameObject);
                 parentBorder = ExtendBorder(parentBorder, childBorder);
             }
             return parentBorder;
         }
-        public static ObjectBorder? ExtendBorder(ObjectBorder parentBorder, ObjectBorder childBorder)
+        public static ObjectBorder? ExtendBorder(ObjectBorder? parentBorder, ObjectBorder? childBorder)
         {
             if (parentBorder == null && childBorder == null)
             {
@@ -41,6 +40,10 @@ namespace ReupVirtualTwin.helpers
             {
                 return parentBorder;
             }
+            return JoinBorders((ObjectBorder)parentBorder, (ObjectBorder)childBorder);
+        }
+        public static ObjectBorder JoinBorders(ObjectBorder parentBorder, ObjectBorder childBorder)
+        {
             return new ObjectBorder
             {
                 maxBorders = new Vector3
@@ -56,6 +59,7 @@ namespace ReupVirtualTwin.helpers
                         FindMin(parentBorder.minBorders.z, childBorder.minBorders.z)
                     )
             };
+
         }
         private static float FindMin(float a, float b)
         {
@@ -72,17 +76,6 @@ namespace ReupVirtualTwin.helpers
                 return a;
             }
             return b;
-        }
-        public static Vector3 MeanPointOfObject(GameObject obj)
-        {
-            var transform = obj.transform;
-            var vertices = obj.GetComponent<MeshFilter>().sharedMesh.vertices;
-            Vector3 mean = vertices.Aggregate((curr, next) => curr + next) / vertices.Length;
-            mean.x = mean.x * transform.GetTotalScale().x;
-            mean.y = mean.y * transform.GetTotalScale().y;
-            mean.z = mean.z * transform.GetTotalScale().z;
-            mean = Quaternion.Euler(transform.localEulerAngles) * mean;
-            return mean;
         }
 
         public static float Volumen(Vector3 size)
@@ -216,7 +209,8 @@ namespace ReupVirtualTwin.helpers
         }
         static int DecideNumberOfVertexToCheck(int vertexCount)
         {
-            int logCount = (int)(10 * Mathf.Log(vertexCount));
+            int logIncrementalVertexMultiplicator = 10;
+            int logCount = (int)(logIncrementalVertexMultiplicator * Mathf.Log(vertexCount));
             if (logCount > vertexCount)
             {
                 return vertexCount;

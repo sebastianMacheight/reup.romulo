@@ -35,7 +35,7 @@ namespace ReupVirtualTwin.helpers
             return objectWrapper;
         }
 
-        public GameObject DeWrapObject(GameObject obj)
+        public GameObject UnwrapObject(GameObject obj)
         {
             WrappedObjectInfo objectInfo = _wrappedObjectsInfo.FirstOrDefault(x => x.wrappedObject == obj);
 
@@ -75,12 +75,12 @@ namespace ReupVirtualTwin.helpers
 
         Vector3 GetObjectCenter(GameObject obj)
         {
-            ObjectBorder objectBorder = ReupMeshUtils.GetObjectTreeBorder(obj);
+            ObjectBorder? objectBorder = ReupMeshUtils.GetObjectTreeBorder(obj);
             if (objectBorder == null)
             {
                 throw new System.Exception($"No mesh for selected object {obj.name}");
             }
-            Vector3 meshCenter = objectBorder.TransformToCenterSize().center;
+            Vector3 meshCenter = ((ObjectBorder)objectBorder).TransformToCenterSize().center;
             return meshCenter;
         }
 
