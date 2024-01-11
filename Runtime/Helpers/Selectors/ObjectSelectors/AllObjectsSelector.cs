@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.helpers
 {
     public class AllObjectsSelector : ObjectSelector
     {

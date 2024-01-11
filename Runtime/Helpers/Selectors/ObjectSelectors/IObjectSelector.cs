@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
-public interface IObjectSelector
-{
-    public GameObject GetObject(Ray ray);
-}
 
+namespace ReupVirtualTwin.helpers
+{
+    public interface IObjectSelector
+    {
+        public GameObject GetObject(Ray ray);
+    }
+}

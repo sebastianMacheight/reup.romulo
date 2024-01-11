@@ -29,7 +29,7 @@ namespace ReupVirtualTwin.behaviours
         void SendHideWebContainerMessage()
         {
 
-            var message = new WebMessage
+            var message = new WebMessage<string>
             {
                 type = WebOperationsEnum.hideMaterialsOptions
             };

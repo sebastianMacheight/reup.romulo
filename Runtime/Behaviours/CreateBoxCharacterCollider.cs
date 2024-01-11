@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
-
     public class CreateBoxCharacterCollider : MonoBehaviour, ICreateCollider
+
     {
         [SerializeField]
         GameObject character;
