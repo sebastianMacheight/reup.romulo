@@ -2,7 +2,7 @@ namespace ReupVirtualTwin.dataModels
 {
     public class WebMessage
     {
-        public string operation;
-        public string body;
+        public string type;
+        public string payload;
     }
 }

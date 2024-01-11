@@ -5,9 +5,21 @@ namespace ReupVirtualTwin.helpers
 {
     public class MoveToHitSelector : RayCastHitSelector
     {
+        private string[] ignoreTags = new string[]
+        {
+            TagsEnum.trigger,
+            TagsEnum.materialSelection,
+        };
         protected override bool IsSelectable(GameObject obj)
         {
-            return !obj.CompareTag(TagsEnum.trigger) && !obj.CompareTag(TagsEnum.materialSelection);
+            foreach(string tag in ignoreTags)
+            {
+                if (obj.CompareTag(tag))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

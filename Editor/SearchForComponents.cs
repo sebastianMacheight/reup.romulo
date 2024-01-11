@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
  
 public class SearchForComponents : EditorWindow {
-   [MenuItem( "EDITORS/Search For Components" )]
+   [MenuItem( "Reup Romulo/Search For Components" )]
    static void Init () {
      SearchForComponents window = (SearchForComponents) EditorWindow.GetWindow( typeof( SearchForComponents ) );
      window.Show();

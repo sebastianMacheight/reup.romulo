@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using ReupVirtualTwin.characterMovement;
 using UnityEditor;
+using ReupVirtualTwin.behaviours;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
     public void SetUp()
     {
         character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
+        DestroyGameRelatedDependecyInjectors();
         character.transform.position = Vector3.zero;
         posManager = character.GetComponent<CharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
@@ -122,6 +124,11 @@ public class CharacterPositionManagerTest : MonoBehaviour
         var expectedPosition = new Vector3(sqrt6, sqrt6, 2*sqrt6) / 3;
         Assert.LessOrEqual(Vector3.Distance(character.transform.position, expectedPosition), 1E-5);
         yield return null;
+    }
+    private void DestroyGameRelatedDependecyInjectors()
+    {
+        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
+        Destroy(movementSelectPosDependencyInjector);
     }
 }
 

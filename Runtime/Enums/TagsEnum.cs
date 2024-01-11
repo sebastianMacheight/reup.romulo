@@ -11,12 +11,14 @@ namespace ReupVirtualTwin.enums
         public const string extensionsTriggers = "ExtensionsTriggers";
         public const string setupBuilding = "SetupBuilding";
         public const string objectRegistry = "ObjectRegistry";
+        public const string setUpBuilding = "SetupBuilding";
+        public const string selectableObject = "Selectable";
 
         // managers
         public const string dragManager = "DragManager";
         public const string spacesRecord = "SpacesRecord";
-        public const string characterPositionManager = "CharacterPositionManager";
         public const string webMessages = "WebMessages";
+        public const string editModeManager = "EditModeManager";
 
         public const string character = "Character";
     }
