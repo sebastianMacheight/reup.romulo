@@ -1,8 +1,8 @@
+using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
-
 namespace ReupVirtualTwin.managers
 {
-    public class CharacterRotationManager : MonoBehaviour
+    public class CharacterRotationManager : MonoBehaviour, ICharacterRotationManager 
     {
         float ROTATION_SPEED = 10f;
         float ANGLE_THRESHOLD = 0.01f;
@@ -13,6 +13,14 @@ namespace ReupVirtualTwin.managers
 
         [SerializeField]
         Transform _innerCharacterTransform;
+
+        bool _allowRotation = true;
+        public bool allowRotation
+        {
+            set { _allowRotation = value; }
+            get { return _allowRotation; }
+        }
+
         public float verticalRotation
         {
             get
@@ -21,6 +29,7 @@ namespace ReupVirtualTwin.managers
             }
             set
             {
+                if (!_allowRotation) { return; }
                 if (value > 180f) value -= 360f;
                 _verticalRotation = Mathf.Clamp(value, -90f, 90f);
                 SetDesiredInnerRotation();
@@ -33,6 +42,7 @@ namespace ReupVirtualTwin.managers
             }
             set
             {
+                if (!_allowRotation) { return; }
                 _horizontalRotation = value;
                 SetDesiredHorizontalRotation();
             }
@@ -83,4 +93,5 @@ namespace ReupVirtualTwin.managers
             transform.rotation = Quaternion.Slerp(transform.rotation, _desiredHorizontalRotation, rotationStep);
         }
     }
+
 }

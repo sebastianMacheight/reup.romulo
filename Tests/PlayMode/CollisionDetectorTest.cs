@@ -3,8 +3,9 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEditor;
 using System.Collections;
-using ReupVirtualTwin.behaviours;
+
 using ReupVirtualTwin.characterMovement;
+using ReupVirtualTwin.behaviours;
 
 public class CollisionDetectorTest : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class CollisionDetectorTest : MonoBehaviour
     public void SetUp()
     {
         character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
+        DestroyGameRelatedDependecyInjectors();
         posManager = character.GetComponent<CharacterPositionManager>();
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(cubePrefab);
         SetPlatform();
@@ -57,5 +59,10 @@ public class CollisionDetectorTest : MonoBehaviour
     {
         wall.transform.localScale = new Vector3(10, 10, 0.1f);
         wall.transform.position = new Vector3(0, 0, 2.05f);
+    }
+    private void DestroyGameRelatedDependecyInjectors()
+    {
+        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
+        Destroy(movementSelectPosDependencyInjector);
     }
 }

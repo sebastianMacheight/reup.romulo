@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using ReupVirtualTwin.dataModels;
 using UnityEngine;
+using ReupVirtualTwin.behaviourInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
