@@ -77,17 +77,6 @@ namespace ReupVirtualTwin.helpers
             }
             return b;
         }
-        public static Vector3 MeanPointOfObject(GameObject obj)
-        {
-            var transform = obj.transform;
-            var vertices = obj.GetComponent<MeshFilter>().sharedMesh.vertices;
-            Vector3 mean = vertices.Aggregate((curr, next) => curr + next) / vertices.Length;
-            mean.x = mean.x * transform.GetTotalScale().x;
-            mean.y = mean.y * transform.GetTotalScale().y;
-            mean.z = mean.z * transform.GetTotalScale().z;
-            mean = Quaternion.Euler(transform.localEulerAngles) * mean;
-            return mean;
-        }
 
         public static float Volumen(Vector3 size)
         {
