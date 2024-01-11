@@ -31,6 +31,7 @@ namespace ReupVirtualTwin.behaviours
                 Vector3 desiredInitialPosition = new Vector3(currentPosition.x, desiredInitialHeight, currentPosition.z);
                 _characterPositionManager.characterPosition = desiredInitialPosition;
             }
+            _setUpBuilding.onBuildingSetUp -= this.MoveToRightHeightCallback;
         }
     }
 }
