@@ -5,13 +5,22 @@ using ReupVirtualTwin.characterMovement;
 namespace ReupVirtualTwin.behaviours
 {
     [RequireComponent(typeof(Sensor))]
-    public class MaintainHeight : MonoBehaviour
+    public class MaintainHeight : MonoBehaviour, IMaintainHeight
     {
-        private Sensor _sensor;
-        [HideInInspector]
-        public static float CHARACTER_HEIGHT = 1.75f;
         [SerializeField]
         CharacterPositionManager _characterPositionManager;
+
+        private static float CHARACTER_HEIGHT;
+        public float characterHeight
+        {
+            set
+            {
+                CHARACTER_HEIGHT = value;
+            }
+        }
+
+        private Sensor _sensor;
+
         void Start()
         {
             _sensor = GetComponent<Sensor>();
@@ -28,13 +37,20 @@ namespace ReupVirtualTwin.behaviours
 
         void KeepCharacterHeightFromGround(RaycastHit groundHit)
         {
-            var newHeight = GetDesiredHeight(groundHit);
+            this.groundHit = groundHit.point;
+            var newHeight = GetDesiredHeightInGround(groundHit.point.y);
             _characterPositionManager.KeepHeight(newHeight);
         }
 
-        public static float GetDesiredHeight(RaycastHit groundHit)
+        Vector3 groundHit = Vector3.zero;
+        void OnDrawGizmos()
         {
-            var groundHeight = groundHit.point.y;
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(groundHit, 0.05f);
+        }
+
+        public static float GetDesiredHeightInGround(float groundHeight)
+        {
             return groundHeight + CHARACTER_HEIGHT;
         }
     }
