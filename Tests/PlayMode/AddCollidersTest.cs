@@ -9,10 +9,14 @@ public class AddCollidersTest
     {
         //Create objects
         var parentObject = new GameObject();
+        MeshFilter parentMeshFilter = parentObject.AddComponent<MeshFilter>();
+        parentMeshFilter.sharedMesh = new Mesh();
         for (int i = 0; i < 10; i++)
         {
             var childObject = new GameObject();
             childObject.transform.SetParent(parentObject.transform);
+            MeshFilter childMeshFilter = childObject.AddComponent<MeshFilter>();
+            childMeshFilter.sharedMesh = new Mesh();
         }
 
         //Check colliders are not there

@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwin.editor
+namespace ReupVirtualTwin.editor
 {
     public class SimplifyMesh : EditorWindow
     {
@@ -28,7 +29,7 @@ namespace ReupVirtualTwin.editor
         //test variables
         MeshInfo meshInfo;
 
-        [MenuItem("EDITORS/Simplify Mesh")]
+        [MenuItem("Reup Romulo/Simplify Mesh")]
         public static void ShowWindow()
         {
             GetWindow<SimplifyMesh>("Simplify Mesh");
