@@ -209,7 +209,8 @@ namespace ReupVirtualTwin.helpers
         }
         static int DecideNumberOfVertexToCheck(int vertexCount)
         {
-            int logCount = (int)(10 * Mathf.Log(vertexCount));
+            int logIncrementalVertexMultiplicator = 10;
+            int logCount = (int)(logIncrementalVertexMultiplicator * Mathf.Log(vertexCount));
             if (logCount > vertexCount)
             {
                 return vertexCount;
