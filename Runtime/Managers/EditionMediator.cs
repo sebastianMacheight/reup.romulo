@@ -1,36 +1,24 @@
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.dataModels;
-using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
+using ReupVirtualTwin.enums;
 
 namespace ReupVirtualTwin.managers
 {
-    public class EditModeManager : MonoBehaviour, IEditModeManager
+    public class EditionMediator : MonoBehaviour, IMediator, IEditModeWebReceiber
     {
-        private bool _editMode = false;
-        public bool editMode {
-            get
-            {
-                return _editMode;
-            }
-            set
-            {
-                _editMode = value;
-                WebMessage message = new WebMessage
-                {
-                    type = WebOperationsEnum.setEditModeSuccess,
-                    payload = _editMode ? "true" : "false"
-                };
-                _webMessagesSender.SendWebMessage(message);
-            }
-        }
         private ICharacterRotationManager _characterRotationManager;
         public ICharacterRotationManager characterRotationManager
         {
             set { _characterRotationManager = value; }
         }
-
+        private IEditModeManager _editModeManager;
+        public IEditModeManager editModeManager
+        {
+            set
+            {
+                _editModeManager = value;
+            }
+        }
         public void Notify(string eventName)
         {
             switch (eventName)
@@ -45,13 +33,14 @@ namespace ReupVirtualTwin.managers
                     throw new System.Exception($"no implementation for event: {eventName}");
             }
         }
-
-        IWebMessagesSender _webMessagesSender;
-        public IWebMessagesSender webMessageSender
+        public void Notify(string eventName, string payload)
         {
-            set { _webMessagesSender = value; }
+            throw new System.NotImplementedException();
         }
 
-
+        public void ReceiveSetEditModeRequest(string mode)
+        {
+            _editModeManager.editMode = (mode == "true") ? true : false;
+        }
     }
 }

@@ -19,6 +19,7 @@ public class MaintainHeightTest : MonoBehaviour
     public void SetUp()
     {
         character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
+        DestroyGameRelatedDependecyInjectors();
         var posManager = character.GetComponent<CharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(cubePrefab);
@@ -78,5 +79,10 @@ public class MaintainHeightTest : MonoBehaviour
     {
         widePlatform.transform.localScale = new Vector3(10, 0.1f, 10);
         widePlatform.transform.position = new Vector3(0, -0.05f, 0);
+    }
+    private void DestroyGameRelatedDependecyInjectors()
+    {
+        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
+        Destroy(movementSelectPosDependencyInjector);
     }
 }
