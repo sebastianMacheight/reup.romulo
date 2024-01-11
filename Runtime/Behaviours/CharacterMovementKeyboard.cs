@@ -37,7 +37,6 @@ public class CharacterMovementKeyboard : MonoBehaviour
     {
         if (direction != 0f)
         {
-            Debug.Log($"the direction is {direction}");
             float angleDelta = direction * ROTATION_SPEED_DEG_PER_SECOND * Time.deltaTime;
             _characterRotationManager.horizontalRotation += angleDelta;
         }

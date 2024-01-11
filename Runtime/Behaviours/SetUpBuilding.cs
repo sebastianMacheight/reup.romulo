@@ -1,11 +1,28 @@
 using UnityEngine;
 using ReupVirtualTwin.helpers;
+using System;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class SetUpBuilding : MonoBehaviour
     {
-        public GameObject building;
+        [SerializeField]
+        GameObject building;
+        private bool buildingSetup = false;
+
+        event Action _onBuildingSetUp;
+        public event Action onBuildingSetUp
+        {
+            add
+            {
+                if (buildingSetup)
+                {
+                    value();
+                }
+                else _onBuildingSetUp += value;
+            }
+            remove { _onBuildingSetUp -= value; }
+        }
 
         void Start()
         {
@@ -15,8 +32,10 @@ namespace ReupVirtualTwin.behaviours
             }
             else
             {
-                Debug.LogWarning("Building object not set up");
+                Debug.LogError("Building object not set up");
             }
+            _onBuildingSetUp?.Invoke();
+            buildingSetup = true;
         }
 
         public void AssignIdsToBuilding()
