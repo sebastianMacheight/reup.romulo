@@ -37,8 +37,11 @@ namespace ReupVirtualTwin.managers
         private bool _allowSelection = false;
         public bool allowSelection { get => _allowSelection; set
             {
-                ClearSelection();
                 _allowSelection = value;
+                if (!_allowSelection)
+                {
+                    ClearSelection();
+                }
             }
         }
 
@@ -52,14 +55,12 @@ namespace ReupVirtualTwin.managers
 
         public void ClearSelection()
         {
-            if (!_allowSelection) return;
             _objectWrapper.DeWrapAll();
             selection = null;
         }
 
         public GameObject RemoveObjectFromSelection(GameObject selectedObject)
         {
-            if (!_allowSelection) return null;
             selection = _objectWrapper.DeWrapObject(selectedObject);
             return _selection;
         }

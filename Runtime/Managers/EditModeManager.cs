@@ -1,9 +1,6 @@
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace ReupVirtualTwin.managers
 {
