@@ -25,6 +25,26 @@ namespace ReupVirtualTwin.managers
                 _webMessagesSender.SendWebMessage(message);
             }
         }
+        private ICharacterRotationManager _characterRotationManager;
+        public ICharacterRotationManager characterRotationManager
+        {
+            set { _characterRotationManager = value; }
+        }
+
+        public void Notify(string eventName)
+        {
+            switch (eventName)
+            {
+                case EventsEnum.transformHandleStartInteraction:
+                    _characterRotationManager.allowRotation = false;
+                    break;
+                case EventsEnum.transformHandleStopInteraction:
+                    _characterRotationManager.allowRotation = true;
+                    break;
+                default:
+                    throw new System.Exception($"no implementation for event: {eventName}");
+            }
+        }
 
         IWebMessagesSender _webMessagesSender;
         public IWebMessagesSender webMessageSender
