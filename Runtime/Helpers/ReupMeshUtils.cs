@@ -40,6 +40,10 @@ namespace ReupVirtualTwin.helpers
             {
                 return parentBorder;
             }
+            return JoinBorders((ObjectBorder)parentBorder, (ObjectBorder)childBorder);
+        }
+        public static ObjectBorder JoinBorders(ObjectBorder parentBorder, ObjectBorder childBorder)
+        {
             return new ObjectBorder
             {
                 maxBorders = new Vector3
@@ -55,6 +59,7 @@ namespace ReupVirtualTwin.helpers
                         FindMin(parentBorder.minBorders.z, childBorder.minBorders.z)
                     )
             };
+
         }
         private static float FindMin(float a, float b)
         {
