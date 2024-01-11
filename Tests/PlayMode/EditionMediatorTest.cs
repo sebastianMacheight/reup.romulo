@@ -34,7 +34,7 @@ public class EditionMediatorTest : MonoBehaviour
     {
         editionMediator.Notify(Events.setEditMode, true);
         WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessage;
-        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
+        Assert.AreEqual(WebMessageType.setEditModeSuccess, sentMessage.type);
         Assert.AreEqual(true, sentMessage.payload);
         yield return null;
     }
@@ -43,7 +43,7 @@ public class EditionMediatorTest : MonoBehaviour
     {
         editionMediator.Notify(Events.setEditMode, false);
         WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessage;
-        Assert.AreEqual(WebOperationsEnum.setEditModeSuccess, sentMessage.type);
+        Assert.AreEqual(WebMessageType.setEditModeSuccess, sentMessage.type);
         Assert.AreEqual(false, sentMessage.payload);
         yield return null;
     }
@@ -51,11 +51,11 @@ public class EditionMediatorTest : MonoBehaviour
     [UnityTest]
     public IEnumerator EditionMediatorShouldSetEditModeWhenReceiveRequest()
     {
-        string message = dummyJsonCreator.createWebMessage(WebOperationsEnum.setEditMode, "true");
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.setEditMode, "true");
         editionMediator.ReceiveWebMessage(message);
         Assert.AreEqual(mockEditModeManager.editMode, true);
         yield return null;
-        message = dummyJsonCreator.createWebMessage(WebOperationsEnum.setEditMode, "false");
+        message = dummyJsonCreator.createWebMessage(WebMessageType.setEditMode, "false");
         editionMediator.ReceiveWebMessage(message);
         Assert.AreEqual(mockEditModeManager.editMode, false);
         yield return null;
