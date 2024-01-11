@@ -6,7 +6,7 @@ namespace ReupVirtualTwin.enums
 {
     public class EventsEnum
     {
-        public const string transformHandleStartInteraction = "TransformHandleStartIteraction";
-        public const string transformHandleStopInteraction = "TransformHandleStopIteraction";
+        public const string transformHandleStartInteraction = "TransformHandleStartInteraction";
+        public const string transformHandleStopInteraction = "TransformHandleStopInteraction";
     }
 }
