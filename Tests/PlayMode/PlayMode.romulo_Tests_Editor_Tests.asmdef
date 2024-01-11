@@ -10,7 +10,9 @@
         "reup.modulo.managers",
         "reup.romulo.behaviours",
         "reup.romulo.models",
-        "reup.remulo.dataModels"
+        "reup.remulo.dataModels",
+        "reup.romulo.behaviourInterfaces",
+        "reup.romulo.managerInterfaces"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
