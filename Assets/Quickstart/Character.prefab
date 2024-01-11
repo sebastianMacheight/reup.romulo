@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a078b03025ac18340bdd8708af158ffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _characterPositionManager: {fileID: 2420710140368993907}
 --- !u!1 &16043791835660354
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,6 +814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   createColliderContainer: {fileID: 4125742121506657584}
   maintainheightContainer: {fileID: 1625360268}
+  initialSpawnContainer: {fileID: 1625360268}
 --- !u!1 &7657426824907154042
 GameObject:
   m_ObjectHideFlags: 0
