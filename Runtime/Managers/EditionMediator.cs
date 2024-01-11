@@ -27,6 +27,8 @@ namespace ReupVirtualTwin.managers
         }
         private ISelectedObjectsManager _selectedObjectsManager;
         public ISelectedObjectsManager selectedObjectsManager { set { _selectedObjectsManager = value; } }
+        private ITransformSelectedManager _transformSelectedManager;
+        public ITransformSelectedManager transformSelectedManager { set => _transformSelectedManager = value; }
 
         IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
@@ -41,13 +43,22 @@ namespace ReupVirtualTwin.managers
                 case Events.transformHandleStopInteraction:
                     _characterRotationManager.allowRotation = true;
                     break;
+                case Events.rotationTransformModeActivated:
+                    ProcessTranformModeActivation(TransformMode.RotationMode);
+                    break;
+                case Events.positionTransformModeActivated:
+                    ProcessTranformModeActivation(TransformMode.PositionMode);
+                    break;
+                case Events.transformModeDeactivated:
+                    ProcessTranformModeDeactivation();
+                    break;
                 default:
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
             }
         }
         public void Notify<T>(Events eventName, T payload)
         {
-            switch(eventName)
+            switch (eventName)
             {
                 case Events.setEditMode:
                     if (!(payload is bool))
@@ -62,7 +73,6 @@ namespace ReupVirtualTwin.managers
                         throw new ArgumentException($"Payload must be a List<GameObject> for {eventName} events", nameof(payload));
                     }
                     ProcessSelectedObjects((List<GameObject>)(object)payload);
-
                     break;
                 default:
                     throw new ArgumentException($"no implementation for event: {eventName}");
@@ -74,13 +84,22 @@ namespace ReupVirtualTwin.managers
             WebMessage<bool> message = JsonUtility.FromJson<WebMessage<bool>>(serializedWebMessage);
             switch (message.type)
             {
-                case WebOperationsEnum.setEditMode:
+                case WebMessageType.setEditMode:
                     _editModeManager.editMode = message.payload;
                     break;
+                case WebMessageType.activatePositionTransform:
+                    _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, TransformMode.PositionMode);
+                    break;
+                case WebMessageType.activateRotationTransform:
+                    _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, TransformMode.PositionMode);
+                    break;
+                case WebMessageType.deactivateTransformMode:
+                    _transformSelectedManager.DeactivateTransformMode();
+                    break;
                 default:
-                    _webMessageSender.SendWebMessage( new WebMessage<string>
+                    _webMessageSender.SendWebMessage(new WebMessage<string>
                     {
-                        type= WebOperationsEnum.error,
+                        type = WebMessageType.error,
                         payload = $"{message.type} not supported",
                     });
                     break;
@@ -96,7 +115,7 @@ namespace ReupVirtualTwin.managers
             }
             WebMessage<bool> message = new WebMessage<bool>
             {
-                type = WebOperationsEnum.setEditModeSuccess,
+                type = WebMessageType.setEditModeSuccess,
                 payload = editMode,
             };
             _webMessageSender.SendWebMessage(message);
@@ -112,8 +131,37 @@ namespace ReupVirtualTwin.managers
             ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
             WebMessage<ObjectDTO[]> message = new WebMessage<ObjectDTO[]>
             {
-                type = WebOperationsEnum.setSelectedObjects,
+                type = WebMessageType.setSelectedObjects,
                 payload = objectDTOs
+            };
+            _webMessageSender.SendWebMessage(message);
+        }
+        private void ProcessTranformModeActivation(TransformMode mode)
+        {
+            string eventName;
+            if (mode == TransformMode.PositionMode)
+            {
+                eventName = WebMessageType.activatePositionTransformSuccess;
+            }
+            else if (mode == TransformMode.RotationMode)
+            {
+                eventName = WebMessageType.activateRotationTransformSuccess;
+            }
+            else
+            {
+                throw new Exception($"unnown TransformMode {mode}");
+            }
+            WebMessage<string> message = new WebMessage<string>
+            {
+                type = eventName,
+            };
+            _webMessageSender.SendWebMessage(message);
+        }
+        private void ProcessTranformModeDeactivation()
+        {
+            WebMessage<string> message = new WebMessage<string>
+            {
+                type = WebMessageType.deactivateTransformModeSuccess,
             };
             _webMessageSender.SendWebMessage(message);
         }

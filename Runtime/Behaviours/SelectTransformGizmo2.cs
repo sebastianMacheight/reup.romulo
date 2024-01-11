@@ -36,7 +36,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
 
     private void Start()
     {
-        runtimeTransformGameObj = new GameObject("TransformHandle");
+        runtimeTransformGameObj = new GameObject("TransformHandle_gizmo2");
         runtimeTransformHandle = runtimeTransformGameObj.AddComponent<RuntimeTransformHandle>();
         runtimeTransformHandle.mediator = _editionMediator;
         runtimeTransformGameObj.layer = runtimeTransformLayer;
@@ -46,7 +46,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
         runtimeTransformHandle.autoScaleFactor = 1.0f;
         runtimeTransformGameObj.SetActive(false);
         objectWrapper = new ObjectWrapper();
-        highlighter = GetComponent<IObjectHighlighter>();
+        highlighter = new Outliner();
     }
 
     void Update()

@@ -27,7 +27,7 @@ namespace ReupVirtualTwin.models
             triggerIdentifier = gameObject.GetComponent<IUniqueIdentifer>();
             var message = new WebMessage<string>
             {
-                type = WebOperationsEnum.showMaterialsOptions,
+                type = WebMessageType.showMaterialsOptions,
                 payload = triggerIdentifier.getId()
             };
             return message;
