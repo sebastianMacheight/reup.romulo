@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
-
     public class DetectCollision : MonoBehaviour
     {
         CharacterPositionManager _positionManager;

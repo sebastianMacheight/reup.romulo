@@ -1,28 +1,35 @@
+using ReupVirtualTwin.inputs;
+using ReupVirtualTwin.managers;
 using UnityEngine;
 
-public class PointerRotation : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-    public float sensitivity = 0.4f;
-
-    [SerializeField]
-    private CharacterRotationManager _characterRotationManager;
-    [SerializeField]
-    private DragManager _dragManager;
-    private InputProvider _inputProvider;
-
-    private void Awake()
+    public class PointerRotation : MonoBehaviour
     {
-        _inputProvider = new InputProvider();
-    }
+        public float sensitivity = 0.4f;
 
-    void Update()
-    {
-        if (_dragManager.dragging)
+
+        [SerializeField]
+        private CharacterRotationManager _characterRotationManager;
+        [SerializeField]
+        private DragManager _dragManager;
+        private InputProvider _inputProvider;
+
+        private void Awake()
         {
-            Vector2 look = _inputProvider.RotateViewInput();
-            _characterRotationManager.horizontalRotation += (look.x * sensitivity);
-            _characterRotationManager.verticalRotation += (look.y * sensitivity * -1f);
+            _inputProvider = new InputProvider();
         }
-    }
 
+
+        void Update()
+        {
+            if (_dragManager.dragging)
+            {
+                Vector2 look = _inputProvider.RotateViewInput();
+                _characterRotationManager.horizontalRotation += (look.x * sensitivity);
+                _characterRotationManager.verticalRotation += (look.y * sensitivity * -1f);
+            }
+        }
+
+    }
 }

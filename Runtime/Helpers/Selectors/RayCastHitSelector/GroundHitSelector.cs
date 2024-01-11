@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
 {
-
     public class GroundHitSelector : RayCastHitSelector
     {
         protected override bool IsSelectable(GameObject obj)
