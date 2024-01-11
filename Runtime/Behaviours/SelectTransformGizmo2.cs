@@ -27,7 +27,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
 
     private void Start()
     {
-        runtimeTransformGameObj = new GameObject();
+        runtimeTransformGameObj = new GameObject("TransformHandle");
         runtimeTransformHandle = runtimeTransformGameObj.AddComponent<RuntimeTransformHandle>();
         runtimeTransformGameObj.layer = runtimeTransformLayer;
         runtimeTransformLayerMask = 1 << runtimeTransformLayer; //Layer number represented by a single bit in the 32-bit integer using bit shift
@@ -55,6 +55,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
                     Transform hitObject = FindFirstSelectable(raycastHit.transform);
                     if (hitObject != null)
                     {
+                        Debug.Log(hitObject.name);
                         selection = objectWrapper.WrapObject(hitObject.gameObject).transform;
                         runtimeTransformHandle.target = selection;
                         runtimeTransformGameObj.SetActive(true);
