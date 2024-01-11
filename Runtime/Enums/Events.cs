@@ -2,8 +2,8 @@ namespace ReupVirtualTwin.enums
 {
     public enum Events
     {
-        transformHandleStartIteraction,
-        transformHandleStopIteraction,
+        transformHandleStartItneraction,
+        transformHandleStopInteraction,
         setEditMode,
         setSelectedObjects,
     }
