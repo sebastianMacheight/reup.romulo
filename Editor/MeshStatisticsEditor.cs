@@ -27,14 +27,14 @@ namespace ReupVirtualTwin.editor
                 EditorGUILayout.LabelField("Uv Lenght: " + mesh.uv.Length);
 
 
-                var meshInfo = new MeshInfo(meshFilter.gameObject);
-                EditorGUILayout.LabelField("Mesh Info Script", EditorStyles.boldLabel);
-                EditorGUILayout.LabelField("Is Mesh Serialized: " + meshInfo.isMeshSerialized);
-                EditorGUILayout.LabelField("Areal Vertex Density: " + meshInfo.arealVertexDensity);
-                EditorGUILayout.LabelField("Vol Vertex Density: " + meshInfo.volVertexDensity);
-                EditorGUILayout.LabelField("Mesh size: " + meshInfo.size);
-                EditorGUILayout.LabelField("Mesh area: " + meshInfo.area);
-                EditorGUILayout.LabelField("Mesh volumen: " + meshInfo.volumen);
+            var meshInfo = new MeshInfo(meshFilter.gameObject);
+            EditorGUILayout.LabelField("Mesh Info Script", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Is Mesh Serialized: " + meshInfo.isMeshSerialized);
+            EditorGUILayout.LabelField("Areal Vertex Density: " + meshInfo.arealVertexDensity);
+            EditorGUILayout.LabelField("Vol Vertex Density: " + meshInfo.volVertexDensity);
+            EditorGUILayout.LabelField("Mesh size: " + meshInfo.size);
+            EditorGUILayout.LabelField("Mesh area: " + meshInfo.area);
+            EditorGUILayout.LabelField("Mesh volumen: " + meshInfo.volume);
 
             }
         }

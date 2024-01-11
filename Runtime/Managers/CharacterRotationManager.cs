@@ -1,3 +1,4 @@
+using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
 
 namespace ReupVirtualTwin.managers
@@ -37,6 +38,42 @@ namespace ReupVirtualTwin.managers
                 SetDesiredHorizontalRotation();
             }
         }
+    [SerializeField]
+    Transform _innerCharacterTransform;
+
+    bool _allowRotation = true;
+    public bool allowRotation
+    {
+        set { _allowRotation = value; }
+        get { return _allowRotation; }
+    }
+
+    public float verticalRotation
+    {
+        get
+        {
+            return _verticalRotation;
+        }
+        set
+        {
+            if (!_allowRotation) { return; }
+            if (value > 180f) value -= 360f;
+            _verticalRotation = Mathf.Clamp(value, -90f, 90f);
+            SetDesiredInnerRotation();
+        }
+    }
+    public float horizontalRotation {
+        get
+        {
+            return _horizontalRotation;
+        }
+        set
+        {
+            if (!_allowRotation) { return; }
+            _horizontalRotation = value;
+            SetDesiredHorizontalRotation();
+        }
+    }
 
         private void Start()
         {
