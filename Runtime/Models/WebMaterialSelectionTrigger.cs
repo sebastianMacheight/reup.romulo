@@ -3,6 +3,7 @@ using UnityEngine;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.modelInterfaces;
 
 namespace ReupVirtualTwin.models
 {
@@ -21,10 +22,10 @@ namespace ReupVirtualTwin.models
             return _containerHandler.CreateContainer();
         }
 
-        public WebMessage GetCreateWebContainerMessage()
+        public WebMessage<string> GetCreateWebContainerMessage()
         {
             triggerIdentifier = gameObject.GetComponent<IUniqueIdentifer>();
-            var message = new WebMessage
+            var message = new WebMessage<string>
             {
                 type = WebOperationsEnum.showMaterialsOptions,
                 payload = triggerIdentifier.getId()
