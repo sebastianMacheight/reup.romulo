@@ -4,7 +4,6 @@ using ReupVirtualTwin.characterMovement;
 
 namespace ReupVirtualTwin.behaviours
 {
-
     [RequireComponent(typeof(Sensor))]
     public class MaintainHeight : MonoBehaviour
     {

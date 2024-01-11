@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
-public interface IRayProvider
-{
-    public Ray GetRay();
-}
 
+namespace ReupVirtualTwin.helpers
+{
+    public interface IRayProvider
+    {
+        public Ray GetRay();
+    }
+}
