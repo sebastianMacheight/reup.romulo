@@ -20,7 +20,7 @@ namespace ReupVirtualTwin.helpers
         /// <param name="obj">object to check</param>
         /// <returns>True if obj is the object we want to return, false otherwise </returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        protected virtual bool IsSelectable(GameObject obj)
+        protected virtual GameObject GetSelectedObjectFromHitObject(GameObject obj)
         {
             throw new Exception("IsSelectable not implemented");
         }

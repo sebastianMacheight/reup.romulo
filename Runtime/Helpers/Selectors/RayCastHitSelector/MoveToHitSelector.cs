@@ -10,16 +10,16 @@ namespace ReupVirtualTwin.helpers
             TagsEnum.trigger,
             TagsEnum.materialSelection,
         };
-        protected override bool IsSelectable(GameObject obj)
+        protected override GameObject GetSelectedObjectFromHitObject(GameObject obj)
         {
             foreach(string tag in ignoreTags)
             {
                 if (obj.CompareTag(tag))
                 {
-                    return false;
+                    return null;
                 }
             }
-            return true;
+            return obj;
         }
     }
 }
