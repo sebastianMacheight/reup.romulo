@@ -66,6 +66,7 @@ namespace ReupVirtualTwin.managers
             }
             if (_selection != null)
             {
+                Destroy(selection);
                 selection = null;
             }
         }
