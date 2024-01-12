@@ -7,6 +7,8 @@ using NUnit.Framework;
 using ReupVirtualTwin.managers;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
+using ReupVirtualTwin.dataModels;
+using System;
 
 public class TransformSelectedManagerTest : MonoBehaviour
 {
@@ -78,12 +80,28 @@ public class TransformSelectedManagerTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator ShouldNotNotifyMediatorWhenAttemptedToDeactivateIfNotActivatedToBeginWith()
+    public IEnumerator ShouldRaiseExceptionIfAttemptedToDeactivateTransformModeButNoModeIsActiveToBeginWith()
     {
         Assert.AreEqual(false, mockMediator.notified);
         yield return null;
-        transformSelectedManager.DeactivateTransformMode();
+        Assert.That(() => transformSelectedManager.DeactivateTransformMode(),
+            Throws.TypeOf<InvalidOperationException>()
+        );
         Assert.AreEqual(false, mockMediator.notified);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldFailWhenAttemptedToActivateAnyModeButNoObjectIsSelected()
+    {
+        Assert.That(() => transformSelectedManager.ActivateTransformMode(null, TransformMode.PositionMode),
+            Throws.TypeOf<ArgumentException>()
+        );
+        yield return null;
+        Assert.That(() => transformSelectedManager.ActivateTransformMode(null, TransformMode.RotationMode),
+            Throws.TypeOf<ArgumentException>()
+        );
+        yield return null;
     }
 
     private class MockMediator : IMediator
