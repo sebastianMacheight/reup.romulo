@@ -81,9 +81,7 @@ namespace ReupVirtualTwin.managers
 
         public void ReceiveWebMessage(string serializedWebMessage)
         {
-            Debug.Log(serializedWebMessage);
             WebMessage<bool> message = JsonUtility.FromJson<WebMessage<bool>>(serializedWebMessage);
-            Debug.Log(message);
             try
             {
                 ProcessWebMessage(message);

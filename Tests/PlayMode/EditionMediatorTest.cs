@@ -158,7 +158,6 @@ public class EditionMediatorTest : MonoBehaviour
     }
     private class MockTransformSelectedManager : ITransformSelectedManager
     {
-        //public static string exceptionText = "this is the test romulo exception text";
         public bool _active = false;
         public GameObject wrapper
         {
