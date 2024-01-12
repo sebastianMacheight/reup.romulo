@@ -31,7 +31,6 @@ namespace ReupVirtualTwin.managers
                 {
                     _highlighter.HighlightObject(_selection);
                 }
-                //_mediator.Notify(Events.setSelectedObjects, _objectWrapper.wrappedObjects);
                 _mediator.Notify(Events.setSelectedObjects, new ObjectWrapperDTO
                 {
                     wrapper = _selection,
@@ -61,8 +60,14 @@ namespace ReupVirtualTwin.managers
 
         public void ClearSelection()
         {
-            _objectWrapper.DeWrapAll();
-            selection = null;
+            if (_objectWrapper.wrappedObjects.Count > 0)
+            {
+                _objectWrapper.DeWrapAll();
+            }
+            if (_selection != null)
+            {
+                selection = null;
+            }
         }
 
         public GameObject RemoveObjectFromSelection(GameObject selectedObject)
