@@ -4,6 +4,7 @@ using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.dataModels;
 
 namespace ReupVirtualTwin.managers
 {
@@ -30,7 +31,12 @@ namespace ReupVirtualTwin.managers
                 {
                     _highlighter.HighlightObject(_selection);
                 }
-                _mediator.Notify(Events.setSelectedObjects, _objectWrapper.wrappedObjects);
+                //_mediator.Notify(Events.setSelectedObjects, _objectWrapper.wrappedObjects);
+                _mediator.Notify(Events.setSelectedObjects, new ObjectWrapperDTO
+                {
+                    wrapper = _selection,
+                    wrappedObjects = _objectWrapper.wrappedObjects,
+                });
             }
         }
 

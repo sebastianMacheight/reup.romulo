@@ -43,11 +43,11 @@ namespace ReupVirtualTwin.managers
                 case Events.transformHandleStopInteraction:
                     _characterRotationManager.allowRotation = true;
                     break;
-                case Events.rotationTransformModeActivated:
-                    ProcessTranformModeActivation(TransformMode.RotationMode);
-                    break;
                 case Events.positionTransformModeActivated:
                     ProcessTranformModeActivation(TransformMode.PositionMode);
+                    break;
+                case Events.rotationTransformModeActivated:
+                    ProcessTranformModeActivation(TransformMode.RotationMode);
                     break;
                 case Events.transformModeDeactivated:
                     ProcessTranformModeDeactivation();
@@ -68,11 +68,11 @@ namespace ReupVirtualTwin.managers
                     ProccessEditMode((bool)(object)payload);
                     break;
                 case Events.setSelectedObjects:
-                    if (!(payload is List<GameObject>))
+                    if (!(payload is ObjectWrapperDTO))
                     {
-                        throw new ArgumentException($"Payload must be a List<GameObject> for {eventName} events", nameof(payload));
+                        throw new ArgumentException($"Payload must be of type {nameof(ObjectWrapperDTO)} for {eventName} events", nameof(payload));
                     }
-                    ProcessSelectedObjects((List<GameObject>)(object)payload);
+                    ProcessNewWrapper((ObjectWrapperDTO)(object)payload);
                     break;
                 default:
                     throw new ArgumentException($"no implementation for event: {eventName}");
@@ -91,7 +91,7 @@ namespace ReupVirtualTwin.managers
                     _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, TransformMode.PositionMode);
                     break;
                 case WebMessageType.activateRotationTransform:
-                    _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, TransformMode.PositionMode);
+                    _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, TransformMode.RotationMode);
                     break;
                 case WebMessageType.deactivateTransformMode:
                     _transformSelectedManager.DeactivateTransformMode();
@@ -112,6 +112,7 @@ namespace ReupVirtualTwin.managers
             if (editMode == false)
             {
                 _selectedObjectsManager.ClearSelection();
+                _transformSelectedManager.DeactivateTransformMode();
             }
             WebMessage<bool> message = new WebMessage<bool>
             {
@@ -120,7 +121,12 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
-        private void ProcessSelectedObjects(List<GameObject> selectedObjects)
+        private void ProcessNewWrapper(ObjectWrapperDTO wrappedObject)
+        {
+            _transformSelectedManager.wrapper = wrappedObject.wrapper;
+            SendNewSelectedObjectsMessage(wrappedObject.wrappedObjects);
+        }
+        private void SendNewSelectedObjectsMessage(List<GameObject> selectedObjects)
         {
             List<ObjectDTO> selectedDTOObjects = new List<ObjectDTO>();
             foreach (GameObject obj in selectedObjects)
