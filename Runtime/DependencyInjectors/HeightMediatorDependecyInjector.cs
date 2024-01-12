@@ -14,7 +14,7 @@ namespace ReupVirtualTwin
         [SerializeField]
         GameObject initialSpawnContainer;
 
-        void Start()
+        void Awake()
         {
             heightMediator = GetComponent<HeightMediator>();
             heightMediator.maintainHeight = maintainheightContainer.GetComponent<IMaintainHeight>();
