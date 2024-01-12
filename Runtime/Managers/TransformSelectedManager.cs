@@ -18,8 +18,18 @@ namespace ReupVirtualTwin.managers
         private IMediator _mediator;
         //public  IRayProvider rayProvider { set =>  _rayProvider = value; }
         //public ObjectSelector objectSelector { set => _objectSelector = value; }
-        public IMediator mediator { set { _mediator = value; }
+        public IMediator mediator { set { _mediator = value; } }
+
+        private GameObject _transformWrapper;
+        public GameObject wrapper
+        {
+            set
+            {
+                _transformWrapper = value;
+                _runtimeTransformHandle.target = _transformWrapper.transform;
+            }
         }
+
         private void Start()
         {
             _runtimeTransformGameObj = new GameObject("TransformHandle");
@@ -42,7 +52,7 @@ namespace ReupVirtualTwin.managers
             {
                 _runtimeTransformHandle.type = HandleType.ROTATION;
             }
-            _runtimeTransformHandle.target = wrapper.transform;
+            this.wrapper = wrapper;
             _runtimeTransformGameObj.SetActive(true);
             if (mode == TransformMode.PositionMode)
             {

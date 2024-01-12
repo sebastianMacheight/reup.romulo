@@ -177,27 +177,27 @@ namespace RuntimeHandle
         }
         private void ApplyLayerToChildren(GameObject parentGameObj)
         {
-            Debug.Log("appplying layers");
+            //Debug.Log("appplying layers");
             foreach (Transform transform1 in parentGameObj.transform)
             {
                 int layer = parentGameObj.layer;
                 transform1.gameObject.layer = layer;
-                Debug.Log($"applying layer to {transform1.name}");
+                //Debug.Log($"applying layer to {transform1.name}");
                 foreach (Transform transform2 in transform1)
                 {
-                Debug.Log($"applying layer to {transform2.name}");
+                //Debug.Log($"applying layer to {transform2.name}");
                     transform2.gameObject.layer = layer;
                     foreach (Transform transform3 in transform2)
                     {
-                Debug.Log($"applying layer to {transform3.name}");
+                //Debug.Log($"applying layer to {transform3.name}");
                         transform3.gameObject.layer = layer;
                         foreach (Transform transform4 in transform3)
                         {
-                Debug.Log($"applying layer to {transform4.name}");
+                //Debug.Log($"applying layer to {transform4.name}");
                             transform4.gameObject.layer = layer;
                             foreach (Transform transform5 in transform4)
                             {
-                Debug.Log($"applying layer to {transform5.name}");
+                //Debug.Log($"applying layer to {transform5.name}");
                                 transform5.gameObject.layer = layer;
                             }
                         }
