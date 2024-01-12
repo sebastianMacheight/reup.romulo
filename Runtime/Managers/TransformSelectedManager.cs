@@ -9,6 +9,7 @@ namespace ReupVirtualTwin.managers
 {
     public class TransformSelectedManager : MonoBehaviour, ITransformSelectedManager
     {
+        private bool _active = false;
         private GameObject _runtimeTransformObj;
         public GameObject runtimeTransformObj { set => _runtimeTransformObj = value; }
         private IRuntimeTransformHandle _runtimeTransformHandle;
@@ -53,6 +54,7 @@ namespace ReupVirtualTwin.managers
             {
                 _runtimeTransformHandle.type = TransformHandleType.ROTATION;
             }
+            _active = true;
             this.wrapper = wrapper;
             _runtimeTransformObj.SetActive(true);
             if (mode == TransformMode.PositionMode)
@@ -67,6 +69,8 @@ namespace ReupVirtualTwin.managers
 
         public void DeactivateTransformMode()
         {
+            if (!_active) return;
+            _active = false;
             _runtimeTransformObj.SetActive(false);
             _mediator.Notify(Events.transformModeDeactivated);
         }
