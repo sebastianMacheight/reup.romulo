@@ -99,6 +99,19 @@ public class SelectedObjectsManagerTest : MonoBehaviour
         selectedObjectsManager.ClearSelection();
         Assert.AreEqual(false, mockMediator.selectedObjectModified);
     }
+    [UnityTest]
+    public IEnumerator ShouldDestroyWrapperObjectAfterClearingSelection()
+    {
+        selectedObjectsManager.allowSelection = true;
+        selectedObjectsManager.AddObjectToSelection(testGameObject0);
+        Assert.NotNull(selectedObjectsManager.selection);
+        yield return null;
+        GameObject selection = selectedObjectsManager.selection;
+        selectedObjectsManager.ClearSelection();
+        yield return null;
+        Assert.IsTrue(selection == null);
+        yield return null;
+    }
 
     private class MockMediator : IMediator
     {
