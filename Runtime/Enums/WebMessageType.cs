@@ -13,6 +13,6 @@ namespace ReupVirtualTwin.enums
         public const string activateRotationTransformSuccess = "[Transform Objects] Activate Rotation Transform Success";
         public const string deactivateTransformMode = "[Transform Objects] Deactivate Transform Mode";
         public const string deactivateTransformModeSuccess = "[Transform Objects] Deactivate Transform Mode Success";
-        public const string error = "[Unity Error] Unity error";
+        public const string error = "[Error] Engine error";
     }
 }
