@@ -44,10 +44,10 @@ namespace ReupVirtualTwin.managers
                     _characterRotationManager.allowRotation = true;
                     break;
                 case Events.positionTransformModeActivated:
-                    ProcessTranformModeActivation(TransformMode.PositionMode);
+                    ProcessTransformModeActivation(TransformMode.PositionMode);
                     break;
                 case Events.rotationTransformModeActivated:
-                    ProcessTranformModeActivation(TransformMode.RotationMode);
+                    ProcessTransformModeActivation(TransformMode.RotationMode);
                     break;
                 case Events.transformModeDeactivated:
                     ProcessTranformModeDeactivation();
@@ -81,9 +81,9 @@ namespace ReupVirtualTwin.managers
 
         public void ReceiveWebMessage(string serializedWebMessage)
         {
-            WebMessage<bool> message = JsonUtility.FromJson<WebMessage<bool>>(serializedWebMessage);
             try
             {
+                WebMessage<bool> message = JsonUtility.FromJson<WebMessage<bool>>(serializedWebMessage);
                 ProcessWebMessage(message);
             }
             catch (RomuloException e)
@@ -182,7 +182,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
-        private void ProcessTranformModeActivation(TransformMode mode)
+        private void ProcessTransformModeActivation(TransformMode mode)
         {
             string eventName;
             if (mode == TransformMode.PositionMode)

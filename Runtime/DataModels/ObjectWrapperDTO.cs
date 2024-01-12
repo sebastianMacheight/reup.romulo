@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.dataModels
 {
-    public struct ObjectWrapperDTO
+    public class ObjectWrapperDTO
     {
         public GameObject wrapper;
         public List<GameObject> wrappedObjects;
