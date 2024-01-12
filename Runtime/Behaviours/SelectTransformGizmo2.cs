@@ -41,7 +41,7 @@ public class SelectTransformGizmo2 : MonoBehaviour
         runtimeTransformHandle.mediator = _editionMediator;
         runtimeTransformGameObj.layer = runtimeTransformLayer;
         runtimeTransformLayerMask = 1 << runtimeTransformLayer; //Layer number represented by a single bit in the 32-bit integer using bit shift
-        runtimeTransformHandle.type = HandleType.POSITION;
+        runtimeTransformHandle.type = TransformHandleType.POSITION;
         runtimeTransformHandle.autoScale = true;
         runtimeTransformHandle.autoScaleFactor = 1.0f;
         runtimeTransformGameObj.SetActive(false);
@@ -95,15 +95,15 @@ public class SelectTransformGizmo2 : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                runtimeTransformHandle.type = HandleType.POSITION;
+                runtimeTransformHandle.type = TransformHandleType.POSITION;
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
-                runtimeTransformHandle.type = HandleType.ROTATION;
+                runtimeTransformHandle.type = TransformHandleType.ROTATION;
             }
             if (Input.GetKeyDown(KeyCode.R))
             {
-                runtimeTransformHandle.type = HandleType.SCALE;
+                runtimeTransformHandle.type = TransformHandleType.SCALE;
             }
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {

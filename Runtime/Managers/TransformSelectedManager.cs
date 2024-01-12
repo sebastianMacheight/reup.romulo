@@ -9,8 +9,9 @@ namespace ReupVirtualTwin.managers
 {
     public class TransformSelectedManager : MonoBehaviour, ITransformSelectedManager
     {
-        private GameObject _runtimeTransformGameObj;
-        private RuntimeTransformHandle _runtimeTransformHandle;
+        private GameObject _runtimeTransformObj;
+        public GameObject runtimeTransformObj { set => _runtimeTransformObj = value; }
+        private IRuntimeTransformHandle _runtimeTransformHandle;
         private int _runtimeTransformLayer = 6;
         //private int _runtimeTransformLayerMask;
         //private IRayProvider _rayProvider;
@@ -26,34 +27,34 @@ namespace ReupVirtualTwin.managers
             set
             {
                 _transformWrapper = value;
-                _runtimeTransformHandle.target = _transformWrapper.transform;
+                if (_transformWrapper != null)
+                {
+                    _runtimeTransformHandle.target = _transformWrapper.transform;
+                }
             }
         }
 
         private void Start()
         {
-            _runtimeTransformGameObj = new GameObject("TransformHandle");
-            _runtimeTransformHandle = _runtimeTransformGameObj.AddComponent<RuntimeTransformHandle>();
+            _runtimeTransformHandle = _runtimeTransformObj.GetComponent<IRuntimeTransformHandle>();
             _runtimeTransformHandle.mediator = _mediator;
             _runtimeTransformHandle.autoScale = true;
             _runtimeTransformHandle.autoScaleFactor = 1.0f;
-            _runtimeTransformGameObj.layer = _runtimeTransformLayer;
-            //_runtimeTransformLayerMask = 1 << _runtimeTransformLayer; //Layer number represented by a single bit in the 32-bit integer using bit shift
-            //_objectSelector.ignoreLayerMask = ~_runtimeTransformLayerMask;
-            _runtimeTransformGameObj.SetActive(false);
+            _runtimeTransformObj.layer = _runtimeTransformLayer;
+            _runtimeTransformObj.SetActive(false);
         }
         public void ActivateTransformMode(GameObject wrapper, TransformMode mode)
         {
             if (mode == TransformMode.PositionMode)
             {
-                _runtimeTransformHandle.type = HandleType.POSITION;
+                _runtimeTransformHandle.type = TransformHandleType.POSITION;
             }
             if (mode == TransformMode.RotationMode)
             {
-                _runtimeTransformHandle.type = HandleType.ROTATION;
+                _runtimeTransformHandle.type = TransformHandleType.ROTATION;
             }
             this.wrapper = wrapper;
-            _runtimeTransformGameObj.SetActive(true);
+            _runtimeTransformObj.SetActive(true);
             if (mode == TransformMode.PositionMode)
             {
                 _mediator.Notify(Events.positionTransformModeActivated);
@@ -66,7 +67,7 @@ namespace ReupVirtualTwin.managers
 
         public void DeactivateTransformMode()
         {
-            _runtimeTransformGameObj.SetActive(false);
+            _runtimeTransformObj.SetActive(false);
             _mediator.Notify(Events.transformModeDeactivated);
         }
 

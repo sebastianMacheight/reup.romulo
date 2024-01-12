@@ -11,6 +11,8 @@ using ReupVirtualTwin.managerInterfaces;
 public class TransformSelectedManagerTest : MonoBehaviour
 {
     GameObject containerGameObject;
+    GameObject runtimeTransformObj;
+    MockRuntimeTransformHandle mockRuntimeTransformHandle;
     GameObject transformWrapper;
     TransformSelectedManager transformSelectedManager;
     MockMediator mockMediator;
@@ -21,6 +23,9 @@ public class TransformSelectedManagerTest : MonoBehaviour
         containerGameObject = new GameObject("containerGameObject");
         transformWrapper = new GameObject("transformWrapper");
         transformSelectedManager = containerGameObject.AddComponent<TransformSelectedManager>();
+        runtimeTransformObj = new GameObject("TransformHandle");
+        mockRuntimeTransformHandle = runtimeTransformObj.AddComponent<MockRuntimeTransformHandle>();
+        transformSelectedManager.runtimeTransformObj = runtimeTransformObj;
         mockMediator = new MockMediator();
         transformSelectedManager.mediator = mockMediator;
     }
@@ -98,5 +103,13 @@ public class TransformSelectedManagerTest : MonoBehaviour
         {
             throw new System.NotImplementedException();
         }
+    }
+    private class MockRuntimeTransformHandle : MonoBehaviour, IRuntimeTransformHandle
+    {
+        public Transform target { set { } }
+        public IMediator mediator { set { } }
+        public bool autoScale { set { } }
+        public float autoScaleFactor { set { } }
+        public TransformHandleType type { set { } }
     }
 }
