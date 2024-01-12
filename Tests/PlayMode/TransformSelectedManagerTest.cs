@@ -77,10 +77,20 @@ public class TransformSelectedManagerTest : MonoBehaviour
         yield return null;
     }
 
+    [UnityTest]
+    public IEnumerator ShouldNotNotifyMediatorWhenAttemptedToDeactivateIfNotActivatedToBeginWith()
+    {
+        Assert.AreEqual(false, mockMediator.notified);
+        yield return null;
+        transformSelectedManager.DeactivateTransformMode();
+        Assert.AreEqual(false, mockMediator.notified);
+    }
+
     private class MockMediator : IMediator
     {
         public TransformMode mode;
         public bool transformModeActive = false;
+        public bool notified = false;
         public void Notify(Events eventName)
         {
             switch (eventName)
@@ -88,13 +98,16 @@ public class TransformSelectedManagerTest : MonoBehaviour
                 case Events.positionTransformModeActivated:
                     transformModeActive = true;
                     mode = TransformMode.PositionMode;
+                    notified = true;
                     break;
                 case Events.rotationTransformModeActivated:
                     transformModeActive = true;
                     mode = TransformMode.RotationMode;
+                    notified = true;
                     break;
                 case Events.transformModeDeactivated:
                     transformModeActive = false;
+                    notified = true;
                     break;
             }
         }
