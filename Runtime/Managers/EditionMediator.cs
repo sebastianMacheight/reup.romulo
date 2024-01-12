@@ -81,20 +81,37 @@ namespace ReupVirtualTwin.managers
 
         public void ReceiveWebMessage(string serializedWebMessage)
         {
+            Debug.Log(serializedWebMessage);
             WebMessage<bool> message = JsonUtility.FromJson<WebMessage<bool>>(serializedWebMessage);
+            Debug.Log(message);
+            try
+            {
+                ProcessWebMessage(message);
+            }
+            catch (RomuloException e)
+            {
+                _webMessageSender.SendWebMessage(new WebMessage<string>
+                {
+                    type = WebMessageType.error,
+                    payload = e.Message,
+                });
+            }
+        }
+        public void ProcessWebMessage(WebMessage<bool> message)
+        {
             switch (message.type)
             {
                 case WebMessageType.setEditMode:
                     _editModeManager.editMode = message.payload;
                     break;
                 case WebMessageType.activatePositionTransform:
-                    _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, TransformMode.PositionMode);
+                    ActivateTransformMode(TransformMode.PositionMode);
                     break;
                 case WebMessageType.activateRotationTransform:
-                    _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, TransformMode.RotationMode);
+                    ActivateTransformMode(TransformMode.RotationMode);
                     break;
                 case WebMessageType.deactivateTransformMode:
-                    _transformSelectedManager.DeactivateTransformMode();
+                    DeactivateTransformMode();
                     break;
                 default:
                     _webMessageSender.SendWebMessage(new WebMessage<string>
@@ -106,13 +123,29 @@ namespace ReupVirtualTwin.managers
             }
         }
 
+        private void ActivateTransformMode(TransformMode mode)
+        {
+            if (_selectedObjectsManager.selection == null)
+                throw new RomuloException($"Can't activate {mode} Transform mode because nothing is selected");
+            _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, mode);
+        }
+
+        private void DeactivateTransformMode()
+        {
+            if (!_transformSelectedManager.active)
+                throw new RomuloException("Can't deactivate transform mode if no transform mode is currently active");
+            _transformSelectedManager.DeactivateTransformMode();
+        }
+
+
         private void ProccessEditMode(bool editMode)
         {
             _selectedObjectsManager.allowSelection = editMode;
             if (editMode == false)
             {
                 _selectedObjectsManager.ClearSelection();
-                _transformSelectedManager.DeactivateTransformMode();
+                if (_transformSelectedManager.active)
+                    _transformSelectedManager.DeactivateTransformMode();
             }
             WebMessage<bool> message = new WebMessage<bool>
             {

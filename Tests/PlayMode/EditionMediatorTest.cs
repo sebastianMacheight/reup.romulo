@@ -16,6 +16,8 @@ public class EditionMediatorTest : MonoBehaviour
     MockEditModeManager mockEditModeManager;
     MockSelectedObjectsManager mockSelectedObjectsManager;
     MockWebMessageSender mockWebMessageSender;
+    MockTransformSelectedManager mockTransformSelectedManager;
+
     [SetUp]
     public void SetUp()
     {
@@ -27,6 +29,8 @@ public class EditionMediatorTest : MonoBehaviour
         editionMediator.selectedObjectsManager = mockSelectedObjectsManager;
         mockWebMessageSender = new MockWebMessageSender();
         editionMediator.webMessageSender = mockWebMessageSender;
+        mockTransformSelectedManager = new MockTransformSelectedManager();
+        editionMediator.transformSelectedManager = mockTransformSelectedManager;
     }
 
     [UnityTest]
@@ -49,7 +53,7 @@ public class EditionMediatorTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator EditionMediatorShouldSetEditModeWhenReceiveRequest()
+    public IEnumerator ShouldSetEditModeWhenReceiveRequest()
     {
         string message = dummyJsonCreator.createWebMessage(WebMessageType.setEditMode, "true");
         editionMediator.ReceiveWebMessage(message);
@@ -61,7 +65,7 @@ public class EditionMediatorTest : MonoBehaviour
         yield return null;
     }
     [UnityTest]
-    public IEnumerator EditionMediatorShouldAllowAndDisallowObjectSelection()
+    public IEnumerator ShouldAllowAndDisallowObjectSelection()
     {
         editionMediator.Notify(Events.setEditMode, true);
         Assert.AreEqual(mockSelectedObjectsManager.allowSelection, true);
@@ -72,10 +76,44 @@ public class EditionMediatorTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator EditionMediatorShouldClearSelectionWhenEditModeIsSetToFalse()
+    public IEnumerator ShouldClearSelectionWhenEditModeIsSetToFalse()
     {
         editionMediator.Notify(Events.setEditMode, false);
         Assert.AreEqual(mockSelectedObjectsManager.selectionCleared, true);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendErrorMessageIfReceibeMessageToActivatePositionTransformModeWithNoSelectedObject()
+    {
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.activatePositionTransform);
+        editionMediator.ReceiveWebMessage(message);
+        yield return null;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebMessageType.error, sentMessage.type);
+        Assert.AreEqual($"Can't activate {TransformMode.PositionMode} Transform mode because nothing is selected", sentMessage.payload);
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator ShouldSendErrorMessageIfReceibeMessageToActivateRotationTransformModeWithNoSelectedObject()
+    {
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.activateRotationTransform);
+        editionMediator.ReceiveWebMessage(message);
+        yield return null;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebMessageType.error, sentMessage.type);
+        Assert.AreEqual($"Can't activate {TransformMode.RotationMode} Transform mode because nothing is selected", sentMessage.payload);
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator ShouldSendErrorMessageIfReceibeMessageToDeactivateTransformModeButNoTransforModeIsActive()
+    {
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.deactivateTransformMode);
+        editionMediator.ReceiveWebMessage(message);
+        yield return null;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebMessageType.error, sentMessage.type);
+        Assert.AreEqual("Can't deactivate transform mode if no transform mode is currently active", sentMessage.payload);
         yield return null;
     }
 
@@ -90,7 +128,9 @@ public class EditionMediatorTest : MonoBehaviour
         public bool allowSelection { get => _allowSelection; set => _allowSelection = value; }
         public bool selectionCleared = false;
 
-        public GameObject selection => throw new System.NotImplementedException();
+        private GameObject _selection = null;
+
+        public GameObject selection => _selection;
 
         public GameObject AddObjectToSelection(GameObject selectedObject)
         {
@@ -116,11 +156,38 @@ public class EditionMediatorTest : MonoBehaviour
             sentMessage = webWessage;
         }
     }
+    private class MockTransformSelectedManager : ITransformSelectedManager
+    {
+        //public static string exceptionText = "this is the test romulo exception text";
+        public bool _active = false;
+        public GameObject wrapper
+        {
+            set
+            {
+
+            }
+        }
+        public bool active => _active;
+
+        public void ActivateTransformMode(GameObject wrapper, TransformMode mode)
+        {
+            _active = true;
+        }
+
+        public void DeactivateTransformMode()
+        {
+            _active = false;
+        }
+    }
     private static class dummyJsonCreator
     {
+        public static string createWebMessage(string type)
+        {
+            return $"{{\"type\":\"{type}\"}}";
+        }
         public static string createWebMessage(string type, string payload)
         {
-            return $"{{\"type\":\"{type}\",\"payload\":{payload}}}";
+            return $"{{\"type\":\"{type}\",\"payload\":\"{payload}\"}}";
         }
     }
 

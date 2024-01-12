@@ -1,15 +1,16 @@
 using ReupVirtualTwin.enums;
-using ReupVirtualTwin.managerInterfaces;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using RuntimeHandle;
+
+using ReupVirtualTwin.managerInterfaces;
+using ReupVirtualTwin.dataModels;
+using System;
 
 namespace ReupVirtualTwin.managers
 {
     public class TransformSelectedManager : MonoBehaviour, ITransformSelectedManager
     {
         private bool _active = false;
+        public bool active { get { return _active; } }
         private GameObject _runtimeTransformObj;
         public GameObject runtimeTransformObj { set => _runtimeTransformObj = value; }
         private IRuntimeTransformHandle _runtimeTransformHandle;
@@ -46,6 +47,10 @@ namespace ReupVirtualTwin.managers
         }
         public void ActivateTransformMode(GameObject wrapper, TransformMode mode)
         {
+            if (wrapper == null)
+            {
+                throw new ArgumentException("selction wrapper is null, can't activate transform mode");
+            }
             if (mode == TransformMode.PositionMode)
             {
                 _runtimeTransformHandle.type = TransformHandleType.POSITION;
@@ -67,9 +72,10 @@ namespace ReupVirtualTwin.managers
             }
         }
 
+
         public void DeactivateTransformMode()
         {
-            if (!_active) return;
+            if (!_active) throw new InvalidOperationException("Can't deactivate transform mode, no active transform mode is active to begin with");
             _active = false;
             _runtimeTransformObj.SetActive(false);
             _mediator.Notify(Events.transformModeDeactivated);
