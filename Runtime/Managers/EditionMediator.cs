@@ -163,6 +163,15 @@ namespace ReupVirtualTwin.managers
             foreach (GameObject obj in selectedObjects)
             {
                 string objId = obj.GetComponent<IUniqueIdentifer>().getId();
+                // Todo: sometimes the id is an empty string, we have to fix that
+                // This conditional is to receive information whenever it happens
+                // So far the bug is not reproducible
+                if (objId == "")
+                {
+                    Debug.LogWarning($"id of {obj.name} is empty");
+                    Debug.LogWarning(obj.GetComponent<IUniqueIdentifer>());
+                    Debug.LogWarning(obj.GetComponent<IUniqueIdentifer>().getId());
+                }
                 selectedDTOObjects.Add(new ObjectDTO { objectId = objId });
             }
             ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
