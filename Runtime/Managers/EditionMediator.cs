@@ -83,7 +83,7 @@ namespace ReupVirtualTwin.managers
         {
             try
             {
-                WebMessage<bool> message = JsonUtility.FromJson<WebMessage<bool>>(serializedWebMessage);
+                WebMessage<string> message = JsonUtility.FromJson<WebMessage<string>>(serializedWebMessage);
                 ProcessWebMessage(message);
             }
             catch (RomuloException e)
@@ -94,13 +94,17 @@ namespace ReupVirtualTwin.managers
                     payload = e.Message,
                 });
             }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
         }
-        public void ProcessWebMessage(WebMessage<bool> message)
+        public void ProcessWebMessage(WebMessage<string> message)
         {
             switch (message.type)
             {
                 case WebMessageType.setEditMode:
-                    _editModeManager.editMode = message.payload;
+                    _editModeManager.editMode = bool.Parse(message.payload);
                     break;
                 case WebMessageType.activatePositionTransform:
                     ActivateTransformMode(TransformMode.PositionMode);
@@ -163,15 +167,6 @@ namespace ReupVirtualTwin.managers
             foreach (GameObject obj in selectedObjects)
             {
                 string objId = obj.GetComponent<IUniqueIdentifer>().getId();
-                // Todo: sometimes the id is an empty string, we have to fix that
-                // This conditional is to receive information whenever it happens
-                // So far the bug is not reproducible
-                if (objId == "")
-                {
-                    Debug.LogWarning($"id of {obj.name} is empty");
-                    Debug.LogWarning(obj.GetComponent<IUniqueIdentifer>());
-                    Debug.LogWarning(obj.GetComponent<IUniqueIdentifer>().getId());
-                }
                 selectedDTOObjects.Add(new ObjectDTO { objectId = objId });
             }
             ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();

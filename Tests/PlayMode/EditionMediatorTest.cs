@@ -186,7 +186,7 @@ public class EditionMediatorTest : MonoBehaviour
         }
         public static string createWebMessage(string type, string payload)
         {
-            return $"{{\"type\":\"{type}\",\"payload\":\"{payload}\"}}";
+            return $"{{\"type\":\"{type}\",\"payload\":{payload}}}";
         }
     }
 
