@@ -10,13 +10,6 @@ namespace ReupVirtualTwin.editor
 	{
 		public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
 		{
-			// Generate a unique ID, defaults to an empty string if nothing has been serialized yet
-			if (string.IsNullOrEmpty(prop.stringValue))
-			{
-				Guid guid = Guid.NewGuid();
-				prop.stringValue = guid.ToString();
-			}
-
 			// Place a label so it can't be edited by accident
 			Rect textFieldPosition = position;
 			textFieldPosition.height = 16;
