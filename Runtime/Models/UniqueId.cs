@@ -11,6 +11,16 @@ namespace ReupVirtualTwin.models
 		[UniqueIdentifier]
 		public string uniqueId;
 
+        public string GenerateId()
+        {
+            if (uniqueId == null || uniqueId == "")
+            {
+                Guid guid = Guid.NewGuid();
+                uniqueId = guid.ToString();
+            }
+            return uniqueId;
+        }
+
         public string getId()
         {
             return uniqueId;
