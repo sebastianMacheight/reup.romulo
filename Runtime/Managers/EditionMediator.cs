@@ -167,7 +167,11 @@ namespace ReupVirtualTwin.managers
             foreach (GameObject obj in selectedObjects)
             {
                 string objId = obj.GetComponent<IUniqueIdentifer>().getId();
-                selectedDTOObjects.Add(new ObjectDTO { objectId = objId });
+                selectedDTOObjects.Add(new ObjectDTO
+                {
+                     objectId = objId,
+                     objectTags = new string[1] {obj.tag},
+                });
             }
             ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
             WebMessage<ObjectDTO[]> message = new WebMessage<ObjectDTO[]>

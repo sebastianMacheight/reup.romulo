@@ -7,7 +7,7 @@ namespace ReupVirtualTwin.helpers
     {
         protected override GameObject GetSelectedObjectFromHitObject(GameObject obj)
         {
-            if (obj.CompareTag(TagsEnum.selectableObject))
+            if (obj.CompareTag(TagsEnum.selectableObject) || obj.CompareTag(TagsEnum.transformableObject))
             {
                 return obj;
             }
