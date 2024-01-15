@@ -25,6 +25,7 @@ namespace ReupVirtualTwin.managers
                 {
                     _highlighter.UnhighlightObject(_wrapperObject);
                 }
+                Destroy(_wrapperObject);
                 _wrapperObject = value;
                 if (_wrapperObject != null)
                 {
@@ -72,7 +73,6 @@ namespace ReupVirtualTwin.managers
             }
             if (_wrapperObject != null)
             {
-                Destroy(_wrapperObject);
                 wrapperObject = null;
             }
         }
@@ -80,6 +80,7 @@ namespace ReupVirtualTwin.managers
         public GameObject RemoveObjectFromSelection(GameObject selectedObject)
         {
             wrapperObject = _objectWrapper.UnwrapObject(selectedObject);
+            _highlighter.UnhighlightObject(selectedObject);
             return _wrapperObject;
         }
     }

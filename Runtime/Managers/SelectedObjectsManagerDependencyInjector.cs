@@ -14,7 +14,8 @@ namespace ReupVirtualTwin.managers
             SelectedObjectsManager selectedObjectsManager = GetComponent<SelectedObjectsManager>();
             selectedObjectsManager.mediator = mediator.GetComponent<IMediator>();
             selectedObjectsManager.objectWrapper = new ObjectWrapper();
-            selectedObjectsManager.highlighter = new Outliner();
+            Outliner outliner = gameObject.AddComponent<Outliner>();
+            selectedObjectsManager.highlighter = outliner;
         }
     }
 }
