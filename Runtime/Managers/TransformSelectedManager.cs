@@ -27,7 +27,8 @@ namespace ReupVirtualTwin.managers
             {
                 if (!AreWrappedObjectsTransformable(value.wrappedObjects))
                 {
-                    throw new InvalidOperationException("Can't activate transform mode, not all objects are transformable");
+                    DeactivateTransformMode();
+                    return;
                 }
                 _transformWrapper = value.wrapper;
                 if (_transformWrapper != null)
@@ -51,6 +52,10 @@ namespace ReupVirtualTwin.managers
             if (wrapperDTO == null || wrapperDTO.wrapper == null)
             {
                 throw new ArgumentException("section wrapper is null, can't activate transform mode");
+            }
+            if (!AreWrappedObjectsTransformable(wrapperDTO.wrappedObjects))
+            {
+                return;
             }
             if (mode == TransformMode.PositionMode)
             {
