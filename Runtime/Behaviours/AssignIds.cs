@@ -10,7 +10,8 @@ namespace ReupVirtualTwin.behaviours
         {
             if (parent.GetComponent<IUniqueIdentifer>() == null)
             {
-                parent.AddComponent<RegisteredIdentifier>();
+                IUniqueIdentifer uniqueId = parent.AddComponent<RegisteredIdentifier>();
+                uniqueId.GenerateId();
             }
 
             foreach (Transform child in parent.transform)
