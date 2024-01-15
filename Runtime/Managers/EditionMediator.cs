@@ -154,6 +154,7 @@ namespace ReupVirtualTwin.managers
                 type = WebMessageType.setEditModeSuccess,
                 payload = editMode,
             };
+            Debug.Log($"sending set edit mode message {editMode}");
             _webMessageSender.SendWebMessage(message);
         }
         private void ProcessNewWrapper(ObjectWrapperDTO wrappedObject)
@@ -169,8 +170,8 @@ namespace ReupVirtualTwin.managers
                 string objId = obj.GetComponent<IUniqueIdentifer>().getId();
                 selectedDTOObjects.Add(new ObjectDTO
                 {
-                     objectId = objId,
-                     objectTags = new string[1] {obj.tag},
+                     id = objId,
+                     tags = new string[1] {obj.tag},
                 });
             }
             ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
