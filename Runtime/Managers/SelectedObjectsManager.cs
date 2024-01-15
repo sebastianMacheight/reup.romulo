@@ -4,6 +4,7 @@ using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.dataModels;
 
 namespace ReupVirtualTwin.managers
 {
@@ -15,22 +16,32 @@ namespace ReupVirtualTwin.managers
         public IObjectHighlighter highlighter { set => _highlighter = value; }
         private IMediator _mediator;
         public IMediator mediator { set { _mediator = value; } }
-        private GameObject _selection;
-        public GameObject selection
+        private GameObject _wrapperObject;
+        private GameObject wrapperObject
         {
-            get => _selection;
             set
             {
-                if (_selection != null)
+                if (_wrapperObject != null)
                 {
-                    _highlighter.UnhighlightObject(_selection);
+                    _highlighter.UnhighlightObject(_wrapperObject);
                 }
-                _selection = value;
-                if (_selection != null)
+                _wrapperObject = value;
+                if (_wrapperObject != null)
                 {
-                    _highlighter.HighlightObject(_selection);
+                    _highlighter.HighlightObject(_wrapperObject);
                 }
-                _mediator.Notify(Events.setSelectedObjects, _objectWrapper.wrappedObjects);
+                _mediator.Notify(Events.setSelectedObjects, wrapperDTO);
+            }
+        }
+        public ObjectWrapperDTO wrapperDTO
+        {
+            get
+            {
+                return new ObjectWrapperDTO
+                {
+                    wrapper = _wrapperObject,
+                    wrappedObjects = _objectWrapper.wrappedObjects,
+                };
             }
         }
 
@@ -49,20 +60,27 @@ namespace ReupVirtualTwin.managers
         public GameObject AddObjectToSelection(GameObject selectedObject)
         {
             if (!_allowSelection) return null;
-            selection = _objectWrapper.WrapObject(selectedObject);
-            return _selection;
+            wrapperObject = _objectWrapper.WrapObject(selectedObject);
+            return _wrapperObject;
         }
 
         public void ClearSelection()
         {
-            _objectWrapper.DeWrapAll();
-            selection = null;
+            if (_objectWrapper.wrappedObjects.Count > 0)
+            {
+                _objectWrapper.DeWrapAll();
+            }
+            if (_wrapperObject != null)
+            {
+                Destroy(_wrapperObject);
+                wrapperObject = null;
+            }
         }
 
         public GameObject RemoveObjectFromSelection(GameObject selectedObject)
         {
-            selection = _objectWrapper.UnwrapObject(selectedObject);
-            return _selection;
+            wrapperObject = _objectWrapper.UnwrapObject(selectedObject);
+            return _wrapperObject;
         }
     }
 }

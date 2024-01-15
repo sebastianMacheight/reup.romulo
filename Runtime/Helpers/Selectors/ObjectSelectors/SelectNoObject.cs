@@ -4,9 +4,9 @@ namespace ReupVirtualTwin.helpers
 {
     public class SelectNoObject : ObjectSelector
     {
-        protected override bool IsSelectable(GameObject obj)
+        protected override GameObject GetSelectedObjectFromHitObject(GameObject obj)
         {
-            return false;
+            return null;
         }
     }
 }

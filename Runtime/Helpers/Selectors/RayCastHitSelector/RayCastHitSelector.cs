@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.helpers
             if (CastRay(ray, out hit))
             {
                 GameObject obj = hit.collider.gameObject;
-                if (IsSelectable(obj))
+                if (GetSelectedObjectFromHitObject(obj))
                 {
                     return hit;
                 }

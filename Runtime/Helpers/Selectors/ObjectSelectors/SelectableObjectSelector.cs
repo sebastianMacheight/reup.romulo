@@ -5,9 +5,18 @@ namespace ReupVirtualTwin.helpers
 {
     public class SelectableObjectSelector : ObjectSelector
     {
-        protected override bool IsSelectable(GameObject obj)
+        protected override GameObject GetSelectedObjectFromHitObject(GameObject obj)
         {
-            return obj.CompareTag(TagsEnum.selectableObject);
+            if (obj.CompareTag(TagsEnum.selectableObject) || obj.CompareTag(TagsEnum.transformableObject))
+            {
+                return obj;
+            }
+            if (obj.transform.parent == null)
+            {
+                return null;
+            }
+            return GetSelectedObjectFromHitObject(obj.transform.parent.gameObject);
         }
+
     }
 }

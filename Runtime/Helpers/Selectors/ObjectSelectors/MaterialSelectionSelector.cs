@@ -5,9 +5,13 @@ namespace ReupVirtualTwin.helpers
 {
     public class MaterialSelectionSelector : ObjectSelector
     {
-        protected override bool IsSelectable(GameObject obj)
+        protected override GameObject GetSelectedObjectFromHitObject(GameObject obj)
         {
-            return obj.CompareTag(TagsEnum.materialSelection);
+            if (obj.CompareTag(TagsEnum.materialSelection))
+            {
+                return obj;
+            }
+            return null;
         }
     }
 }
