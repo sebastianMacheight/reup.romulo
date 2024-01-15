@@ -5,5 +5,6 @@ namespace ReupVirtualTwin.modelInterfaces
     {
         public string getId();
         public bool isIdCorrect(string id);
+        public string GenerateId();
     }
 }
