@@ -1,6 +1,7 @@
 using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.helpers;
 using UnityEngine;
+using ReupVirtualTwin.behaviourInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
@@ -8,12 +9,12 @@ namespace ReupVirtualTwin.behaviours
     {
         [SerializeField]
         CharacterPositionManager _characterPositionManager;
-        SetUpBuilding _setUpBuilding;
+        ISetUpBuilding _setUpBuilding;
+        public ISetUpBuilding setUpBuilding { set => _setUpBuilding = value; } 
         private Sensor _sensor;
         void Awake()
         {
             _sensor = GetComponent<Sensor>();
-            _setUpBuilding = ObjectFinder.FindSetupBuilding().GetComponent<SetUpBuilding>();
         }
         public void Spawn()
         {

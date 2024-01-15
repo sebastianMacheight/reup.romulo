@@ -5,12 +5,16 @@ using UnityEngine.TestTools;
 using ReupVirtualTwin.characterMovement;
 using UnityEditor;
 using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.behaviourInterfaces;
+using Packages.reup.romulo.Tests.PlayMode.Mocks;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
     private GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Character.prefab");
     private GameObject character;
     private CharacterPositionManager posManager;
+    private InitialSpawn initialSpawn;
+
 
     float HEIGHT_CLOSENESS_THRESHOLD = 0.02f;
     float MOVEMENT_CLOSENESS_THRESHOLD = 0.02f;
@@ -24,6 +28,9 @@ public class CharacterPositionManagerTest : MonoBehaviour
         character.transform.position = Vector3.zero;
         posManager = character.GetComponent<CharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
+        initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawn>();
+        MockSetUpBuilding mockSetUpBuilding = new MockSetUpBuilding();
+        initialSpawn.setUpBuilding = mockSetUpBuilding;
     }
 
     [TearDown]
@@ -121,14 +128,17 @@ public class CharacterPositionManagerTest : MonoBehaviour
 
         //check new character's position is close to target position
         var sqrt6 = Mathf.Sqrt(6);
-        var expectedPosition = new Vector3(sqrt6, sqrt6, 2*sqrt6) / 3;
+        var expectedPosition = new Vector3(sqrt6, sqrt6, 2 * sqrt6) / 3;
         Assert.LessOrEqual(Vector3.Distance(character.transform.position, expectedPosition), 1E-5);
         yield return null;
     }
     private void DestroyGameRelatedDependecyInjectors()
     {
         var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
+        var initalSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawnDependencyInjector>();
         Destroy(movementSelectPosDependencyInjector);
+        Destroy(initalSpawnDependencyInjector);
     }
+
 }
 
