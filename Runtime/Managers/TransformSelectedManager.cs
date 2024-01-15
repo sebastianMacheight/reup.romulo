@@ -4,6 +4,8 @@ using UnityEngine;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.dataModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ReupVirtualTwin.managers
 {
@@ -19,11 +21,15 @@ namespace ReupVirtualTwin.managers
         public IMediator mediator { set { _mediator = value; } }
 
         private GameObject _transformWrapper;
-        public GameObject wrapper
+        public ObjectWrapperDTO wrapper
         {
             set
             {
-                _transformWrapper = value;
+                if (!AreWrappedObjectsTransformable(value.wrappedObjects))
+                {
+                    throw new InvalidOperationException("Can't activate transform mode, not all objects are transformable");
+                }
+                _transformWrapper = value.wrapper;
                 if (_transformWrapper != null)
                 {
                     _runtimeTransformHandle.target = _transformWrapper.transform;
@@ -40,11 +46,11 @@ namespace ReupVirtualTwin.managers
             _runtimeTransformObj.layer = _runtimeTransformLayer;
             _runtimeTransformObj.SetActive(false);
         }
-        public void ActivateTransformMode(GameObject wrapper, TransformMode mode)
+        public void ActivateTransformMode(ObjectWrapperDTO wrapperDTO, TransformMode mode)
         {
-            if (wrapper == null)
+            if (wrapperDTO == null || wrapperDTO.wrapper == null)
             {
-                throw new ArgumentException("selction wrapper is null, can't activate transform mode");
+                throw new ArgumentException("section wrapper is null, can't activate transform mode");
             }
             if (mode == TransformMode.PositionMode)
             {
@@ -55,7 +61,7 @@ namespace ReupVirtualTwin.managers
                 _runtimeTransformHandle.type = TransformHandleType.ROTATION;
             }
             _active = true;
-            this.wrapper = wrapper;
+            this.wrapper = wrapperDTO;
             _runtimeTransformObj.SetActive(true);
             if (mode == TransformMode.PositionMode)
             {
@@ -67,7 +73,6 @@ namespace ReupVirtualTwin.managers
             }
         }
 
-
         public void DeactivateTransformMode()
         {
             if (!_active) throw new InvalidOperationException("Can't deactivate transform mode, no active transform mode is active to begin with");
@@ -75,6 +80,12 @@ namespace ReupVirtualTwin.managers
             _runtimeTransformObj.SetActive(false);
             _mediator.Notify(Events.transformModeDeactivated);
         }
+
+        private bool AreWrappedObjectsTransformable(List<GameObject> objects)
+        {
+            return objects.All(obj => obj.CompareTag(TagsEnum.transformableObject));
+        }
+
 
     }
 }

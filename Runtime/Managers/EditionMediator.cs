@@ -127,9 +127,9 @@ namespace ReupVirtualTwin.managers
 
         private void ActivateTransformMode(TransformMode mode)
         {
-            if (_selectedObjectsManager.selection == null)
-                throw new RomuloException($"Can't activate {mode} Transform mode because nothing is selected");
-            _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.selection, mode);
+            if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
+                throw new RomuloException($"Can't activate {mode} Transform mode because no object is selected");
+            _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.wrapperDTO, mode);
         }
 
         private void DeactivateTransformMode()
@@ -158,7 +158,18 @@ namespace ReupVirtualTwin.managers
         }
         private void ProcessNewWrapper(ObjectWrapperDTO wrappedObject)
         {
-            _transformSelectedManager.wrapper = wrappedObject.wrapper;
+            if (_transformSelectedManager.active)
+            {
+                try
+                {
+                    _transformSelectedManager.wrapper = wrappedObject;
+                }
+                catch (InvalidOperationException e)
+                {
+                    Debug.Log(e.Message);
+                    _transformSelectedManager.DeactivateTransformMode();
+                }
+            }
             SendNewSelectedObjectsMessage(wrappedObject.wrappedObjects);
         }
         private void SendNewSelectedObjectsMessage(List<GameObject> selectedObjects)
