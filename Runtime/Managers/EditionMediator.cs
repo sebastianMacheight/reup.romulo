@@ -154,7 +154,6 @@ namespace ReupVirtualTwin.managers
                 type = WebMessageType.setEditModeSuccess,
                 payload = editMode,
             };
-            Debug.Log($"sending set edit mode message {editMode}");
             _webMessageSender.SendWebMessage(message);
         }
         private void ProcessNewWrapper(ObjectWrapperDTO wrappedObject)
