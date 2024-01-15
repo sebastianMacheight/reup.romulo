@@ -5,7 +5,7 @@ namespace ReupVirtualTwin.dataModels
     [Serializable]
     public class ObjectDTO
     {
-        public string objectId;
-        public string[] objectTags;
+        public string id;
+        public string[] tags;
     }
 }

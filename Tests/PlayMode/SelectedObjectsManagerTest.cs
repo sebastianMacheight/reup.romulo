@@ -9,6 +9,7 @@ using ReupVirtualTwin.enums;
 using ReupVirtualTwin.models;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.dataModels;
 
 public class SelectedObjectsManagerTest : MonoBehaviour
 {
@@ -89,10 +90,33 @@ public class SelectedObjectsManagerTest : MonoBehaviour
         Assert.AreEqual(new List<GameObject>() {}, mockMediator.selectedObjects);
         yield return null;
     }
+    [UnityTest]
+    public IEnumerator ShouldNotNotifyMediatorWhenClearingSelectionIfNoObjectIsSelected()
+    {
+        Assert.AreEqual(0, mockMediator.selectedObjects.Count);
+        Assert.AreEqual(false, mockMediator.selectedObjectModified);
+        yield return null;
+        selectedObjectsManager.ClearSelection();
+        Assert.AreEqual(false, mockMediator.selectedObjectModified);
+    }
+    [UnityTest]
+    public IEnumerator ShouldDestroyWrapperObjectAfterClearingSelection()
+    {
+        selectedObjectsManager.allowSelection = true;
+        selectedObjectsManager.AddObjectToSelection(testGameObject0);
+        Assert.NotNull(selectedObjectsManager.wrapperDTO);
+        yield return null;
+        GameObject selection = selectedObjectsManager.wrapperDTO.wrapper;
+        selectedObjectsManager.ClearSelection();
+        yield return null;
+        Assert.IsTrue(selection == null);
+        yield return null;
+    }
 
     private class MockMediator : IMediator
     {
-        public List<GameObject> selectedObjects;
+        public List<GameObject> selectedObjects = new List<GameObject>() { };
+        public bool selectedObjectModified = false;
         public void Notify(Events eventName)
         {
             throw new System.NotImplementedException();
@@ -102,7 +126,8 @@ public class SelectedObjectsManagerTest : MonoBehaviour
         {
             if (eventName == Events.setSelectedObjects)
             {
-                selectedObjects = (List<GameObject>)(object)payload;
+                selectedObjects = ((ObjectWrapperDTO)(object)payload).wrappedObjects;
+                selectedObjectModified = true;
             }
         }
     }

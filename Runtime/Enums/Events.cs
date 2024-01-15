@@ -4,6 +4,9 @@ namespace ReupVirtualTwin.enums
     {
         transformHandleStartItneraction,
         transformHandleStopInteraction,
+        positionTransformModeActivated,
+        rotationTransformModeActivated,
+        transformModeDeactivated,
         setEditMode,
         setSelectedObjects,
     }

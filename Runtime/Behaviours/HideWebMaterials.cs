@@ -31,7 +31,7 @@ namespace ReupVirtualTwin.behaviours
 
             var message = new WebMessage<string>
             {
-                type = WebOperationsEnum.hideMaterialsOptions
+                type = WebMessageType.hideMaterialsOptions
             };
             _webMessagesSender.SendWebMessage(message);
         }
