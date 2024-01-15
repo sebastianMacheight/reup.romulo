@@ -160,15 +160,7 @@ namespace ReupVirtualTwin.managers
         {
             if (_transformSelectedManager.active)
             {
-                try
-                {
-                    _transformSelectedManager.wrapper = wrappedObject;
-                }
-                catch (InvalidOperationException e)
-                {
-                    Debug.Log(e.Message);
-                    _transformSelectedManager.DeactivateTransformMode();
-                }
+                _transformSelectedManager.wrapper = wrappedObject;
             }
             SendNewSelectedObjectsMessage(wrappedObject.wrappedObjects);
         }
