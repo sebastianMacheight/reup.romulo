@@ -91,7 +91,7 @@ public class EditionMediatorTest : MonoBehaviour
         yield return null;
         WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
-        Assert.AreEqual($"Can't activate {TransformMode.PositionMode} Transform mode because nothing is selected", sentMessage.payload);
+        Assert.AreEqual($"Can't activate {TransformMode.PositionMode} Transform mode because no object is selected", sentMessage.payload);
         yield return null;
     }
     [UnityTest]
@@ -102,7 +102,7 @@ public class EditionMediatorTest : MonoBehaviour
         yield return null;
         WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
-        Assert.AreEqual($"Can't activate {TransformMode.RotationMode} Transform mode because nothing is selected", sentMessage.payload);
+        Assert.AreEqual($"Can't activate {TransformMode.RotationMode} Transform mode because no object is selected", sentMessage.payload);
         yield return null;
     }
     [UnityTest]
@@ -122,15 +122,23 @@ public class EditionMediatorTest : MonoBehaviour
         private bool _editMode;
         public bool editMode { get => _editMode; set => _editMode = value; }
     }
-    private class MockSelectedObjectsManager: ISelectedObjectsManager
+    private class MockSelectedObjectsManager : ISelectedObjectsManager
     {
+        public MockSelectedObjectsManager()
+        {
+            wrapperDTO = new ObjectWrapperDTO()
+            {
+                wrapper = null,
+                wrappedObjects = null,
+            };
+        }
         private bool _allowSelection = false;
         public bool allowSelection { get => _allowSelection; set => _allowSelection = value; }
+
+
         public bool selectionCleared = false;
-
-        private GameObject _selection = null;
-
-        public GameObject selection => _selection;
+        private ObjectWrapperDTO _wraperDTO;
+        public ObjectWrapperDTO wrapperDTO { get => _wraperDTO; set => _wraperDTO = value; }
 
         public GameObject AddObjectToSelection(GameObject selectedObject)
         {
@@ -159,18 +167,18 @@ public class EditionMediatorTest : MonoBehaviour
     private class MockTransformSelectedManager : ITransformSelectedManager
     {
         public bool _active = false;
-        public GameObject wrapper
-        {
-            set
-            {
-
-            }
-        }
         public bool active => _active;
+
+        public ObjectWrapperDTO wrapper { set => throw new System.NotImplementedException(); }
 
         public void ActivateTransformMode(GameObject wrapper, TransformMode mode)
         {
             _active = true;
+        }
+
+        public void ActivateTransformMode(ObjectWrapperDTO wrapper, TransformMode mode)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void DeactivateTransformMode()

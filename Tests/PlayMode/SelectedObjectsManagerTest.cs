@@ -104,9 +104,9 @@ public class SelectedObjectsManagerTest : MonoBehaviour
     {
         selectedObjectsManager.allowSelection = true;
         selectedObjectsManager.AddObjectToSelection(testGameObject0);
-        Assert.NotNull(selectedObjectsManager.selection);
+        Assert.NotNull(selectedObjectsManager.wrapperDTO);
         yield return null;
-        GameObject selection = selectedObjectsManager.selection;
+        GameObject selection = selectedObjectsManager.wrapperDTO.wrapper;
         selectedObjectsManager.ClearSelection();
         yield return null;
         Assert.IsTrue(selection == null);
