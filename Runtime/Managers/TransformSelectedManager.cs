@@ -15,12 +15,7 @@ namespace ReupVirtualTwin.managers
         public GameObject runtimeTransformObj { set => _runtimeTransformObj = value; }
         private IRuntimeTransformHandle _runtimeTransformHandle;
         private int _runtimeTransformLayer = 6;
-        //private int _runtimeTransformLayerMask;
-        //private IRayProvider _rayProvider;
-        //private ObjectSelector _objectSelector;
         private IMediator _mediator;
-        //public  IRayProvider rayProvider { set =>  _rayProvider = value; }
-        //public ObjectSelector objectSelector { set => _objectSelector = value; }
         public IMediator mediator { set { _mediator = value; } }
 
         private GameObject _transformWrapper;
