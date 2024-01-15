@@ -31,7 +31,7 @@ namespace ReupVirtualTwin.helpers
                 originalParent = obj.transform.parent,
                 wrappedObject = obj
             });
-            UpdateWrapperCenter();
+            UpdateWrapper();
             return objectWrapper;
         }
 
@@ -41,13 +41,14 @@ namespace ReupVirtualTwin.helpers
 
             ReturnObjectToParent(objectInfo);
             _wrappedObjectsInfo.Remove(objectInfo);
-            UpdateWrapperCenter();
-            return objectInfo.wrappedObject;
+            UpdateWrapper();
+            return objectWrapper;
         }
-        void UpdateWrapperCenter()
+        void UpdateWrapper()
         {
             if (_wrappedObjectsInfo.Count == 0)
             {
+                DestroyOldWrapper();
                 return;
             }
             Vector3 selectionCenter = GetSelectionCenter();
@@ -56,11 +57,16 @@ namespace ReupVirtualTwin.helpers
             {
                 obj.wrappedObject.transform.SetParent(newWrapper.transform, true);
             }
+            DestroyOldWrapper();
+            objectWrapper = newWrapper;
+        }
+        void DestroyOldWrapper()
+        {
             if (objectWrapper != null)
             {
                 GameObject.Destroy(objectWrapper);
+                objectWrapper = null;
             }
-            objectWrapper = newWrapper;
         }
 
         Vector3 GetSelectionCenter()

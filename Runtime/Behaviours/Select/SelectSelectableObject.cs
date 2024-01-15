@@ -17,6 +17,11 @@ namespace ReupVirtualTwin.behaviours
         }
         public override void HandleObject(GameObject obj)
         {
+            if(_selectedObjectsManager.wrapperDTO.wrappedObjects.Contains(obj))
+            {
+                _selectedObjectsManager.RemoveObjectFromSelection(obj);
+                return;
+            }
             _selectedObjectsManager.AddObjectToSelection(obj);
         }
     }
