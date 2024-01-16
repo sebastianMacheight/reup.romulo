@@ -10,6 +10,8 @@ namespace ReupVirtualTwin.helpers
         List<WrappedObjectInfo> _wrappedObjectsInfo = new List<WrappedObjectInfo>();
         GameObject objectWrapper;
 
+        public GameObject wrapper {  get { return objectWrapper; } }
+
         public List<GameObject> wrappedObjects
         {
             get
