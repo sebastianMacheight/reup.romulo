@@ -147,7 +147,10 @@ public class SelectedObjectsManagerTest : MonoBehaviour
     {
         private List<GameObject> selectedObjects = new List<GameObject>();
         public List<GameObject> wrappedObjects => selectedObjects;
-        private GameObject wrapper = new GameObject();
+
+        public GameObject wrapper => throw new System.NotImplementedException();
+
+        private GameObject _wrapper = new GameObject();
 
         public void DeWrapAll()
         {
@@ -157,13 +160,13 @@ public class SelectedObjectsManagerTest : MonoBehaviour
         public GameObject UnwrapObject(GameObject obj)
         {
             selectedObjects.Remove(obj);
-            return wrapper;
+            return _wrapper;
         }
 
         public GameObject WrapObject(GameObject obj)
         {
             selectedObjects.Add(obj);
-            return wrapper;
+            return _wrapper;
         }
 
         public GameObject WrapObjects(GameObject[] objs)
@@ -172,7 +175,7 @@ public class SelectedObjectsManagerTest : MonoBehaviour
             {
                 selectedObjects.Add(obj);
             }
-            return wrapper;
+            return _wrapper;
         }
     }
 
