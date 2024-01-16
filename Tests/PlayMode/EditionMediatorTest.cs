@@ -16,7 +16,7 @@ public class EditionMediatorTest : MonoBehaviour
     MockEditModeManager mockEditModeManager;
     MockSelectedObjectsManager mockSelectedObjectsManager;
     MockWebMessageSender mockWebMessageSender;
-    MockTransformSelectedManager mockTransformSelectedManager;
+    MockTransformObjectsManager mockTransformObjectsManager;
 
     [SetUp]
     public void SetUp()
@@ -29,8 +29,8 @@ public class EditionMediatorTest : MonoBehaviour
         editionMediator.selectedObjectsManager = mockSelectedObjectsManager;
         mockWebMessageSender = new MockWebMessageSender();
         editionMediator.webMessageSender = mockWebMessageSender;
-        mockTransformSelectedManager = new MockTransformSelectedManager();
-        editionMediator.transformSelectedManager = mockTransformSelectedManager;
+        mockTransformObjectsManager = new MockTransformObjectsManager();
+        editionMediator.transformObjectsManager = mockTransformObjectsManager;
     }
 
     [UnityTest]
@@ -164,7 +164,7 @@ public class EditionMediatorTest : MonoBehaviour
             sentMessage = webWessage;
         }
     }
-    private class MockTransformSelectedManager : ITransformSelectedManager
+    private class MockTransformObjectsManager : ITransformObjectsManager
     {
         public bool _active = false;
         public bool active => _active;
