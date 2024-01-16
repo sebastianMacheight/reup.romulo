@@ -7,7 +7,10 @@ public class RegisteredIdentifierEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        UniqueId Identifier = (RegisteredIdentifier)target;
-        EditorGUILayout.TextField("copy and paste it!", Identifier.uniqueId);
+        RegisteredIdentifier identifier = (RegisteredIdentifier)target;
+        if (string.IsNullOrEmpty(identifier.manualId))
+        {
+            identifier.manualId = identifier.uniqueId;
+        }
     }
 }
