@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 203620774}
   - component: {fileID: 5908476867254959470}
   m_Layer: 7
-  m_Name: PointMovement
+  m_Name: PointerMovement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 1625360273}
   - component: {fileID: 1625360271}
   - component: {fileID: 4752938232646726259}
+  - component: {fileID: 6269333371328331722}
   m_Layer: 7
   m_Name: MaintainHeight
   m_TagString: Untagged
@@ -187,6 +188,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterPositionManager: {fileID: 2420710140368993907}
+--- !u!114 &6269333371328331722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625360268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b87da6145ad3d48ada11d7ba679011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &16043791835660354
 GameObject:
   m_ObjectHideFlags: 0

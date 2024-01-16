@@ -1,10 +1,11 @@
 using UnityEngine;
 using ReupVirtualTwin.helpers;
 using System;
+using ReupVirtualTwin.behaviourInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
-    public class SetUpBuilding : MonoBehaviour
+    public class SetUpBuilding : MonoBehaviour , ISetUpBuilding
     {
         [SerializeField]
         GameObject building;
