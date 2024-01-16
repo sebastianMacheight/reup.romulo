@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ReupVirtualTwin.managers
 {
-    public class TransformSelectedManager : MonoBehaviour, ITransformSelectedManager
+    public class TransformObjectsManager : MonoBehaviour, ITransformObjectsManager
     {
         private bool _active = false;
         public bool active { get { return _active; } }

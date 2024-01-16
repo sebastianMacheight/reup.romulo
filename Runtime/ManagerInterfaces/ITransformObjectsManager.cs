@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.managerInterfaces
 {
-    public interface ITransformSelectedManager
+    public interface ITransformObjectsManager
     {
         public bool active { get; }
         public ObjectWrapperDTO wrapper { set; }
