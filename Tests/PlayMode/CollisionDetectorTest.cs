@@ -6,6 +6,8 @@ using System.Collections;
 
 using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.behaviourInterfaces;
+using Packages.reup.romulo.Tests.PlayMode.Mocks;
 
 public class CollisionDetectorTest : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class CollisionDetectorTest : MonoBehaviour
     GameObject widePlatform;
     GameObject wall;
     CharacterPositionManager posManager;
+    private InitialSpawn initialSpawn;
 
     [SetUp]
     public void SetUp()
@@ -24,6 +27,9 @@ public class CollisionDetectorTest : MonoBehaviour
         posManager = character.GetComponent<CharacterPositionManager>();
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(cubePrefab);
         SetPlatform();
+        initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawn>();
+        MockSetUpBuilding mockSetUpBuilding = new MockSetUpBuilding();
+        initialSpawn.setUpBuilding = mockSetUpBuilding;
     }
 
     [TearDown]
@@ -64,5 +70,8 @@ public class CollisionDetectorTest : MonoBehaviour
     {
         var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
         Destroy(movementSelectPosDependencyInjector);
+        var initalSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawnDependencyInjector>();
+        Destroy(initalSpawnDependencyInjector);
+
     }
 }
