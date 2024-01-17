@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,21 +6,26 @@ using ReupVirtualTwin.modelInterfaces;
 
 namespace ReupVirtualTwin.models
 {
-    public class ObjectTags : MonoBehaviour, IObjectTags
+    public class ObjectTags : MonoBehaviour, IObjectTags 
     {
-        private HashSet<ObjectTag> _tags = new HashSet<ObjectTag>();
-        public HashSet<ObjectTag> tags => _tags;
+        [SerializeField]
+        private List<ObjectTag> tags = new List<ObjectTag>();
 
-        public HashSet<ObjectTag> AddTag(ObjectTag tag)
+        public List<ObjectTag> GetTags()
         {
-            _tags.Add(tag);
-            return _tags;
+            return tags;
         }
 
-        public HashSet<ObjectTag> RemoveTag(ObjectTag tag)
+        public List<ObjectTag> AddTag(ObjectTag tag)
         {
-            _tags.Remove(tag);
-            return _tags;
+            tags.Add(tag);
+            return tags;
+        }
+
+        public List<ObjectTag> RemoveTag(ObjectTag tag)
+        {
+            tags.Remove(tag);
+            return tags;
         }
     }
 }

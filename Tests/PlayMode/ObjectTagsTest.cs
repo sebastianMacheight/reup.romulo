@@ -27,27 +27,27 @@ public class ObjectTagsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldInitializeWithEmptyTagsList()
     {
-        Assert.IsEmpty(objectTags.tags);
+        Assert.IsEmpty(objectTags.GetTags());
         yield return null;
     }
     [UnityTest]
     public IEnumerator ShouldAddOneTag()
     {
         objectTags.AddTag(ObjectTag.SELECTEABLE);
-        Assert.AreEqual(1, objectTags.tags.Count);
-        Assert.IsTrue(objectTags.tags.Contains(ObjectTag.SELECTEABLE));
+        Assert.AreEqual(1, objectTags.GetTags().Count);
+        Assert.IsTrue(objectTags.GetTags().Contains(ObjectTag.SELECTEABLE));
         yield return null;
     }
     [UnityTest]
     public IEnumerator ShouldRemoveOneTag()
     {
         objectTags.AddTag(ObjectTag.SELECTEABLE);
-        Assert.AreEqual(1, objectTags.tags.Count);
-        Assert.IsTrue(objectTags.tags.Contains(ObjectTag.SELECTEABLE));
+        Assert.AreEqual(1, objectTags.GetTags().Count);
+        Assert.IsTrue(objectTags.GetTags().Contains(ObjectTag.SELECTEABLE));
         yield return null;
         objectTags.RemoveTag(ObjectTag.SELECTEABLE);
-        Assert.AreEqual(0, objectTags.tags.Count);
-        Assert.IsFalse(objectTags.tags.Contains(ObjectTag.SELECTEABLE));
+        Assert.AreEqual(0, objectTags.GetTags().Count);
+        Assert.IsFalse(objectTags.GetTags().Contains(ObjectTag.SELECTEABLE));
         yield return null;
     }
 }
