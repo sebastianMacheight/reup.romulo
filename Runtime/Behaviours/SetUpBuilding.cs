@@ -10,6 +10,7 @@ namespace ReupVirtualTwin.behaviours
         [SerializeField]
         GameObject building;
         private bool buildingSetup = false;
+        private ITagSystemAssigner _tagSystemAssigner;
 
         event Action _onBuildingSetUp;
         public event Action onBuildingSetUp
@@ -42,16 +43,27 @@ namespace ReupVirtualTwin.behaviours
         public void AssignIdsToBuilding()
         {
             AssignIds.AssignToTree(building);
+            Debug.Log("Ids added to tree");
         }
         public void RemoveIdsOfBuilding()
         {
             AssignIds.RemoveFromTree(building);
+            Debug.Log("Ids removed from tree");
         }
         public void ResetIdsOfBuilding()
         {
             RemoveIdsOfBuilding();
             AssignIdsToBuilding();
+            Debug.Log("Ids reseted from tree");
         }
 
+        public void AddTagSystemToBuildingObjects()
+        {
+            if (_tagSystemAssigner == null)
+            {
+                _tagSystemAssigner = GetComponent<ITagSystemAssigner>();
+            }
+            _tagSystemAssigner.AssignTagSystemToTree(building);
+        }
     }
 }
