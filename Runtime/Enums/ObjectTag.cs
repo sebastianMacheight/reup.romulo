@@ -2,7 +2,7 @@ namespace ReupVirtualTwin.enums
 {
     public enum ObjectTag
     {
-        SELECTEABLE,
+        SELECTABLE,
         TRANSFORMABLE,
         DELETABLE,
     }
