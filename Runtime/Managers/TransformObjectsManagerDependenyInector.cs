@@ -6,17 +6,17 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.managers
 {
-    public class TransformSelectedManagerDependenyInector : MonoBehaviour
+    public class TransformObjectsManagerDependenyInector : MonoBehaviour
     {
         [SerializeField]
         GameObject mediator;
         private void Awake()
         {
-            TransformSelectedManager transformSelectedManager = GetComponent<TransformSelectedManager>();
-            transformSelectedManager.mediator = mediator.GetComponent<IMediator>();
+            TransformObjectsManager transformObjectsManager = GetComponent<TransformObjectsManager>();
+            transformObjectsManager.mediator = mediator.GetComponent<IMediator>();
             GameObject transformHandleObj = new GameObject("TransformHandle");
             transformHandleObj.AddComponent<RuntimeTransformHandle>();
-            transformSelectedManager.runtimeTransformObj = transformHandleObj;
+            transformObjectsManager.runtimeTransformObj = transformHandleObj;
         }
     }
 }

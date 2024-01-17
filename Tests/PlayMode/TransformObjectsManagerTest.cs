@@ -10,12 +10,12 @@ using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.dataModels;
 using System;
 
-public class TransformSelectedManagerTest : MonoBehaviour
+public class TransformObjectsManagerTest : MonoBehaviour
 {
     GameObject containerGameObject;
     GameObject runtimeTransformObj;
     GameObject transformWrapper;
-    TransformSelectedManager transformSelectedManager;
+    TransformObjectsManager transformObjectsManager;
     MockMediator mockMediator;
     GameObject transformableObject0;
     GameObject transformableObject1;
@@ -26,12 +26,12 @@ public class TransformSelectedManagerTest : MonoBehaviour
     {
         containerGameObject = new GameObject("containerGameObject");
         transformWrapper = new GameObject("transformWrapper");
-        transformSelectedManager = containerGameObject.AddComponent<TransformSelectedManager>();
+        transformObjectsManager = containerGameObject.AddComponent<TransformObjectsManager>();
         runtimeTransformObj = new GameObject("TransformHandle");
         runtimeTransformObj.AddComponent<MockRuntimeTransformHandle>();
-        transformSelectedManager.runtimeTransformObj = runtimeTransformObj;
+        transformObjectsManager.runtimeTransformObj = runtimeTransformObj;
         mockMediator = new MockMediator();
-        transformSelectedManager.mediator = mockMediator;
+        transformObjectsManager.mediator = mockMediator;
         transformableObject0 = new GameObject("transformableObject0");
         transformableObject0.tag = TagsEnum.transformableObject;
         transformableObject1 = new GameObject("transformableObject1");
@@ -50,11 +50,11 @@ public class TransformSelectedManagerTest : MonoBehaviour
             wrapper = transformWrapper,
             wrappedObjects = new List<GameObject>() { }
         };
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
         Assert.AreEqual(TransformMode.PositionMode, mockMediator.mode);
         Assert.IsTrue(mockMediator.transformModeActive);
         yield return null;
-        transformSelectedManager.DeactivateTransformMode();
+        transformObjectsManager.DeactivateTransformMode();
         Assert.IsFalse(mockMediator.transformModeActive);
         yield return null;
     }
@@ -69,11 +69,11 @@ public class TransformSelectedManagerTest : MonoBehaviour
             wrapper = transformWrapper,
             wrappedObjects = new List<GameObject>() { }
         };
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
         Assert.AreEqual(TransformMode.RotationMode, mockMediator.mode);
         Assert.AreEqual(true, mockMediator.transformModeActive);
         yield return null;
-        transformSelectedManager.DeactivateTransformMode();
+        transformObjectsManager.DeactivateTransformMode();
         Assert.AreEqual(false, mockMediator.transformModeActive);
         yield return null;
     }
@@ -88,15 +88,15 @@ public class TransformSelectedManagerTest : MonoBehaviour
             wrapper = transformWrapper,
             wrappedObjects = new List<GameObject>() { }
         };
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
         Assert.AreEqual(TransformMode.PositionMode, mockMediator.mode);
         Assert.AreEqual(true, mockMediator.transformModeActive);
         yield return null;
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
         Assert.AreEqual(TransformMode.RotationMode, mockMediator.mode);
         Assert.AreEqual(true, mockMediator.transformModeActive);
         yield return null;
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
         Assert.AreEqual(TransformMode.PositionMode, mockMediator.mode);
         Assert.AreEqual(true, mockMediator.transformModeActive);
         yield return null;
@@ -107,7 +107,7 @@ public class TransformSelectedManagerTest : MonoBehaviour
     {
         Assert.AreEqual(false, mockMediator.notified);
         yield return null;
-        Assert.That(() => transformSelectedManager.DeactivateTransformMode(),
+        Assert.That(() => transformObjectsManager.DeactivateTransformMode(),
             Throws.TypeOf<InvalidOperationException>()
         );
         Assert.AreEqual(false, mockMediator.notified);
@@ -121,19 +121,19 @@ public class TransformSelectedManagerTest : MonoBehaviour
         {
             wrapper = null,
         };
-        Assert.That(() => transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode),
+        Assert.That(() => transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode),
             Throws.TypeOf<ArgumentException>()
         );
         yield return null;
-        Assert.That(() => transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode),
+        Assert.That(() => transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode),
             Throws.TypeOf<ArgumentException>()
         );
         yield return null;
-        Assert.That(() => transformSelectedManager.ActivateTransformMode(null, TransformMode.PositionMode),
+        Assert.That(() => transformObjectsManager.ActivateTransformMode(null, TransformMode.PositionMode),
             Throws.TypeOf<ArgumentException>()
         );
         yield return null;
-        Assert.That(() => transformSelectedManager.ActivateTransformMode(null, TransformMode.RotationMode),
+        Assert.That(() => transformObjectsManager.ActivateTransformMode(null, TransformMode.RotationMode),
             Throws.TypeOf<ArgumentException>()
         );
         yield return null;
@@ -147,11 +147,11 @@ public class TransformSelectedManagerTest : MonoBehaviour
             wrapper = new GameObject("wrapper"),
             wrappedObjects = new List<GameObject>() { transformableObject0, transformableObject1},
         };
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
         Assert.AreEqual(TransformMode.PositionMode, mockMediator.mode);
         Assert.AreEqual(true, mockMediator.transformModeActive);
         yield return null;
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
         Assert.AreEqual(TransformMode.RotationMode, mockMediator.mode);
         Assert.AreEqual(true, mockMediator.transformModeActive);
         yield return null;
@@ -165,8 +165,8 @@ public class TransformSelectedManagerTest : MonoBehaviour
             wrapper = new GameObject("wrapper"),
             wrappedObjects = new List<GameObject>() { transformableObject0, transformableObject1, nonTransformableObject }
         };
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
-        Assert.IsFalse(transformSelectedManager.active);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
+        Assert.IsFalse(transformObjectsManager.active);
         Assert.IsFalse(mockMediator.transformModeActive);
         yield return null;
     }
@@ -179,10 +179,10 @@ public class TransformSelectedManagerTest : MonoBehaviour
             wrapper = new GameObject("wrapper"),
             wrappedObjects = new List<GameObject>() { transformableObject0, transformableObject1, nonTransformableObject }
         };
-        transformSelectedManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
         yield return null;
         Debug.Log("Asserting");
-        Assert.IsFalse(transformSelectedManager.active);
+        Assert.IsFalse(transformObjectsManager.active);
         Assert.IsFalse(mockMediator.transformModeActive);
         yield return null;
     }
