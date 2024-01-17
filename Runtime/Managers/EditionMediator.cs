@@ -27,8 +27,8 @@ namespace ReupVirtualTwin.managers
         }
         private ISelectedObjectsManager _selectedObjectsManager;
         public ISelectedObjectsManager selectedObjectsManager { set { _selectedObjectsManager = value; } }
-        private ITransformSelectedManager _transformSelectedManager;
-        public ITransformSelectedManager transformSelectedManager { set => _transformSelectedManager = value; }
+        private ITransformObjectsManager _transformObjectsManager;
+        public ITransformObjectsManager transformObjectsManager { set => _transformObjectsManager = value; }
 
         IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
@@ -129,14 +129,14 @@ namespace ReupVirtualTwin.managers
         {
             if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
                 throw new RomuloException($"Can't activate {mode} Transform mode because no object is selected");
-            _transformSelectedManager.ActivateTransformMode(_selectedObjectsManager.wrapperDTO, mode);
+            _transformObjectsManager.ActivateTransformMode(_selectedObjectsManager.wrapperDTO, mode);
         }
 
         private void DeactivateTransformMode()
         {
-            if (!_transformSelectedManager.active)
+            if (!_transformObjectsManager.active)
                 throw new RomuloException("Can't deactivate transform mode if no transform mode is currently active");
-            _transformSelectedManager.DeactivateTransformMode();
+            _transformObjectsManager.DeactivateTransformMode();
         }
 
 
@@ -146,8 +146,8 @@ namespace ReupVirtualTwin.managers
             if (editMode == false)
             {
                 _selectedObjectsManager.ClearSelection();
-                if (_transformSelectedManager.active)
-                    _transformSelectedManager.DeactivateTransformMode();
+                if (_transformObjectsManager.active)
+                    _transformObjectsManager.DeactivateTransformMode();
             }
             WebMessage<bool> message = new WebMessage<bool>
             {
@@ -158,9 +158,9 @@ namespace ReupVirtualTwin.managers
         }
         private void ProcessNewWrapper(ObjectWrapperDTO wrappedObject)
         {
-            if (_transformSelectedManager.active)
+            if (_transformObjectsManager.active)
             {
-                _transformSelectedManager.wrapper = wrappedObject;
+                _transformObjectsManager.wrapper = wrappedObject;
             }
             SendNewSelectedObjectsMessage(wrappedObject.wrappedObjects);
         }

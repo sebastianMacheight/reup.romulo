@@ -14,7 +14,7 @@ namespace ReupVirtualTwin.managers
         [SerializeField]
         GameObject selectedObjectsManager;
         [SerializeField]
-        GameObject transformSelectedManager;
+        GameObject transformObjectsManager;
         
         private void Awake()
         {
@@ -23,7 +23,7 @@ namespace ReupVirtualTwin.managers
             _editionMediator.characterRotationManager = _characterRotationManager;
             _editionMediator.editModeManager = editModeManager.GetComponent<IEditModeManager>();
             _editionMediator.selectedObjectsManager = selectedObjectsManager.GetComponent<ISelectedObjectsManager>();
-            _editionMediator.transformSelectedManager = transformSelectedManager.GetComponent<ITransformSelectedManager>();
+            _editionMediator.transformObjectsManager = transformObjectsManager.GetComponent<ITransformObjectsManager>();
             IWebMessagesSender webMessageSender = GetComponent<IWebMessagesSender>();
             if (webMessageSender == null )
             {
