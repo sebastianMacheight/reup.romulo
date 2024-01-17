@@ -10,7 +10,7 @@ using Packages.reup.romulo.Tests.PlayMode.Mocks;
 public class MaintainHeightTest : MonoBehaviour
 {
     GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Character.prefab");
-    GameObject cubePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/Cube.prefab");
+    GameObject platformPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/Platform.prefab");
     GameObject character;
     GameObject widePlatform;
     private InitialSpawn initialSpawn;
@@ -24,7 +24,7 @@ public class MaintainHeightTest : MonoBehaviour
         DestroyGameRelatedDependecyInjectors();
         var posManager = character.GetComponent<CharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
-        widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(cubePrefab);
+        widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(platformPrefab);
         SetPlatform();
         initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawn>();
         MockSetUpBuilding mockSetUpBuilding = new MockSetUpBuilding();

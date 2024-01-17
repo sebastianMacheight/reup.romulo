@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
 {
-    public class Outliner : IObjectHighlighter
+    public class Outliner : MonoBehaviour, IObjectHighlighter
     {
         public void HighlightObject(GameObject obj)
         {
