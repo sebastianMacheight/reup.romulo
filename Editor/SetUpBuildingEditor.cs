@@ -32,7 +32,7 @@ namespace ReupVirtualTwin.editor
                     setUpBuilding.ResetIdsOfBuilding();
                 }
             }
-            showTagsOptions = EditorGUILayout.Foldout(showTagsOptions, "Objects Ids");
+            showTagsOptions = EditorGUILayout.Foldout(showTagsOptions, "Objects Tags");
             if (showTagsOptions)
             {
                 if (GUILayout.Button("Add tag system to objects"))

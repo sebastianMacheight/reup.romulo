@@ -14,7 +14,7 @@ namespace ReupVirtualTwin.helpers
         }
         protected override GameObject GetSelectedObjectFromHitObject(GameObject obj)
         {
-            if (_tagsHandler.DoesObjectHaveTag(obj, ObjectTag.SELECTEABLE))
+            if (_tagsHandler.DoesObjectHaveTag(obj, ObjectTag.SELECTABLE))
             {
                 return obj;
             }
