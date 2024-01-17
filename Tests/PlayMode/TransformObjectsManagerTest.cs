@@ -9,6 +9,8 @@ using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.dataModels;
 using System;
+using ReupVirtualTwin.models;
+using ReupVirtualTwin.behaviours;
 
 public class TransformObjectsManagerTest : MonoBehaviour
 {
@@ -26,6 +28,7 @@ public class TransformObjectsManagerTest : MonoBehaviour
     {
         containerGameObject = new GameObject("containerGameObject");
         transformWrapper = new GameObject("transformWrapper");
+        containerGameObject.AddComponent<TagsHandler>();
         transformObjectsManager = containerGameObject.AddComponent<TransformObjectsManager>();
         runtimeTransformObj = new GameObject("TransformHandle");
         runtimeTransformObj.AddComponent<MockRuntimeTransformHandle>();
@@ -33,11 +36,11 @@ public class TransformObjectsManagerTest : MonoBehaviour
         mockMediator = new MockMediator();
         transformObjectsManager.mediator = mockMediator;
         transformableObject0 = new GameObject("transformableObject0");
-        transformableObject0.tag = TagsEnum.transformableObject;
+        transformableObject0.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] {ObjectTag.SELECTABLE, ObjectTag.TRANSFORMABLE});
         transformableObject1 = new GameObject("transformableObject1");
-        transformableObject1.tag = TagsEnum.transformableObject;
+        transformableObject1.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] {ObjectTag.SELECTABLE, ObjectTag.TRANSFORMABLE});
         nonTransformableObject = new GameObject("nonTransformableObject");
-        nonTransformableObject.tag = TagsEnum.selectableObject;
+        nonTransformableObject.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] {ObjectTag.SELECTABLE});
     }
 
     [UnityTest]
@@ -181,7 +184,6 @@ public class TransformObjectsManagerTest : MonoBehaviour
         };
         transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
         yield return null;
-        Debug.Log("Asserting");
         Assert.IsFalse(transformObjectsManager.active);
         Assert.IsFalse(mockMediator.transformModeActive);
         yield return null;

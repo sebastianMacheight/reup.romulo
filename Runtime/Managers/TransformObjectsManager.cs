@@ -6,6 +6,7 @@ using ReupVirtualTwin.dataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ReupVirtualTwin.behaviourInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
@@ -19,6 +20,7 @@ namespace ReupVirtualTwin.managers
         private int _runtimeTransformLayer = 6;
         private IMediator _mediator;
         public IMediator mediator { set { _mediator = value; } }
+        private ITagsHandler _tagsHandler;
 
         private GameObject _transformWrapper;
         public ObjectWrapperDTO wrapper
@@ -46,6 +48,7 @@ namespace ReupVirtualTwin.managers
             _runtimeTransformHandle.autoScaleFactor = 1.0f;
             _runtimeTransformObj.layer = _runtimeTransformLayer;
             _runtimeTransformObj.SetActive(false);
+            _tagsHandler = GetComponent<ITagsHandler>();
         }
         public void ActivateTransformMode(ObjectWrapperDTO wrapperDTO, TransformMode mode)
         {
@@ -88,7 +91,7 @@ namespace ReupVirtualTwin.managers
 
         private bool AreWrappedObjectsTransformable(List<GameObject> objects)
         {
-            return objects.All(obj => obj.CompareTag(TagsEnum.transformableObject));
+            return objects.All(obj => _tagsHandler.DoesObjectHaveTag(obj, ObjectTag.TRANSFORMABLE));
         }
 
 

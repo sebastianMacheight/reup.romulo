@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.behaviours;
 
 namespace ReupVirtualTwin.editor
@@ -7,23 +8,37 @@ namespace ReupVirtualTwin.editor
     [CustomEditor(typeof(SetUpBuilding))]
     public class SetUpBuildingEditor : Editor
     {
+        bool showIdsOptions = false;
+        bool showTagsOptions = false;
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
-            SetUpBuilding setUpBuilding = (SetUpBuilding)target;
+            ISetUpBuilding setUpBuilding = (ISetUpBuilding)target;
 
-            if (GUILayout.Button("Add Ids to objects"))
+            showIdsOptions = EditorGUILayout.Foldout(showIdsOptions, "Objects Ids");
+            if (showIdsOptions)
             {
-                setUpBuilding.AssignIdsToBuilding();
+                if (GUILayout.Button("Add Ids to objects"))
+                {
+                    setUpBuilding.AssignIdsToBuilding();
+                }
+                if (GUILayout.Button("Remove Ids from objects"))
+                {
+                    setUpBuilding.RemoveIdsOfBuilding();
+                }
+                if (GUILayout.Button("Reset Ids from objects"))
+                {
+                    setUpBuilding.ResetIdsOfBuilding();
+                }
             }
-            if (GUILayout.Button("Remove Ids from objects"))
+            showTagsOptions = EditorGUILayout.Foldout(showTagsOptions, "Objects Tags");
+            if (showTagsOptions)
             {
-                setUpBuilding.RemoveIdsOfBuilding();
-            }
-            if (GUILayout.Button("Reset Ids from objects"))
-            {
-                setUpBuilding.ResetIdsOfBuilding();
+                if (GUILayout.Button("Add tag system to objects"))
+                {
+                    setUpBuilding.AddTagSystemToBuildingObjects();
+                }
             }
         }
     }
