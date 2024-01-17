@@ -3,6 +3,7 @@ using UnityEngine;
 
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.modelInterfaces;
+using System.Linq;
 
 namespace ReupVirtualTwin.models
 {
@@ -25,6 +26,12 @@ namespace ReupVirtualTwin.models
         public List<ObjectTag> RemoveTag(ObjectTag tag)
         {
             tags.Remove(tag);
+            return tags;
+        }
+
+        public List<ObjectTag> AddTags(ObjectTag[] tagsList)
+        {
+            tags.AddRange(tagsList);
             return tags;
         }
     }
