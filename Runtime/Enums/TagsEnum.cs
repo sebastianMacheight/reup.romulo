@@ -12,8 +12,6 @@ namespace ReupVirtualTwin.enums
         public const string setupBuilding = "SetupBuilding";
         public const string objectRegistry = "ObjectRegistry";
         public const string setUpBuilding = "SetupBuilding";
-        public const string selectableObject = "Selectable";
-        public const string transformableObject = "Transformable";
 
         // managers
         public const string dragManager = "DragManager";

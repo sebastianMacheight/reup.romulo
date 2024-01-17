@@ -1,13 +1,20 @@
 using UnityEngine;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.behaviourInterfaces;
 
 namespace ReupVirtualTwin.helpers
 {
+    [RequireComponent(typeof(ITagsHandler))]
     public class SelectableObjectSelector : ObjectSelector
     {
+        private ITagsHandler _tagsHandler;
+        private void Awake()
+        {
+            _tagsHandler = GetComponent<ITagsHandler>();
+        }
         protected override GameObject GetSelectedObjectFromHitObject(GameObject obj)
         {
-            if (obj.CompareTag(TagsEnum.selectableObject) || obj.CompareTag(TagsEnum.transformableObject))
+            if (_tagsHandler.DoesObjectHaveTag(obj, ObjectTag.SELECTEABLE))
             {
                 return obj;
             }

@@ -1,9 +1,8 @@
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.modelInterfaces;
-using System.Collections;
 using System.Collections.Generic;
-using TriLibCore.Interfaces;
+using System.Linq;
 using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
@@ -14,6 +13,18 @@ namespace ReupVirtualTwin.behaviours
         {
             IObjectTags objectTags = obj.GetComponent<IObjectTags>();
             return objectTags.AddTag(tag);
+        }
+
+        public bool DoesObjectHaveTag(GameObject obj, ObjectTag tag)
+        {
+            List<ObjectTag> tags = GetTagsFromObject(obj);
+            return tags.Contains(tag);
+        }
+
+        public string[] GetTagNamesFromObject(GameObject obj)
+        {
+            List<ObjectTag> tags = GetTagsFromObject(obj);
+            return tags.Select(tag => tag.ToString()).ToArray();
         }
 
         public List<ObjectTag> GetTagsFromObject(GameObject obj)
