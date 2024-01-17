@@ -64,6 +64,7 @@ namespace ReupVirtualTwin.behaviours
                 _tagSystemAssigner = GetComponent<ITagSystemAssigner>();
             }
             _tagSystemAssigner.AssignTagSystemToTree(building);
+            Debug.Log("tag script added to tree");
         }
     }
 }
