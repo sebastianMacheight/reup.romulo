@@ -1,3 +1,4 @@
+using ReupVirtualTwin.enums;
 using System;
 
 namespace ReupVirtualTwin.dataModels

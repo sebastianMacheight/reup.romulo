@@ -1,7 +1,6 @@
 using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
 using ReupVirtualTwin.enums;
-using System.Collections;
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.dataModels;
 using System;
@@ -32,6 +31,12 @@ namespace ReupVirtualTwin.managers
 
         IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
+        private ITagsHandler _tagsHandler;
+
+        private void Awake()
+        {
+            _tagsHandler = GetComponent<ITagsHandler>();
+        }
 
         public void Notify(Events eventName)
         {
@@ -173,7 +178,7 @@ namespace ReupVirtualTwin.managers
                 selectedDTOObjects.Add(new ObjectDTO
                 {
                      id = objId,
-                     tags = new string[1] {obj.tag},
+                     tags = _tagsHandler.GetTagNamesFromObject(obj)
                 });
             }
             ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
