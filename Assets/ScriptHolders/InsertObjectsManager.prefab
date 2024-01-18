@@ -45,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db13a9a53293da4897503890d4f121f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadPosition: {x: 0, y: 0, z: 0}
   insertPosition: {fileID: 5902611841257317500}
 --- !u!1 &5902611841257317500
 GameObject:
@@ -92,4 +91,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 0.092898354, g: 0.6886792, b: 0.016242431, a: 1}
-  radius: 0.05
+  radius: 0.5
