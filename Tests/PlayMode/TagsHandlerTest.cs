@@ -11,7 +11,7 @@ using ReupVirtualTwin.behaviours;
 public class TagsHandlerTest : MonoBehaviour
 {
     GameObject tagsHandlerContainer;
-    GameObject tagedObject0;
+    GameObject taggedObject0;
     GameObject tagedObject1;
     GameObject nonTaggedObject0;
     TagsHandler tagsHandler;
