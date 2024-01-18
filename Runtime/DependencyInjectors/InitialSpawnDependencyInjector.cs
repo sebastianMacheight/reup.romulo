@@ -1,7 +1,9 @@
-﻿using ReupVirtualTwin.helpers;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace ReupVirtualTwin.behaviours
+using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.behaviours;
+
+namespace ReupVirtualTwin.dependencyInjectors
 {
     public class InitialSpawnDependencyInjector : MonoBehaviour
     {

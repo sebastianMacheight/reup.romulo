@@ -1,14 +1,15 @@
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.enums;
-using ReupVirtualTwin.modelInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace ReupVirtualTwin.behaviours
+using ReupVirtualTwin.enums;
+using ReupVirtualTwin.modelInterfaces;
+using ReupVirtualTwin.controllerInterfaces;
+
+namespace ReupVirtualTwin.controllers
 {
-    public class TagsHandler : MonoBehaviour, ITagsHandler
+    public class TagsController : ITagsController
     {
         public List<ObjectTag> AddTagToObject(GameObject obj, ObjectTag tag)
         {

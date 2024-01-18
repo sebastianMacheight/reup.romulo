@@ -6,7 +6,7 @@ using System.Collections;
 
 using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.behaviours;
-using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.dependencyInjectors;
 using Packages.reup.romulo.Tests.PlayMode.Mocks;
 
 public class CollisionDetectorTest : MonoBehaviour
