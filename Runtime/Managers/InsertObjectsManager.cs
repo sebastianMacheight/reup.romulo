@@ -1,22 +1,24 @@
-using ReupVirtualTwin.helpers;
-using ReupVirtualTwin.managerInterfaces;
 using TriLibCore;
 using TriLibCore.General;
 using UnityEngine;
+
+using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.managerInterfaces;
+using ReupVirtualTwin.modelInterfaces;
+using ReupVirtualTwin.enums;
 
 namespace ReupVirtualTwin.managers
 {
     public class InsertObjectsManager : MonoBehaviour, IInsertObjectsManager
     {
-        public GameObject insertPosition;
+        [SerializeField]
+        private GameObject _insertPositionLocation;
+        private ITagSystemAssigner _tagSystemAssigner;
 
-        public void TestUpload()
+        private void Awake()
         {
-            InsertObjectFromUrl("https://reup-digital-twins.s3.amazonaws.com/304_53rd/couch.fbx");
-        }
-        public void TestUpload2()
-        {
-            InsertObjectFromUrl("https://reup-digital-twins-v2.s3.amazonaws.com/test_furniture_fbx/desktop.fbx");
+            _tagSystemAssigner = GetComponent<ITagSystemAssigner>();
         }
 
         public void InsertObjectFromUrl(string url)
@@ -62,13 +64,24 @@ namespace ReupVirtualTwin.managers
         // There may still Materials and Textures processing at this stage.
         private void OnLoad(AssetLoaderContext assetLoaderContext)
         {
-            // The root loaded GameObject is assigned to the "assetLoaderContext.RootGameObject" field.
-            // If you want to make sure the GameObject will be visible only when all Materials and Textures have been loaded, you can disable it at this step.
-            var myLoadedGameObject = assetLoaderContext.RootGameObject;
-            myLoadedGameObject.transform.position = insertPosition.transform.position;
-            myLoadedGameObject.SetActive(false);
-            //myLoadedGameObject.tag = TagsEnum.selectableObject;
+            Debug.Log("onload");
+            GameObject myLoadedGameObject = assetLoaderContext.RootGameObject;
+            Debug.Log(myLoadedGameObject);
+            IObjectTags objectTags = _tagSystemAssigner.AssignTagSystemToObject(myLoadedGameObject);
+            Debug.Log(objectTags);
+            objectTags.AddTags(new ObjectTag[3] {
+                ObjectTag.SELECTABLE,
+                ObjectTag.DELETABLE,
+                ObjectTag.TRANSFORMABLE,
+            });
+            Debug.Log("tags added");
+
+            myLoadedGameObject.transform.position = _insertPositionLocation.transform.position;
+            Debug.Log("position set");
             AddCollidersToBuilding.AddColliders(myLoadedGameObject);
+            Debug.Log("colliders set");
+            myLoadedGameObject.SetActive(false);
+            Debug.Log("deactivated");
         }
 
         // This event is called after OnLoad when all Materials and Textures have been loaded.
@@ -77,8 +90,11 @@ namespace ReupVirtualTwin.managers
         {
             // The root loaded GameObject is assigned to the "assetLoaderContext.RootGameObject" field.
             // You can make the GameObject visible again at this step if you prefer to.
+            Debug.Log("materials loaded");
             var myLoadedGameObject = assetLoaderContext.RootGameObject;
+            Debug.Log(myLoadedGameObject);
             myLoadedGameObject.SetActive(true);
+            Debug.Log("activated");
         }
 
     }
