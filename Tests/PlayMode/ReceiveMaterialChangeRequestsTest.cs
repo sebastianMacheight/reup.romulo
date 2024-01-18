@@ -29,15 +29,14 @@ public class ReceiveMaterialChangeRequestsTest : MonoBehaviour
         objectRegistryGameObject = (GameObject)PrefabUtility.InstantiatePrefab(ObjectRegistryPrefab);
         testObj0 = new GameObject("testObj0");
         testObj1 = new GameObject("testObj1");
-        SetObject(testObj0, "testObj0");
-        SetObject(testObj1, "testObj1");
+        SetObject(testObj0);
+        SetObject(testObj1);
     }
 
-    void SetObject(GameObject obj, string manualId)
+    void SetObject(GameObject obj)
     {
         Material material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        RegisteredIdentifier identifier = obj.AddComponent<RegisteredIdentifier>();
-        identifier.manualId = manualId;
+        obj.AddComponent<RegisteredIdentifier>();
         MeshRenderer renderer = obj.AddComponent<MeshRenderer>();
         renderer.sharedMaterial = material;
     }
