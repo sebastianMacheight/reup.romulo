@@ -1,7 +1,10 @@
-using ReupVirtualTwin.helpers;
 using UnityEngine;
 
-namespace ReupVirtualTwin.behaviours
+using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.controllers;
+
+namespace ReupVirtualTwin.dependencyInjectors
 {
     public class SetUpBuildingDependencyInjector : MonoBehaviour
     {
@@ -9,6 +12,7 @@ namespace ReupVirtualTwin.behaviours
         {
             SetUpBuilding setUpBuilding = GetComponent<SetUpBuilding>();
             setUpBuilding.colliderAdder = new ColliderAdder();
+            setUpBuilding.idAssignerController = new IdAssignerController();
         }
     }
 }
