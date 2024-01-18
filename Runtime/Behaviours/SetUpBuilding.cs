@@ -2,6 +2,7 @@ using UnityEngine;
 using ReupVirtualTwin.helpers;
 using System;
 using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.helperInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
@@ -26,11 +27,14 @@ namespace ReupVirtualTwin.behaviours
             remove { _onBuildingSetUp -= value; }
         }
 
+        private IColliderAdder _colliderAdder;
+        public IColliderAdder colliderAdder { set => _colliderAdder = value; }
+
         void Start()
         {
             if (building != null)
             {
-                AddCollidersToBuilding.AddColliders(building);
+                _colliderAdder.AddCollidersToTree(building);
             }
             else
             {

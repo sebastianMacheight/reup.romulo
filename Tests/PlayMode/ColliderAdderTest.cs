@@ -2,7 +2,7 @@ using NUnit.Framework;
 using ReupVirtualTwin.helpers;
 using UnityEngine;
 
-public class AddCollidersTest
+public class ColliderAdderTest
 {
     [Test]
     public void AddCollidersToObjectsWithNoColliders()
@@ -26,8 +26,8 @@ public class AddCollidersTest
             Assert.IsNull(childTransform.gameObject.GetComponent<Collider>());
         }
 
-        //Add colliders
-        AddCollidersToBuilding.AddColliders(parentObject);
+        ColliderAdder colliderAdder = new ColliderAdder();
+        colliderAdder.AddCollidersToTree(parentObject);
 
         //Check colliders are there
         Assert.IsNotNull(parentObject.GetComponent<Collider>());
