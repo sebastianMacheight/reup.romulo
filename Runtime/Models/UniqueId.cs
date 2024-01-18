@@ -33,11 +33,7 @@ namespace ReupVirtualTwin.models
 
         protected virtual void Start()
         {
-            if (uniqueId == null)
-            {
-                Guid guid = Guid.NewGuid();
-                uniqueId = guid.ToString();
-            }
+            GenerateId();
         }
     }
 }

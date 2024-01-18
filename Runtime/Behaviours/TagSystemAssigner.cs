@@ -1,34 +1,43 @@
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.models;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class TagSystemAssigner : MonoBehaviour, ITagSystemAssigner
     {
+        public IObjectTags AssignTagSystemToObject(GameObject obj)
+        {
+            IObjectTags objectTags = obj.GetComponent<IObjectTags>();
+            if (objectTags == null)
+            {
+                objectTags = obj.AddComponent<ObjectTags>();
+            }
+            return objectTags;
+        }
+
         public void AssignTagSystemToTree(GameObject tree)
         {
-            if (tree.GetComponent<IObjectTags>() == null)
-            {
-                tree.AddComponent<ObjectTags>();
-            }
-
+            AssignTagSystemToObject(tree);
             foreach (Transform child in tree.transform)
             {
                 AssignTagSystemToTree(child.gameObject);
             }
         }
 
-        public void RemoveTagSystemFromTree(GameObject tree)
+        public void RemoveTagSystemFromObject(GameObject obj)
         {
-            IObjectTags objectTags = tree.GetComponent<IObjectTags>();
+            IObjectTags objectTags = obj.GetComponent<IObjectTags>();
             if (objectTags != null)
             {
                 Object.DestroyImmediate((Object)objectTags);
             }
+        }
+
+        public void RemoveTagSystemFromTree(GameObject tree)
+        {
+            RemoveTagSystemFromObject(tree);
             foreach (Transform child in tree.transform)
             {
                 RemoveTagSystemFromTree(child.gameObject);
