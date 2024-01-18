@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.models
         protected override void Start()
         {
             base.Start();
-            if (manualId != uniqueId)
+            if (manualId != uniqueId && !string.IsNullOrEmpty(manualId))
             {
                 uniqueId = manualId;
             }
