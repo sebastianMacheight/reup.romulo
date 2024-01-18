@@ -1,15 +1,14 @@
-using ReupVirtualTwin.enums;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using TriLibCore;
 using TriLibCore.General;
 using UnityEngine;
 
-namespace ReupVirtualTwin.behaviours
+namespace ReupVirtualTwin.managers
 {
-    public class TestLoader : MonoBehaviour
+    public class InsertObjectsManager : MonoBehaviour, IInsertObjectsManager
     {
-        private Vector3 loadPosition;
+        public GameObject insertPosition;
 
         public void TestUpload()
         {
@@ -22,11 +21,6 @@ namespace ReupVirtualTwin.behaviours
 
         public void InsertObjectFromUrl(string url)
         {
-            InsertObjectFromUrl(url, Vector3.zero);
-        }
-        public void InsertObjectFromUrl(string url, Vector3 position)
-        {
-            loadPosition = position;
             // Creates an AssetLoaderOptions instance.
             // AssetLoaderOptions is a class used to configure many aspects of the loading process.
             // We won't change the default settings this time, so we can use the instance as it is.
@@ -71,7 +65,7 @@ namespace ReupVirtualTwin.behaviours
             // The root loaded GameObject is assigned to the "assetLoaderContext.RootGameObject" field.
             // If you want to make sure the GameObject will be visible only when all Materials and Textures have been loaded, you can disable it at this step.
             var myLoadedGameObject = assetLoaderContext.RootGameObject;
-            myLoadedGameObject.transform.position = loadPosition;
+            myLoadedGameObject.transform.position = insertPosition.transform.position;
             myLoadedGameObject.SetActive(false);
             //myLoadedGameObject.tag = TagsEnum.selectableObject;
             AddCollidersToBuilding.AddColliders(myLoadedGameObject);
