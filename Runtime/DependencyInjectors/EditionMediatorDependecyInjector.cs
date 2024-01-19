@@ -18,6 +18,8 @@ namespace ReupVirtualTwin.dependencyInjectors
         GameObject selectedObjectsManager;
         [SerializeField]
         GameObject transformObjectsManager;
+        [SerializeField]
+        GameObject insertObjectsManager;
         
         private void Awake()
         {
@@ -34,6 +36,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             }
             _editionMediator.webMessageSender = webMessageSender;
             _editionMediator.objectMapper = new ObjectMapper(new TagsController(), new IdController());
+            _editionMediator.insertObjectsManager = insertObjectsManager.GetComponent<IInsertObjectsManager>();
         }
     }
 }
