@@ -11,6 +11,11 @@ namespace ReupVirtualTwin.models
 		[UniqueIdentifier]
 		public string uniqueId;
 
+        protected virtual void Start()
+        {
+            GenerateId();
+        }
+
         virtual public string GenerateId()
         {
             if (uniqueId == null || uniqueId == "")
@@ -29,11 +34,6 @@ namespace ReupVirtualTwin.models
         public bool isIdCorrect(string id)
         {
             return id == uniqueId;
-        }
-
-        protected virtual void Start()
-        {
-            GenerateId();
         }
     }
 }
