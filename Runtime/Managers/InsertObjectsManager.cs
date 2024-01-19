@@ -44,10 +44,6 @@ namespace ReupVirtualTwin.managers
             Debug.Log(r);
         }
 
-        // This event is called when the model loading progress changes.
-        // You can use this event to update a loading progress-bar, for instance.
-        // The "progress" value comes as a normalized float (goes from 0 to 1).
-        // Platforms like UWP and WebGL don't call this method at this moment, since they don't use threads.
         private void OnProgress(AssetLoaderContext assetLoaderContext, float progress)
         {
             Debug.Log($"loading asset at {progress * 100}%");
@@ -60,25 +56,41 @@ namespace ReupVirtualTwin.managers
 
         private void OnLoad(AssetLoaderContext assetLoaderContext)
         {
-            Debug.Log("onload");
-            GameObject myLoadedGameObject = assetLoaderContext.RootGameObject;
-            Debug.Log(myLoadedGameObject);
-            IObjectTags objectTags = _tagSystemController.AssignTagSystemToObject(myLoadedGameObject);
-            Debug.Log(objectTags);
+            GameObject loadedObj = assetLoaderContext.RootGameObject;
+            AddTags(loadedObj);
+            SetLoadPosition(loadedObj);
+            AddColliders(loadedObj);
+            AssignIds(loadedObj);
+            loadedObj.SetActive(false);
+        }
+        private GameObject AddTags(GameObject obj)
+        {
+            IObjectTags objectTags = _tagSystemController.AssignTagSystemToObject(obj);
             objectTags.AddTags(new ObjectTag[3] {
                 ObjectTag.SELECTABLE,
                 ObjectTag.DELETABLE,
                 ObjectTag.TRANSFORMABLE,
             });
             Debug.Log("tags added");
-            _idAssigner.AssignIdToObject(myLoadedGameObject);
-            Debug.Log("id Added");
-            myLoadedGameObject.transform.position = _insertPositionLocation.transform.position;
+            return obj;
+        }
+        private GameObject SetLoadPosition(GameObject obj)
+        {
+            obj.transform.position = _insertPositionLocation.transform.position;
             Debug.Log("position set");
-            _colliderAdder.AddCollidersToTree(myLoadedGameObject);
+            return obj;
+        }
+        private GameObject AddColliders(GameObject obj)
+        {
+            _colliderAdder.AddCollidersToTree(obj);
             Debug.Log("colliders set");
-            myLoadedGameObject.SetActive(false);
-            Debug.Log("deactivated");
+            return obj;
+        }
+        private GameObject AssignIds(GameObject obj)
+        {
+            _idAssigner.AssignIdToObject(obj);
+            Debug.Log("id Added");
+            return obj;
         }
 
         private void OnMaterialsLoad(AssetLoaderContext assetLoaderContext)
