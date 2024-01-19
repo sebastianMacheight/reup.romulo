@@ -1,4 +1,5 @@
 using ReupVirtualTwin.helpers;
+using UnityEngine;
 
 namespace ReupVirtualTwin.models
 {
@@ -6,10 +7,11 @@ namespace ReupVirtualTwin.models
     {
         IRegistry _objectRegistry;
         public string manualId = "";
-        protected override void Start()
+        override public string GenerateId()
         {
-            base.Start();
+            base.GenerateId();
             RegisterObject();
+            return uniqueId;
         }
 
         private void RegisterObject()
