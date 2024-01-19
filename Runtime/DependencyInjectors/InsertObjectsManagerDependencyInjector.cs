@@ -14,7 +14,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             InsertObjectsManager insertObjectsManager = GetComponent<InsertObjectsManager>();
             insertObjectsManager.colliderAdder = new ColliderAdder();
             insertObjectsManager.tagSystemController = new TagSystemController();
-            insertObjectsManager.idAssigner = new IdAssignerController();
+            insertObjectsManager.idAssigner = new IdController();
         }
     }
 }

@@ -11,9 +11,11 @@ namespace ReupVirtualTwin.helpers
     public class ObjectMapper : IObjectMapper
     {
         ITagsController _tagsController;
-        public ObjectMapper(ITagsController tagsController)
+        IIdGetterController _idGetterController;
+        public ObjectMapper(ITagsController tagsController, IIdGetterController idGetterController)
         {
             _tagsController = tagsController;
+            _idGetterController = idGetterController;
         }
         public ObjectDTO[] MapObjectsToDTO(List<GameObject> objs)
         {
@@ -28,10 +30,9 @@ namespace ReupVirtualTwin.helpers
 
         public ObjectDTO MapObjectToDTO(GameObject obj)
         {
-            string objId = obj.GetComponent<IUniqueIdentifer>().getId();
             return new ObjectDTO
             {
-                id = objId,
+                id = _idGetterController.GetIdFromObject(obj),
                 tags = _tagsController.GetTagNamesFromObject(obj)
             };
         }
