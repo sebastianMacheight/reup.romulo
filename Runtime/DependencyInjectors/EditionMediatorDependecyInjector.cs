@@ -33,7 +33,7 @@ namespace ReupVirtualTwin.dependencyInjectors
                 throw new System.Exception("WebMessageSender not found to inject to edition mediator");
             }
             _editionMediator.webMessageSender = webMessageSender;
-            _editionMediator.tagsController = new TagsController();
+            _editionMediator.objectMapper = new ObjectMapper(new TagsController());
         }
     }
 }
