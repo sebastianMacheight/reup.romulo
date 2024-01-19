@@ -89,6 +89,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InsertObjectsManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3206580983130455202, guid: 50f8b3875d735d940a44138a3489f980, type: 3}
+      propertyPath: mediator
+      value: 
+      objectReference: {fileID: 3831656627378006908}
     - target: {fileID: 3230904946444247324, guid: 50f8b3875d735d940a44138a3489f980, type: 3}
       propertyPath: m_RootOrder
       value: 3

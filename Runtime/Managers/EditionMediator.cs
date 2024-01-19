@@ -82,7 +82,7 @@ namespace ReupVirtualTwin.managers
                     }
                     ProcessInsertedObjectLoaded((GameObject)(object)payload);
                     break;
-                case Events.newInsertedObjectProcessStatus:
+                case Events.insertedObjectStatusUpdate:
                     if (!(payload is float))
                     {
                         throw new ArgumentException($"Payload must be of type float for {eventName} events", nameof(payload));
