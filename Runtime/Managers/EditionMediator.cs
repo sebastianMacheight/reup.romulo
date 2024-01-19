@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.controllerInterfaces;
+using ReupVirtualTwin.helperInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
@@ -32,8 +33,8 @@ namespace ReupVirtualTwin.managers
 
         IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
-        private ITagsController _tagsController;
-        public ITagsController tagsController { set => _tagsController = value; }
+        private IObjectMapper _objectMapper;
+        public IObjectMapper objectMapper { set => _objectMapper = value; }
 
 
         public void Notify(Events eventName)
@@ -169,17 +170,7 @@ namespace ReupVirtualTwin.managers
         }
         private void SendNewSelectedObjectsMessage(List<GameObject> selectedObjects)
         {
-            List<ObjectDTO> selectedDTOObjects = new List<ObjectDTO>();
-            foreach (GameObject obj in selectedObjects)
-            {
-                string objId = obj.GetComponent<IUniqueIdentifer>().getId();
-                selectedDTOObjects.Add(new ObjectDTO
-                {
-                     id = objId,
-                     tags = _tagsController.GetTagNamesFromObject(obj)
-                });
-            }
-            ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
+            ObjectDTO[] objectDTOs = _objectMapper.MapObjectsToDTO(selectedObjects);
             WebMessage<ObjectDTO[]> message = new WebMessage<ObjectDTO[]>
             {
                 type = WebMessageType.setSelectedObjects,
