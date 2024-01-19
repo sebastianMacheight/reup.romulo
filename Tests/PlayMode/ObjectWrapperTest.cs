@@ -36,12 +36,9 @@ public class ObjectWrapperTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldWrapOneObject()
     {
-        Debug.Log(obj0.transform.parent.name);
         objectWrapper.WrapObject(obj0);
         yield return null;
         Assert.IsTrue(objectWrapper.wrappedObjects.Contains(obj0));
-        Debug.Log(obj0.transform.parent.name);
-        Debug.Log(objectWrapper.wrapper.name);
         Assert.AreEqual(obj0.transform.parent.name, objectWrapper.wrapper.name);
         yield return null;
     }

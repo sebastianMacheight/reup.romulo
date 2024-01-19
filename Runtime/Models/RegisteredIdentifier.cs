@@ -1,4 +1,3 @@
-using UnityEngine;
 using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwin.models

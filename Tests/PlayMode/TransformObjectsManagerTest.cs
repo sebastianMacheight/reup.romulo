@@ -10,7 +10,7 @@ using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.dataModels;
 using System;
 using ReupVirtualTwin.models;
-using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.controllers;
 
 public class TransformObjectsManagerTest : MonoBehaviour
 {
@@ -28,8 +28,8 @@ public class TransformObjectsManagerTest : MonoBehaviour
     {
         containerGameObject = new GameObject("containerGameObject");
         transformWrapper = new GameObject("transformWrapper");
-        containerGameObject.AddComponent<TagsHandler>();
         transformObjectsManager = containerGameObject.AddComponent<TransformObjectsManager>();
+        transformObjectsManager.tagsController = new TagsController();
         runtimeTransformObj = new GameObject("TransformHandle");
         runtimeTransformObj.AddComponent<MockRuntimeTransformHandle>();
         transformObjectsManager.runtimeTransformObj = runtimeTransformObj;

@@ -1,9 +1,12 @@
+using UnityEngine;
+
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
-using UnityEngine;
+using ReupVirtualTwin.managers;
+using ReupVirtualTwin.controllers;
 
-namespace ReupVirtualTwin.managers
+namespace ReupVirtualTwin.dependencyInjectors
 {
     [RequireComponent(typeof(EditionMediator))]
     public class EditionMediatorDependecyInjector : MonoBehaviour
@@ -30,6 +33,7 @@ namespace ReupVirtualTwin.managers
                 throw new System.Exception("WebMessageSender not found to inject to edition mediator");
             }
             _editionMediator.webMessageSender = webMessageSender;
+            _editionMediator.tagsController = new TagsController();
         }
     }
 }

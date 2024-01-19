@@ -1,9 +1,11 @@
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.helpers;
-using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
 
-namespace ReupVirtualTwin.managers
+using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.managerInterfaces;
+using ReupVirtualTwin.managers;
+using ReupVirtualTwin.controllers;
+
+namespace ReupVirtualTwin.dependencyInjectors
 {
     public class SelectedObjectsManagerDependencyInjector : MonoBehaviour
     {
@@ -16,6 +18,9 @@ namespace ReupVirtualTwin.managers
             selectedObjectsManager.objectWrapper = new ObjectWrapper();
             Outliner outliner = gameObject.AddComponent<Outliner>();
             selectedObjectsManager.highlighter = outliner;
+
+            SelectableObjectSelector selector = GetComponent<SelectableObjectSelector>();
+            selector.tagsController = new TagsController();
         }
     }
 }

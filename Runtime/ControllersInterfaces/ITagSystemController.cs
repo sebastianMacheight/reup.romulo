@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace ReupVirtualTwin.behaviourInterfaces
+namespace ReupVirtualTwin.controllerInterfaces
 {
-    public interface ITagSystemAssigner
+    public interface ITagSystemController
     {
         public void AssignTagSystemToTree(GameObject tree);
         public void RemoveTagSystemFromTree(GameObject tree);
