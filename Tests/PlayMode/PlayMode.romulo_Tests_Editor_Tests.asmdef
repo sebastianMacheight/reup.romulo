@@ -13,7 +13,10 @@
         "reup.remulo.dataModels",
         "reup.romulo.behaviourInterfaces",
         "reup.romulo.managerInterfaces",
-        "reup.romulo.helperInterfaces"
+        "reup.romulo.helperInterfaces",
+        "reup.romulo.dependecyInjectors",
+        "reup.romulo.controllerInterfaces",
+        "reup.romulo.controllers"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

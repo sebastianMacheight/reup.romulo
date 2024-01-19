@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5511850582633369602}
   - component: {fileID: 8950963653470224177}
   - component: {fileID: 6976859030307673124}
-  - component: {fileID: 4473605233059834508}
   m_Layer: 0
   m_Name: EditionMediator
   m_TagString: Untagged
@@ -76,18 +75,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7445fe7907c9154198057fe7ebda33e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4473605233059834508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3831656627378006908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68ff9d3c632e116428cdd4126532d9cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &239144639988780807
@@ -207,6 +194,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8706749933657137664, guid: 1dd9c57964793b04ca2ff63667e92df7, type: 3}
+      propertyPath: editionMediator
+      value: 
+      objectReference: {fileID: 3831656627378006908}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1dd9c57964793b04ca2ff63667e92df7, type: 3}
 --- !u!1 &1374396242202718384 stripped
@@ -301,6 +292,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SelectedObjectsManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7105052049311795114, guid: 1335dc7106dad7e48ba0451ba5dfd330, type: 3}
+      propertyPath: mediator
+      value: 
+      objectReference: {fileID: 3831656627378006908}
     - target: {fileID: 7701021379827526843, guid: 1335dc7106dad7e48ba0451ba5dfd330, type: 3}
       propertyPath: m_RootOrder
       value: 1

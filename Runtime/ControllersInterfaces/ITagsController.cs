@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReupVirtualTwin.behaviourInterfaces
+namespace ReupVirtualTwin.controllerInterfaces
 {
-    public interface ITagsHandler
+    public interface ITagsController
     {
         public List<ObjectTag> GetTagsFromObject(GameObject obj);
         public List<ObjectTag> AddTagToObject(GameObject obj, ObjectTag tag);

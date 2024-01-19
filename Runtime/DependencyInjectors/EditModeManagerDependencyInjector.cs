@@ -1,10 +1,9 @@
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.managerInterfaces;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReupVirtualTwin.managers
+using ReupVirtualTwin.managerInterfaces;
+using ReupVirtualTwin.managers;
+
+namespace ReupVirtualTwin.dependencyInjectors
 {
     public class EditModeManagerDependencyInjector : MonoBehaviour
     {
