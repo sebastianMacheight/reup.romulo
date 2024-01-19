@@ -18,6 +18,8 @@ namespace ReupVirtualTwin.managers
         public ITagSystemController tagSystemController { set =>  _tagSystemController = value; }
         private IColliderAdder _colliderAdder;
         public IColliderAdder colliderAdder { set => _colliderAdder = value; }
+        private IIdAssignerController _idAssigner;
+        public IIdAssignerController idAssigner { set => _idAssigner = value; }
 
         public void InsertObjectFromUrl(string url)
         {
@@ -69,7 +71,8 @@ namespace ReupVirtualTwin.managers
                 ObjectTag.TRANSFORMABLE,
             });
             Debug.Log("tags added");
-
+            _idAssigner.AssignIdToObject(myLoadedGameObject);
+            Debug.Log("id Added");
             myLoadedGameObject.transform.position = _insertPositionLocation.transform.position;
             Debug.Log("position set");
             _colliderAdder.AddCollidersToTree(myLoadedGameObject);
