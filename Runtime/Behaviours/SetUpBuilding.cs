@@ -1,7 +1,8 @@
 using UnityEngine;
-using ReupVirtualTwin.helpers;
 using System;
 using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.helperInterfaces;
+using ReupVirtualTwin.controllerInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
@@ -10,7 +11,8 @@ namespace ReupVirtualTwin.behaviours
         [SerializeField]
         GameObject building;
         private bool buildingSetup = false;
-        private ITagSystemAssigner _tagSystemAssigner;
+        private ITagSystemController _tagSystemController;
+        public ITagSystemController tagSystemController { get => _tagSystemController; set => _tagSystemController = value; }
 
         event Action _onBuildingSetUp;
         public event Action onBuildingSetUp
@@ -26,11 +28,17 @@ namespace ReupVirtualTwin.behaviours
             remove { _onBuildingSetUp -= value; }
         }
 
+        private IColliderAdder _colliderAdder;
+        public IColliderAdder colliderAdder { set => _colliderAdder = value; }
+        private IIdAssignerController _idAssignerController;
+        public IIdAssignerController idAssignerController { get => _idAssignerController; set => _idAssignerController = value; }
+        //private 
+
         void Start()
         {
             if (building != null)
             {
-                AddCollidersToBuilding.AddColliders(building);
+                _colliderAdder.AddCollidersToTree(building);
             }
             else
             {
@@ -42,12 +50,12 @@ namespace ReupVirtualTwin.behaviours
 
         public void AssignIdsToBuilding()
         {
-            AssignIds.AssignToTree(building);
+            _idAssignerController.AssignIdsToTree(building);
             Debug.Log("Ids added to tree");
         }
         public void RemoveIdsOfBuilding()
         {
-            AssignIds.RemoveFromTree(building);
+            _idAssignerController.RemoveIdsFromTree(building);
             Debug.Log("Ids removed from tree");
         }
         public void ResetIdsOfBuilding()
@@ -59,12 +67,8 @@ namespace ReupVirtualTwin.behaviours
 
         public void AddTagSystemToBuildingObjects()
         {
-            if (_tagSystemAssigner == null)
-            {
-                _tagSystemAssigner = GetComponent<ITagSystemAssigner>();
-            }
-            _tagSystemAssigner.AssignTagSystemToTree(building);
-            Debug.Log("tag script added to tree");
+            _tagSystemController.AssignTagSystemToTree(building);
+            Debug.Log("tags script added to tree");
         }
     }
 }

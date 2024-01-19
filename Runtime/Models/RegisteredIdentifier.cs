@@ -1,4 +1,3 @@
-using UnityEngine;
 using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwin.models
@@ -15,7 +14,7 @@ namespace ReupVirtualTwin.models
 
         private void RegisterObject()
         {
-            if (manualId != uniqueId)
+            if (manualId != uniqueId && !string.IsNullOrEmpty(manualId))
             {
                 uniqueId = manualId;
             }

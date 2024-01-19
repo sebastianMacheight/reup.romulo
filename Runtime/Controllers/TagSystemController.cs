@@ -1,11 +1,12 @@
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.modelInterfaces;
-using ReupVirtualTwin.models;
 using UnityEngine;
 
-namespace ReupVirtualTwin.behaviours
+using ReupVirtualTwin.modelInterfaces;
+using ReupVirtualTwin.models;
+using ReupVirtualTwin.controllerInterfaces;
+
+namespace ReupVirtualTwin.controllers
 {
-    public class TagSystemAssigner : MonoBehaviour, ITagSystemAssigner
+    public class TagSystemController : ITagSystemController
     {
         public IObjectTags AssignTagSystemToObject(GameObject obj)
         {

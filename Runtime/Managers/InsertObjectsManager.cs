@@ -2,11 +2,11 @@ using TriLibCore;
 using TriLibCore.General;
 using UnityEngine;
 
-using ReupVirtualTwin.behaviourInterfaces;
-using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.controllerInterfaces;
+using ReupVirtualTwin.helperInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
@@ -14,12 +14,10 @@ namespace ReupVirtualTwin.managers
     {
         [SerializeField]
         private GameObject _insertPositionLocation;
-        private ITagSystemAssigner _tagSystemAssigner;
-
-        private void Awake()
-        {
-            _tagSystemAssigner = GetComponent<ITagSystemAssigner>();
-        }
+        private ITagSystemController _tagSystemController;
+        public ITagSystemController tagSystemController { set =>  _tagSystemController = value; }
+        private IColliderAdder _colliderAdder;
+        public IColliderAdder colliderAdder { set => _colliderAdder = value; }
 
         public void InsertObjectFromUrl(string url)
         {
@@ -53,21 +51,17 @@ namespace ReupVirtualTwin.managers
             Debug.Log($"loading asset at {progress * 100}%");
         }
 
-        // This event is called when there is any critical error loading your model.
-        // You can use this to show a message to the user.
         private void OnError(IContextualizedError contextualizedError)
         {
-
+            Debug.LogError(contextualizedError);
         }
 
-        // This event is called when all model GameObjects and Meshes have been loaded.
-        // There may still Materials and Textures processing at this stage.
         private void OnLoad(AssetLoaderContext assetLoaderContext)
         {
             Debug.Log("onload");
             GameObject myLoadedGameObject = assetLoaderContext.RootGameObject;
             Debug.Log(myLoadedGameObject);
-            IObjectTags objectTags = _tagSystemAssigner.AssignTagSystemToObject(myLoadedGameObject);
+            IObjectTags objectTags = _tagSystemController.AssignTagSystemToObject(myLoadedGameObject);
             Debug.Log(objectTags);
             objectTags.AddTags(new ObjectTag[3] {
                 ObjectTag.SELECTABLE,
@@ -78,18 +72,14 @@ namespace ReupVirtualTwin.managers
 
             myLoadedGameObject.transform.position = _insertPositionLocation.transform.position;
             Debug.Log("position set");
-            AddCollidersToBuilding.AddColliders(myLoadedGameObject);
+            _colliderAdder.AddCollidersToTree(myLoadedGameObject);
             Debug.Log("colliders set");
             myLoadedGameObject.SetActive(false);
             Debug.Log("deactivated");
         }
 
-        // This event is called after OnLoad when all Materials and Textures have been loaded.
-        // This event is also called after a critical loading error, so you can clean up any resource you want to.
         private void OnMaterialsLoad(AssetLoaderContext assetLoaderContext)
         {
-            // The root loaded GameObject is assigned to the "assetLoaderContext.RootGameObject" field.
-            // You can make the GameObject visible again at this step if you prefer to.
             Debug.Log("materials loaded");
             var myLoadedGameObject = assetLoaderContext.RootGameObject;
             Debug.Log(myLoadedGameObject);

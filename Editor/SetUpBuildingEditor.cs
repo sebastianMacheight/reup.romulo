@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.controllers;
 
 namespace ReupVirtualTwin.editor
 {
@@ -14,11 +15,15 @@ namespace ReupVirtualTwin.editor
         {
             base.OnInspectorGUI();
 
-            ISetUpBuilding setUpBuilding = (ISetUpBuilding)target;
+            SetUpBuilding setUpBuilding = (SetUpBuilding)target;
 
             showIdsOptions = EditorGUILayout.Foldout(showIdsOptions, "Objects Ids");
             if (showIdsOptions)
             {
+                if (setUpBuilding.idAssignerController == null)
+                {
+                    setUpBuilding.idAssignerController = new IdAssignerController();
+                }
                 if (GUILayout.Button("Add Ids to objects"))
                 {
                     setUpBuilding.AssignIdsToBuilding();
@@ -35,6 +40,10 @@ namespace ReupVirtualTwin.editor
             showTagsOptions = EditorGUILayout.Foldout(showTagsOptions, "Objects Tags");
             if (showTagsOptions)
             {
+                if (setUpBuilding.tagSystemController == null)
+                {
+                    setUpBuilding.tagSystemController = new TagSystemController();
+                }
                 if (GUILayout.Button("Add tag system to objects"))
                 {
                     setUpBuilding.AddTagSystemToBuildingObjects();

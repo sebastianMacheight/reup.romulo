@@ -3,9 +3,12 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEditor;
 using System.Collections;
+
+using Packages.reup.romulo.Tests.PlayMode.Mocks;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.characterMovement;
-using Packages.reup.romulo.Tests.PlayMode.Mocks;
+using ReupVirtualTwin.dependencyInjectors;
+
 
 public class MaintainHeightTest : MonoBehaviour
 {

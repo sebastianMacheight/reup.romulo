@@ -1,9 +1,11 @@
+using UnityEngine;
+
 using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
-using UnityEngine;
+using ReupVirtualTwin.behaviours;
 
-namespace ReupVirtualTwin.behaviours
+namespace ReupVirtualTwin.dependencyInjectors
 {
     [RequireComponent(typeof(CharacterMovementSelectPosition))]
     public class CharacterMovementSelectPositionDependenciesInjector : MonoBehaviour
