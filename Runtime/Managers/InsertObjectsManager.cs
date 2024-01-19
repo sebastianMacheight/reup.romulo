@@ -20,6 +20,8 @@ namespace ReupVirtualTwin.managers
         public IColliderAdder colliderAdder { set => _colliderAdder = value; }
         private IIdAssignerController _idAssigner;
         public IIdAssignerController idAssigner { set => _idAssigner = value; }
+        private IMediator _mediator;
+        public IMediator mediator { set => _mediator = value; }
 
         public void InsertObjectFromUrl(string url)
         {
@@ -47,6 +49,7 @@ namespace ReupVirtualTwin.managers
         private void OnProgress(AssetLoaderContext assetLoaderContext, float progress)
         {
             Debug.Log($"loading asset at {progress * 100}%");
+            _mediator.Notify(Events.insertedObjectStatusUpdate, progress);
         }
 
         private void OnError(IContextualizedError contextualizedError)
@@ -100,6 +103,7 @@ namespace ReupVirtualTwin.managers
             Debug.Log(myLoadedGameObject);
             myLoadedGameObject.SetActive(true);
             Debug.Log("activated");
+            _mediator.Notify(Events.insertedObjectLoaded, myLoadedGameObject);
         }
 
     }
