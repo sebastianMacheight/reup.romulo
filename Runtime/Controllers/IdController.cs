@@ -5,7 +5,7 @@ using ReupVirtualTwin.controllerInterfaces;
 
 namespace ReupVirtualTwin.controllers
 {
-    public class IdAssignerController : IIdAssignerController
+    public class IdController : IIdGetterController, IIdAssignerController
     {
         public void AssignIdsToTree(GameObject tree)
         {
@@ -45,5 +45,9 @@ namespace ReupVirtualTwin.controllers
             }
         }
 
+        public string GetIdFromObject(GameObject obj)
+        {
+            return obj.GetComponent<IUniqueIdentifer>().getId();
+        }
     }
 }
