@@ -1,10 +1,11 @@
-using ReupVirtualTwin.managerInterfaces;
-using RuntimeHandle;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReupVirtualTwin.managers
+using RuntimeHandle;
+using ReupVirtualTwin.controllers;
+using ReupVirtualTwin.managerInterfaces;
+using ReupVirtualTwin.managers;
+
+namespace ReupVirtualTwin.dependencyInjectors
 {
     public class TransformObjectsManagerDependenyInector : MonoBehaviour
     {
@@ -17,6 +18,7 @@ namespace ReupVirtualTwin.managers
             GameObject transformHandleObj = new GameObject("TransformHandle");
             transformHandleObj.AddComponent<RuntimeTransformHandle>();
             transformObjectsManager.runtimeTransformObj = transformHandleObj;
+            transformObjectsManager.tagsController = new TagsController();
         }
     }
 }

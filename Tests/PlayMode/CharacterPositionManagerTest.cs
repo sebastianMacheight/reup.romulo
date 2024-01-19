@@ -2,11 +2,12 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using ReupVirtualTwin.characterMovement;
 using UnityEditor;
+
 using ReupVirtualTwin.behaviours;
-using ReupVirtualTwin.behaviourInterfaces;
 using Packages.reup.romulo.Tests.PlayMode.Mocks;
+using ReupVirtualTwin.characterMovement;
+using ReupVirtualTwin.dependencyInjectors;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
