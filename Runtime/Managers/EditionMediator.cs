@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.controllerInterfaces;
+using ReupVirtualTwin.helperInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
@@ -18,22 +19,19 @@ namespace ReupVirtualTwin.managers
             set { _characterRotationManager = value; }
         }
         private IEditModeManager _editModeManager;
-        public IEditModeManager editModeManager
-        {
-            set
-            {
-                _editModeManager = value;
-            }
+        public IEditModeManager editModeManager { set { _editModeManager = value; }
         }
         private ISelectedObjectsManager _selectedObjectsManager;
         public ISelectedObjectsManager selectedObjectsManager { set { _selectedObjectsManager = value; } }
         private ITransformObjectsManager _transformObjectsManager;
         public ITransformObjectsManager transformObjectsManager { set => _transformObjectsManager = value; }
+        private IInsertObjectsManager _insertObjectsManager;
+        public IInsertObjectsManager insertObjectsManager { set => _insertObjectsManager = value; }
 
-        IWebMessagesSender _webMessageSender;
+        private IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
-        private ITagsController _tagsController;
-        public ITagsController tagsController { set => _tagsController = value; }
+        private IObjectMapper _objectMapper;
+        public IObjectMapper objectMapper { set => _objectMapper = value; }
 
 
         public void Notify(Events eventName)
@@ -77,6 +75,20 @@ namespace ReupVirtualTwin.managers
                     }
                     ProcessNewWrapper((ObjectWrapperDTO)(object)payload);
                     break;
+                case Events.insertedObjectLoaded:
+                    if (!(payload is GameObject))
+                    {
+                        throw new ArgumentException($"Payload must be of type {nameof(GameObject)} for {eventName} events", nameof(payload));
+                    }
+                    ProcessInsertedObjectLoaded((GameObject)(object)payload);
+                    break;
+                case Events.insertedObjectStatusUpdate:
+                    if (!(payload is float))
+                    {
+                        throw new ArgumentException($"Payload must be of type float for {eventName} events", nameof(payload));
+                    }
+                    ProcessLoadStatus((float)(object)payload);
+                    break;
                 default:
                     throw new ArgumentException($"no implementation for event: {eventName}");
             }
@@ -117,6 +129,9 @@ namespace ReupVirtualTwin.managers
                     break;
                 case WebMessageType.deactivateTransformMode:
                     DeactivateTransformMode();
+                    break;
+                case WebMessageType.loadObject:
+                    LoadObject(message.payload);
                     break;
                 default:
                     _webMessageSender.SendWebMessage(new WebMessage<string>
@@ -169,17 +184,7 @@ namespace ReupVirtualTwin.managers
         }
         private void SendNewSelectedObjectsMessage(List<GameObject> selectedObjects)
         {
-            List<ObjectDTO> selectedDTOObjects = new List<ObjectDTO>();
-            foreach (GameObject obj in selectedObjects)
-            {
-                string objId = obj.GetComponent<IUniqueIdentifer>().getId();
-                selectedDTOObjects.Add(new ObjectDTO
-                {
-                     id = objId,
-                     tags = _tagsController.GetTagNamesFromObject(obj)
-                });
-            }
-            ObjectDTO[] objectDTOs = selectedDTOObjects.ToArray();
+            ObjectDTO[] objectDTOs = _objectMapper.MapObjectsToDTO(selectedObjects);
             WebMessage<ObjectDTO[]> message = new WebMessage<ObjectDTO[]>
             {
                 type = WebMessageType.setSelectedObjects,
@@ -213,6 +218,30 @@ namespace ReupVirtualTwin.managers
             WebMessage<string> message = new WebMessage<string>
             {
                 type = WebMessageType.deactivateTransformModeSuccess,
+            };
+            _webMessageSender.SendWebMessage(message);
+        }
+        private void ProcessInsertedObjectLoaded(GameObject obj)
+        {
+            ObjectDTO objectDTO = _objectMapper.MapObjectToDTO(obj);
+            WebMessage<ObjectDTO> message = new WebMessage<ObjectDTO>
+            {
+                type = WebMessageType.loadObjectSuccess,
+                payload = objectDTO
+            };
+            _webMessageSender.SendWebMessage(message);
+        }
+
+        private void LoadObject(string url)
+        {
+            _insertObjectsManager.InsertObjectFromUrl(url);
+        }
+        private void ProcessLoadStatus(float status)
+        {
+            WebMessage<float> message = new WebMessage<float>
+            {
+                type = WebMessageType.loadObjectProcessUpdate,
+                payload = status
             };
             _webMessageSender.SendWebMessage(message);
         }
