@@ -1,7 +1,9 @@
 {
     "name": "reup.romulo.helperInterfaces",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:ef71f4f9d4e9ed44987e6a7778893414"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

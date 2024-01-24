@@ -21,6 +21,9 @@ namespace ReupVirtualTwin.enums
         public const string deactivateDeleteMode = "[Delete Objects] Deactivate Delete Mode Success";
         public const string activateDeleteModeSuccess = "[Delete Objects] Deactivate Delete Mode";
         public const string deactivateDeleteModeSuccess = "[Delete Objects] Deactivate Delete Mode Success";
+        public const string loadObject = "[Load Objects] Load Object";
+        public const string loadObjectSuccess = "[Load Objects] Load Object Success";
+        public const string loadObjectProcessUpdate = "[Load Objects] Load Object Process Update";
 
         public const string error = "[Error] Engine Error";
     }

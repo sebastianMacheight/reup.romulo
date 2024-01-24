@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AddGizmo : MonoBehaviour
 {
-      private void OnDrawGizmos()
+    public Color color = Color.black;
+    public float radius = 0.05f;
+    private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position, 0.05f);
+        Gizmos.color = color;
+        Gizmos.DrawSphere(transform.position, radius);
     }
 }

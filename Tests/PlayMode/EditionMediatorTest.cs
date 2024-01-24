@@ -8,6 +8,8 @@ using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.dataModels;
+using ReupVirtualTwin.helperInterfaces;
+using System.Collections.Generic;
 
 public class EditionMediatorTest : MonoBehaviour
 {
@@ -17,6 +19,8 @@ public class EditionMediatorTest : MonoBehaviour
     MockSelectedObjectsManager mockSelectedObjectsManager;
     MockWebMessageSender mockWebMessageSender;
     MockTransformObjectsManager mockTransformObjectsManager;
+    MockInsertObjectsManager mockInsertObjectsManager;
+    MockObjectMapper mockObjectMapper;
 
     [SetUp]
     public void SetUp()
@@ -31,6 +35,10 @@ public class EditionMediatorTest : MonoBehaviour
         editionMediator.webMessageSender = mockWebMessageSender;
         mockTransformObjectsManager = new MockTransformObjectsManager();
         editionMediator.transformObjectsManager = mockTransformObjectsManager;
+        mockInsertObjectsManager = new MockInsertObjectsManager();
+        editionMediator.insertObjectsManager = mockInsertObjectsManager;
+        mockObjectMapper = new MockObjectMapper();
+        editionMediator.objectMapper = mockObjectMapper;
     }
 
     [UnityTest]
@@ -117,6 +125,49 @@ public class EditionMediatorTest : MonoBehaviour
         yield return null;
     }
 
+    [UnityTest]
+    public IEnumerator ShouldOrderInsertObjectManagerToInsertObject()
+    {
+        string mockUrl = "the mock url";
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, $"\"{mockUrl}\"");
+        editionMediator.ReceiveWebMessage(message);
+        yield return null;
+        Assert.IsTrue(mockInsertObjectsManager.calledToInsertObject);
+        Assert.AreEqual(mockUrl, mockInsertObjectsManager.objectLoadString);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendMessageOfLoadObjectUpdatedProcess()
+    {
+        float processStatus = 0.25f;
+        editionMediator.Notify(Events.insertedObjectStatusUpdate, processStatus);
+        Debug.Log(mockWebMessageSender);
+        Debug.Log(mockWebMessageSender.sentMessage);
+        WebMessage<float> sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessage;
+        Debug.Log(sentMessage);
+        Assert.AreEqual(WebMessageType.loadObjectProcessUpdate, sentMessage.type);
+        Assert.AreEqual(processStatus, sentMessage.payload);
+        yield return null;
+        processStatus = 0.6f;
+        editionMediator.Notify(Events.insertedObjectStatusUpdate, processStatus);
+        sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebMessageType.loadObjectProcessUpdate, sentMessage.type);
+        Assert.AreEqual(processStatus, sentMessage.payload);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendMessageOfLoadObjectSuccess()
+    {
+        GameObject insertedObject = new GameObject("insertedObject");
+        editionMediator.Notify(Events.insertedObjectLoaded, insertedObject);
+        WebMessage<ObjectDTO> sentMessage = (WebMessage<ObjectDTO>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebMessageType.loadObjectSuccess, sentMessage.type);
+        Assert.AreEqual(mockObjectMapper.objectDTOs[0], sentMessage.payload);
+        yield return null;
+    }
+
     private class MockEditModeManager : IEditModeManager
     {
         private bool _editMode;
@@ -184,6 +235,42 @@ public class EditionMediatorTest : MonoBehaviour
         public void DeactivateTransformMode()
         {
             _active = false;
+        }
+    }
+
+    private class MockInsertObjectsManager : IInsertObjectsManager
+    {
+        public bool calledToInsertObject = false;
+        public string objectLoadString = null;
+        public void InsertObjectFromUrl(string url)
+        {
+            calledToInsertObject = true;
+            objectLoadString = url;
+        }
+    }
+    private class MockObjectMapper : IObjectMapper
+    {
+        public ObjectDTO[] objectDTOs = new ObjectDTO[2]
+        {
+            new ObjectDTO
+            {
+                id = "id0",
+                tags = new string[2]{"tag0", "tag1"},
+            },
+            new ObjectDTO
+            {
+                id = "id1",
+                tags = new string[2]{"tag2", "tag3"},
+            },
+        };
+        public ObjectDTO[] MapObjectsToDTO(List<GameObject> objs)
+        {
+            return objectDTOs;
+        }
+
+        public ObjectDTO MapObjectToDTO(GameObject obj)
+        {
+            return objectDTOs[0];
         }
     }
     private static class dummyJsonCreator
