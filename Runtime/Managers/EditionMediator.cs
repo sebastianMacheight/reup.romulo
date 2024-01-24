@@ -29,6 +29,9 @@ namespace ReupVirtualTwin.managers
         public ISelectedObjectsManager selectedObjectsManager { set { _selectedObjectsManager = value; } }
         private ITransformObjectsManager _transformObjectsManager;
         public ITransformObjectsManager transformObjectsManager { set => _transformObjectsManager = value; }
+        private IDeleteObjectsManager _deleteObjectsManager;
+        public IDeleteObjectsManager deleteObjectsManager { set => _deleteObjectsManager = value;  }
+
 
         IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
@@ -55,6 +58,12 @@ namespace ReupVirtualTwin.managers
                 case Events.transformModeDeactivated:
                     ProcessTranformModeDeactivation();
                     break;
+                case Events.deleteObjectsActivated:
+                    ProcessDeleteModeActivation();
+                    break;
+                case Events.deleteObjectsDeactivated:
+                    ProcessDeleteModeDeactivation();
+                        break;
                 default:
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
             }
@@ -118,6 +127,12 @@ namespace ReupVirtualTwin.managers
                 case WebMessageType.deactivateTransformMode:
                     DeactivateTransformMode();
                     break;
+                case WebMessageType.activateDeleteMode:
+                    ActivateDeleteMode();
+                    break;
+                case WebMessageType.deactivateDeleteMode:
+                    DeactivateDeleteMode();
+                    break;
                 default:
                     _webMessageSender.SendWebMessage(new WebMessage<string>
                     {
@@ -140,6 +155,27 @@ namespace ReupVirtualTwin.managers
             if (!_transformObjectsManager.active)
                 throw new RomuloException("Can't deactivate transform mode if no transform mode is currently active");
             _transformObjectsManager.DeactivateTransformMode();
+        }
+
+        private void ActivateDeleteMode()
+        {
+            if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
+                throw new RomuloException($"Unable to activate delete mode because no object is selected");
+            _deleteObjectsManager.ActivateDeleteMode(_selectedObjectsManager.wrapperDTO);
+        }
+
+        private void DeleteSelectedObjects()
+        {
+            if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
+                throw new RomuloException($"Unable to activate delete mode because no object is selected");
+            _deleteObjectsManager.DeleteSelectedObjects(_selectedObjectsManager.wrapperDTO);
+        }
+
+        private void DeactivateDeleteMode()
+        {
+            if (!_deleteObjectsManager.active)
+                throw new RomuloException("Cannot deactivate delete mode when it is not currently active");
+            _deleteObjectsManager.DeactivateDeleteMode();
         }
 
 
@@ -213,6 +249,26 @@ namespace ReupVirtualTwin.managers
             WebMessage<string> message = new WebMessage<string>
             {
                 type = WebMessageType.deactivateTransformModeSuccess,
+            };
+            _webMessageSender.SendWebMessage(message);
+        }
+
+        private void ProcessDeleteModeActivation()
+        {
+            string eventName;
+            eventName = WebMessageType.activateDeleteModeSuccess;
+           
+            WebMessage<string> message = new WebMessage<string>
+            {
+                type = eventName,
+            };
+            _webMessageSender.SendWebMessage(message);
+        }
+        private void ProcessDeleteModeDeactivation()
+        {
+            WebMessage<string> message = new WebMessage<string>
+            {
+                type = WebMessageType.deactivateDeleteModeSuccess,
             };
             _webMessageSender.SendWebMessage(message);
         }

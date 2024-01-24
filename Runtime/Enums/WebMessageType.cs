@@ -17,6 +17,11 @@ namespace ReupVirtualTwin.enums
         public const string deactivateTransformMode = "[Transform Objects] Deactivate Transform Mode";
         public const string deactivateTransformModeSuccess = "[Transform Objects] Deactivate Transform Mode Success";
 
+        public const string activateDeleteMode = "[Delete Objects] Deactivate Delete Mode";
+        public const string deactivateDeleteMode = "[Delete Objects] Deactivate Delete Mode Success";
+        public const string activateDeleteModeSuccess = "[Delete Objects] Deactivate Delete Mode";
+        public const string deactivateDeleteModeSuccess = "[Delete Objects] Deactivate Delete Mode Success";
+
         public const string error = "[Error] Engine Error";
     }
 }
