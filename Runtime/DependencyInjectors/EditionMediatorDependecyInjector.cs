@@ -18,6 +18,8 @@ namespace ReupVirtualTwin.dependencyInjectors
         GameObject selectedObjectsManager;
         [SerializeField]
         GameObject transformObjectsManager;
+        [SerializeField]
+        GameObject insertObjectsManager;
         
         private void Awake()
         {
@@ -33,7 +35,8 @@ namespace ReupVirtualTwin.dependencyInjectors
                 throw new System.Exception("WebMessageSender not found to inject to edition mediator");
             }
             _editionMediator.webMessageSender = webMessageSender;
-            _editionMediator.tagsController = new TagsController();
+            _editionMediator.objectMapper = new ObjectMapper(new TagsController(), new IdController());
+            _editionMediator.insertObjectsManager = insertObjectsManager.GetComponent<IInsertObjectsManager>();
         }
     }
 }

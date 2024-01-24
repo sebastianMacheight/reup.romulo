@@ -22,7 +22,7 @@ namespace ReupVirtualTwin.editor
             {
                 if (setUpBuilding.idAssignerController == null)
                 {
-                    setUpBuilding.idAssignerController = new IdAssignerController();
+                    setUpBuilding.idAssignerController = new IdController();
                 }
                 if (GUILayout.Button("Add Ids to objects"))
                 {

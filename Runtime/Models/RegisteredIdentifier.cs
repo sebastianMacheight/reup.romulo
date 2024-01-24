@@ -1,19 +1,26 @@
 using ReupVirtualTwin.helpers;
+using UnityEngine;
 
 namespace ReupVirtualTwin.models
 {
     public class RegisteredIdentifier : UniqueId
     {
-        ObjectRegistry _objectRegistry;
+        IRegistry _objectRegistry;
         public string manualId = "";
-        protected override void Start()
+        override public string GenerateId()
         {
-            base.Start();
+            base.GenerateId();
+            RegisterObject();
+            return uniqueId;
+        }
+
+        private void RegisterObject()
+        {
             if (manualId != uniqueId && !string.IsNullOrEmpty(manualId))
             {
                 uniqueId = manualId;
             }
-            _objectRegistry = ObjectFinder.FindObjectRegistry().GetComponent<ObjectRegistry>();
+            _objectRegistry = ObjectFinder.FindObjectRegistry().GetComponent<IRegistry>();
             _objectRegistry.AddItem(gameObject);
         }
     }
