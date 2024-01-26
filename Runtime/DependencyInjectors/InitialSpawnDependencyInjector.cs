@@ -8,7 +8,7 @@ namespace ReupVirtualTwin.dependencyInjectors
     public class InitialSpawnDependencyInjector : MonoBehaviour
     {
 
-        void Start() {
+        void Awake() {
             InitialSpawn initialSpawn = GetComponent<InitialSpawn>();
             initialSpawn.setUpBuilding = ObjectFinder.FindSetupBuilding().GetComponent<SetUpBuilding>();
         }
