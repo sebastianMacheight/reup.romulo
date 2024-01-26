@@ -12,11 +12,9 @@ using ReupVirtualTwin.controllerInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
-    public class DeleteObjectsManager : MonoBehaviour
+    public class DeleteObjectsManager : MonoBehaviour, IDeleteObjectsManager
 
     {
-        private bool _active = false;
-        public bool active { get { return _active; } }
         private IObjectWrapper _objectWrapper;
         public IObjectWrapper objectWrapper { set => _objectWrapper = value; }
         private GameObject _runtimeDeleteObj;
@@ -26,65 +24,23 @@ namespace ReupVirtualTwin.managers
         private ITagsController _tagsController;
         public ITagsController tagsController { set => _tagsController = value; }
 
-        public ObjectWrapperDTO wrapper
-        {
-            set
-            {
-                if (!AreWrappedObjectsDeletable(value.wrappedObjects))
-                {
-                    DeactivateDeleteMode();
-                    return;
-                }
-                else {
-                    ActivateDeleteMode(value);
-                }
-            }
-        }
-
-        public void ActivateDeleteMode(ObjectWrapperDTO wrapperDTO)
+        public void DeleteSelectedObjects(ObjectWrapperDTO wrapperDTO)
         {
             if (wrapperDTO == null || wrapperDTO.wrapper == null)
             {
-                throw new ArgumentException("Selection wrapper is null, can't activate Delete mode");
+                throw new ArgumentException("Selection wrapper is null, can't delete objects");
             }
             if (!AreWrappedObjectsDeletable(wrapperDTO.wrappedObjects))
             {
                 throw new ArgumentException("Not all selected objects are deletable");
-                return;
             }
-            _mediator.Notify(Events.deleteObjectsActivated);
-            _active = true;
-        } 
 
-        public void DeleteSelectedObjects(ObjectWrapperDTO wrapperDTO)
-        {
-            if (_active)
+            foreach (var obj in wrapperDTO.wrappedObjects)
             {
-                foreach (var obj in wrapperDTO.wrappedObjects)
-                {
-                    DestroyImmediate(obj);
-                }
-            }
-            else if (!AreWrappedObjectsDeletable(wrapperDTO.wrappedObjects))
-            {
-                throw new InvalidOperationException("One or more of the selected objects are not deletable");
-            }
-            else
-            {
-                throw new InvalidOperationException("Delete mode is not active");
-            }
+                DestroyImmediate(obj);
             
-        }
-
-        public void DeactivateDeleteMode()
-        {
-            if (!_active)
-            {
-                throw new InvalidOperationException("Delete mode is not active");
-                return;
             }
-            _mediator.Notify(Events.deleteObjectsDeactivated);
-            _active = false;
+            _mediator.Notify(Events.objectsDeleted);
 
         }
 

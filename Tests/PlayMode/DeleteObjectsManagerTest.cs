@@ -41,93 +41,40 @@ public class DeleteObjectsManagerTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator ShouldActivateAndDeactivateDeleteMode()
-    {
-        Assert.IsFalse(mockMediator.deleteModeActive);
-        yield return null;
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = deleteWrapper,
-            wrappedObjects = new List<GameObject>() { }
-        };
-        deleteObjectsManager.ActivateDeleteMode(objectWrapperDTO);
-        Assert.IsTrue(mockMediator.deleteModeActive);
-        yield return null;
-        deleteObjectsManager.DeactivateDeleteMode();
-        Assert.IsFalse(mockMediator.deleteModeActive);
-        yield return null;
-    }
-
-
-
-    [UnityTest]
-    public IEnumerator ShouldRaiseExceptionIfAttemptedToDeactivateDeleteModeButNoModeIsActiveToBeginWith()
-    {
-        Assert.AreEqual(false, mockMediator.notified);
-        yield return null;
-        Assert.That(() => deleteObjectsManager.DeactivateDeleteMode(),
-            Throws.TypeOf<InvalidOperationException>()
-        );
-        Assert.AreEqual(false, mockMediator.notified);
-        yield return null;
-    }
-
-    [UnityTest]
-    public IEnumerator ShouldFailWhenAttemptedToActivateAnyModeButNoObjectIsSelected()
+    public IEnumerator ShouldFailWhenAttemptedToDeleteObjectButNoObjectIsSelected()
     {
         ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
         {
             wrapper = null,
         };
-        Assert.That(() => deleteObjectsManager.ActivateDeleteMode(objectWrapperDTO),
-            Throws.TypeOf<ArgumentException>()
-        );
-        yield return null;
-        Assert.That(() => deleteObjectsManager.ActivateDeleteMode(null),
+        Assert.That(() => deleteObjectsManager.DeleteSelectedObjects(objectWrapperDTO),
             Throws.TypeOf<ArgumentException>()
         );
         yield return null;
     }
 
     [UnityTest]
-    public IEnumerator ShouldAllowToActivateDeleteModeWhenSelectedOnlyDeletableObject()
+    public IEnumerator ShouldDeleteSelectedObjects()
     {
         ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
         {
             wrapper = new GameObject("wrapper"),
             wrappedObjects = new List<GameObject>() { deletableObject0, deletableObject1 },
         };
-        deleteObjectsManager.ActivateDeleteMode(objectWrapperDTO);
-        Assert.IsTrue(mockMediator.deleteModeActive);
-        yield return null;
-    }
-
-    [UnityTest]
-    public IEnumerator ShouldNotActivateDeleteModeIfAttemptedToDeleteNotDeletableObject()
-    {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { deletableObject0, deletableObject1, nonDeletableObject }
-        };
-        Assert.That(() => deleteObjectsManager.ActivateDeleteMode(objectWrapperDTO),
-            Throws.TypeOf<ArgumentException>()
-        );
-        Assert.IsFalse(mockMediator.deleteModeActive);
-        yield return null;
-    }
-
-    [UnityTest]
-    public IEnumerator ShouldDeleteSelectedObject()
-    {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { deletableObject0, deletableObject1 },
-        };
-        deleteObjectsManager.ActivateDeleteMode(objectWrapperDTO);
         deleteObjectsManager.DeleteSelectedObjects(objectWrapperDTO);
         Assert.IsTrue(objectWrapperDTO.wrappedObjects.All(obj => obj == null));
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator ShouldFailWhenTryingToDeleteNonDeletableObjects()
+    {
+        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
+        {
+            wrapper = new GameObject("wrapper"),
+            wrappedObjects = new List<GameObject>() { deletableObject0, deletableObject1, nonDeletableObject},
+        };
+        Assert.That(() => deleteObjectsManager.DeleteSelectedObjects(objectWrapperDTO),
+            Throws.TypeOf<ArgumentException>());
         yield return null;
     }
 
@@ -138,16 +85,8 @@ public class DeleteObjectsManagerTest : MonoBehaviour
 
         public void Notify(Events eventName)
         {
-            switch (eventName)
-            {
-                case Events.deleteObjectsActivated:
-                    deleteModeActive = true;
-                    notified = true;
-                    break;
-                case Events.deleteObjectsDeactivated:
-                    deleteModeActive = false;
-                    notified = true;
-                    break;
+            if (eventName == Events.objectsDeleted){
+                notified = true;
             }
         }
 

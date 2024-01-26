@@ -9,8 +9,7 @@ namespace ReupVirtualTwin.enums
         transformModeDeactivated,
         setEditMode,
         setSelectedObjects,
-        deleteObjectsActivated,
-        deleteObjectsDeactivated,
+        objectsDeleted,
         insertedObjectLoaded,
         insertedObjectStatusUpdate,
     }
