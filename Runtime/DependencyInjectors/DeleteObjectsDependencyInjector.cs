@@ -15,9 +15,6 @@ namespace ReupVirtualTwin.dependencyInjectors
         {
             DeleteObjectsManager deleteObjectsManager = GetComponent<DeleteObjectsManager>();
             deleteObjectsManager.mediator = mediator.GetComponent<IMediator>();
-            GameObject deleteHandleObj = new GameObject("DeleteHandle");
-            deleteHandleObj.AddComponent<RuntimeTransformHandle>();
-            deleteObjectsManager.runtimeDeleteObj = deleteHandleObj;
             deleteObjectsManager.tagsController = new TagsController();
 
         }

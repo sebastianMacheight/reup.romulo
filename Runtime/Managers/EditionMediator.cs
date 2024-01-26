@@ -58,16 +58,14 @@ namespace ReupVirtualTwin.managers
                 case Events.transformModeDeactivated:
                     ProcessTranformModeDeactivation();
                     break;
-                case Events.deleteObjectsActivated:
-                    ProcessDeleteModeActivation();
-                    break;
-                case Events.deleteObjectsDeactivated:
-                    ProcessDeleteModeDeactivation();
+                case Events.objectsDeleted:
+                    ProcessDeleteObjects();
                     break;
                 default:
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
             }
         }
+
         public void Notify<T>(Events eventName, T payload)
         {
             switch (eventName)
@@ -125,6 +123,7 @@ namespace ReupVirtualTwin.managers
                 Debug.LogError(e);
             }
         }
+
         public void ProcessWebMessage(WebMessage<string> message)
         {
             switch (message.type)
@@ -141,11 +140,8 @@ namespace ReupVirtualTwin.managers
                 case WebMessageType.deactivateTransformMode:
                     DeactivateTransformMode();
                     break;
-                case WebMessageType.activateDeleteMode:
-                    ActivateDeleteMode();
-                    break;
-                case WebMessageType.deactivateDeleteMode:
-                    DeactivateDeleteMode();
+                case WebMessageType.deleteObjects:
+                    DeleteSelectedObjects();
                     break;
                 case WebMessageType.loadObject:
                     LoadObject(message.payload);
@@ -174,27 +170,12 @@ namespace ReupVirtualTwin.managers
             _transformObjectsManager.DeactivateTransformMode();
         }
 
-        private void ActivateDeleteMode()
-        {
-            if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
-                throw new RomuloException($"Unable to activate delete mode because no object is selected");
-            _deleteObjectsManager.ActivateDeleteMode(_selectedObjectsManager.wrapperDTO);
-        }
-
         private void DeleteSelectedObjects()
         {
             if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
-                throw new RomuloException($"Unable to activate delete mode because no object is selected");
+                throw new RomuloException($"Unable to activate delete because no object is selected");
             _deleteObjectsManager.DeleteSelectedObjects(_selectedObjectsManager.wrapperDTO);
         }
-
-        private void DeactivateDeleteMode()
-        {
-            if (!_deleteObjectsManager.active)
-                throw new RomuloException("Cannot deactivate delete mode when it is not currently active");
-            _deleteObjectsManager.DeactivateDeleteMode();
-        }
-
 
         private void ProccessEditMode(bool editMode)
         {
@@ -212,6 +193,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
         private void ProcessNewWrapper(ObjectWrapperDTO wrappedObject)
         {
             if (_transformObjectsManager.active)
@@ -220,6 +202,7 @@ namespace ReupVirtualTwin.managers
             }
             SendNewSelectedObjectsMessage(wrappedObject.wrappedObjects);
         }
+
         private void SendNewSelectedObjectsMessage(List<GameObject> selectedObjects)
         {
             ObjectDTO[] objectDTOs = _objectMapper.MapObjectsToDTO(selectedObjects);
@@ -230,6 +213,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
         private void ProcessTransformModeActivation(TransformMode mode)
         {
             string eventName;
@@ -251,6 +235,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
         private void ProcessTranformModeDeactivation()
         {
             WebMessage<string> message = new WebMessage<string>
@@ -260,22 +245,14 @@ namespace ReupVirtualTwin.managers
             _webMessageSender.SendWebMessage(message);
         }
 
-        private void ProcessDeleteModeActivation()
+        private void ProcessDeleteObjects()
         {
-            string eventName;
-            eventName = WebMessageType.activateDeleteModeSuccess;
+            string webMessageType;
+            webMessageType = WebMessageType.deleteObjectsSuccess;
 
             WebMessage<string> message = new WebMessage<string>
             {
-                type = eventName,
-            };
-            _webMessageSender.SendWebMessage(message);
-        }
-        private void ProcessDeleteModeDeactivation()
-        {
-            WebMessage<string> message = new WebMessage<string>
-            {
-                type = WebMessageType.deactivateTransformModeSuccess,
+                type = webMessageType,
             };
             _webMessageSender.SendWebMessage(message);
         }
@@ -305,6 +282,8 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
     }
+
 }
 
