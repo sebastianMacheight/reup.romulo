@@ -28,7 +28,7 @@ namespace ReupVirtualTwin.managers
         {
             set
             {
-                if (!AreWrappedObjectsTransformable(value.wrappedObjects))
+                if (value.wrapper == null || !AreWrappedObjectsTransformable(value.wrappedObjects))
                 {
                     DeactivateTransformMode();
                     return;
@@ -91,9 +91,8 @@ namespace ReupVirtualTwin.managers
 
         private bool AreWrappedObjectsTransformable(List<GameObject> objects)
         {
+            if (objects.Count == 0) return false;
             return objects.All(obj => _tagsController.DoesObjectHaveTag(obj, ObjectTag.TRANSFORMABLE));
         }
-
-
     }
 }

@@ -51,7 +51,7 @@ public class TransformObjectsManagerTest : MonoBehaviour
         ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
         {
             wrapper = transformWrapper,
-            wrappedObjects = new List<GameObject>() { }
+            wrappedObjects = new List<GameObject>() {transformableObject0}
         };
         transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
         Assert.AreEqual(TransformMode.PositionMode, mockMediator.mode);
@@ -70,7 +70,7 @@ public class TransformObjectsManagerTest : MonoBehaviour
         ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
         {
             wrapper = transformWrapper,
-            wrappedObjects = new List<GameObject>() { }
+            wrappedObjects = new List<GameObject>() {transformableObject0},
         };
         transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.RotationMode);
         Assert.AreEqual(TransformMode.RotationMode, mockMediator.mode);
@@ -89,7 +89,7 @@ public class TransformObjectsManagerTest : MonoBehaviour
         ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
         {
             wrapper = transformWrapper,
-            wrappedObjects = new List<GameObject>() { }
+            wrappedObjects = new List<GameObject>() { transformableObject0 },
         };
         transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
         Assert.AreEqual(TransformMode.PositionMode, mockMediator.mode);
@@ -186,6 +186,50 @@ public class TransformObjectsManagerTest : MonoBehaviour
         yield return null;
         Assert.IsFalse(transformObjectsManager.active);
         Assert.IsFalse(mockMediator.transformModeActive);
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator ShouldDeactivateTransformModeIfNoSelectedObject()
+    {
+        Assert.AreEqual(false, mockMediator.transformModeActive);
+        yield return null;
+        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
+        {
+            wrapper = transformWrapper,
+            wrappedObjects = new List<GameObject>() {transformableObject0},
+        };
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
+        Assert.AreEqual(TransformMode.PositionMode, mockMediator.mode);
+        Assert.AreEqual(true, mockMediator.transformModeActive);
+        yield return null;
+        transformObjectsManager.wrapper = new ObjectWrapperDTO()
+        {
+            wrapper = transformWrapper,
+            wrappedObjects = new List<GameObject>() {},
+        };
+        Assert.AreEqual(false, mockMediator.transformModeActive);
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator ShouldDeactivateTransformModeIfWrapperIsNull()
+    {
+        Assert.AreEqual(false, mockMediator.transformModeActive);
+        yield return null;
+        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
+        {
+            wrapper = transformWrapper,
+            wrappedObjects = new List<GameObject>() {transformableObject0},
+        };
+        transformObjectsManager.ActivateTransformMode(objectWrapperDTO, TransformMode.PositionMode);
+        Assert.AreEqual(TransformMode.PositionMode, mockMediator.mode);
+        Assert.AreEqual(true, mockMediator.transformModeActive);
+        yield return null;
+        transformObjectsManager.wrapper = new ObjectWrapperDTO()
+        {
+            wrapper = null,
+            wrappedObjects = new List<GameObject>() { transformableObject0 },
+        };
+        Assert.AreEqual(false, mockMediator.transformModeActive);
         yield return null;
     }
 
