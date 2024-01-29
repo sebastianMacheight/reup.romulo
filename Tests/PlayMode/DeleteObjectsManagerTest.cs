@@ -78,6 +78,19 @@ public class DeleteObjectsManagerTest : MonoBehaviour
         yield return null;
     }
 
+    [UnityTest]
+    public IEnumerator ShouldNotDeleteIfNoSelectedObject()
+    {
+        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
+        {
+            wrapper = new GameObject("wrapper"),
+            wrappedObjects = new List<GameObject>() { },
+        };
+        Assert.That(() => deleteObjectsManager.DeleteSelectedObjects(objectWrapperDTO),
+            Throws.TypeOf<ArgumentException>());
+        yield return null;
+    }
+
     private class MockMediator : IMediator
     {
         public bool deleteModeActive = false;
