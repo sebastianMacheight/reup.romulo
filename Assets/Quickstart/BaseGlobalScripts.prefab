@@ -379,6 +379,10 @@ PrefabInstance:
       propertyPath: editionMediator
       value: 
       objectReference: {fileID: 5810216909219089537}
+    - target: {fileID: 8950963653470224177, guid: 0cda47605a736cf4195ac4447f195623, type: 3}
+      propertyPath: deleteObjectsManager
+      value: 
+      objectReference: {fileID: 4135459224375982657, guid: 9c58f80580cca8a4097243c8dac1e851, type: 3}
     - target: {fileID: 8983450742910279900, guid: 0cda47605a736cf4195ac4447f195623, type: 3}
       propertyPath: m_RootOrder
       value: 6

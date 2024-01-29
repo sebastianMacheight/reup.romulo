@@ -67,6 +67,7 @@ MonoBehaviour:
   selectedObjectsManager: {fileID: 1456155454685175151}
   transformObjectsManager: {fileID: 3276966702745460541}
   insertObjectsManager: {fileID: 1153067706132022136}
+  deleteObjectsManager: {fileID: 4135459224375982657, guid: 9c58f80580cca8a4097243c8dac1e851, type: 3}
 --- !u!114 &6976859030307673124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,6 +273,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2271338502989771670, guid: 9c58f80580cca8a4097243c8dac1e851, type: 3}
+      propertyPath: mediator
+      value: 
+      objectReference: {fileID: 3831656627378006908}
     - target: {fileID: 4135459224375982657, guid: 9c58f80580cca8a4097243c8dac1e851, type: 3}
       propertyPath: m_Name
       value: DeleteObjectsManager
