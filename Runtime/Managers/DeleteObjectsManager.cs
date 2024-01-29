@@ -46,6 +46,7 @@ namespace ReupVirtualTwin.managers
 
         private bool AreWrappedObjectsDeletable(List<GameObject> objects)
         {
+            if (objects.Count == 0) return false;
             return objects.All(obj => _tagsController.DoesObjectHaveTag(obj, ObjectTag.DELETABLE));
         }
     }
