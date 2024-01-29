@@ -67,7 +67,7 @@ MonoBehaviour:
   selectedObjectsManager: {fileID: 1456155454685175151}
   transformObjectsManager: {fileID: 3276966702745460541}
   insertObjectsManager: {fileID: 1153067706132022136}
-  deleteObjectsManager: {fileID: 4135459224375982657, guid: 9c58f80580cca8a4097243c8dac1e851, type: 3}
+  deleteObjectsManager: {fileID: 116487788499988255}
 --- !u!114 &6976859030307673124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +283,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c58f80580cca8a4097243c8dac1e851, type: 3}
+--- !u!1 &116487788499988255 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4135459224375982657, guid: 9c58f80580cca8a4097243c8dac1e851, type: 3}
+  m_PrefabInstance: {fileID: 4105527248293762398}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3694061485833236021 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 845042987530861419, guid: 9c58f80580cca8a4097243c8dac1e851, type: 3}
