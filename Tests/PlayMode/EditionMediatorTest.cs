@@ -142,10 +142,7 @@ public class EditionMediatorTest : MonoBehaviour
     {
         float processStatus = 0.25f;
         editionMediator.Notify(Events.insertedObjectStatusUpdate, processStatus);
-        Debug.Log(mockWebMessageSender);
-        Debug.Log(mockWebMessageSender.sentMessage);
         WebMessage<float> sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessage;
-        Debug.Log(sentMessage);
         Assert.AreEqual(WebMessageType.loadObjectProcessUpdate, sentMessage.type);
         Assert.AreEqual(processStatus, sentMessage.payload);
         yield return null;
