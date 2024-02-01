@@ -110,6 +110,7 @@ namespace ReupVirtualTwin.managers
             }
         }
 
+
         public void ReceiveWebMessage(string serializedWebMessage)
         {
             try
@@ -133,6 +134,7 @@ namespace ReupVirtualTwin.managers
 
         public void ProcessWebMessage(WebMessage<string> message)
         {
+            WebMessage<string> message = JsonUtility.FromJson<WebMessage<string>>(serializedWebMessage);
             switch (message.type)
             {
                 case WebMessageType.setEditMode:
@@ -157,7 +159,7 @@ namespace ReupVirtualTwin.managers
                     _webMessageSender.SendWebMessage(new WebMessage<string>
                     {
                         type = WebMessageType.error,
-                        payload = $"{message.type} not supported",
+                        payload = $"message type:'{message.type}' not supported",
                     });
                     break;
             }
@@ -166,14 +168,20 @@ namespace ReupVirtualTwin.managers
         private void ActivateTransformMode(TransformMode mode)
         {
             if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
-                throw new RomuloException($"Can't activate {mode} Transform mode because no object is selected");
+            {
+                SendErrorMessage($"Can't activate {mode} Transform mode because no object is selected");
+                return;
+            }
             _transformObjectsManager.ActivateTransformMode(_selectedObjectsManager.wrapperDTO, mode);
         }
 
         private void DeactivateTransformMode()
         {
             if (!_transformObjectsManager.active)
-                throw new RomuloException("Can't deactivate transform mode if no transform mode is currently active");
+            {
+                SendErrorMessage("Can't deactivate transform mode if no transform mode is currently active");
+                return;
+            }
             _transformObjectsManager.DeactivateTransformMode();
         }
 
@@ -300,6 +308,14 @@ namespace ReupVirtualTwin.managers
             }
         }
 
+        private void SendErrorMessage(string message)
+        {
+            _webMessageSender.SendWebMessage(new WebMessage<string>
+            {
+                type = WebMessageType.error,
+                payload = message,
+            });
+        }
     }
 
 }
