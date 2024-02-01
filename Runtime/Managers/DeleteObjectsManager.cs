@@ -15,10 +15,6 @@ namespace ReupVirtualTwin.managers
     public class DeleteObjectsManager : MonoBehaviour, IDeleteObjectsManager
 
     {
-        private IObjectWrapper _objectWrapper;
-        public IObjectWrapper objectWrapper { set => _objectWrapper = value; }
-        private GameObject _runtimeDeleteObj;
-        public GameObject runtimeDeleteObj { set => _runtimeDeleteObj = value; }
         private IMediator _mediator;
         public IMediator mediator { set { _mediator = value; } }
         private ITagsController _tagsController;
@@ -32,6 +28,7 @@ namespace ReupVirtualTwin.managers
             }
             if (!AreWrappedObjectsDeletable(wrapperDTO.wrappedObjects))
             {
+                _mediator.Notify(Events.restoreSelection, wrapperDTO.wrappedObjects);
                 throw new ArgumentException("Not all selected objects are deletable");
             }
 
