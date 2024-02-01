@@ -12,5 +12,6 @@ namespace ReupVirtualTwin.enums
         objectsDeleted,
         insertedObjectLoaded,
         insertedObjectStatusUpdate,
+        restoreSelection,
     }
 }

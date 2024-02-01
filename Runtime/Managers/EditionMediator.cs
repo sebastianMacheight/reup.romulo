@@ -98,6 +98,13 @@ namespace ReupVirtualTwin.managers
                     }
                     ProcessLoadStatus((float)(object)payload);
                     break;
+                case Events.restoreSelection:
+                    if (!(payload is List<GameObject>))
+                    {
+                        throw new ArgumentException($"Payload must be of type List<GameObject> for {eventName} events", nameof(payload));
+                    }
+                    RestoreSelection(payload as List<GameObject>);
+                    break;
                 default:
                     throw new ArgumentException($"no implementation for event: {eventName}");
             }
@@ -175,6 +182,8 @@ namespace ReupVirtualTwin.managers
             if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
                 throw new RomuloException($"Unable to activate delete because no object is selected");
             _deleteObjectsManager.DeleteSelectedObjects(_selectedObjectsManager.wrapperDTO);
+            //We clear the selected objects
+            _selectedObjectsManager.ClearSelection();
         }
 
         private void ProccessEditMode(bool editMode)
@@ -281,6 +290,14 @@ namespace ReupVirtualTwin.managers
                 payload = status
             };
             _webMessageSender.SendWebMessage(message);
+        }
+
+        private void RestoreSelection(List<GameObject> objectsToRestore)
+        {
+            foreach (var gameObject in objectsToRestore)
+            {
+                _selectedObjectsManager.AddObjectToSelection(gameObject);
+            }
         }
 
     }
