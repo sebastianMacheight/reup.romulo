@@ -113,27 +113,6 @@ namespace ReupVirtualTwin.managers
 
         public void ReceiveWebMessage(string serializedWebMessage)
         {
-            try
-            {
-                WebMessage<string> message = JsonUtility.FromJson<WebMessage<string>>(serializedWebMessage);
-                ProcessWebMessage(message);
-            }
-            catch (RomuloException e)
-            {
-                _webMessageSender.SendWebMessage(new WebMessage<string>
-                {
-                    type = WebMessageType.error,
-                    payload = e.Message,
-                });
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
-        }
-
-        public void ProcessWebMessage(WebMessage<string> message)
-        {
             WebMessage<string> message = JsonUtility.FromJson<WebMessage<string>>(serializedWebMessage);
             switch (message.type)
             {
@@ -188,7 +167,7 @@ namespace ReupVirtualTwin.managers
         private void DeleteSelectedObjects()
         {
             if (_selectedObjectsManager.wrapperDTO == null || _selectedObjectsManager.wrapperDTO.wrapper == null)
-                throw new RomuloException($"Unable to activate delete because no object is selected");
+                SendErrorMessage($"Unable to activate delete because no object is selected");
             _deleteObjectsManager.DeleteSelectedObjects(_selectedObjectsManager.wrapperDTO);
             //We clear the selected objects
             _selectedObjectsManager.ClearSelection();
