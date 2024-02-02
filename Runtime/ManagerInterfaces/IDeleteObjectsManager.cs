@@ -8,6 +8,7 @@ namespace ReupVirtualTwin.managerInterfaces
 {
     public interface IDeleteObjectsManager
     {
+        public bool AreWrappedObjectsDeletable(ObjectWrapperDTO wrapperDTO);
         public void DeleteSelectedObjects(ObjectWrapperDTO wrapper);
     }
 }
