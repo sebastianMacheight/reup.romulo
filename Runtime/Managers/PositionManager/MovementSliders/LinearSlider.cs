@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ReupVirtualTwin.characterMovement
+namespace ReupVirtualTwin.managers
 {
 
     public class LinearSlider : MovementSlider<float>

@@ -1,6 +1,6 @@
 using UnityEngine;
-using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.managerInterfaces;
+using ReupVirtualTwin.managers;
 
 namespace ReupVirtualTwin.behaviours
 {

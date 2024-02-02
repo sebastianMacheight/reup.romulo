@@ -2,7 +2,7 @@ using UnityEngine;
 using ReupVirtualTwin.helpers;
 using UnityEngine.Events;
 
-namespace ReupVirtualTwin.characterMovement
+namespace ReupVirtualTwin.managers
 {
     public class CharacterPositionManager : MonoBehaviour
     {

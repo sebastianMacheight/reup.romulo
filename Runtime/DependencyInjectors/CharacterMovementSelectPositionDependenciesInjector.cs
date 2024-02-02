@@ -1,9 +1,9 @@
 using UnityEngine;
 
-using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.managers;
 
 namespace ReupVirtualTwin.dependencyInjectors
 {

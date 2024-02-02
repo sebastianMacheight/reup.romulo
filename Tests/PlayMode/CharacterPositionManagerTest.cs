@@ -6,8 +6,8 @@ using UnityEditor;
 
 using ReupVirtualTwin.behaviours;
 using Packages.reup.romulo.Tests.PlayMode.Mocks;
-using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.dependencyInjectors;
+using ReupVirtualTwin.managers;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.models;
 
 
 namespace ReupVirtualTwin.editor

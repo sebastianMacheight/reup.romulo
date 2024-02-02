@@ -1,11 +1,11 @@
-using ReupVirtualTwin.helpers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using ReupVirtualTwin.models;
+using ReupVirtualTwin.helpers;
 
-namespace ReupVirtualTwin.characterMovement
+
+namespace ReupVirtualTwin.models
 {
     public class SpacesButtonList : MonoBehaviour
     {

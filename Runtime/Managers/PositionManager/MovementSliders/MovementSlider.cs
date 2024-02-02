@@ -4,7 +4,7 @@ using ReupVirtualTwin.helpers;
 using System;
 using UnityEngine.Events;
 
-namespace ReupVirtualTwin.characterMovement
+namespace ReupVirtualTwin.managers
 {
     public class MovementSlider<T> : MonoBehaviour where T : IEquatable<T>
     {
