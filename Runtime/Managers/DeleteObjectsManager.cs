@@ -29,7 +29,7 @@ namespace ReupVirtualTwin.managers
             if (!AreWrappedObjectsDeletable(wrapperDTO.wrappedObjects))
             {
                 _mediator.Notify(Events.restoreSelection, wrapperDTO.wrappedObjects);
-                throw new ArgumentException("Not all selected objects are deletable");
+                throw new ArgumentException("Not all selected objects are deletable, or there are no objects selected");
             }
 
             foreach (var obj in wrapperDTO.wrappedObjects)

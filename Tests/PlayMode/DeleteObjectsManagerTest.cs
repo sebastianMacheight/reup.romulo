@@ -105,7 +105,7 @@ public class DeleteObjectsManagerTest : MonoBehaviour
 
         public void Notify<T>(Events eventName, T payload)
         {
-            throw new System.NotImplementedException();
+            throw new ArgumentException("Not all selected objects are deletable, or there are no objects selected");
         }
     }
 
