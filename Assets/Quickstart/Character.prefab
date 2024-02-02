@@ -460,7 +460,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _innerCharacterTransform: {fileID: 4912725852084423976}
   _characterPositionManager: {fileID: 8831413430191478438}
-  _characterRotationManager: {fileID: 7341686661031932331}
 --- !u!1 &3366587928214486604
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,6 +701,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 359398473825334399}
+  - component: {fileID: 3284399512722435954}
   m_Layer: 7
   m_Name: KeyboardRotation
   m_TagString: Untagged
@@ -724,6 +724,20 @@ Transform:
   m_Father: {fileID: 8380427711663556094}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3284399512722435954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5500969405214885589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1355e97a90a694aa506aaa48e94c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _innerCharacterTransform: {fileID: 4912725852084423976}
+  _characterRotationManager: {fileID: 7341686661031932331}
 --- !u!1 &5851380739034743552
 GameObject:
   m_ObjectHideFlags: 0
