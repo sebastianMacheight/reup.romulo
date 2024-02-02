@@ -1,5 +1,5 @@
 using UnityEngine;
-using ReupVirtualTwin.characterMovement;
+using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.inputs;
 using ReupVirtualTwin.managers;
 

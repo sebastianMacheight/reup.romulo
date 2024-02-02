@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ReupVirtualTwin.characterMovement
+namespace ReupVirtualTwin.models
 {
     public class SpaceJumpPoint : MonoBehaviour
     {

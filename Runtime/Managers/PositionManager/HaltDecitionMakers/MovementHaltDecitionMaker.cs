@@ -1,4 +1,4 @@
-namespace ReupVirtualTwin.characterMovement
+namespace ReupVirtualTwin.managers
 {
     public interface MovementHaltDecitionMaker<T>
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace ReupVirtualTwin.characterMovement
+namespace ReupVirtualTwin.models
 {
     public class SpaceButtonInstance : MonoBehaviour
     {

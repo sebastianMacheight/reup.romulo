@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.models;
 
-namespace ReupVirtualTwin.characterMovement
+namespace ReupVirtualTwin.models
 {
 
     public class SpacesRecord : MonoBehaviour
