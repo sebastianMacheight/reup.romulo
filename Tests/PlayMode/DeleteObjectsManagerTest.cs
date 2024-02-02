@@ -41,20 +41,7 @@ public class DeleteObjectsManagerTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator ShouldFailWhenAttemptedToDeleteObjectButNoObjectIsSelected()
-    {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = null,
-        };
-        Assert.That(() => deleteObjectsManager.DeleteSelectedObjects(objectWrapperDTO),
-            Throws.TypeOf<ArgumentException>()
-        );
-        yield return null;
-    }
-
-    [UnityTest]
-    public IEnumerator ShouldDeleteSelectedObjects()
+    public IEnumerator ShouldDeleteDeletableObjects()
     {
         ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
         {
@@ -66,6 +53,18 @@ public class DeleteObjectsManagerTest : MonoBehaviour
         yield return null;
     }
     [UnityTest]
+    public IEnumerator ShouldFailWhenAttemptedToDeleteObjectButNoObjectIsSelected()
+    {
+        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
+        {
+            wrapper = null,
+        };
+        Assert.That(() => deleteObjectsManager.AreWrappedObjectsDeletable(objectWrapperDTO),
+            Throws.TypeOf<ArgumentException>()
+        );
+        yield return null;
+    }
+    [UnityTest]
     public IEnumerator ShouldFailWhenTryingToDeleteNonDeletableObjects()
     {
         ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
@@ -73,7 +72,7 @@ public class DeleteObjectsManagerTest : MonoBehaviour
             wrapper = new GameObject("wrapper"),
             wrappedObjects = new List<GameObject>() { deletableObject0, deletableObject1, nonDeletableObject},
         };
-        Assert.That(() => deleteObjectsManager.DeleteSelectedObjects(objectWrapperDTO),
+        Assert.That(() => deleteObjectsManager.AreWrappedObjectsDeletable(objectWrapperDTO),
             Throws.TypeOf<ArgumentException>());
         yield return null;
     }
@@ -86,7 +85,7 @@ public class DeleteObjectsManagerTest : MonoBehaviour
             wrapper = new GameObject("wrapper"),
             wrappedObjects = new List<GameObject>() { },
         };
-        Assert.That(() => deleteObjectsManager.DeleteSelectedObjects(objectWrapperDTO),
+        Assert.That(() => deleteObjectsManager.AreWrappedObjectsDeletable(objectWrapperDTO),
             Throws.TypeOf<ArgumentException>());
         yield return null;
     }
@@ -105,7 +104,7 @@ public class DeleteObjectsManagerTest : MonoBehaviour
 
         public void Notify<T>(Events eventName, T payload)
         {
-            throw new ArgumentException("Not all selected objects are deletable, or there are no objects selected");
+            throw new System.NotImplementedException();
         }
     }
 

@@ -20,30 +20,37 @@ namespace ReupVirtualTwin.managers
         private ITagsController _tagsController;
         public ITagsController tagsController { set => _tagsController = value; }
 
-        public void DeleteSelectedObjects(ObjectWrapperDTO wrapperDTO)
+        public bool AreWrappedObjectsDeletable(ObjectWrapperDTO wrapperDTO)
         {
             if (wrapperDTO == null || wrapperDTO.wrapper == null)
             {
-                throw new ArgumentException("Selection wrapper is null, can't delete objects");
+                throw new ArgumentException("Selection wrapper is null");
             }
-            if (!AreWrappedObjectsDeletable(wrapperDTO.wrappedObjects))
+            else if (wrapperDTO.wrappedObjects.Count == 0)
             {
-                _mediator.Notify(Events.restoreSelection, wrapperDTO.wrappedObjects);
-                throw new ArgumentException("Not all selected objects are deletable, or there are no objects selected");
+                throw new ArgumentException("There are no objects selected");
             }
+            else if (!CheckTag(wrapperDTO.wrappedObjects))
+            {
+                throw new ArgumentException("Not all selected objects are deletable");
+            }
+            else
+            {
+                return true;
+            }
+        }
 
+        public void DeleteSelectedObjects(ObjectWrapperDTO wrapperDTO)
+        {     
             foreach (var obj in wrapperDTO.wrappedObjects)
             {
                 DestroyImmediate(obj);
-            
             }
             _mediator.Notify(Events.objectsDeleted);
-
         }
 
-        private bool AreWrappedObjectsDeletable(List<GameObject> objects)
+        private bool CheckTag(List<GameObject> objects)
         {
-            if (objects.Count == 0) return false;
             return objects.All(obj => _tagsController.DoesObjectHaveTag(obj, ObjectTag.DELETABLE));
         }
     }
