@@ -1,5 +1,7 @@
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
+using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
@@ -9,12 +11,16 @@ namespace ReupVirtualTwin.behaviours
         private ICreateCollider _createCollider;
         private IMaintainHeight _maintainHeight;
         private IInitialSpawn _initialSpawn;
+        private Transform _ceilCheck;
+        private LayerMask _buildingLayerMask;
+        private float minHeight = 0.15f;
+        private float _ceilCheckRadius = 0.1f;
 
         public ICreateCollider createCollider { set { _createCollider = value; } }
         public IMaintainHeight maintainHeight { set { _maintainHeight = value; } }
         public IInitialSpawn initialSpawn { set { _initialSpawn = value; } }
-
-        private float minHeight = 0.15f;
+        public Transform ceilCheck { set =>  _ceilCheck = value; }
+        public LayerMask buildingLayerMask { set =>  _buildingLayerMask = value; }
 
         [Range(0.15f, 3f)]
         public float characterHeight = 1.75f;
@@ -43,10 +49,19 @@ namespace ReupVirtualTwin.behaviours
         }
         private void AddToHeight(float heightDelta)
         {
-            if (characterHeight + heightDelta > minHeight)
+            Boolean minHeightGuard = characterHeight + heightDelta < minHeight;
+            Boolean ceilGuard = Physics.CheckSphere(_ceilCheck.position, _ceilCheckRadius, _buildingLayerMask) && heightDelta > 0;
+            if (!minHeightGuard && !ceilGuard)
             {
                 characterHeight += heightDelta;
                 updateHeight();
+            }
+        }
+        private void OnDrawGizmosSelected()
+        {
+            if (_ceilCheck)
+            {
+                Gizmos.DrawWireSphere(_ceilCheck.position, _ceilCheckRadius);
             }
         }
     }

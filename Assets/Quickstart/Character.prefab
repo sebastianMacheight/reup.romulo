@@ -359,6 +359,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxStepHeight: 0.25
+--- !u!1 &629607616915025071
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4074076825167868441}
+  m_Layer: 7
+  m_Name: CeilCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4074076825167868441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629607616915025071}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.11100006, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8380427711663556094}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1678713438409449124
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,6 +797,7 @@ Transform:
   - {fileID: 4016467730732689751}
   - {fileID: 359398473825334399}
   - {fileID: 4787269145028247440}
+  - {fileID: 4074076825167868441}
   m_Father: {fileID: 750237606206558042}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -939,6 +971,10 @@ MonoBehaviour:
   createColliderContainer: {fileID: 4125742121506657584}
   maintainheightContainer: {fileID: 1625360268}
   initialSpawnContainer: {fileID: 1678713438409449124}
+  ceilCheck: {fileID: 629607616915025071}
+  buildingLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &7657426824907154042
 GameObject:
   m_ObjectHideFlags: 0
