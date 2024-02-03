@@ -35,14 +35,14 @@ public class EditModeManagerTest : MonoBehaviour
     private class MockMediator : IMediator
     {
         public bool editMode;
-        public void Notify(Events eventName)
+        public void Notify(ReupEvent eventName)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Notify<T>(Events eventName, T payload)
+        public void Notify<T>(ReupEvent eventName, T payload)
         {
-            if (eventName == Events.setEditMode)
+            if (eventName == ReupEvent.setEditMode)
             {
                 editMode = (bool)(object)payload;
             }

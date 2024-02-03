@@ -238,28 +238,28 @@ public class TransformObjectsManagerTest : MonoBehaviour
         public TransformMode mode;
         public bool transformModeActive = false;
         public bool notified = false;
-        public void Notify(Events eventName)
+        public void Notify(ReupEvent eventName)
         {
             switch (eventName)
             {
-                case Events.positionTransformModeActivated:
+                case ReupEvent.positionTransformModeActivated:
                     transformModeActive = true;
                     mode = TransformMode.PositionMode;
                     notified = true;
                     break;
-                case Events.rotationTransformModeActivated:
+                case ReupEvent.rotationTransformModeActivated:
                     transformModeActive = true;
                     mode = TransformMode.RotationMode;
                     notified = true;
                     break;
-                case Events.transformModeDeactivated:
+                case ReupEvent.transformModeDeactivated:
                     transformModeActive = false;
                     notified = true;
                     break;
             }
         }
 
-        public void Notify<T>(Events eventName, T payload)
+        public void Notify<T>(ReupEvent eventName, T payload)
         {
             throw new System.NotImplementedException();
         }
