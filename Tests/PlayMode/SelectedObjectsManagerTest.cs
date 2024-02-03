@@ -118,14 +118,14 @@ public class SelectedObjectsManagerTest : MonoBehaviour
     {
         public List<GameObject> selectedObjects = new List<GameObject>() { };
         public bool selectedObjectModified = false;
-        public void Notify(Events eventName)
+        public void Notify(ReupEvent eventName)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Notify<T>(Events eventName, T payload)
+        public void Notify<T>(ReupEvent eventName, T payload)
         {
-            if (eventName == Events.setSelectedObjects)
+            if (eventName == ReupEvent.setSelectedObjects)
             {
                 selectedObjects = ((ObjectWrapperDTO)(object)payload).wrappedObjects;
                 selectedObjectModified = true;
