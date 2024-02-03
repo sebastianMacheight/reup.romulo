@@ -1,8 +1,7 @@
-using ReupVirtualTwin.behaviours;
-using ReupVirtualTwin.helpers;
 using UnityEngine;
-using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.managers;
+using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.helperInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
@@ -12,17 +11,14 @@ namespace ReupVirtualTwin.behaviours
         CharacterPositionManager _characterPositionManager;
         ISetUpBuilding _setUpBuilding;
         public ISetUpBuilding setUpBuilding { set => _setUpBuilding = value; } 
-        private Sensor _sensor;
-        void Awake()
-        {
-            _sensor = GetComponent<Sensor>();
-        }
+        private ISensor _sensor;
+        public ISensor sensor { set => _sensor = value; }
         public void Spawn()
         {
-            _setUpBuilding.onBuildingSetUp += this.MoveToRightHeightCallback;
+            _setUpBuilding.onBuildingSetUp += this.MoveToInitialHeightCallback;
         }
 
-        private void MoveToRightHeightCallback()
+        private void MoveToInitialHeightCallback()
         {
             RaycastHit? hit = _sensor.Sense();
             if (hit != null)
@@ -33,7 +29,7 @@ namespace ReupVirtualTwin.behaviours
                 Vector3 desiredInitialPosition = new Vector3(currentPosition.x, desiredInitialHeight, currentPosition.z);
                 _characterPositionManager.characterPosition = desiredInitialPosition;
             }
-            _setUpBuilding.onBuildingSetUp -= this.MoveToRightHeightCallback;
+            _setUpBuilding.onBuildingSetUp -= this.MoveToInitialHeightCallback;
         }
     }
 }
