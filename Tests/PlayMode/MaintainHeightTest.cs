@@ -29,7 +29,7 @@ public class MaintainHeightTest : MonoBehaviour
         posManager.maxStepHeight = 0.25f;
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(platformPrefab);
         SetPlatform();
-        initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawn>();
+        initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawn>();
         MockSetUpBuilding mockSetUpBuilding = new MockSetUpBuilding();
         initialSpawn.setUpBuilding = mockSetUpBuilding;
     }
@@ -92,8 +92,8 @@ public class MaintainHeightTest : MonoBehaviour
     {
         var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
         Destroy(movementSelectPosDependencyInjector);
-        var initalSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawnDependencyInjector>();
-        Destroy(initalSpawnDependencyInjector);
+        var initialSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
+        Destroy(initialSpawnDependencyInjector);
 
     }
 }
