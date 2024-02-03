@@ -1,8 +1,10 @@
+using ReupVirtualTwin.enums;
+using ReupVirtualTwin.managerInterfaces;
 using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
-    public class HeightMediator : MonoBehaviour, IHeightMediator
+    public class HeightMediator : MonoBehaviour, IMediator
     {
         private ICreateCollider _createCollider;
         private IMaintainHeight _maintainHeight;
@@ -17,21 +19,30 @@ namespace ReupVirtualTwin.behaviours
 
         private void Start()
         {
-            updateHeight(characterHeight);
+            updateHeight();
             _initialSpawn.Spawn();
         }
 
-        public void Notify(string eventName, float height)
+        public void Notify(ReupEvent eventName)
         {
-            if (eventName == "UpdateHeight")
+            throw new System.NotImplementedException();
+        }
+        public void Notify<T>(ReupEvent eventName, T payload)
+        {
+            if (eventName == ReupEvent.addToCharacterHeight)
             {
-                updateHeight(height);
+                AddToHeight((float)(object)payload);
             }
         }
-        private void updateHeight(float height)
+        private void updateHeight()
         {
-            _createCollider.UpdateCollider(height);
-            _maintainHeight.characterHeight = height;
+            _createCollider.UpdateCollider(characterHeight);
+            _maintainHeight.characterHeight = characterHeight;
+        }
+        private void AddToHeight(float heightDelta)
+        {
+            characterHeight += heightDelta;
+            updateHeight();
         }
     }
 }

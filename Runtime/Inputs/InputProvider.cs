@@ -103,5 +103,9 @@ namespace ReupVirtualTwin.inputs
         {
             return _input.Player.Pointer.ReadValue<Vector2>();
         }
+        public float ChangeHeightInput()
+        {
+            return _input.Player.ChangeHeight.ReadValue<float>();
+        }
     }
 }
