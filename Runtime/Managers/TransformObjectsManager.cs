@@ -73,11 +73,11 @@ namespace ReupVirtualTwin.managers
             _runtimeTransformObj.SetActive(true);
             if (mode == TransformMode.PositionMode)
             {
-                _mediator.Notify(Events.positionTransformModeActivated);
+                _mediator.Notify(ReupEvent.positionTransformModeActivated);
             }
             if (mode == TransformMode.RotationMode)
             {
-                _mediator.Notify(Events.rotationTransformModeActivated);
+                _mediator.Notify(ReupEvent.rotationTransformModeActivated);
             }
         }
 
@@ -86,7 +86,7 @@ namespace ReupVirtualTwin.managers
             if (!_active) throw new InvalidOperationException("Can't deactivate transform mode, no active transform mode is active to begin with");
             _active = false;
             _runtimeTransformObj.SetActive(false);
-            _mediator.Notify(Events.transformModeDeactivated);
+            _mediator.Notify(ReupEvent.transformModeDeactivated);
         }
 
         private bool AreWrappedObjectsTransformable(List<GameObject> objects)
