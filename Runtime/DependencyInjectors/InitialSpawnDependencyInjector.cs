@@ -2,11 +2,14 @@
 
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.helperInterfaces;
 
 namespace ReupVirtualTwin.dependencyInjectors
 {
     public class InitialSpawnDependencyInjector : MonoBehaviour
     {
+        [SerializeField]
+        GameObject sensor;
 
         void Awake() {
             InitialSpawn initialSpawn = GetComponent<InitialSpawn>();
@@ -15,6 +18,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             {
                 initialSpawn.setUpBuilding = setUpBuilding;
             }
+            initialSpawn.sensor = sensor.GetComponent<ISensor>();
         }
 
     }

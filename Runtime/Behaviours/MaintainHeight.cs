@@ -1,10 +1,9 @@
 using UnityEngine;
-using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.managers;
 
 namespace ReupVirtualTwin.behaviours
 {
-    [RequireComponent(typeof(Sensor))]
     public class MaintainHeight : MonoBehaviour, IMaintainHeight
     {
         [SerializeField]
@@ -19,12 +18,8 @@ namespace ReupVirtualTwin.behaviours
             }
         }
 
-        private Sensor _sensor;
-
-        void Start()
-        {
-            _sensor = GetComponent<Sensor>();
-        }
+        private ISensor _sensor;
+        public ISensor sensor {  set =>  _sensor = value; }
 
         void Update()
         {
