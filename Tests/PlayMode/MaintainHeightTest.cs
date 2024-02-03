@@ -92,8 +92,8 @@ public class MaintainHeightTest : MonoBehaviour
     {
         var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
         Destroy(movementSelectPosDependencyInjector);
-        var initalSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
-        Destroy(initalSpawnDependencyInjector);
+        var initialSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
+        Destroy(initialSpawnDependencyInjector);
 
     }
 }
