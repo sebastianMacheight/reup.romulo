@@ -44,7 +44,7 @@ public class EditionMediatorTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldSendMessageInSetEditModeToTrue()
     {
-        editionMediator.Notify(Events.setEditMode, true);
+        editionMediator.Notify(ReupEvent.setEditMode, true);
         WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessage;
         Assert.AreEqual(WebMessageType.setEditModeSuccess, sentMessage.type);
         Assert.AreEqual(true, sentMessage.payload);
@@ -53,7 +53,7 @@ public class EditionMediatorTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldSendMessageInSetEditModeToFalse()
     {
-        editionMediator.Notify(Events.setEditMode, false);
+        editionMediator.Notify(ReupEvent.setEditMode, false);
         WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessage;
         Assert.AreEqual(WebMessageType.setEditModeSuccess, sentMessage.type);
         Assert.AreEqual(false, sentMessage.payload);
@@ -75,10 +75,10 @@ public class EditionMediatorTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldAllowAndDisallowObjectSelection()
     {
-        editionMediator.Notify(Events.setEditMode, true);
+        editionMediator.Notify(ReupEvent.setEditMode, true);
         Assert.AreEqual(mockSelectedObjectsManager.allowSelection, true);
         yield return null;
-        editionMediator.Notify(Events.setEditMode, false);
+        editionMediator.Notify(ReupEvent.setEditMode, false);
         Assert.AreEqual(mockSelectedObjectsManager.allowSelection, false);
         yield return null;
     }
@@ -86,7 +86,7 @@ public class EditionMediatorTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldClearSelectionWhenEditModeIsSetToFalse()
     {
-        editionMediator.Notify(Events.setEditMode, false);
+        editionMediator.Notify(ReupEvent.setEditMode, false);
         Assert.AreEqual(mockSelectedObjectsManager.selectionCleared, true);
         yield return null;
     }
@@ -141,13 +141,13 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldSendMessageOfLoadObjectUpdatedProcess()
     {
         float processStatus = 0.25f;
-        editionMediator.Notify(Events.insertedObjectStatusUpdate, processStatus);
+        editionMediator.Notify(ReupEvent.insertedObjectStatusUpdate, processStatus);
         WebMessage<float> sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessage;
         Assert.AreEqual(WebMessageType.loadObjectProcessUpdate, sentMessage.type);
         Assert.AreEqual(processStatus, sentMessage.payload);
         yield return null;
         processStatus = 0.6f;
-        editionMediator.Notify(Events.insertedObjectStatusUpdate, processStatus);
+        editionMediator.Notify(ReupEvent.insertedObjectStatusUpdate, processStatus);
         sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessage;
         Assert.AreEqual(WebMessageType.loadObjectProcessUpdate, sentMessage.type);
         Assert.AreEqual(processStatus, sentMessage.payload);
@@ -158,7 +158,7 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldSendMessageOfLoadObjectSuccess()
     {
         GameObject insertedObject = new GameObject("insertedObject");
-        editionMediator.Notify(Events.insertedObjectLoaded, insertedObject);
+        editionMediator.Notify(ReupEvent.insertedObjectLoaded, insertedObject);
         WebMessage<ObjectDTO> sentMessage = (WebMessage<ObjectDTO>)mockWebMessageSender.sentMessage;
         Assert.AreEqual(WebMessageType.loadObjectSuccess, sentMessage.type);
         Assert.AreEqual(mockObjectMapper.objectDTOs[0], sentMessage.payload);

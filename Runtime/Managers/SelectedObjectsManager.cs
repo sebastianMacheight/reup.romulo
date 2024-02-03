@@ -31,7 +31,7 @@ namespace ReupVirtualTwin.managers
                 {
                     _highlighter.HighlightObject(_wrapperObject);
                 }
-                _mediator.Notify(Events.setSelectedObjects, wrapperDTO);
+                _mediator.Notify(ReupEvent.setSelectedObjects, wrapperDTO);
             }
         }
         public ObjectWrapperDTO wrapperDTO
