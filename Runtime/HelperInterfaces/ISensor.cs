@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace ReupVirtualTwin.helpers
+namespace ReupVirtualTwin.helperInterfaces
 {
-    public interface Sensor
+    public interface ISensor
     {
         public RaycastHit? Sense();
     }
