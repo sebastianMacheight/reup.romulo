@@ -80,6 +80,15 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ChangeHeight"",
+                    ""type"": ""Value"",
+                    ""id"": ""2d42ce9a-959b-4302-9393-88cf408eb893"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -302,6 +311,39 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""RotateViewKeyborad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""QE_keys"",
+                    ""id"": ""4fb79599-dd72-49eb-947d-ade008833463"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeHeight"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""a1d6652a-ce1c-409e-945f-73e3451808a7"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeHeight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""7ea62665-edf5-4228-8752-0aeacff733fd"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeHeight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -434,6 +476,7 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
         m_Player_Pointer = m_Player.FindAction("Pointer", throwIfNotFound: true);
         m_Player_Hold = m_Player.FindAction("Hold", throwIfNotFound: true);
+        m_Player_ChangeHeight = m_Player.FindAction("ChangeHeight", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
@@ -506,6 +549,7 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Select;
     private readonly InputAction m_Player_Pointer;
     private readonly InputAction m_Player_Hold;
+    private readonly InputAction m_Player_ChangeHeight;
     public struct PlayerActions
     {
         private @AppInputActions m_Wrapper;
@@ -516,6 +560,7 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
         public InputAction @Select => m_Wrapper.m_Player_Select;
         public InputAction @Pointer => m_Wrapper.m_Player_Pointer;
         public InputAction @Hold => m_Wrapper.m_Player_Hold;
+        public InputAction @ChangeHeight => m_Wrapper.m_Player_ChangeHeight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -543,6 +588,9 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
             @Hold.started += instance.OnHold;
             @Hold.performed += instance.OnHold;
             @Hold.canceled += instance.OnHold;
+            @ChangeHeight.started += instance.OnChangeHeight;
+            @ChangeHeight.performed += instance.OnChangeHeight;
+            @ChangeHeight.canceled += instance.OnChangeHeight;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -565,6 +613,9 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
             @Hold.started -= instance.OnHold;
             @Hold.performed -= instance.OnHold;
             @Hold.canceled -= instance.OnHold;
+            @ChangeHeight.started -= instance.OnChangeHeight;
+            @ChangeHeight.performed -= instance.OnChangeHeight;
+            @ChangeHeight.canceled -= instance.OnChangeHeight;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -670,6 +721,7 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
         void OnSelect(InputAction.CallbackContext context);
         void OnPointer(InputAction.CallbackContext context);
         void OnHold(InputAction.CallbackContext context);
+        void OnChangeHeight(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
