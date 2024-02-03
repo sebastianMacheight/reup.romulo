@@ -14,7 +14,9 @@ namespace ReupVirtualTwin.behaviours
         public IMaintainHeight maintainHeight { set { _maintainHeight = value; } }
         public IInitialSpawn initialSpawn { set { _initialSpawn = value; } }
 
-        [Range(0.1f, 3f)]
+        private float minHeight = 0.15f;
+
+        [Range(0.15f, 3f)]
         public float characterHeight = 1.75f;
 
         private void Start()
@@ -41,8 +43,11 @@ namespace ReupVirtualTwin.behaviours
         }
         private void AddToHeight(float heightDelta)
         {
-            characterHeight += heightDelta;
-            updateHeight();
+            if (characterHeight + heightDelta > minHeight)
+            {
+                characterHeight += heightDelta;
+                updateHeight();
+            }
         }
     }
 }
