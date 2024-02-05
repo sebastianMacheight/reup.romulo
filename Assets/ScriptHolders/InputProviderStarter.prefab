@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4355761033848208912}
   - component: {fileID: 4355761033848208911}
+  - component: {fileID: 6121189262410777512}
   m_Layer: 0
   m_Name: InputProviderStarter
   m_TagString: Untagged
@@ -42,5 +43,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9aa3c3d3fd8c5450e8d15135c5359246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6121189262410777512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4355761033848208913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42288d5dc7e86f54f907a2b2cd86fa6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
