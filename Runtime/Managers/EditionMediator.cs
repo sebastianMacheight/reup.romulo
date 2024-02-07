@@ -19,10 +19,7 @@ namespace ReupVirtualTwin.managers
             set { _characterRotationManager = value; }
         }
         private IEditModeManager _editModeManager;
-        public IEditModeManager editModeManager
-        {
-            set { _editModeManager = value; }
-        }
+        public IEditModeManager editModeManager { set => _editModeManager = value; }
         private ISelectedObjectsManager _selectedObjectsManager;
         public ISelectedObjectsManager selectedObjectsManager { set { _selectedObjectsManager = value; } }
         private ITransformObjectsManager _transformObjectsManager;
@@ -159,18 +156,15 @@ namespace ReupVirtualTwin.managers
 
         private void DeleteSelectedObjects()
         {
-            try
+            if (_deleteObjectsManager.AreWrappedObjectsDeletable(_selectedObjectsManager.wrapperDTO))
             {
-                if (_deleteObjectsManager.AreWrappedObjectsDeletable(_selectedObjectsManager.wrapperDTO))
-                {
-                    ObjectWrapperDTO objectsToDelete = _selectedObjectsManager.wrapperDTO;
-                    _selectedObjectsManager.ClearSelection();
-                    _deleteObjectsManager.DeleteSelectedObjects(objectsToDelete);
-                }
+                List<GameObject> objectsToDelete = _selectedObjectsManager.wrapperDTO.wrappedObjects;
+                _selectedObjectsManager.ClearSelection();
+                _deleteObjectsManager.DeleteSelectedObjects(objectsToDelete);
             }
-            catch (ArgumentException ex)
+            else
             {
-                SendErrorMessage(ex.Message);
+                SendErrorMessage("The selection is empty, or there is at least one non-deletable object selected");
             }
         }
 

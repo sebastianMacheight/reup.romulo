@@ -16,33 +16,22 @@ namespace ReupVirtualTwin.managers
 
     {
         private IMediator _mediator;
-        public IMediator mediator { set { _mediator = value; } }
+        public IMediator mediator { set => _mediator = value; }
         private ITagsController _tagsController;
         public ITagsController tagsController { set => _tagsController = value; }
 
         public bool AreWrappedObjectsDeletable(ObjectWrapperDTO wrapperDTO)
         {
-            if (wrapperDTO == null || wrapperDTO.wrapper == null)
+            if ((wrapperDTO == null || wrapperDTO.wrapper == null) || (wrapperDTO.wrappedObjects.Count == 0) || (!CheckTag(wrapperDTO.wrappedObjects)))
             {
-                throw new ArgumentException("Selection wrapper is null");
+                return false;
             }
-            else if (wrapperDTO.wrappedObjects.Count == 0)
-            {
-                throw new ArgumentException("There are no objects selected");
-            }
-            else if (!CheckTag(wrapperDTO.wrappedObjects))
-            {
-                throw new ArgumentException("Not all selected objects are deletable");
-            }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
-        public void DeleteSelectedObjects(ObjectWrapperDTO wrapperDTO)
+        public void DeleteSelectedObjects(List<GameObject> objectsToDelete)
         {     
-            foreach (var obj in wrapperDTO.wrappedObjects)
+            foreach (var obj in objectsToDelete)
             {
                 DestroyImmediate(obj);
             }
