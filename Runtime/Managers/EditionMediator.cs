@@ -19,12 +19,14 @@ namespace ReupVirtualTwin.managers
             set { _characterRotationManager = value; }
         }
         private IEditModeManager _editModeManager;
-        public IEditModeManager editModeManager { set { _editModeManager = value; }
-        }
+        public IEditModeManager editModeManager { set => _editModeManager = value; }
         private ISelectedObjectsManager _selectedObjectsManager;
         public ISelectedObjectsManager selectedObjectsManager { set { _selectedObjectsManager = value; } }
         private ITransformObjectsManager _transformObjectsManager;
         public ITransformObjectsManager transformObjectsManager { set => _transformObjectsManager = value; }
+        private IDeleteObjectsManager _deleteObjectsManager;
+        public IDeleteObjectsManager deleteObjectsManager { set => _deleteObjectsManager = value; }
+
         private IInsertObjectsManager _insertObjectsManager;
         public IInsertObjectsManager insertObjectsManager { set => _insertObjectsManager = value; }
 
@@ -53,10 +55,14 @@ namespace ReupVirtualTwin.managers
                 case Events.transformModeDeactivated:
                     ProcessTranformModeDeactivation();
                     break;
+                case Events.objectsDeleted:
+                    ProcessDeleteObjects();
+                    break;
                 default:
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
             }
         }
+
         public void Notify<T>(Events eventName, T payload)
         {
             switch (eventName)
@@ -112,6 +118,9 @@ namespace ReupVirtualTwin.managers
                 case WebMessageType.deactivateTransformMode:
                     DeactivateTransformMode();
                     break;
+                case WebMessageType.deleteObjects:
+                    DeleteSelectedObjects();
+                    break;
                 case WebMessageType.loadObject:
                     LoadObject(message.payload);
                     break;
@@ -145,6 +154,19 @@ namespace ReupVirtualTwin.managers
             _transformObjectsManager.DeactivateTransformMode();
         }
 
+        private void DeleteSelectedObjects()
+        {
+            if (_deleteObjectsManager.AreWrappedObjectsDeletable(_selectedObjectsManager.wrapperDTO))
+            {
+                List<GameObject> objectsToDelete = _selectedObjectsManager.wrapperDTO.wrappedObjects;
+                _selectedObjectsManager.ClearSelection();
+                _deleteObjectsManager.DeleteSelectedObjects(objectsToDelete);
+            }
+            else
+            {
+                SendErrorMessage("The selection is empty, or there is at least one non-deletable object selected");
+            }
+        }
 
         private void ProccessEditMode(bool editMode)
         {
@@ -162,6 +184,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
         private void ProcessNewWrapper(ObjectWrapperDTO wrappedObject)
         {
             if (_transformObjectsManager.active)
@@ -170,6 +193,7 @@ namespace ReupVirtualTwin.managers
             }
             SendNewSelectedObjectsMessage(wrappedObject.wrappedObjects);
         }
+
         private void SendNewSelectedObjectsMessage(List<GameObject> selectedObjects)
         {
             ObjectDTO[] objectDTOs = _objectMapper.MapObjectsToDTO(selectedObjects);
@@ -180,6 +204,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
         private void ProcessTransformModeActivation(TransformMode mode)
         {
             string eventName;
@@ -201,6 +226,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
         private void ProcessTranformModeDeactivation()
         {
             WebMessage<string> message = new WebMessage<string>
@@ -209,6 +235,19 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
+        private void ProcessDeleteObjects()
+        {
+            string webMessageType;
+            webMessageType = WebMessageType.deleteObjectsSuccess;
+
+            WebMessage<string> message = new WebMessage<string>
+            {
+                type = webMessageType,
+            };
+            _webMessageSender.SendWebMessage(message);
+        }
+
         private void ProcessInsertedObjectLoaded(GameObject obj)
         {
             ObjectDTO objectDTO = _objectMapper.MapObjectToDTO(obj);
@@ -224,6 +263,7 @@ namespace ReupVirtualTwin.managers
         {
             _insertObjectsManager.InsertObjectFromUrl(url);
         }
+
         private void ProcessLoadStatus(float status)
         {
             WebMessage<float> message = new WebMessage<float>
@@ -233,6 +273,7 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
+
         private void SendErrorMessage(string message)
         {
             _webMessageSender.SendWebMessage(new WebMessage<string>
@@ -242,4 +283,6 @@ namespace ReupVirtualTwin.managers
             });
         }
     }
+
 }
+

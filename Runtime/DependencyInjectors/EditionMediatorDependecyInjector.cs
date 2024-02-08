@@ -20,7 +20,9 @@ namespace ReupVirtualTwin.dependencyInjectors
         GameObject transformObjectsManager;
         [SerializeField]
         GameObject insertObjectsManager;
-        
+        [SerializeField]
+        GameObject deleteObjectsManager;
+
         private void Awake()
         {
             _editionMediator = GetComponent<EditionMediator>();
@@ -29,6 +31,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             _editionMediator.editModeManager = editModeManager.GetComponent<IEditModeManager>();
             _editionMediator.selectedObjectsManager = selectedObjectsManager.GetComponent<ISelectedObjectsManager>();
             _editionMediator.transformObjectsManager = transformObjectsManager.GetComponent<ITransformObjectsManager>();
+            _editionMediator.deleteObjectsManager = deleteObjectsManager.GetComponent<IDeleteObjectsManager>();
             IWebMessagesSender webMessageSender = GetComponent<IWebMessagesSender>();
             if (webMessageSender == null )
             {
