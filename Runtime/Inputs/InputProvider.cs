@@ -89,6 +89,10 @@ namespace ReupVirtualTwin.inputs
         {
             return _input.Player.RotateView.ReadValue<Vector2>() * -1;
         }
+        public Vector2 RotateViewKeyboardInput()
+        {
+            return _input.Player.RotateViewKeyborad.ReadValue<Vector2>();
+        }
 
         public Vector2 MovementInput()
         { 

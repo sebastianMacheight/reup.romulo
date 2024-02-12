@@ -4,10 +4,10 @@ using UnityEngine.TestTools;
 using UnityEditor;
 using System.Collections;
 
-using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.dependencyInjectors;
 using Packages.reup.romulo.Tests.PlayMode.Mocks;
+using ReupVirtualTwin.managers;
 
 public class CollisionDetectorTest : MonoBehaviour
 {
