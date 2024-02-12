@@ -102,14 +102,14 @@ public class DeleteObjectsManagerTest : MonoBehaviour
         public bool deleteModeActive = false;
         public bool notified = false;
 
-        public void Notify(Events eventName)
+        public void Notify(ReupEvent eventName)
         {
-            if (eventName == Events.objectsDeleted){
+            if (eventName == ReupEvent.objectsDeleted){
                 notified = true;
             }
         }
 
-        public void Notify<T>(Events eventName, T payload)
+        public void Notify<T>(ReupEvent eventName, T payload)
         {
             throw new System.NotImplementedException();
         }

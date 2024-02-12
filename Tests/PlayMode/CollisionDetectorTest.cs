@@ -27,7 +27,7 @@ public class CollisionDetectorTest : MonoBehaviour
         posManager = character.GetComponent<CharacterPositionManager>();
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(cubePrefab);
         SetPlatform();
-        initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawn>();
+        initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawn>();
         MockSetUpBuilding mockSetUpBuilding = new MockSetUpBuilding();
         initialSpawn.setUpBuilding = mockSetUpBuilding;
     }
@@ -70,8 +70,8 @@ public class CollisionDetectorTest : MonoBehaviour
     {
         var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
         Destroy(movementSelectPosDependencyInjector);
-        var initalSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawnDependencyInjector>();
-        Destroy(initalSpawnDependencyInjector);
+        var initialSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
+        Destroy(initialSpawnDependencyInjector);
 
     }
 }

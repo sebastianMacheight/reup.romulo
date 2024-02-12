@@ -35,7 +35,7 @@ namespace ReupVirtualTwin.managers
             {
                 DestroyImmediate(obj);
             }
-            _mediator.Notify(Events.objectsDeleted);
+            _mediator.Notify(ReupEvent.objectsDeleted);
         }
 
         private bool CheckTag(List<GameObject> objects)
