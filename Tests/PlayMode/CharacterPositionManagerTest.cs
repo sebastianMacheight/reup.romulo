@@ -29,7 +29,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
         character.transform.position = Vector3.zero;
         posManager = character.GetComponent<CharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
-        initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawn>();
+        initialSpawn = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawn>();
         MockSetUpBuilding mockSetUpBuilding = new MockSetUpBuilding();
         initialSpawn.setUpBuilding = mockSetUpBuilding;
     }
@@ -136,10 +136,9 @@ public class CharacterPositionManagerTest : MonoBehaviour
     private void DestroyGameRelatedDependecyInjectors()
     {
         var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
-        var initalSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("MaintainHeight").GetComponent<InitialSpawnDependencyInjector>();
+        var initialSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
         Destroy(movementSelectPosDependencyInjector);
-        Destroy(initalSpawnDependencyInjector);
+        Destroy(initialSpawnDependencyInjector);
     }
-
 }
 

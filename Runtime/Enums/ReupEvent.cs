@@ -1,6 +1,6 @@
 namespace ReupVirtualTwin.enums
 {
-    public enum Events
+    public enum ReupEvent
     {
         transformHandleStartItneraction,
         transformHandleStopInteraction,

@@ -1,10 +1,12 @@
 using UnityEngine;
 
+using ReupVirtualTwin.helperInterfaces;
+
 namespace ReupVirtualTwin.helpers
 {
     [RequireComponent(typeof(IRayProvider))]
     [RequireComponent(typeof(IRayCastHitSelector))]
-    public class SensorImp : MonoBehaviour, Sensor
+    public class SensorImp : MonoBehaviour, ISensor
     {
         protected IRayProvider _rayProvider;
         protected IRayCastHitSelector _hitSelector;

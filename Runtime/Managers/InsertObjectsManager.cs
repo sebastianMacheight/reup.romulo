@@ -41,7 +41,7 @@ namespace ReupVirtualTwin.managers
 
         private void OnProgress(AssetLoaderContext assetLoaderContext, float progress)
         {
-            _mediator.Notify(Events.insertedObjectStatusUpdate, progress);
+            _mediator.Notify(ReupEvent.insertedObjectStatusUpdate, progress);
         }
 
         private void OnError(IContextualizedError contextualizedError)
@@ -88,7 +88,7 @@ namespace ReupVirtualTwin.managers
         {
             var myLoadedGameObject = assetLoaderContext.RootGameObject;
             myLoadedGameObject.SetActive(true);
-            _mediator.Notify(Events.insertedObjectLoaded, myLoadedGameObject);
+            _mediator.Notify(ReupEvent.insertedObjectLoaded, myLoadedGameObject);
         }
 
     }

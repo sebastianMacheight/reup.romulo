@@ -36,59 +36,58 @@ namespace ReupVirtualTwin.managers
         public IObjectMapper objectMapper { set => _objectMapper = value; }
 
 
-        public void Notify(Events eventName)
+        public void Notify(ReupEvent eventName)
         {
             switch (eventName)
             {
-                case Events.transformHandleStartItneraction:
+                case ReupEvent.transformHandleStartItneraction:
                     _characterRotationManager.allowRotation = false;
                     break;
-                case Events.transformHandleStopInteraction:
+                case ReupEvent.transformHandleStopInteraction:
                     _characterRotationManager.allowRotation = true;
                     break;
-                case Events.positionTransformModeActivated:
+                case ReupEvent.positionTransformModeActivated:
                     ProcessTransformModeActivation(TransformMode.PositionMode);
                     break;
-                case Events.rotationTransformModeActivated:
+                case ReupEvent.rotationTransformModeActivated:
                     ProcessTransformModeActivation(TransformMode.RotationMode);
                     break;
-                case Events.transformModeDeactivated:
+                case ReupEvent.transformModeDeactivated:
                     ProcessTranformModeDeactivation();
                     break;
-                case Events.objectsDeleted:
+                case ReupEvent.objectsDeleted:
                     ProcessDeleteObjects();
                     break;
                 default:
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
             }
         }
-
-        public void Notify<T>(Events eventName, T payload)
+        public void Notify<T>(ReupEvent eventName, T payload)
         {
             switch (eventName)
             {
-                case Events.setEditMode:
+                case ReupEvent.setEditMode:
                     if (!(payload is bool))
                     {
                         throw new ArgumentException($"Payload must be a boolean for {eventName} events", nameof(payload));
                     }
                     ProccessEditMode((bool)(object)payload);
                     break;
-                case Events.setSelectedObjects:
+                case ReupEvent.setSelectedObjects:
                     if (!(payload is ObjectWrapperDTO))
                     {
                         throw new ArgumentException($"Payload must be of type {nameof(ObjectWrapperDTO)} for {eventName} events", nameof(payload));
                     }
                     ProcessNewWrapper((ObjectWrapperDTO)(object)payload);
                     break;
-                case Events.insertedObjectLoaded:
+                case ReupEvent.insertedObjectLoaded:
                     if (!(payload is GameObject))
                     {
                         throw new ArgumentException($"Payload must be of type {nameof(GameObject)} for {eventName} events", nameof(payload));
                     }
                     ProcessInsertedObjectLoaded((GameObject)(object)payload);
                     break;
-                case Events.insertedObjectStatusUpdate:
+                case ReupEvent.insertedObjectStatusUpdate:
                     if (!(payload is float))
                     {
                         throw new ArgumentException($"Payload must be of type float for {eventName} events", nameof(payload));

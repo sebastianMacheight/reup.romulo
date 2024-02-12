@@ -15,7 +15,7 @@ namespace ReupVirtualTwin.managers
             set
             {
                 _editMode = value;
-                _mediator.Notify(Events.setEditMode, _editMode);
+                _mediator.Notify(ReupEvent.setEditMode, _editMode);
             }
         }
 
