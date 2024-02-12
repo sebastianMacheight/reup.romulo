@@ -1,61 +1,57 @@
 using UnityEngine;
-using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.inputs;
 using ReupVirtualTwin.managers;
 
-public class CharacterMovementKeyboard : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-    [SerializeField]
-    private Transform _innerCharacterTransform;
-
-    private InputProvider _inputProvider;
-    [SerializeField]
-    private CharacterPositionManager _characterPositionManager;
-    [SerializeField]
-    private CharacterRotationManager _characterRotationManager;
-    private float WALK_SPEED_M_PER_SECOND = 3.5f;
-    private float ROTATION_SPEED_DEG_PER_SECOND = 180f;
-
-
-    private void Awake()
+    public class CharacterMovementKeyboard : MonoBehaviour
     {
-        _inputProvider = new InputProvider();
-    }
+        [SerializeField]
+        private Transform _innerCharacterTransform;
 
-    private void Update()
-    {
-        UpdatePosition();
-    }
+        private InputProvider _inputProvider;
+        [SerializeField]
+        private CharacterPositionManager _characterPositionManager;
+        private float WALK_SPEED_M_PER_SECOND = 3.5f;
 
-    private void UpdatePosition()
-    {
-        Vector2 inputValue = _inputProvider.MovementInput().normalized;
-        PerformForwardBackwardMovement(inputValue.y);
-        PerformRotation(inputValue.x);
-    }
-    private void PerformRotation(float direction)
-    {
-        if (direction != 0f)
+
+        private void Awake()
         {
-            float angleDelta = direction * ROTATION_SPEED_DEG_PER_SECOND * Time.deltaTime;
-            _characterRotationManager.horizontalRotation += angleDelta;
+            _inputProvider = new InputProvider();
         }
-    }
 
-    private void PerformForwardBackwardMovement(float direction)
-    {
-        Vector3 movementDirection =  direction * GetCharacterForward();
-        if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
+        private void Update()
         {
-            _characterPositionManager.StopWalking();
-            _characterPositionManager.MoveInDirection(movementDirection, WALK_SPEED_M_PER_SECOND);
+            UpdatePosition();
         }
-    }
 
-    private Vector3 GetCharacterForward()
-    {
-        Vector3 forward = _innerCharacterTransform.forward;
-        forward.y = 0;
-        return forward;
+        private void UpdatePosition()
+        {
+            Vector2 inputValue = _inputProvider.MovementInput().normalized;
+            PerformMovement(inputValue);
+        }
+
+        private void PerformMovement(Vector2 direction)
+        {
+            Vector3 movementDirection = direction.y * GetCharacterForward() + direction.x * GetCharacterRight();
+            if (movementDirection != Vector3.zero && _characterPositionManager.allowWalking)
+            {
+                _characterPositionManager.StopWalking();
+                _characterPositionManager.MoveInDirection(movementDirection, WALK_SPEED_M_PER_SECOND);
+            }
+        }
+
+        private Vector3 GetCharacterForward()
+        {
+            Vector3 forward = _innerCharacterTransform.forward;
+            forward.y = 0;
+            return forward;
+        }
+        private Vector3 GetCharacterRight()
+        {
+            Vector3 right = _innerCharacterTransform.right;
+            right.y = 0;
+            return right;
+        }
     }
 }

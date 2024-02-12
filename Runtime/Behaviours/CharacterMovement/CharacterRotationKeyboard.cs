@@ -1,18 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using ReupVirtualTwin.inputs;
+using ReupVirtualTwin.managers;
 
-public class CharacterRotationKeyboard : MonoBehaviour
+namespace ReupVirtualTwin.behaviours
 {
-    // Start is called before the first frame update
-    void Start()
+    public class CharacterRotationKeyboard : MonoBehaviour
     {
-        
-    }
+        [SerializeField]
+        private Transform _innerCharacterTransform;
+        [SerializeField]
+        private CharacterRotationManager _characterRotationManager;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private InputProvider _inputProvider;
+
+        private float ROTATION_SPEED_DEG_PER_SECOND = 180f;
+
+        private void Awake()
+        {
+            _inputProvider = new InputProvider();
+        }
+
+        private void Update()
+        {
+            UpdateRotation();
+        }
+        private void UpdateRotation()
+        {
+            Vector2 look = _inputProvider.RotateViewKeyboardInput();
+            float deltaSpeed = ROTATION_SPEED_DEG_PER_SECOND * Time.deltaTime;
+            _characterRotationManager.horizontalRotation += (look.x * deltaSpeed);
+            _characterRotationManager.verticalRotation += (look.y * deltaSpeed * -1);
+        }
     }
 }
