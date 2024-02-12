@@ -2,10 +2,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
-using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.enums;
-using System;
+using ReupVirtualTwin.managers;
 
 public class FollowCharacterTest
 {
