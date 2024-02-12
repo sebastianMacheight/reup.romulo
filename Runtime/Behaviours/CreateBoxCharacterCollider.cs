@@ -25,7 +25,7 @@ namespace ReupVirtualTwin.behaviours
 
         private void DestroyCollider()
         {
-            Collider collider = GetComponent<Collider>();
+            Collider collider = character.GetComponent<Collider>();
             if (collider != null)
             {
                 Destroy(collider);
