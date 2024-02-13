@@ -11,7 +11,7 @@ namespace ReupVirtualTwin.controllers
         float MIN_COLLIDER_HEIGHT = 0.05f;
         float COLLIDER_FRONT_IN_METERS = 0.02f;
         float COLLIDER_SIDE_IN_METERS = 0.2f;
-        float EXTRA_HEIGHT_ABOVE_CHARACTER = 0.01f;
+        float EXTRA_HEIGHT_ABOVE_CHARACTER = 0;
 
         public CharacterColliderBoxController(GameObject character)
         {
@@ -40,7 +40,7 @@ namespace ReupVirtualTwin.controllers
         private bool CreateCollider(float characterHeight)
         {
             BoxCollider collider = character.AddComponent<BoxCollider>();
-            float colliderHeight = characterHeight - FREE_SPACE_BELOW_IN_METERS;
+            float colliderHeight = characterHeight - FREE_SPACE_BELOW_IN_METERS + EXTRA_HEIGHT_ABOVE_CHARACTER;
             if (colliderHeight < MIN_COLLIDER_HEIGHT)
             {
                 colliderHeight = MIN_COLLIDER_HEIGHT;
