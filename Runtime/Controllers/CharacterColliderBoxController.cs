@@ -1,17 +1,22 @@
+using ReupVirtualTwin.controllerInterfaces;
 using UnityEngine;
 
-namespace ReupVirtualTwin.behaviours
+namespace ReupVirtualTwin.controllers
 {
-    public class CreateBoxCharacterCollider : MonoBehaviour, ICreateCollider
+    public class CharacterColliderBoxController : MonoBehaviour, ICharacterColliderController
 
     {
-        [SerializeField]
         GameObject character;
-
         float FREE_SPACE_BELOW_IN_METERS = 1f;
         float MIN_COLLIDER_HEIGHT = 0.05f;
         float COLLIDER_FRONT_IN_METERS = 0.02f;
         float COLLIDER_SIDE_IN_METERS = 0.2f;
+        float EXTRA_HEIGHT_ABOVE_CHARACTER = 0.01f;
+
+        public CharacterColliderBoxController(GameObject character)
+        {
+            this.character = character;
+        }
 
         public bool UpdateCollider(float characterHeight)
         {
@@ -23,7 +28,7 @@ namespace ReupVirtualTwin.behaviours
             return CreateCollider(characterHeight);
         }
 
-        private void DestroyCollider()
+        public void DestroyCollider()
         {
             Collider collider = character.GetComponent<Collider>();
             if (collider != null)
@@ -40,7 +45,7 @@ namespace ReupVirtualTwin.behaviours
             {
                 colliderHeight = MIN_COLLIDER_HEIGHT;
             }
-            float colliderYCenter = -1 * colliderHeight / 2;
+            float colliderYCenter = (-1 * colliderHeight / 2) + EXTRA_HEIGHT_ABOVE_CHARACTER;
             collider.size = new Vector3(COLLIDER_FRONT_IN_METERS, colliderHeight, COLLIDER_SIDE_IN_METERS);
             collider.center = new Vector3(0, colliderYCenter, 0);
             return true;
