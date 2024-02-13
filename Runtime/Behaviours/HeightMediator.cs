@@ -33,13 +33,24 @@ namespace ReupVirtualTwin.behaviours
 
         public void Notify(ReupEvent eventName)
         {
-            throw new System.NotImplementedException();
+            switch (eventName)
+            {
+                case ReupEvent.setCharacterHeight:
+                    updateHeight();
+                    break;
+                default:
+                    break;
+            }
         }
         public void Notify<T>(ReupEvent eventName, T payload)
         {
-            if (eventName == ReupEvent.addToCharacterHeight)
+            switch(eventName)
             {
-                AddToHeight((float)(object)payload);
+                case ReupEvent.addToCharacterHeight:
+                    AddToHeight((float)(object)payload);
+                    break;
+                default:
+                    break;
             }
         }
         private void updateHeight()
@@ -53,8 +64,8 @@ namespace ReupVirtualTwin.behaviours
             Boolean ceilGuard = Physics.CheckSphere(_ceilCheck.position, _ceilCheckRadius, _buildingLayerMask) && heightDelta > 0;
             if (!minHeightGuard && !ceilGuard)
             {
-                characterHeight += heightDelta;
                 _colliderController.DestroyCollider();
+                characterHeight += heightDelta;
                 _maintainHeight.characterHeight = characterHeight;
             }
         }

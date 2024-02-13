@@ -8,6 +8,7 @@ namespace ReupVirtualTwin.behaviours
     {
         [SerializeField]
         CharacterPositionManager _characterPositionManager;
+        public float maxStepHeight = 0.3f;
 
         private static float CHARACTER_HEIGHT;
         public float characterHeight
@@ -21,6 +22,11 @@ namespace ReupVirtualTwin.behaviours
         private ISensor _sensor;
         public ISensor sensor {  set =>  _sensor = value; }
 
+        private void Start()
+        {
+            _characterPositionManager.maxStepHeight = maxStepHeight;
+        }
+
         void Update()
         {
             var hit = _sensor.Sense();
@@ -33,7 +39,7 @@ namespace ReupVirtualTwin.behaviours
         void KeepCharacterHeightFromGround(RaycastHit groundHit)
         {
             this.groundHit = groundHit.point;
-            var newHeight = GetDesiredHeightInGround(groundHit.point.y);
+            float newHeight = GetDesiredHeightInGround(groundHit.point.y);
             _characterPositionManager.KeepHeight(newHeight);
         }
 
