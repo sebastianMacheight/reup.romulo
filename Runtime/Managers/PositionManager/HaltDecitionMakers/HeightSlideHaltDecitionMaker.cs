@@ -1,13 +1,14 @@
 using UnityEngine;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
     public class HeightSlideHaltDecitionMaker : MovementHaltDecitionMaker<float>
     {
-        CharacterPositionManager characterPositionManager;
+        ICharacterPositionManager characterPositionManager;
         float stopMovementThreshold;
 
-        public HeightSlideHaltDecitionMaker(CharacterPositionManager cpm, float stopThreshold)
+        public HeightSlideHaltDecitionMaker(ICharacterPositionManager cpm, float stopThreshold)
         {
             characterPositionManager = cpm;
             stopMovementThreshold = stopThreshold;

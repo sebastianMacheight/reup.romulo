@@ -1,13 +1,14 @@
 using UnityEngine;
+
 using ReupVirtualTwin.helperInterfaces;
-using ReupVirtualTwin.managers;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class MaintainHeight : MonoBehaviour, IMaintainHeight
     {
-        [SerializeField]
-        CharacterPositionManager _characterPositionManager;
+        ICharacterPositionManager _characterPositionManager;
+        public ICharacterPositionManager characterPositionManager { set => _characterPositionManager = value; }
         public float maxStepHeight = 0.3f;
 
         private static float CHARACTER_HEIGHT;

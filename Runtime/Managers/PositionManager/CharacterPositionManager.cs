@@ -1,10 +1,11 @@
 using UnityEngine;
 using ReupVirtualTwin.helpers;
 using UnityEngine.Events;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
-    public class CharacterPositionManager : MonoBehaviour
+    public class CharacterPositionManager : MonoBehaviour, ICharacterPositionManager
     {
         bool _allowSetHeight = true;
         bool _allowWalking = true;
