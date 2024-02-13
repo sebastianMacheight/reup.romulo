@@ -6,10 +6,9 @@ namespace ReupVirtualTwin.managers
 {
     public class CharacterPositionManager : MonoBehaviour
     {
-        public float maxStepHeight = 0.25f;
-
         bool _allowSetHeight = true;
         bool _allowWalking = true;
+        private float _maxStepHeight = 0.3f;
         private float movementForce = 20f;
         private Rigidbody rb;
         private float bodyDrag = 5f;
@@ -18,10 +17,11 @@ namespace ReupVirtualTwin.managers
         float STOP_WALK_THRESHOLD = 0.5f;
         float STOP_MOVEMENT_THRESHOLD = 0.02f;
 
-
         SpaceSlider walkSlider;
         SpaceSlider spaceSlider;
         LinearSlider heightSlider;
+
+        public float maxStepHeight { set => _maxStepHeight = value; }
 
         public bool allowWalking
         {
@@ -146,8 +146,9 @@ namespace ReupVirtualTwin.managers
         }
         private bool IsStronglyGoingUp(float target)
         {
-            if (target - characterPosition.y > maxStepHeight)
+            if (target - characterPosition.y > _maxStepHeight)
             {
+                Debug.LogWarning($"Character is trying to go up too much {target - characterPosition.y} m. Max step allows is {_maxStepHeight} m.");
                 return true;
             }
             return false;

@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterPositionManager: {fileID: 8831413430191478438}
+  maxStepHeight: 0.3
 --- !u!114 &637837301150019111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c609fa679fd3b6b4489b41825d5dcd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStepHeight: 0.25
 --- !u!1 &629607616915025071
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ignoreLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!114 &6046105587379637911
 MonoBehaviour:
   m_ObjectHideFlags: 0
