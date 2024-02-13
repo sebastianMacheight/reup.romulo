@@ -9,8 +9,6 @@ namespace ReupVirtualTwin
         HeightMediator heightMediator;
 
         [SerializeField]
-        GameObject createColliderContainer;
-        [SerializeField]
         GameObject maintainheightContainer;
         [SerializeField]
         GameObject initialSpawnContainer;
