@@ -9,7 +9,7 @@ namespace ReupVirtualTwin.managers
     {
         bool _allowSetHeight = true;
         bool _allowWalking = true;
-        private float _maxStepHeight = 0.3f;
+        private float _maxStepHeight;
         private float movementForce = 20f;
         private Rigidbody rb;
         private float bodyDrag = 5f;

@@ -9,23 +9,18 @@ namespace ReupVirtualTwin.behaviours
     {
         ICharacterPositionManager _characterPositionManager;
         public ICharacterPositionManager characterPositionManager { set => _characterPositionManager = value; }
-        public float maxStepHeight = 0.3f;
+        private float _maxStepHeight;
+        public float maxStepHeight { set => _maxStepHeight = value; }
 
         private static float CHARACTER_HEIGHT;
-        public float characterHeight
-        {
-            set
-            {
-                CHARACTER_HEIGHT = value;
-            }
-        }
+        public float characterHeight { set =>  CHARACTER_HEIGHT = value; }
 
         private ISensor _sensor;
         public ISensor sensor {  set =>  _sensor = value; }
 
         private void Start()
         {
-            _characterPositionManager.maxStepHeight = maxStepHeight;
+            _characterPositionManager.maxStepHeight = _maxStepHeight;
         }
 
         void Update()

@@ -9,6 +9,7 @@ namespace ReupVirtualTwin.behaviours
     {
         [SerializeField]
         ICharacterPositionManager _characterPositionManager;
+        public ICharacterPositionManager characterPositionManager { set => _characterPositionManager = value; }
         ISetUpBuilding _setUpBuilding;
         public ISetUpBuilding setUpBuilding { set => _setUpBuilding = value; } 
         private ISensor _sensor;

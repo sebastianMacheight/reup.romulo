@@ -42,5 +42,9 @@ namespace ReupVirtualTwin.helpers
         {
             return GameObject.FindGameObjectWithTag(TagsEnum.editModeManager);
         }
+        public static GameObject FindHeighMediator()
+        {
+            return GameObject.FindGameObjectWithTag(TagsEnum.heightMediator);
+        }
     }
 }
