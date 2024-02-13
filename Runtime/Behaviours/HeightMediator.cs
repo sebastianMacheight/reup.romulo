@@ -1,14 +1,14 @@
+using ReupVirtualTwin.controllerInterfaces;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
 using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class HeightMediator : MonoBehaviour, IMediator
     {
-        private ICreateCollider _createCollider;
+        private ICharacterColliderController _colliderController;
         private IMaintainHeight _maintainHeight;
         private IInitialSpawn _initialSpawn;
         private Transform _ceilCheck;
@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.behaviours
         private float minHeight = 0.15f;
         private float _ceilCheckRadius = 0.1f;
 
-        public ICreateCollider createCollider { set { _createCollider = value; } }
+        public ICharacterColliderController colliderController { set { _colliderController = value; } }
         public IMaintainHeight maintainHeight { set { _maintainHeight = value; } }
         public IInitialSpawn initialSpawn { set { _initialSpawn = value; } }
         public Transform ceilCheck { set =>  _ceilCheck = value; }
@@ -44,7 +44,7 @@ namespace ReupVirtualTwin.behaviours
         }
         private void updateHeight()
         {
-            _createCollider.UpdateCollider(characterHeight);
+            _colliderController.UpdateCollider(characterHeight);
             _maintainHeight.characterHeight = characterHeight;
         }
         private void AddToHeight(float heightDelta)
@@ -54,7 +54,8 @@ namespace ReupVirtualTwin.behaviours
             if (!minHeightGuard && !ceilGuard)
             {
                 characterHeight += heightDelta;
-                updateHeight();
+                _colliderController.DestroyCollider();
+                _maintainHeight.characterHeight = characterHeight;
             }
         }
         private void OnDrawGizmosSelected()
