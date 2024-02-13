@@ -922,13 +922,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0d3d0163847c6419141469c12eb6ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  createColliderContainer: {fileID: 0}
   maintainheightContainer: {fileID: 1625360268}
   initialSpawnContainer: {fileID: 1678713438409449124}
   ceilCheck: {fileID: 629607616915025071}
   buildingLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   character: {fileID: 151350736762601885}
 --- !u!1 &7657426824907154042
 GameObject:
