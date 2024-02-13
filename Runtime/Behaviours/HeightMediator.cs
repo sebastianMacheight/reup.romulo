@@ -14,7 +14,7 @@ namespace ReupVirtualTwin.behaviours
         private Transform _ceilCheck;
         private LayerMask _buildingLayerMask;
         private float minHeight = 0.15f;
-        private float _ceilCheckRadius = 0.1f;
+        private float _ceilCheckRadius = 0.12f;
 
         public ICharacterColliderController colliderController { set { _colliderController = value; } }
         public IMaintainHeight maintainHeight { set { _maintainHeight = value; } }
@@ -62,12 +62,19 @@ namespace ReupVirtualTwin.behaviours
         {
             Boolean minHeightGuard = characterHeight + heightDelta < minHeight;
             Boolean ceilGuard = Physics.CheckSphere(_ceilCheck.position, _ceilCheckRadius, _buildingLayerMask) && heightDelta > 0;
-            if (!minHeightGuard && !ceilGuard)
+            if (minHeightGuard)
             {
-                _colliderController.DestroyCollider();
-                characterHeight += heightDelta;
-                _maintainHeight.characterHeight = characterHeight;
+                Debug.LogWarning($"character has reached it's mininum allowed height of {minHeight} m.");
+                return;
             }
+            if(ceilGuard)
+            {
+                Debug.LogWarning("character can not increase any further it's height because of ceil collision");
+                return;
+            }
+            _colliderController.DestroyCollider();
+            characterHeight += heightDelta;
+            _maintainHeight.characterHeight = characterHeight;
         }
         private void OnDrawGizmosSelected()
         {
