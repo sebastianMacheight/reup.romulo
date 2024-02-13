@@ -13,8 +13,6 @@ namespace ReupVirtualTwin
         [SerializeField]
         GameObject initialSpawnContainer;
         [SerializeField]
-        GameObject ceilCheck;
-        [SerializeField]
         LayerMask buildingLayerMask;
         [SerializeField]
         GameObject character;
@@ -25,7 +23,6 @@ namespace ReupVirtualTwin
             heightMediator.maintainHeight = maintainheightContainer.GetComponent<IMaintainHeight>();
             heightMediator.colliderController = new CharacterColliderBoxController(character);
             heightMediator.initialSpawn = initialSpawnContainer.GetComponent<IInitialSpawn>();
-            heightMediator.ceilCheck = ceilCheck.transform;
             heightMediator.buildingLayerMask = buildingLayerMask;
         }
     }

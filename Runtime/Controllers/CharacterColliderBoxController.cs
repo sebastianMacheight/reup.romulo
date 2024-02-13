@@ -11,7 +11,7 @@ namespace ReupVirtualTwin.controllers
         float MIN_COLLIDER_HEIGHT = 0.05f;
         float COLLIDER_FRONT_IN_METERS = 0.02f;
         float COLLIDER_SIDE_IN_METERS = 0.2f;
-        float EXTRA_HEIGHT_ABOVE_CHARACTER = 0;
+        float EXTRA_HEIGHT_ABOVE_CHARACTER = -0.05f;
 
         public CharacterColliderBoxController(GameObject character)
         {

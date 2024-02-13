@@ -6,28 +6,28 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
-    public class HeightMediator : MonoBehaviour, IMediator
+    public class HeightMediator : MonoBehaviour, IMediator, ICharacterHeightReseter
     {
         private ICharacterColliderController _colliderController;
         private IMaintainHeight _maintainHeight;
         private IInitialSpawn _initialSpawn;
-        private Transform _ceilCheck;
         private LayerMask _buildingLayerMask;
         private float minHeight = 0.15f;
+        private float _ceilCheckHeight = -0.05f;
         private float _ceilCheckRadius = 0.12f;
+        private float _characterHeight;
+        public float CharacterHeight { get => _characterHeight; }
+        [Range(0.15f, 3f)]
+        public float initialCharacterHeight = 1.75f;
 
         public ICharacterColliderController colliderController { set { _colliderController = value; } }
         public IMaintainHeight maintainHeight { set { _maintainHeight = value; } }
         public IInitialSpawn initialSpawn { set { _initialSpawn = value; } }
-        public Transform ceilCheck { set =>  _ceilCheck = value; }
         public LayerMask buildingLayerMask { set =>  _buildingLayerMask = value; }
-
-        [Range(0.15f, 3f)]
-        public float characterHeight = 1.75f;
 
         private void Start()
         {
-            updateHeight();
+            ResetCharacterHeight();
             _initialSpawn.Spawn();
         }
 
@@ -55,13 +55,13 @@ namespace ReupVirtualTwin.behaviours
         }
         private void updateHeight()
         {
-            _colliderController.UpdateCollider(characterHeight);
-            _maintainHeight.characterHeight = characterHeight;
+            _colliderController.UpdateCollider(_characterHeight);
+            _maintainHeight.characterHeight = _characterHeight;
         }
         private void AddToHeight(float heightDelta)
         {
-            Boolean minHeightGuard = characterHeight + heightDelta < minHeight;
-            Boolean ceilGuard = Physics.CheckSphere(_ceilCheck.position, _ceilCheckRadius, _buildingLayerMask) && heightDelta > 0;
+            Boolean minHeightGuard = _characterHeight + heightDelta < minHeight;
+            Boolean ceilGuard = Physics.CheckSphere(getCeilCheckPosition(), _ceilCheckRadius, _buildingLayerMask) && heightDelta > 0;
             if (minHeightGuard)
             {
                 Debug.LogWarning($"character has reached it's mininum allowed height of {minHeight} m.");
@@ -73,15 +73,23 @@ namespace ReupVirtualTwin.behaviours
                 return;
             }
             _colliderController.DestroyCollider();
-            characterHeight += heightDelta;
-            _maintainHeight.characterHeight = characterHeight;
+            _characterHeight += heightDelta;
+            _maintainHeight.characterHeight = _characterHeight;
         }
         private void OnDrawGizmosSelected()
         {
-            if (_ceilCheck)
-            {
-                Gizmos.DrawWireSphere(_ceilCheck.position, _ceilCheckRadius);
-            }
+            Gizmos.DrawWireSphere(getCeilCheckPosition(), _ceilCheckRadius);
+        }
+
+        private Vector3 getCeilCheckPosition()
+        {
+            return new Vector3(transform.position.x, transform.position.y + _ceilCheckHeight, transform.position.z);
+        }
+
+        public void ResetCharacterHeight()
+        {
+            _characterHeight = initialCharacterHeight;
+            updateHeight();
         }
     }
 }

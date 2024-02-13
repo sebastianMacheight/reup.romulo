@@ -11,17 +11,21 @@ namespace ReupVirtualTwin.behaviours
     public class GoToSpace : MonoBehaviour
     {
         ICharacterPositionManager _characterPositionManager;
+        ICharacterHeightReseter _characterHeightReseter;
         SpaceJumpPoint spaceSelector;
+
         private void Start()
         {
             _characterPositionManager = ObjectFinder.FindCharacter().GetComponent<ICharacterPositionManager>();
             spaceSelector = GetComponent<SpaceButtonInstance>().spaceSelector;
+            _characterHeightReseter = ObjectFinder.FindHeighMediator().GetComponent<ICharacterHeightReseter>();
         }
 
         public void Go()
         {
             _characterPositionManager.MakeKinematic();
             var spaceSelectorPosition = spaceSelector.transform.position;
+            _characterHeightReseter.ResetCharacterHeight();
             spaceSelectorPosition.y = GetDesiredHeight();
             var endMovementEvent = new UnityEvent();
             endMovementEvent.AddListener(EndMovementHandler);
@@ -44,7 +48,7 @@ namespace ReupVirtualTwin.behaviours
             {
                 throw new Exception("No Ground below Space selector");
             }
-            return MaintainHeight.GetDesiredHeightInGround(((RaycastHit)groundHit).point.y);
+            return ((RaycastHit)groundHit).point.y + _characterHeightReseter.CharacterHeight;
         }
 
         private RaycastHit? GetGroundHit()
