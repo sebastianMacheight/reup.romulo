@@ -3,18 +3,18 @@ using UnityEngine.Events;
 using System;
 
 using ReupVirtualTwin.helpers;
-using ReupVirtualTwin.managers;
+using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.models;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class GoToSpace : MonoBehaviour
     {
-        CharacterPositionManager _characterPositionManager;
+        ICharacterPositionManager _characterPositionManager;
         SpaceJumpPoint spaceSelector;
         private void Start()
         {
-            _characterPositionManager = ObjectFinder.FindCharacter().GetComponent<CharacterPositionManager>();
+            _characterPositionManager = ObjectFinder.FindCharacter().GetComponent<ICharacterPositionManager>();
             spaceSelector = GetComponent<SpaceButtonInstance>().spaceSelector;
         }
 

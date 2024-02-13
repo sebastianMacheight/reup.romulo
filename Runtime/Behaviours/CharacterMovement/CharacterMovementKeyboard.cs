@@ -1,17 +1,17 @@
 using UnityEngine;
 using ReupVirtualTwin.inputs;
-using ReupVirtualTwin.managers;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class CharacterMovementKeyboard : MonoBehaviour
     {
-        [SerializeField]
         private Transform _innerCharacterTransform;
+        public Transform innerCharacterTransform { set => _innerCharacterTransform = value; }
 
         private InputProvider _inputProvider;
-        [SerializeField]
-        private CharacterPositionManager _characterPositionManager;
+        private ICharacterPositionManager _characterPositionManager;
+        public ICharacterPositionManager characterPositionManager { set => _characterPositionManager = value; }
         private float WALK_SPEED_M_PER_SECOND = 3.5f;
 
 
