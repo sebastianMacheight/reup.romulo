@@ -1,4 +1,5 @@
 using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.controllers;
 using UnityEngine;
 
 namespace ReupVirtualTwin
@@ -8,23 +9,20 @@ namespace ReupVirtualTwin
         HeightMediator heightMediator;
 
         [SerializeField]
-        GameObject createColliderContainer;
-        [SerializeField]
         GameObject maintainheightContainer;
         [SerializeField]
         GameObject initialSpawnContainer;
         [SerializeField]
-        GameObject ceilCheck;
-        [SerializeField]
         LayerMask buildingLayerMask;
+        [SerializeField]
+        GameObject character;
 
         void Awake()
         {
             heightMediator = GetComponent<HeightMediator>();
             heightMediator.maintainHeight = maintainheightContainer.GetComponent<IMaintainHeight>();
-            heightMediator.createCollider = createColliderContainer.GetComponent<ICreateCollider>();
+            heightMediator.colliderController = new CharacterColliderBoxController(character);
             heightMediator.initialSpawn = initialSpawnContainer.GetComponent<IInitialSpawn>();
-            heightMediator.ceilCheck = ceilCheck.transform;
             heightMediator.buildingLayerMask = buildingLayerMask;
         }
     }

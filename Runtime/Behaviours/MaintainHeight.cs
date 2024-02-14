@@ -1,25 +1,27 @@
 using UnityEngine;
+
 using ReupVirtualTwin.helperInterfaces;
-using ReupVirtualTwin.managers;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class MaintainHeight : MonoBehaviour, IMaintainHeight
     {
-        [SerializeField]
-        CharacterPositionManager _characterPositionManager;
+        ICharacterPositionManager _characterPositionManager;
+        public ICharacterPositionManager characterPositionManager { set => _characterPositionManager = value; }
+        private float _maxStepHeight;
+        public float maxStepHeight { set => _maxStepHeight = value; }
 
         private static float CHARACTER_HEIGHT;
-        public float characterHeight
-        {
-            set
-            {
-                CHARACTER_HEIGHT = value;
-            }
-        }
+        public float characterHeight { set =>  CHARACTER_HEIGHT = value; }
 
         private ISensor _sensor;
         public ISensor sensor {  set =>  _sensor = value; }
+
+        private void Start()
+        {
+            _characterPositionManager.maxStepHeight = _maxStepHeight;
+        }
 
         void Update()
         {
@@ -33,7 +35,7 @@ namespace ReupVirtualTwin.behaviours
         void KeepCharacterHeightFromGround(RaycastHit groundHit)
         {
             this.groundHit = groundHit.point;
-            var newHeight = GetDesiredHeightInGround(groundHit.point.y);
+            float newHeight = GetDesiredHeightInGround(groundHit.point.y);
             _characterPositionManager.KeepHeight(newHeight);
         }
 

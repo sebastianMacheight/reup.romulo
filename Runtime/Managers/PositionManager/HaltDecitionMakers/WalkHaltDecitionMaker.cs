@@ -1,13 +1,14 @@
 using UnityEngine;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
     public class WalkHaltDecitionMaker : MovementHaltDecitionMaker<Vector3>
     {
-        CharacterPositionManager characterPositionManager;
+        ICharacterPositionManager characterPositionManager;
         float stopMovementThreshold;
 
-        public WalkHaltDecitionMaker(CharacterPositionManager cpm, float stopThreshold)
+        public WalkHaltDecitionMaker(ICharacterPositionManager cpm, float stopThreshold)
         {
             characterPositionManager = cpm;
             stopMovementThreshold = stopThreshold;

@@ -3,7 +3,6 @@ using UnityEngine;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.behaviours;
-using ReupVirtualTwin.managers;
 
 namespace ReupVirtualTwin.dependencyInjectors
 {
@@ -16,7 +15,7 @@ namespace ReupVirtualTwin.dependencyInjectors
 
             IEditModeManager editModeManager = ObjectFinder.FindEditModeManager().GetComponent<IEditModeManager>();
             // todo: Implemement an interface for the CharacterPositionManager
-            CharacterPositionManager positionManager = ObjectFinder.FindCharacter().GetComponent<CharacterPositionManager>();
+            ICharacterPositionManager positionManager = ObjectFinder.FindCharacter().GetComponent<ICharacterPositionManager>();
 
             characterMovementSelectPosition.editModeManager = editModeManager;
             characterMovementSelectPosition.characterPositionManager = positionManager;

@@ -3,6 +3,7 @@
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.helperInterfaces;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.dependencyInjectors
 {
@@ -10,10 +11,13 @@ namespace ReupVirtualTwin.dependencyInjectors
     {
         [SerializeField]
         GameObject sensor;
+        [SerializeField]
+        GameObject characterPositionManager;
 
         void Awake() {
             InitialSpawn initialSpawn = GetComponent<InitialSpawn>();
             SetUpBuilding setUpBuilding = ObjectFinder.FindSetupBuilding()?.GetComponent<SetUpBuilding>();
+            initialSpawn.characterPositionManager = characterPositionManager.GetComponent<ICharacterPositionManager>();
             if (setUpBuilding != null)
             {
                 initialSpawn.setUpBuilding = setUpBuilding;

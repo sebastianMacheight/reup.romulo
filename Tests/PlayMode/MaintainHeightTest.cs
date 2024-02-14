@@ -7,7 +7,7 @@ using System.Collections;
 using Packages.reup.romulo.Tests.PlayMode.Mocks;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.dependencyInjectors;
-using ReupVirtualTwin.managers;
+using ReupVirtualTwin.managerInterfaces;
 
 
 public class MaintainHeightTest : MonoBehaviour
@@ -25,7 +25,7 @@ public class MaintainHeightTest : MonoBehaviour
     {
         character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
         DestroyGameRelatedDependecyInjectors();
-        var posManager = character.GetComponent<CharacterPositionManager>();
+        var posManager = character.GetComponent<ICharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(platformPrefab);
         SetPlatform();
