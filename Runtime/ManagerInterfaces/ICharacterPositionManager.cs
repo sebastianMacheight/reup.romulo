@@ -7,6 +7,7 @@ namespace ReupVirtualTwin.managerInterfaces
     {
         public bool allowWalking { set; get; }
         public bool allowSetHeight { set; get; }
+        public bool allowMovingUp { set; get; }
         public float maxStepHeight { set; }
         public Vector3 characterPosition { get; set; }
         public void StopRigidBody();

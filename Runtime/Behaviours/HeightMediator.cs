@@ -1,5 +1,6 @@
 using ReupVirtualTwin.controllerInterfaces;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using System;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace ReupVirtualTwin.behaviours
         private float _ceilCheckHeight = -0.025f;
         private float _ceilCheckRadius = 0.07f;
         private float _characterHeight;
+        private ICharacterPositionManager _characterPositionManager;
+
         public float CharacterHeight { get => _characterHeight; }
         [Range(0.15f, 3f)]
         public float initialCharacterHeight = 1.75f;
@@ -29,6 +32,19 @@ namespace ReupVirtualTwin.behaviours
         {
             ResetCharacterHeight();
             _initialSpawn.Spawn();
+            _characterPositionManager = ObjectFinder.FindCharacter().GetComponent<ICharacterPositionManager>();
+        }
+
+        private void Update()
+        {
+            if (IsTouchingCeil())
+            {
+                _characterPositionManager.allowMovingUp = false;
+            }
+            else
+            {
+                _characterPositionManager.allowMovingUp = true;
+            }
         }
 
         public void Notify(ReupEvent eventName)
@@ -58,10 +74,14 @@ namespace ReupVirtualTwin.behaviours
             _colliderController.UpdateCollider(_characterHeight);
             _maintainHeight.characterHeight = _characterHeight;
         }
+        private bool IsTouchingCeil()
+        {
+            return Physics.CheckSphere(getCeilCheckPosition(), _ceilCheckRadius, _buildingLayerMask);
+        }
         private void AddToHeight(float heightDelta)
         {
             Boolean minHeightGuard = _characterHeight + heightDelta < minHeight;
-            Boolean ceilGuard = Physics.CheckSphere(getCeilCheckPosition(), _ceilCheckRadius, _buildingLayerMask) && heightDelta > 0;
+            Boolean ceilGuard = IsTouchingCeil() && heightDelta > 0;
             if (minHeightGuard)
             {
                 Debug.LogWarning($"character has reached it's mininum allowed height of {minHeight} m.");

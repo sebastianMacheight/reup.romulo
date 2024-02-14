@@ -9,6 +9,7 @@ namespace ReupVirtualTwin.managers
     {
         bool _allowSetHeight = true;
         bool _allowWalking = true;
+        bool _allowMovingUp = true;
         private float _maxStepHeight;
         private float movementForce = 20f;
         private Rigidbody rb;
@@ -23,7 +24,19 @@ namespace ReupVirtualTwin.managers
         LinearSlider heightSlider;
 
         public float maxStepHeight { set => _maxStepHeight = value; }
-
+        public bool allowMovingUp
+        {
+            get { return _allowMovingUp; }
+            set
+            {
+                _allowMovingUp = value;
+                if (_allowMovingUp == false)
+                {
+                    heightSlider.StopMovement();
+                    walkSlider.StopMovement();
+                }
+            }
+        }
         public bool allowWalking
         {
             get { return _allowWalking; }
@@ -139,7 +152,12 @@ namespace ReupVirtualTwin.managers
 
         bool ShouldSetHeight(float target)
         {
-            if (!allowSetHeight || spaceSlider.sliding || IsStronglyGoingUp(target))
+            if (false
+                || !allowSetHeight
+                || spaceSlider.sliding
+                || IsStronglyGoingUp(target)
+                || (!allowMovingUp && target > characterPosition.y)
+            )
             {
                 return false;
             }
