@@ -1,7 +1,9 @@
-﻿using System;
-using UnityEngine;
-public interface IObjectSelector
-{
-    public GameObject GetObject(Ray ray);
-}
+﻿using UnityEngine;
 
+namespace ReupVirtualTwin.helpers
+{
+    public interface IObjectSelector
+    {
+        public GameObject GetObject(Ray ray);
+    }
+}

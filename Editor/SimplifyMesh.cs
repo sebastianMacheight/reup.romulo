@@ -6,7 +6,7 @@ using TB;
 using UnityEngine.UIElements;
 using ReupVirtualTwin.helpers;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.editor
 {
     public class SimplifyMesh : EditorWindow
     {
@@ -28,7 +28,7 @@ namespace ReupVirtualTwin
         //test variables
         MeshInfo meshInfo;
 
-        [MenuItem("EDITORS/Simplify Mesh")]
+        [MenuItem("Reup Romulo/Simplify Mesh")]
         public static void ShowWindow()
         {
             GetWindow<SimplifyMesh>("Simplify Mesh");
@@ -224,7 +224,7 @@ namespace ReupVirtualTwin
                 //for some reason, some meshes don't have uvs
                 if (simplifiedMesh.uv.Length == 0)
                 {
-                    MeshUtils.GeneratePlanarUVMapping(simplifiedMesh);
+                    ReupVirtualTwin.helpers.ReupMeshUtils.GeneratePlanarUVMapping(simplifiedMesh);
                 }
                 simplifiedMesh.RecalculateBounds();
                 simplifiedMesh.RecalculateNormals(softBorderAngle);
@@ -298,7 +298,7 @@ namespace ReupVirtualTwin
             //for some reason, some meshes dosen't have uvs
             if (simplifiedMesh.uv.Length == 0)
             {
-                MeshUtils.GeneratePlanarUVMapping(simplifiedMesh);
+                ReupVirtualTwin.helpers.ReupMeshUtils.GeneratePlanarUVMapping(simplifiedMesh);
             }
             simplifiedMesh.RecalculateBounds();
             simplifiedMesh.RecalculateNormals(softBorderAngle);

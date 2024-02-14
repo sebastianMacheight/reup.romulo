@@ -37,6 +37,15 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""RotateViewKeyborad"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d5202b1-f2ba-4ed6-b80c-e60943ebd3fe"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Movement"",
                     ""type"": ""Value"",
                     ""id"": ""7ef3b963-4e50-4b26-9575-c7358f576d52"",
@@ -68,6 +77,15 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""fa5ebd44-1144-43eb-a323-b9ce37fa43ad"",
                     ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ChangeHeight"",
+                    ""type"": ""Value"",
+                    ""id"": ""2d42ce9a-959b-4302-9393-88cf408eb893"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -185,50 +203,6 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""b2c386c5-0bd1-4527-bcb8-593ebd589a54"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""5ee0aa40-01ac-40f6-a448-e34f35094d53"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""3b0b34e1-0d73-4c3d-81cd-91a1f35ee5c3"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""804f3ff8-a70d-4f7b-b4e6-5aff95ac11ae"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""KeyboardAndMouse"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
                     ""name"": """",
                     ""id"": ""92d8b3a2-731a-4c82-b3bd-f0aaf9811666"",
                     ""path"": ""<Mouse>/leftButton"",
@@ -282,6 +256,94 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""KeyboardArrows"",
+                    ""id"": ""4afb87d2-9162-4f50-a669-0e1f74564d7a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateViewKeyborad"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""58d5b28e-3a39-457a-89d6-de2ba67bafd4"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardAndMouse"",
+                    ""action"": ""RotateViewKeyborad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""59e39523-07e2-4e29-9a72-8813c273c098"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardAndMouse"",
+                    ""action"": ""RotateViewKeyborad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""c9d3e362-2f1b-46a2-93d4-554d7dfc7e7c"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardAndMouse"",
+                    ""action"": ""RotateViewKeyborad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""d4168b13-e470-4793-babc-283529443427"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardAndMouse"",
+                    ""action"": ""RotateViewKeyborad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""QE_keys"",
+                    ""id"": ""4fb79599-dd72-49eb-947d-ade008833463"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeHeight"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""a1d6652a-ce1c-409e-945f-73e3451808a7"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeHeight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""7ea62665-edf5-4228-8752-0aeacff733fd"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeHeight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -409,10 +471,12 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_RotateView = m_Player.FindAction("RotateView", throwIfNotFound: true);
+        m_Player_RotateViewKeyborad = m_Player.FindAction("RotateViewKeyborad", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
         m_Player_Pointer = m_Player.FindAction("Pointer", throwIfNotFound: true);
         m_Player_Hold = m_Player.FindAction("Hold", throwIfNotFound: true);
+        m_Player_ChangeHeight = m_Player.FindAction("ChangeHeight", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
@@ -480,19 +544,23 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_RotateView;
+    private readonly InputAction m_Player_RotateViewKeyborad;
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Select;
     private readonly InputAction m_Player_Pointer;
     private readonly InputAction m_Player_Hold;
+    private readonly InputAction m_Player_ChangeHeight;
     public struct PlayerActions
     {
         private @AppInputActions m_Wrapper;
         public PlayerActions(@AppInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @RotateView => m_Wrapper.m_Player_RotateView;
+        public InputAction @RotateViewKeyborad => m_Wrapper.m_Player_RotateViewKeyborad;
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Select => m_Wrapper.m_Player_Select;
         public InputAction @Pointer => m_Wrapper.m_Player_Pointer;
         public InputAction @Hold => m_Wrapper.m_Player_Hold;
+        public InputAction @ChangeHeight => m_Wrapper.m_Player_ChangeHeight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -505,6 +573,9 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
             @RotateView.started += instance.OnRotateView;
             @RotateView.performed += instance.OnRotateView;
             @RotateView.canceled += instance.OnRotateView;
+            @RotateViewKeyborad.started += instance.OnRotateViewKeyborad;
+            @RotateViewKeyborad.performed += instance.OnRotateViewKeyborad;
+            @RotateViewKeyborad.canceled += instance.OnRotateViewKeyborad;
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
@@ -517,6 +588,9 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
             @Hold.started += instance.OnHold;
             @Hold.performed += instance.OnHold;
             @Hold.canceled += instance.OnHold;
+            @ChangeHeight.started += instance.OnChangeHeight;
+            @ChangeHeight.performed += instance.OnChangeHeight;
+            @ChangeHeight.canceled += instance.OnChangeHeight;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -524,6 +598,9 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
             @RotateView.started -= instance.OnRotateView;
             @RotateView.performed -= instance.OnRotateView;
             @RotateView.canceled -= instance.OnRotateView;
+            @RotateViewKeyborad.started -= instance.OnRotateViewKeyborad;
+            @RotateViewKeyborad.performed -= instance.OnRotateViewKeyborad;
+            @RotateViewKeyborad.canceled -= instance.OnRotateViewKeyborad;
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
@@ -536,6 +613,9 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
             @Hold.started -= instance.OnHold;
             @Hold.performed -= instance.OnHold;
             @Hold.canceled -= instance.OnHold;
+            @ChangeHeight.started -= instance.OnChangeHeight;
+            @ChangeHeight.performed -= instance.OnChangeHeight;
+            @ChangeHeight.canceled -= instance.OnChangeHeight;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -636,10 +716,12 @@ public partial class @AppInputActions: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnRotateView(InputAction.CallbackContext context);
+        void OnRotateViewKeyborad(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnPointer(InputAction.CallbackContext context);
         void OnHold(InputAction.CallbackContext context);
+        void OnChangeHeight(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

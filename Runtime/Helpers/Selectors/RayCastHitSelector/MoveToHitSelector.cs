@@ -1,13 +1,25 @@
 using UnityEngine;
 using ReupVirtualTwin.enums;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.helpers
 {
     public class MoveToHitSelector : RayCastHitSelector
     {
-        protected override bool IsSelectable(GameObject obj)
+        private string[] ignoreTags = new string[]
         {
-            return !obj.CompareTag(TagsEnum.trigger) && !obj.CompareTag(TagsEnum.materialSelection);
+            TagsEnum.trigger,
+            TagsEnum.materialSelection,
+        };
+        protected override GameObject GetSelectedObjectFromHitObject(GameObject obj)
+        {
+            foreach(string tag in ignoreTags)
+            {
+                if (obj.CompareTag(tag))
+                {
+                    return null;
+                }
+            }
+            return obj;
         }
     }
 }

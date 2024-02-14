@@ -20,7 +20,7 @@ public class ObjectPoolTest
         pool = new GameObject().AddComponent<ObjectPool>();
         parentObject = new GameObject();
         prefab = new GameObject("object's name");
-        pool.PrefabsForPool = new List<GameObject>
+        pool.prefabsForPool = new List<GameObject>
         {
             prefab
         };
