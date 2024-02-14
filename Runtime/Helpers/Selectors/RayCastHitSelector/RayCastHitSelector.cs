@@ -1,7 +1,6 @@
 using UnityEngine;
-using ReupVirtualTwin.enums;
 
-namespace ReupVirtualTwin
+namespace ReupVirtualTwin.helpers
 {
     public abstract class RayCastHitSelector : Selector, IRayCastHitSelector
     {
@@ -11,7 +10,7 @@ namespace ReupVirtualTwin
             if (CastRay(ray, out hit))
             {
                 GameObject obj = hit.collider.gameObject;
-                if (!obj.CompareTag(TagsEnum.trigger) && !obj.CompareTag(TagsEnum.materialSelection))
+                if (GetSelectedObjectFromHitObject(obj))
                 {
                     return hit;
                 }

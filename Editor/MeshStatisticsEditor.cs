@@ -3,26 +3,28 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(MeshFilter))]
-public class MeshStatisticsEditor : Editor
+namespace ReupVirtualTwin.editor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(MeshFilter))]
+    public class MeshStatisticsEditor : Editor
     {
-        base.OnInspectorGUI();
-
-        MeshFilter meshFilter = (MeshFilter)target;
-        Mesh mesh = meshFilter.sharedMesh;
-
-        if (mesh != null)
+        public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
 
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Mesh Data", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField("Triangle Count: " + mesh.triangles.Length / 3);
-            EditorGUILayout.LabelField("Vertex Count: " + mesh.vertexCount);
-            EditorGUILayout.LabelField("Normal Count: " + mesh.normals.Length);
-            EditorGUILayout.LabelField("Tangent Count: " + mesh.tangents.Length);
-            EditorGUILayout.LabelField("Uv Lenght: " + mesh.uv.Length);
+            MeshFilter meshFilter = (MeshFilter)target;
+            Mesh mesh = meshFilter.sharedMesh;
+
+            if (mesh != null)
+            {
+
+                EditorGUILayout.Space();
+                EditorGUILayout.LabelField("Mesh Data", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Triangle Count: " + mesh.triangles.Length / 3);
+                EditorGUILayout.LabelField("Vertex Count: " + mesh.vertexCount);
+                EditorGUILayout.LabelField("Normal Count: " + mesh.normals.Length);
+                EditorGUILayout.LabelField("Tangent Count: " + mesh.tangents.Length);
+                EditorGUILayout.LabelField("Uv Lenght: " + mesh.uv.Length);
 
 
             var meshInfo = new MeshInfo(meshFilter.gameObject);
@@ -32,8 +34,9 @@ public class MeshStatisticsEditor : Editor
             EditorGUILayout.LabelField("Vol Vertex Density: " + meshInfo.volVertexDensity);
             EditorGUILayout.LabelField("Mesh size: " + meshInfo.size);
             EditorGUILayout.LabelField("Mesh area: " + meshInfo.area);
-            EditorGUILayout.LabelField("Mesh volumen: " + meshInfo.volumen);
+            EditorGUILayout.LabelField("Mesh volumen: " + meshInfo.volume);
 
+            }
         }
     }
 }

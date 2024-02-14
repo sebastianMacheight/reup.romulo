@@ -1,7 +1,9 @@
-﻿using System;
-using UnityEngine;
-public interface IRayProvider
-{
-    public Ray GetRay();
-}
+﻿using UnityEngine;
 
+namespace ReupVirtualTwin.helpers
+{
+    public interface IRayProvider
+    {
+        public Ray GetRay();
+    }
+}

@@ -2,17 +2,17 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
-using ReupVirtualTwin.characterMovement;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.enums;
-using System;
+using ReupVirtualTwin.managers;
+using ReupVirtualTwin.managerInterfaces;
 
 public class FollowCharacterTest
 {
     private GameObject character;
     private GameObject materialPicker;
     private Rigidbody rb;
-    private CharacterPositionManager posManager;
+    private ICharacterPositionManager posManager;
 
     private Vector3 originalCharacterPosition = new Vector3(1, 1, 1);
 

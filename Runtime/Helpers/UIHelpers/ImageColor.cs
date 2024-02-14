@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ImageColor : MonoBehaviour
+namespace ReupVirtualTwin.helpers
 {
-    public ColorSO colorSo;
-
-    private Image image;
-
-    private void Start()
+    public class ImageColor : MonoBehaviour
     {
-        image = GetComponent<Image>();
-        image.color = colorSo.color;
+        public ColorSO colorSo;
+
+        private Image image;
+
+        private void Start()
+        {
+            image = GetComponent<Image>();
+            image.color = colorSo.color;
+        }
     }
 }

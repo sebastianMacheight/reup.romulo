@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 
-public interface IObjectPool
+namespace ReupVirtualTwin.helpers
 {
-    GameObject GetObjectFromPool(string objectName, Transform parent = null);
-    void PoolObject(GameObject obj);
+    public interface IObjectPool
+    {
+        void AddPrefabType(GameObject prefabType);
+        GameObject GetObjectFromPool(string objectName, Transform parent = null);
+        void PoolObject(GameObject obj);
+    }
 }
