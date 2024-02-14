@@ -13,8 +13,8 @@ namespace ReupVirtualTwin.behaviours
         private IInitialSpawn _initialSpawn;
         private LayerMask _buildingLayerMask;
         private float minHeight = 0.15f;
-        private float _ceilCheckHeight = -0.05f;
-        private float _ceilCheckRadius = 0.12f;
+        private float _ceilCheckHeight = -0.025f;
+        private float _ceilCheckRadius = 0.07f;
         private float _characterHeight;
         public float CharacterHeight { get => _characterHeight; }
         [Range(0.15f, 3f)]
