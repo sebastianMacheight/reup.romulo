@@ -26,6 +26,10 @@ namespace ReupVirtualTwin.managers
         public ITransformObjectsManager transformObjectsManager { set => _transformObjectsManager = value; }
         private IDeleteObjectsManager _deleteObjectsManager;
         public IDeleteObjectsManager deleteObjectsManager { set => _deleteObjectsManager = value; }
+ 
+        private IChangeColorManager _changeColorManager;
+        public IChangeColorManager changeColorManager { set => _changeColorManager = value; }
+      
 
         private IInsertObjectsManager _insertObjectsManager;
         public IInsertObjectsManager insertObjectsManager { set => _insertObjectsManager = value; }
@@ -56,7 +60,10 @@ namespace ReupVirtualTwin.managers
                     ProcessTranformModeDeactivation();
                     break;
                 case ReupEvent.objectsDeleted:
-                    ProcessDeleteObjects();
+                    ProcessDeletedObjects();
+                    break;
+                case ReupEvent.changedColorObjects:
+                    ProcessChangedColorObjects();
                     break;
                 default:
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
@@ -123,6 +130,9 @@ namespace ReupVirtualTwin.managers
                 case WebMessageType.loadObject:
                     LoadObject(message.payload);
                     break;
+                case WebMessageType.changeObjectColor:
+                    ChangeColorSelectedObjects(message.payload);
+                    break;
                 default:
                     _webMessageSender.SendWebMessage(new WebMessage<string>
                     {
@@ -169,6 +179,22 @@ namespace ReupVirtualTwin.managers
                 SendErrorMessage("The selection is empty, or there is at least one non-deletable object selected");
             }
 
+        }
+
+        private void ChangeColorSelectedObjects(string color)
+        {
+            if (_changeColorManager.AreWrappedObjectsPaintable(_selectedObjectsManager.wrapperDTO))
+            {
+                if (!_changeColorManager.ChangeColorSelectedObjects(_selectedObjectsManager.wrapperDTO.wrappedObjects, color))
+                {
+                    SendErrorMessage("The color isn't valid");
+                }
+                
+            }
+            else
+            {
+                SendErrorMessage("The selection is empty, or there is at least one non-paintable object selected");
+            }
         }
 
         private void ProccessEditMode(bool editMode)
@@ -239,10 +265,22 @@ namespace ReupVirtualTwin.managers
             _webMessageSender.SendWebMessage(message);
         }
 
-        private void ProcessDeleteObjects()
+        private void ProcessDeletedObjects()
         {
             string webMessageType;
             webMessageType = WebMessageType.deleteObjectsSuccess;
+
+            WebMessage<string> message = new WebMessage<string>
+            {
+                type = webMessageType,
+            };
+            _webMessageSender.SendWebMessage(message);
+        }
+
+        private void ProcessChangedColorObjects()
+        {
+            string webMessageType;
+            webMessageType = WebMessageType.changeObjectColorSuccess;
 
             WebMessage<string> message = new WebMessage<string>
             {

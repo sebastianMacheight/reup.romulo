@@ -5,5 +5,6 @@ namespace ReupVirtualTwin.enums
         SELECTABLE,
         TRANSFORMABLE,
         DELETABLE,
+        PAINTABLE,
     }
 }
