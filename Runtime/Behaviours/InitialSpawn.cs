@@ -1,14 +1,15 @@
 using UnityEngine;
-using ReupVirtualTwin.managers;
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.helperInterfaces;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class InitialSpawn : MonoBehaviour, IInitialSpawn
     {
         [SerializeField]
-        CharacterPositionManager _characterPositionManager;
+        ICharacterPositionManager _characterPositionManager;
+        public ICharacterPositionManager characterPositionManager { set => _characterPositionManager = value; }
         ISetUpBuilding _setUpBuilding;
         public ISetUpBuilding setUpBuilding { set => _setUpBuilding = value; } 
         private ISensor _sensor;

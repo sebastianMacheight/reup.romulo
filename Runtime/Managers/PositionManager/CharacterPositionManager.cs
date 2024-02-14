@@ -1,15 +1,16 @@
 using UnityEngine;
 using ReupVirtualTwin.helpers;
 using UnityEngine.Events;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
-    public class CharacterPositionManager : MonoBehaviour
+    public class CharacterPositionManager : MonoBehaviour, ICharacterPositionManager
     {
-        public float maxStepHeight = 0.25f;
-
         bool _allowSetHeight = true;
         bool _allowWalking = true;
+        bool _allowMovingUp = true;
+        private float _maxStepHeight;
         private float movementForce = 20f;
         private Rigidbody rb;
         private float bodyDrag = 5f;
@@ -18,11 +19,24 @@ namespace ReupVirtualTwin.managers
         float STOP_WALK_THRESHOLD = 0.5f;
         float STOP_MOVEMENT_THRESHOLD = 0.02f;
 
-
         SpaceSlider walkSlider;
         SpaceSlider spaceSlider;
         LinearSlider heightSlider;
 
+        public float maxStepHeight { set => _maxStepHeight = value; }
+        public bool allowMovingUp
+        {
+            get { return _allowMovingUp; }
+            set
+            {
+                _allowMovingUp = value;
+                if (_allowMovingUp == false)
+                {
+                    heightSlider.StopMovement();
+                    walkSlider.StopMovement();
+                }
+            }
+        }
         public bool allowWalking
         {
             get { return _allowWalking; }
@@ -138,7 +152,12 @@ namespace ReupVirtualTwin.managers
 
         bool ShouldSetHeight(float target)
         {
-            if (!allowSetHeight || spaceSlider.sliding || IsStronglyGoingUp(target))
+            if (false
+                || !allowSetHeight
+                || spaceSlider.sliding
+                || IsStronglyGoingUp(target)
+                || (!allowMovingUp && target > characterPosition.y)
+            )
             {
                 return false;
             }
@@ -146,8 +165,9 @@ namespace ReupVirtualTwin.managers
         }
         private bool IsStronglyGoingUp(float target)
         {
-            if (target - characterPosition.y > maxStepHeight)
+            if (target - characterPosition.y > _maxStepHeight)
             {
+                Debug.LogWarning($"Character is trying to go up too much {target - characterPosition.y} m. Max step allows is {_maxStepHeight} m.");
                 return true;
             }
             return false;

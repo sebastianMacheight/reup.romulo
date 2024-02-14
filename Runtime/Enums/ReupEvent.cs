@@ -12,6 +12,7 @@ namespace ReupVirtualTwin.enums
         objectsDeleted,
         insertedObjectLoaded,
         insertedObjectStatusUpdate,
-        addToCharacterHeight
+        addToCharacterHeight,
+        setCharacterHeight,
     }
 }

@@ -1,8 +1,10 @@
 using System.Collections;
 using UnityEngine;
-using ReupVirtualTwin.helpers;
 using System;
 using UnityEngine.Events;
+
+using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
@@ -15,11 +17,11 @@ namespace ReupVirtualTwin.managers
         UnityEvent endMovementEvent; 
         T currentTarget;
 
-        CharacterPositionManager _positionManager;
+        ICharacterPositionManager _positionManager;
 
         void Awake()
         {
-            _positionManager = GetComponent<CharacterPositionManager>();
+            _positionManager = GetComponent<ICharacterPositionManager>();
         }
         public MovementSlider<T> SetHaltDecitionMaker(MovementHaltDecitionMaker<T> mhdm)
         {

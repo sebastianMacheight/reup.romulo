@@ -1,13 +1,12 @@
 using UnityEngine;
 using ReupVirtualTwin.managerInterfaces;
-using ReupVirtualTwin.managers;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class CharacterMovementSelectPosition : SelectPoint
     {
         private IEditModeManager _editModeManager;
-        private CharacterPositionManager _characterPositionManager;
+        private ICharacterPositionManager _characterPositionManager;
 
         public override void HandleHit(RaycastHit hit)
         {
@@ -20,7 +19,7 @@ namespace ReupVirtualTwin.behaviours
         {
             set { _editModeManager = value; }
         }
-        public CharacterPositionManager characterPositionManager
+        public ICharacterPositionManager characterPositionManager
         {
             set { _characterPositionManager = value; }
         }

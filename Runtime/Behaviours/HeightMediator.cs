@@ -1,68 +1,115 @@
+using ReupVirtualTwin.controllerInterfaces;
 using ReupVirtualTwin.enums;
+using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace ReupVirtualTwin.behaviours
 {
-    public class HeightMediator : MonoBehaviour, IMediator
+    public class HeightMediator : MonoBehaviour, IMediator, ICharacterHeightReseter
     {
-        private ICreateCollider _createCollider;
+        private ICharacterColliderController _colliderController;
         private IMaintainHeight _maintainHeight;
         private IInitialSpawn _initialSpawn;
-        private Transform _ceilCheck;
         private LayerMask _buildingLayerMask;
         private float minHeight = 0.15f;
-        private float _ceilCheckRadius = 0.1f;
+        private float _ceilCheckHeight = -0.025f;
+        private float _ceilCheckRadius = 0.07f;
+        private float _characterHeight;
+        private ICharacterPositionManager _characterPositionManager;
 
-        public ICreateCollider createCollider { set { _createCollider = value; } }
+        public float CharacterHeight { get => _characterHeight; }
+        [Range(0.15f, 3f)]
+        public float initialCharacterHeight = 1.75f;
+
+        public ICharacterColliderController colliderController { set { _colliderController = value; } }
         public IMaintainHeight maintainHeight { set { _maintainHeight = value; } }
         public IInitialSpawn initialSpawn { set { _initialSpawn = value; } }
-        public Transform ceilCheck { set =>  _ceilCheck = value; }
         public LayerMask buildingLayerMask { set =>  _buildingLayerMask = value; }
-
-        [Range(0.15f, 3f)]
-        public float characterHeight = 1.75f;
 
         private void Start()
         {
-            updateHeight();
+            ResetCharacterHeight();
             _initialSpawn.Spawn();
+            _characterPositionManager = ObjectFinder.FindCharacter().GetComponent<ICharacterPositionManager>();
+        }
+
+        private void Update()
+        {
+            if (IsTouchingCeil())
+            {
+                _characterPositionManager.allowMovingUp = false;
+            }
+            else
+            {
+                _characterPositionManager.allowMovingUp = true;
+            }
         }
 
         public void Notify(ReupEvent eventName)
         {
-            throw new System.NotImplementedException();
+            switch (eventName)
+            {
+                case ReupEvent.setCharacterHeight:
+                    updateHeight();
+                    break;
+                default:
+                    break;
+            }
         }
         public void Notify<T>(ReupEvent eventName, T payload)
         {
-            if (eventName == ReupEvent.addToCharacterHeight)
+            switch(eventName)
             {
-                AddToHeight((float)(object)payload);
+                case ReupEvent.addToCharacterHeight:
+                    AddToHeight((float)(object)payload);
+                    break;
+                default:
+                    break;
             }
         }
         private void updateHeight()
         {
-            _createCollider.UpdateCollider(characterHeight);
-            _maintainHeight.characterHeight = characterHeight;
+            _colliderController.UpdateCollider(_characterHeight);
+            _maintainHeight.characterHeight = _characterHeight;
+        }
+        private bool IsTouchingCeil()
+        {
+            return Physics.CheckSphere(getCeilCheckPosition(), _ceilCheckRadius, _buildingLayerMask);
         }
         private void AddToHeight(float heightDelta)
         {
-            Boolean minHeightGuard = characterHeight + heightDelta < minHeight;
-            Boolean ceilGuard = Physics.CheckSphere(_ceilCheck.position, _ceilCheckRadius, _buildingLayerMask) && heightDelta > 0;
-            if (!minHeightGuard && !ceilGuard)
+            Boolean minHeightGuard = _characterHeight + heightDelta < minHeight;
+            Boolean ceilGuard = IsTouchingCeil() && heightDelta > 0;
+            if (minHeightGuard)
             {
-                characterHeight += heightDelta;
-                updateHeight();
+                Debug.LogWarning($"character has reached it's mininum allowed height of {minHeight} m.");
+                return;
             }
+            if(ceilGuard)
+            {
+                Debug.LogWarning("character can not increase any further it's height because of ceil collision");
+                return;
+            }
+            _colliderController.DestroyCollider();
+            _characterHeight += heightDelta;
+            _maintainHeight.characterHeight = _characterHeight;
         }
         private void OnDrawGizmosSelected()
         {
-            if (_ceilCheck)
-            {
-                Gizmos.DrawWireSphere(_ceilCheck.position, _ceilCheckRadius);
-            }
+            Gizmos.DrawWireSphere(getCeilCheckPosition(), _ceilCheckRadius);
+        }
+
+        private Vector3 getCeilCheckPosition()
+        {
+            return new Vector3(transform.position.x, transform.position.y + _ceilCheckHeight, transform.position.z);
+        }
+
+        public void ResetCharacterHeight()
+        {
+            _characterHeight = initialCharacterHeight;
+            updateHeight();
         }
     }
 }

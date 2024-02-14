@@ -1,17 +1,17 @@
-using ReupVirtualTwin.helpers;
 using UnityEngine;
-using ReupVirtualTwin.managers;
+using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {
     public class DetectCollision : MonoBehaviour
     {
-        CharacterPositionManager _positionManager;
+        ICharacterPositionManager _positionManager;
         float SMALL_JUMP_FORCE_AT_COLLISION = 0.01f;
 
         private void Start()
         {
-            _positionManager = ObjectFinder.FindCharacter().GetComponent<CharacterPositionManager>();
+            _positionManager = ObjectFinder.FindCharacter().GetComponent<ICharacterPositionManager>();
         }
 
         private void OnCollisionEnter()
