@@ -29,9 +29,9 @@ public class ChangeColorObjectsTest : MonoBehaviour
         containerGameObject = new GameObject("containerGameObject");
         changeColorWrapper = new GameObject("changeColorWrapper");
         changeColorManager = containerGameObject.AddComponent<ChangeColorManager>();
-        changeColorWrapper.tagsController = new TagsController();
+        changeColorManager.tagsController = new TagsController();
         mockMediator = new MockMediator();
-        changeColorWrapper.mediator = mockMediator;
+        changeColorManager.mediator = mockMediator;
         paintableObject0 = new GameObject("paintableObject0");
         paintableObject0.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.PAINTABLE });
         paintableObject1 = new GameObject("paintableObject1");
@@ -87,14 +87,14 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldParseStringToColor()
     {
-        Color parsedColor = changeColorManager.ParseColor("#0000FF");
+        Color? parsedColor = changeColorManager.parseColor("#0000FF");
         Assert.IsInstanceOf<Color>(parsedColor);
         yield return null;
     }
     [UnityTest]
     public IEnumerator ShouldFailWhenStringIsNotHex()
     {
-        Color parsedColor = changeColorManager.ParseColor("NotAnHex");
+        Color? parsedColor = changeColorManager.parseColor("NotAnHex");
         Assert.IsNull(parsedColor);
         yield return null;
     }
@@ -106,12 +106,16 @@ public class ChangeColorObjectsTest : MonoBehaviour
             wrapper = new GameObject("wrapper"),
             wrappedObjects = new List<GameObject>() { paintableObject0, paintableObject1 },
         };
+
         changeColorManager.ChangeColorSelectedObjects(objectWrapperDTO.wrappedObjects, "#0000FF");
-        Renderer renderer0 = paintableObject0.GetComponent<Renderer>();
-        Assert.Equals(renderer0.material.color, #0000FF);
-        Renderer renderer1 = paintableObject1.GetComponent<Renderer>();
-        Assert.Equals(renderer1.material.color, #0000FF);
+
         yield return null;
+
+        Renderer renderer0 = paintableObject0.GetComponent<Renderer>();
+        Assert.AreEqual(renderer0.material.color, Color.blue); 
+
+        Renderer renderer1 = paintableObject1.GetComponent<Renderer>();
+        Assert.AreEqual(renderer1.material.color, Color.blue); 
     }
     private class MockMediator : IMediator
     {
