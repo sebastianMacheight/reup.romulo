@@ -46,7 +46,7 @@ namespace ReupVirtualTwin.managers
             }
         }
 
-        private Color? parseColor(string colorString)
+        public Color? parseColor(string colorString)
         {
             if(ColorUtility.TryParseHtmlString(colorString, out Color parsedColor))
             {
