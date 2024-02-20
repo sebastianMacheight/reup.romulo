@@ -11,6 +11,7 @@ using ReupVirtualTwin.dataModels;
 using System;
 using ReupVirtualTwin.models;
 using ReupVirtualTwin.controllers;
+using ReupVirtualTwin.modelInterfaces;
 
 public class DeleteObjectsManagerTest : MonoBehaviour
 {
@@ -19,9 +20,11 @@ public class DeleteObjectsManagerTest : MonoBehaviour
     GameObject deleteWrapper;
     DeleteObjectsManager deleteObjectsManager;
     MockMediator mockMediator;
+    MockRegistry mockRegistry;
     GameObject deletableObject0;
     GameObject deletableObject1;
     GameObject nonDeletableObject;
+    public List<GameObject> allObjects = new List<GameObject>();
 
     [SetUp]
     public void SetUp()
@@ -32,71 +35,48 @@ public class DeleteObjectsManagerTest : MonoBehaviour
         deleteObjectsManager.tagsController = new TagsController();
         mockMediator = new MockMediator();
         deleteObjectsManager.mediator = mockMediator;
-        deletableObject0 = new GameObject("deletableObject0");
-        deletableObject0.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.DELETABLE });
-        deletableObject1 = new GameObject("deletableObject1");
-        deletableObject1.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.DELETABLE });
-        nonDeletableObject = new GameObject("nonDeletableObject");
-        nonDeletableObject.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+        mockRegistry = new MockRegistry();
+        deleteObjectsManager.registry = mockRegistry;
+        allObjects = mockRegistry.allObjects;
     }
-
-    [UnityTest]
-    public IEnumerator ShouldReturnTrueWhenSelectedObjectsAreDeletable()
+    public string ListToString(List<string> idsList)
     {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
+        string idsString = string.Join(",", idsList);
+        return idsString;
+    }
+    public List<string> GetIDsList(List<GameObject> gameObjects)
+    {
+        List<string> stringIDs = new List<string>();
+        foreach (GameObject obj in gameObjects)
         {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { deletableObject0, deletableObject1 },
-        };
-        Assert.IsTrue(deleteObjectsManager.AreWrappedObjectsDeletable(objectWrapperDTO));
-        yield return null;
+            stringIDs.Add(obj.GetComponent<UniqueId>().getId());
+        }
+        return stringIDs;
     }
     [UnityTest]
     public IEnumerator ShouldDeleteDeletableObjects()
     {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { deletableObject0, deletableObject1 },
-        };
-        deleteObjectsManager.DeleteSelectedObjects(objectWrapperDTO.wrappedObjects);
-        Assert.IsTrue(objectWrapperDTO.wrappedObjects.All(obj => obj == null));
+        List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
+        string stringIDs = ListToString(GetIDsList(gameObjects));
+        Assert.IsNotNull(deleteObjectsManager.TryToDeleteObjects(stringIDs));
         yield return null;
+
     }
     [UnityTest]
-    public IEnumerator ShouldFailWhenAttemptedToDeleteObjectButNoObjectIsSelected()
+    public IEnumerator ShouldFailWhenEmptyIDsString()
     {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = null,
-        };
-        Assert.IsFalse(deleteObjectsManager.AreWrappedObjectsDeletable(objectWrapperDTO));
+        Assert.IsNull(deleteObjectsManager.TryToDeleteObjects(""));
         yield return null;
     }
     [UnityTest]
     public IEnumerator ShouldFailWhenTryingToDeleteNonDeletableObjects()
     {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { deletableObject0, deletableObject1, nonDeletableObject},
-        };
-        Assert.IsFalse(deleteObjectsManager.AreWrappedObjectsDeletable(objectWrapperDTO));
+        List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1], allObjects[2]};
+        string stringIDs = ListToString(GetIDsList(gameObjects));
+        Assert.IsNull(deleteObjectsManager.TryToDeleteObjects(stringIDs));
         yield return null;
-    }
 
-    [UnityTest]
-    public IEnumerator ShouldNotDeleteIfNoSelectedObject()
-    {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { },
-        };
-        Assert.IsFalse(deleteObjectsManager.AreWrappedObjectsDeletable(objectWrapperDTO));
-        yield return null;
     }
-
     private class MockMediator : IMediator
     {
         public bool deleteModeActive = false;
@@ -113,6 +93,53 @@ public class DeleteObjectsManagerTest : MonoBehaviour
         {
             throw new System.NotImplementedException();
         }
+    }
+    private class MockRegistry : IRegistry
+    {
+        public List<GameObject> allObjects = new List<GameObject>();
+        public MockRegistry()
+        {
+            GameObject deletableObject0 = new GameObject("deletableObject0");
+            deletableObject0.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.DELETABLE });
+            deletableObject0.AddComponent<UniqueId>().GenerateId();
+            GameObject deletableObject1 = new GameObject("deletableObject1");
+            deletableObject1.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.DELETABLE });
+            deletableObject1.AddComponent<UniqueId>().GenerateId();
+            GameObject nonDeletableObject = new GameObject("nonDeletableObject");
+            nonDeletableObject.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            nonDeletableObject.AddComponent<UniqueId>().GenerateId();
+            allObjects.Add(deletableObject0);
+            allObjects.Add(deletableObject1);
+            allObjects.Add(nonDeletableObject);
+        }
+
+        public void AddItem(GameObject obj)
+        {
+            throw new NotImplementedException();
+        }
+        public GameObject GetItemWithGuid(string guid)
+        {
+            foreach (GameObject obj in allObjects)
+            {
+                if (obj == null) continue;
+                var uniqueIdentifier = obj.GetComponent<UniqueId>();
+                if (uniqueIdentifier.isIdCorrect(guid))
+                {
+                    return obj;
+                }
+            }
+            return null;
+        }
+        public List<GameObject> GetItemsWithGuids(string[] guids)
+        {
+            var foundObjects = new List<GameObject>();
+            foreach (string guid in guids)
+            {
+                foundObjects.Add(GetItemWithGuid(guid));
+            }
+            return foundObjects;
+        }
+
     }
 
 }
