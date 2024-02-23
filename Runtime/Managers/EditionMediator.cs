@@ -155,8 +155,8 @@ namespace ReupVirtualTwin.managers
 
         private void DeleteSelectedObjects(string stringIds)
         {
-            List<GameObject>? objectsToDelete = _deleteObjectsManager.TryToDeleteObjects(stringIds);
-            if (objectsToDelete!=null)
+            List<GameObject> objectsToDelete = _deleteObjectsManager.GetDeletableObjects(stringIds);
+            if (objectsToDelete.Count != 0)
             {
                 foreach( GameObject obj in objectsToDelete)
                 {

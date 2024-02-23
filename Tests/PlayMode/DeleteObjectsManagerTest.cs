@@ -58,14 +58,14 @@ public class DeleteObjectsManagerTest : MonoBehaviour
     {
         List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
         string stringIDs = ListToString(GetIDsList(gameObjects));
-        Assert.IsNotNull(deleteObjectsManager.TryToDeleteObjects(stringIDs));
+        Assert.IsNotEmpty(deleteObjectsManager.GetDeletableObjects(stringIDs));
         yield return null;
 
     }
     [UnityTest]
     public IEnumerator ShouldFailWhenEmptyIDsString()
     {
-        Assert.IsNull(deleteObjectsManager.TryToDeleteObjects(""));
+        Assert.IsEmpty(deleteObjectsManager.GetDeletableObjects(""));
         yield return null;
     }
     [UnityTest]
@@ -73,7 +73,7 @@ public class DeleteObjectsManagerTest : MonoBehaviour
     {
         List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1], allObjects[2]};
         string stringIDs = ListToString(GetIDsList(gameObjects));
-        Assert.IsNull(deleteObjectsManager.TryToDeleteObjects(stringIDs));
+        Assert.IsEmpty(deleteObjectsManager.GetDeletableObjects(stringIDs));
         yield return null;
 
     }
