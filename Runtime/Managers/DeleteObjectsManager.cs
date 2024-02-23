@@ -23,12 +23,13 @@ namespace ReupVirtualTwin.managers
         private ITagsController _tagsController;
         public ITagsController tagsController { set => _tagsController = value; }
 
-        public List<GameObject>? TryToDeleteObjects(string stringIDs)
+        public List<GameObject> GetDeletableObjects(string stringIDs)
         {
             List<string> listIDs = ConvertStringToList(stringIDs);
+            List<GameObject> gameObjectsToDelete = new();
             if (listIDs != null && listIDs.Count != 0)
             {
-                List<GameObject> gameObjectsToDelete = _registry.GetItemsWithGuids(listIDs.ToArray());
+                gameObjectsToDelete = _registry.GetItemsWithGuids(listIDs.ToArray());
                 gameObjectsToDelete.RemoveAll(obj => obj == null);
                 if (CheckTag(gameObjectsToDelete))
                 {
@@ -36,12 +37,14 @@ namespace ReupVirtualTwin.managers
                 }
                 else
                 {
-                    return null;
+                    gameObjectsToDelete.Clear();
+                    return gameObjectsToDelete;
                 }
             }
             else
             {
-                return null;
+                gameObjectsToDelete.Clear();
+                return gameObjectsToDelete;
             }
 
         }

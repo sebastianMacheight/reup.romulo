@@ -9,6 +9,6 @@ namespace ReupVirtualTwin.managerInterfaces
     public interface IDeleteObjectsManager
     {
         public void DeleteObjects(List<GameObject> objectsToDelete);
-        public List<GameObject> TryToDeleteObjects(string stringIDs);
+        public List<GameObject> GetDeletableObjects(string stringIDs);
     }
 }
