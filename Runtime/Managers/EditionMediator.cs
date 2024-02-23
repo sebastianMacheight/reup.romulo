@@ -118,7 +118,7 @@ namespace ReupVirtualTwin.managers
                     DeactivateTransformMode();
                     break;
                 case WebMessageType.deleteObjects:
-                    DeleteSelectedObjects();
+                    DeleteSelectedObjects(message.payload);
                     break;
                 case WebMessageType.loadObject:
                     LoadObject(message.payload);
@@ -153,18 +153,22 @@ namespace ReupVirtualTwin.managers
             _transformObjectsManager.DeactivateTransformMode();
         }
 
-        private void DeleteSelectedObjects()
+        private void DeleteSelectedObjects(string stringIds)
         {
-            if (_deleteObjectsManager.AreWrappedObjectsDeletable(_selectedObjectsManager.wrapperDTO))
+            List<GameObject> objectsToDelete = _deleteObjectsManager.GetDeletableObjects(stringIds);
+            if (objectsToDelete.Count != 0)
             {
-                List<GameObject> objectsToDelete = _selectedObjectsManager.wrapperDTO.wrappedObjects;
-                _selectedObjectsManager.ClearSelection();
-                _deleteObjectsManager.DeleteSelectedObjects(objectsToDelete);
+                foreach( GameObject obj in objectsToDelete)
+                {
+                    _selectedObjectsManager.RemoveObjectFromSelection(obj);
+                }
+                _deleteObjectsManager.DeleteObjects(objectsToDelete);
             }
             else
             {
                 SendErrorMessage("The selection is empty, or there is at least one non-deletable object selected");
             }
+
         }
 
         private void ProccessEditMode(bool editMode)
