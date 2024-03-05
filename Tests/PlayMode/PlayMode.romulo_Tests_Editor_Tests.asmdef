@@ -16,7 +16,8 @@
         "reup.romulo.helperInterfaces",
         "reup.romulo.dependecyInjectors",
         "reup.romulo.controllerInterfaces",
-        "reup.romulo.controllers"
+        "reup.romulo.controllers",
+        "reup.romulo.modelInterfaces"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
