@@ -63,11 +63,11 @@ public class EditionMediatorTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldSetEditModeWhenReceiveRequest()
     {
-        string message = dummyJsonCreator.createWebMessage(WebMessageType.setEditMode, "true");
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.setEditMode, true);
         editionMediator.ReceiveWebMessage(message);
         Assert.AreEqual(mockEditModeManager.editMode, true);
         yield return null;
-        message = dummyJsonCreator.createWebMessage(WebMessageType.setEditMode, "false");
+        message = dummyJsonCreator.createWebMessage(WebMessageType.setEditMode, false);
         editionMediator.ReceiveWebMessage(message);
         Assert.AreEqual(mockEditModeManager.editMode, false);
         yield return null;
@@ -129,7 +129,7 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldOrderInsertObjectManagerToInsertObject()
     {
         string mockUrl = "the mock url";
-        string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, $"\"{mockUrl}\"");
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, mockUrl);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
         Assert.IsTrue(mockInsertObjectsManager.calledToInsertObject);
@@ -276,9 +276,32 @@ public class EditionMediatorTest : MonoBehaviour
         {
             return $"{{\"type\":\"{type}\"}}";
         }
-        public static string createWebMessage(string type, string payload)
+        public static string createWebMessage(string type, object payload)
         {
-            return $"{{\"type\":\"{type}\",\"payload\":{payload}}}";
+            if (payload is int || payload is float)
+            {
+                return $"{{\"type\":\"{type}\",\"payload\":{payload}}}";
+            }
+            string processedPayload;
+            if (payload is string)
+            {
+                processedPayload = payload.ToString();
+            }
+            else if (payload is bool)
+            {
+                processedPayload = payload.ToString().ToLower();
+            }
+            else
+            {
+                processedPayload = JsonUtility.ToJson(payload);
+            }
+            processedPayload = ScapeSpecialChars(processedPayload);
+            return $"{{\"type\":\"{type}\",\"payload\":\"{processedPayload}\"}}";
+
+        }
+        static string ScapeSpecialChars(string str)
+        {
+            return str.Replace("\"", "\\\"");
         }
     }
 
