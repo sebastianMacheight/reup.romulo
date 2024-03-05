@@ -36,6 +36,10 @@ namespace ReupVirtualTwin.managers
         public IObjectMapper objectMapper { set => _objectMapper = value; }
 
 
+        private bool selectObjectAfterInsertion;
+        private bool deselectPreviousSelectionInInsertion;
+
+
         public void Notify(ReupEvent eventName)
         {
             switch (eventName)
@@ -253,6 +257,14 @@ namespace ReupVirtualTwin.managers
 
         private void ProcessInsertedObjectLoaded(GameObject obj)
         {
+            SendInsertedObjectMessage(obj);
+            if (selectObjectAfterInsertion)
+            {
+                SelectInsertedObject(obj);
+            }
+        }
+        private void SendInsertedObjectMessage(GameObject obj)
+        {
             ObjectDTO objectDTO = _objectMapper.MapObjectToDTO(obj);
             WebMessage<ObjectDTO> message = new WebMessage<ObjectDTO>
             {
@@ -261,10 +273,21 @@ namespace ReupVirtualTwin.managers
             };
             _webMessageSender.SendWebMessage(message);
         }
-
-        private void LoadObject(string url)
+        private void SelectInsertedObject(GameObject obj)
         {
-            _insertObjectsManager.InsertObjectFromUrl(url);
+            if (deselectPreviousSelectionInInsertion)
+            {
+                _selectedObjectsManager.ClearSelection();
+            }
+            _selectedObjectsManager.AddObjectToSelection(obj);
+        }
+
+        private void LoadObject(string payload)
+        {
+            InsertObjectMessagePayload parsedPayload = JsonUtility.FromJson<InsertObjectMessagePayload>(payload);
+            selectObjectAfterInsertion = parsedPayload.selectObjectAfterInsertion;
+            deselectPreviousSelectionInInsertion = parsedPayload.deselectPreviousSelection;
+            _insertObjectsManager.InsertObjectFromUrl(parsedPayload.objectUrl);
         }
 
         private void ProcessLoadStatus(float status)
