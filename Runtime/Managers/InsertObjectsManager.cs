@@ -23,7 +23,7 @@ namespace ReupVirtualTwin.managers
         private IMediator _mediator;
         public IMediator mediator { set => _mediator = value; }
 
-        public void InsertObjectFromUrl(string url)
+        public void InsertObjectFromUrl(string url, string objectId)
         {
             // Creates an AssetLoaderOptions instance.
             // AssetLoaderOptions is a class used to configure many aspects of the loading process.

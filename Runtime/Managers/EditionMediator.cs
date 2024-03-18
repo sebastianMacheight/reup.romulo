@@ -287,7 +287,7 @@ namespace ReupVirtualTwin.managers
             InsertObjectMessagePayload parsedPayload = JsonUtility.FromJson<InsertObjectMessagePayload>(payload);
             selectObjectAfterInsertion = parsedPayload.selectObjectAfterInsertion;
             deselectPreviousSelectionInInsertion = parsedPayload.deselectPreviousSelection;
-            _insertObjectsManager.InsertObjectFromUrl(parsedPayload.objectUrl);
+            _insertObjectsManager.InsertObjectFromUrl(parsedPayload.objectUrl, parsedPayload.objectId);
         }
 
         private void ProcessLoadStatus(float status)
