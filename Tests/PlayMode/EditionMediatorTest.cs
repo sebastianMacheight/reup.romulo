@@ -188,6 +188,22 @@ public class EditionMediatorTest : MonoBehaviour
         yield return null;
     }
 
+    [UnityTest]
+    public IEnumerator ShouldRequestAddPredefinedIdToParentObject()
+    {
+        InsertObjectMessagePayload payload = new InsertObjectMessagePayload
+        {
+            objectUrl = "test-3d-model-url",
+            objectId = "test-object-id",
+            selectObjectAfterInsertion = true,
+            deselectPreviousSelection = true,
+        };
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, payload);
+        editionMediator.ReceiveWebMessage(message);
+        yield return null;
+        Assert.AreEqual(payload.objectId, mockInsertObjectsManager.requestedObjectId);
+    }
+
     private class MockEditModeManager : IEditModeManager
     {
         private bool _editMode;
@@ -272,6 +288,7 @@ public class EditionMediatorTest : MonoBehaviour
         public GameObject injectedObject = null;
         public bool calledToInsertObject = false;
         public string objectLoadString = null;
+        public string requestedObjectId;
         private IMediator editionMediator;
         public MockInsertObjectsManager(IMediator mediator)
         {
@@ -280,12 +297,13 @@ public class EditionMediatorTest : MonoBehaviour
             editionMediator = mediator;
         }
 
-        public void InsertObjectFromUrl(string url)
+        public void InsertObjectFromUrl(string url, string objectId)
         {
             injectedObject = new GameObject("injected test object");
             calledToInsertObject = true;
             objectLoadString = url;
             editionMediator.Notify(ReupEvent.insertedObjectLoaded, injectedObject);
+            requestedObjectId = objectId;
         }
     }
     private class MockObjectMapper : IObjectMapper
