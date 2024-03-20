@@ -15,13 +15,11 @@ using ReupVirtualTwin.controllers;
 public class ChangeColorObjectsTest : MonoBehaviour
 {
     GameObject containerGameObject;
-    //GameObject runtimeDeleteObj;
     GameObject changeColorWrapper;
     ChangeColorManager changeColorManager;
     MockMediator mockMediator;
-    GameObject paintableObject0;
-    GameObject paintableObject1;
-    GameObject nonPaintableObject;
+    MockRegistry mockRegistry;
+    public List<GameObject> allObjects = new List<GameObject>();
 
     [SetUp]
     public void SetUp()
@@ -31,57 +29,39 @@ public class ChangeColorObjectsTest : MonoBehaviour
         changeColorManager = containerGameObject.AddComponent<ChangeColorManager>();
         changeColorManager.tagsController = new TagsController();
         mockMediator = new MockMediator();
+        mockRegistry = new MockRegistry();
         changeColorManager.mediator = mockMediator;
-        paintableObject0 = new GameObject("paintableObject0");
-        paintableObject0.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.PAINTABLE });
-        paintableObject1 = new GameObject("paintableObject1");
-        paintableObject1.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.PAINTABLE });
-        nonPaintableObject = new GameObject("nonPaintableObject");
-        nonPaintableObject.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+        allObjects = mockRegistry.allObjects;
     }
+    public string[] GetIDsArray(List<GameObject> gameObjects)
+    {
+        List<string> stringIDs = new List<string>();
+        foreach (GameObject obj in gameObjects)
+        {
+            stringIDs.Add(obj.GetComponent<UniqueId>().getId());
+        }
+        return stringIDs.ToArray();
+    }
+    public IEnumerator ShouldReturnArrayWithObjects()
+    {
+        List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
+        string[] stringIDs = GetIDsArray(gameObjects);
+        Assert.IsNotEmpty(changeColorManager.GetObjectsToChangeColor(stringIDs));
+        yield return null;
 
+    }
     [UnityTest]
-    public IEnumerator ShouldReturnTrueWhenSelectedObjectsArePaintable()
+    public IEnumerator ShouldReturnEmptyListWhenNull()
     {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { paintableObject0, paintableObject1 },
-        };
-        Assert.IsTrue(changeColorManager.AreWrappedObjectsPaintable(objectWrapperDTO));
+        string[] nullArray = null;
+        Assert.IsEmpty(changeColorManager.GetObjectsToChangeColor(nullArray));
         yield return null;
     }
     [UnityTest]
-    public IEnumerator ShouldFailWhenAttemptedToChangeColorButNoObjectIsSelected()
+    public IEnumerator ShouldReturnEmptyListWhenEmpty()
     {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = null,
-        };
-        Assert.IsFalse(changeColorManager.AreWrappedObjectsPaintable(objectWrapperDTO));
-        yield return null;
-    }
-    [UnityTest]
-    public IEnumerator ShouldFailWhenTryingToChangeColorOnNonPaintableObjects()
-    {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { paintableObject0, paintableObject1, nonPaintableObject },
-        };
-        Assert.IsFalse(changeColorManager.AreWrappedObjectsPaintable(objectWrapperDTO));
-        yield return null;
-    }
-
-    [UnityTest]
-    public IEnumerator ShouldFailIfNoSelectedObject()
-    {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { },
-        };
-        Assert.IsFalse(changeColorManager.AreWrappedObjectsPaintable(objectWrapperDTO));
+        string[] emptyArray = new string[0];
+        Assert.IsEmpty(changeColorManager.GetObjectsToChangeColor(emptyArray));
         yield return null;
     }
     [UnityTest]
@@ -101,21 +81,17 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldChangeColorInPaintableObjects()
     {
-        ObjectWrapperDTO objectWrapperDTO = new ObjectWrapperDTO()
-        {
-            wrapper = new GameObject("wrapper"),
-            wrappedObjects = new List<GameObject>() { paintableObject0, paintableObject1 },
-        };
+        List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
 
-        changeColorManager.ChangeColorSelectedObjects(objectWrapperDTO.wrappedObjects, "#0000FF");
+        changeColorManager.ChangeColorObjects(gameObjects, Color.blue);
 
         yield return null;
 
-        Renderer renderer0 = paintableObject0.GetComponent<Renderer>();
-        Assert.AreEqual(renderer0.material.color, Color.blue); 
+        Renderer renderer0 = allObjects[0].GetComponent<Renderer>();
+        Assert.AreEqual(renderer0.material.color, Color.blue);
 
-        Renderer renderer1 = paintableObject1.GetComponent<Renderer>();
-        Assert.AreEqual(renderer1.material.color, Color.blue); 
+        Renderer renderer1 = allObjects[1].GetComponent<Renderer>();
+        Assert.AreEqual(renderer1.material.color, Color.blue);
     }
     private class MockMediator : IMediator
     {
@@ -133,6 +109,50 @@ public class ChangeColorObjectsTest : MonoBehaviour
         public void Notify<T>(ReupEvent eventName, T payload)
         {
             throw new System.NotImplementedException();
+        }
+    }
+    private class MockRegistry : IRegistry
+    {
+        public List<GameObject> allObjects = new List<GameObject>();
+        public MockRegistry()
+        {
+            GameObject object0 = new GameObject("object0");
+            object0.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            object0.AddComponent<UniqueId>().GenerateId();
+            object0.AddComponent<MeshRenderer>();
+            GameObject object1 = new GameObject("object1");
+            object1.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            object1.AddComponent<UniqueId>().GenerateId();
+            object1.AddComponent<MeshRenderer>();
+            allObjects.Add(object0);
+            allObjects.Add(object1);
+        }
+
+        public void AddItem(GameObject obj)
+        {
+            throw new NotImplementedException();
+        }
+        public GameObject GetItemWithGuid(string guid)
+        {
+            foreach (GameObject obj in allObjects)
+            {
+                if (obj == null) continue;
+                var uniqueIdentifier = obj.GetComponent<UniqueId>();
+                if (uniqueIdentifier.isIdCorrect(guid))
+                {
+                    return obj;
+                }
+            }
+            return null;
+        }
+        public List<GameObject> GetItemsWithGuids(string[] guids)
+        {
+            var foundObjects = new List<GameObject>();
+            foreach (string guid in guids)
+            {
+                foundObjects.Add(GetItemWithGuid(guid));
+            }
+            return foundObjects;
         }
     }
 }

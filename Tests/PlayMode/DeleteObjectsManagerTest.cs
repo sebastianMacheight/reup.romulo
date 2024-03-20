@@ -21,9 +21,6 @@ public class DeleteObjectsManagerTest : MonoBehaviour
     DeleteObjectsManager deleteObjectsManager;
     MockMediator mockMediator;
     MockRegistry mockRegistry;
-    GameObject deletableObject0;
-    GameObject deletableObject1;
-    GameObject nonDeletableObject;
     public List<GameObject> allObjects = new List<GameObject>();
 
     [SetUp]
