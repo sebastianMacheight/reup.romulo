@@ -24,19 +24,29 @@ namespace ReupVirtualTwin.managers
 
         public List<GameObject> GetObjectsToChangeColor(string[] stringIDs)
         {
-            List<GameObject> gameObjectsToChangeColor = new();
+            List<GameObject> gameObjectsToChangeColor = new List<GameObject>();
             if (stringIDs != null && stringIDs.Length != 0)
             {
-                gameObjectsToChangeColor = _registry.GetItemsWithGuids(stringIDs.ToArray());
+                gameObjectsToChangeColor = _registry.GetItemsWithGuids(stringIDs);
                 gameObjectsToChangeColor.RemoveAll(obj => obj == null);
-                return gameObjectsToChangeColor;
+                foreach (GameObject obj in new List<GameObject>(gameObjectsToChangeColor))
+                {
+                    AddChildrenToList(obj.transform, gameObjectsToChangeColor);
+                }
+                
             }
-            else
+            return gameObjectsToChangeColor;
+        }
+        private void AddChildrenToList(Transform parent, List<GameObject> list)
+        {
+            foreach (Transform childTransform in parent)
             {
-                gameObjectsToChangeColor.Clear();
-                return gameObjectsToChangeColor;
+                if (childTransform.gameObject != null)
+                {
+                    list.Add(childTransform.gameObject);
+                    AddChildrenToList(childTransform, list);
+                }
             }
-
         }
 
         public bool ChangeColorObjects(List<GameObject> objectsToPaint, Color color)
@@ -67,10 +77,6 @@ namespace ReupVirtualTwin.managers
             if (renderer != null)
             {
                 renderer.material.color = newColor;
-            }
-            else
-            {
-                //El objecto no tiene un renderer para cambiarle el color
             }
         }
     }
