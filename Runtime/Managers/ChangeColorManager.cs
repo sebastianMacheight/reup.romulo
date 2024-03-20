@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using ReupVirtualTwin.controllerInterfaces;
+using ReupVirtualTwin.models;
 
 namespace ReupVirtualTwin.managers
 {
@@ -18,32 +19,34 @@ namespace ReupVirtualTwin.managers
         public IMediator mediator { set => _mediator = value; }
         private ITagsController _tagsController;
         public ITagsController tagsController { set => _tagsController = value; }
+        private IRegistry _registry;
+        public IRegistry registry { set => _registry = value; }
 
-        public bool AreWrappedObjectsPaintable(ObjectWrapperDTO wrapperDTO)
+        public List<GameObject> GetObjectsToChangeColor(string[] stringIDs)
         {
-            if ((wrapperDTO == null || wrapperDTO.wrapper == null) || (wrapperDTO.wrappedObjects.Count == 0) || (!CheckTag(wrapperDTO.wrappedObjects)))
+            List<GameObject> gameObjectsToChangeColor = new();
+            if (stringIDs != null && stringIDs.Length != 0)
             {
-                return false;
-            }
-            return true;
-        }
-
-        public bool ChangeColorSelectedObjects(List<GameObject> objectsToPaint, string colorString)
-        {
-            Color? parsedColor = parseColor(colorString);
-            if (parsedColor != null)
-            {
-                foreach (var obj in objectsToPaint)
-                {
-                    ChangeObjectColor(obj, (Color)parsedColor);
-                }
-                _mediator.Notify(ReupEvent.changedColorObjects);
-                return true;
+                gameObjectsToChangeColor = _registry.GetItemsWithGuids(stringIDs.ToArray());
+                gameObjectsToChangeColor.RemoveAll(obj => obj == null);
+                return gameObjectsToChangeColor;
             }
             else
             {
-                return false;
+                gameObjectsToChangeColor.Clear();
+                return gameObjectsToChangeColor;
             }
+
+        }
+
+        public bool ChangeColorObjects(List<GameObject> objectsToPaint, Color color)
+        {
+            foreach (var obj in objectsToPaint)
+            {
+                ChangeObjectColor(obj, color);
+            }
+                _mediator.Notify(ReupEvent.changedColorObjects);
+                return true;            
         }
 
         public Color? parseColor(string colorString)
@@ -69,11 +72,6 @@ namespace ReupVirtualTwin.managers
             {
                 //El objecto no tiene un renderer para cambiarle el color
             }
-        }
-
-        private bool CheckTag(List<GameObject> objects)
-        {
-            return objects.All(obj => _tagsController.DoesObjectHaveTag(obj, ObjectTag.PAINTABLE));
         }
     }
 }

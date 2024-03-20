@@ -8,8 +8,9 @@ namespace ReupVirtualTwin.managerInterfaces
 {
     public interface IChangeColorManager
     {
-        public bool AreWrappedObjectsPaintable(ObjectWrapperDTO wrapperDTO);
-        public bool ChangeColorSelectedObjects(List<GameObject> objectsToDelete, string color);
+        public List<GameObject> GetObjectsToChangeColor(string[] stringIDs);
+        public bool ChangeColorObjects(List<GameObject> objectsToDelete, Color color);
+        public Color? parseColor(string colorString);
     }
 }
 

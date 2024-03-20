@@ -131,7 +131,7 @@ namespace ReupVirtualTwin.managers
                     LoadObject(message.payload);
                     break;
                 case WebMessageType.changeObjectColor:
-                    ChangeColorSelectedObjects(message.payload);
+                    ChangeColorObjects(message.payload);
                     break;
                 default:
                     _webMessageSender.SendWebMessage(new WebMessage<string>
@@ -166,7 +166,7 @@ namespace ReupVirtualTwin.managers
         private void DeleteSelectedObjects(string stringIds)
         {
             List<GameObject> objectsToDelete = _deleteObjectsManager.GetDeletableObjects(stringIds);
-            if (objectsToDelete.Count != 0)
+            if (objectsToDelete.Count > 0)
             {
                 foreach( GameObject obj in objectsToDelete)
                 {
@@ -181,19 +181,25 @@ namespace ReupVirtualTwin.managers
 
         }
 
-        private void ChangeColorSelectedObjects(string color)
+        private void ChangeColorObjects(string payload)
         {
-            if (_changeColorManager.AreWrappedObjectsPaintable(_selectedObjectsManager.wrapperDTO))
+            ChangeColorObjectMessagePayload parsedPayload = JsonUtility.FromJson<ChangeColorObjectMessagePayload>(payload);
+            List<GameObject> objectsToChangeColor = _changeColorManager.GetObjectsToChangeColor(parsedPayload.objectsIds);
+            if (objectsToChangeColor.Count > 0)
             {
-                if (!_changeColorManager.ChangeColorSelectedObjects(_selectedObjectsManager.wrapperDTO.wrappedObjects, color))
+                Color? parsedColor = _changeColorManager.parseColor(parsedPayload.color);
+                if (parsedColor != null)
+                {
+                    _changeColorManager.ChangeColorObjects(objectsToChangeColor, (Color)parsedColor);
+                }
+                else
                 {
                     SendErrorMessage("The color isn't valid");
                 }
-                
             }
             else
             {
-                SendErrorMessage("The selection is empty, or there is at least one non-paintable object selected");
+                SendErrorMessage("The selection is empty");
             }
         }
 
