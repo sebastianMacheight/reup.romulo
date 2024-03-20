@@ -31,6 +31,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
         mockMediator = new MockMediator();
         mockRegistry = new MockRegistry();
         changeColorManager.mediator = mockMediator;
+        changeColorManager.registry = mockRegistry;
         allObjects = mockRegistry.allObjects;
     }
     public string[] GetIDsArray(List<GameObject> gameObjects)
@@ -42,6 +43,8 @@ public class ChangeColorObjectsTest : MonoBehaviour
         }
         return stringIDs.ToArray();
     }
+
+    [UnityTest]
     public IEnumerator ShouldReturnArrayWithObjects()
     {
         List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
@@ -50,6 +53,19 @@ public class ChangeColorObjectsTest : MonoBehaviour
         yield return null;
 
     }
+
+    [UnityTest]
+    public IEnumerator ShouldReturnArrayWithObjectsAndChildren()
+    {
+        List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
+        string[] stringIDs = GetIDsArray(gameObjects);
+        List<GameObject> objectsToChangeColor = changeColorManager.GetObjectsToChangeColor(stringIDs);
+        int expectedCount = gameObjects.Count + gameObjects.Sum(obj => obj.transform.childCount);
+        Assert.AreEqual(expectedCount, objectsToChangeColor.Count);
+        yield return null;
+
+    }
+
     [UnityTest]
     public IEnumerator ShouldReturnEmptyListWhenNull()
     {
@@ -57,6 +73,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
         Assert.IsEmpty(changeColorManager.GetObjectsToChangeColor(nullArray));
         yield return null;
     }
+
     [UnityTest]
     public IEnumerator ShouldReturnEmptyListWhenEmpty()
     {
@@ -64,6 +81,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
         Assert.IsEmpty(changeColorManager.GetObjectsToChangeColor(emptyArray));
         yield return null;
     }
+
     [UnityTest]
     public IEnumerator ShouldParseStringToColor()
     {
@@ -71,6 +89,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
         Assert.IsInstanceOf<Color>(parsedColor);
         yield return null;
     }
+
     [UnityTest]
     public IEnumerator ShouldFailWhenStringIsNotHex()
     {
@@ -78,6 +97,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
         Assert.IsNull(parsedColor);
         yield return null;
     }
+
     [UnityTest]
     public IEnumerator ShouldChangeColorInPaintableObjects()
     {
@@ -93,6 +113,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
         Renderer renderer1 = allObjects[1].GetComponent<Renderer>();
         Assert.AreEqual(renderer1.material.color, Color.blue);
     }
+
     private class MockMediator : IMediator
     {
         public bool deleteModeActive = false;
@@ -120,12 +141,25 @@ public class ChangeColorObjectsTest : MonoBehaviour
             object0.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
             object0.AddComponent<UniqueId>().GenerateId();
             object0.AddComponent<MeshRenderer>();
+
             GameObject object1 = new GameObject("object1");
             object1.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
             object1.AddComponent<UniqueId>().GenerateId();
             object1.AddComponent<MeshRenderer>();
             allObjects.Add(object0);
             allObjects.Add(object1);
+
+            GameObject child1 = new GameObject("Child1");
+            child1.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            child1.AddComponent<UniqueId>().GenerateId();
+            child1.AddComponent<MeshRenderer>();
+            child1.transform.parent = object0.transform;
+
+            GameObject child2 = new GameObject("Child2");
+            child2.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            child2.AddComponent<UniqueId>().GenerateId();
+            child2.AddComponent<MeshRenderer>();
+            child2.transform.parent = object1.transform;
         }
 
         public void AddItem(GameObject obj)
