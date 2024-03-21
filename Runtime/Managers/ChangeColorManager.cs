@@ -22,12 +22,12 @@ namespace ReupVirtualTwin.managers
         private IRegistry _registry;
         public IRegistry registry { set => _registry = value; }
 
-        public List<GameObject> GetObjectsToChangeColor(string[] stringIDs)
+        public List<GameObject> GetObjectsToChangeColor(List<string> stringIDs)
         {
             List<GameObject> gameObjectsToChangeColor = new List<GameObject>();
-            if (stringIDs != null && stringIDs.Length != 0)
+            if (stringIDs != null && stringIDs.Count != 0)
             {
-                gameObjectsToChangeColor = _registry.GetItemsWithGuids(stringIDs);
+                gameObjectsToChangeColor = _registry.GetItemsWithGuids(stringIDs.ToArray());
                 gameObjectsToChangeColor.RemoveAll(obj => obj == null);
                 foreach (GameObject obj in new List<GameObject>(gameObjectsToChangeColor))
                 {

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChangeColorObjectMessagePayload : MonoBehaviour
+public class ChangeColorObjectMessagePayload
 {
     public string color;
-    public string[] objectsIds;
+    public List<string> objectsIds;
 }
