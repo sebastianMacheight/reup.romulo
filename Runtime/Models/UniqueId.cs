@@ -26,6 +26,16 @@ namespace ReupVirtualTwin.models
             return uniqueId;
         }
 
+        virtual public string AssignId(string id)
+        {
+            if (id == null || id == "")
+            {
+                throw new Exception("Id cannot be empty");
+            }
+            uniqueId = id;
+            return uniqueId;
+        }
+
         public string getId()
         {
             return uniqueId;

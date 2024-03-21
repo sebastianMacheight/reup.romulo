@@ -135,7 +135,6 @@ public class EditionMediatorTest : MonoBehaviour
             deselectPreviousSelection = true,
         };
         string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, payload);
-        Debug.Log(message);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
         Assert.IsTrue(mockInsertObjectsManager.calledToInsertObject);
