@@ -4,6 +4,8 @@ using RuntimeHandle;
 using ReupVirtualTwin.controllers;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.managers;
+using ReupVirtualTwin.models;
+using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwin.dependencyInjectors
 {
@@ -16,6 +18,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             ChangeColorManager changeColorManager = GetComponent<ChangeColorManager>();
             changeColorManager.mediator = mediator.GetComponent<IMediator>();
             changeColorManager.tagsController = new TagsController();
+            changeColorManager.registry = ObjectFinder.FindObjectRegistry().GetComponent<IRegistry>();
         }
     }
 }

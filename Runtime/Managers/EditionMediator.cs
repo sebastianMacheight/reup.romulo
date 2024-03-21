@@ -183,7 +183,9 @@ namespace ReupVirtualTwin.managers
 
         private void ChangeColorObjects(string payload)
         {
+            Debug.Log(payload.ToString());
             ChangeColorObjectMessagePayload parsedPayload = JsonUtility.FromJson<ChangeColorObjectMessagePayload>(payload);
+            Debug.Log(parsedPayload.objectsIds);
             List<GameObject> objectsToChangeColor = _changeColorManager.GetObjectsToChangeColor(parsedPayload.objectsIds);
             if (objectsToChangeColor.Count > 0)
             {

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
-using NUnit.Framework;
 using System.Linq;
 using ReupVirtualTwin.managers;
 using ReupVirtualTwin.enums;
@@ -11,6 +10,7 @@ using ReupVirtualTwin.dataModels;
 using System;
 using ReupVirtualTwin.models;
 using ReupVirtualTwin.controllers;
+using NUnit.Framework;
 
 public class ChangeColorObjectsTest : MonoBehaviour
 {
@@ -34,21 +34,21 @@ public class ChangeColorObjectsTest : MonoBehaviour
         changeColorManager.registry = mockRegistry;
         allObjects = mockRegistry.allObjects;
     }
-    public string[] GetIDsArray(List<GameObject> gameObjects)
+    public List<string> GetIDsArray(List<GameObject> gameObjects)
     {
         List<string> stringIDs = new List<string>();
         foreach (GameObject obj in gameObjects)
         {
             stringIDs.Add(obj.GetComponent<UniqueId>().getId());
         }
-        return stringIDs.ToArray();
+        return stringIDs;
     }
 
     [UnityTest]
     public IEnumerator ShouldReturnArrayWithObjects()
     {
         List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
-        string[] stringIDs = GetIDsArray(gameObjects);
+        List<string> stringIDs = GetIDsArray(gameObjects);
         Assert.IsNotEmpty(changeColorManager.GetObjectsToChangeColor(stringIDs));
         yield return null;
 
@@ -58,7 +58,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
     public IEnumerator ShouldReturnArrayWithObjectsAndChildren()
     {
         List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
-        string[] stringIDs = GetIDsArray(gameObjects);
+        List<string> stringIDs = GetIDsArray(gameObjects);
         List<GameObject> objectsToChangeColor = changeColorManager.GetObjectsToChangeColor(stringIDs);
         int expectedCount = gameObjects.Count + gameObjects.Sum(obj => obj.transform.childCount);
         Assert.AreEqual(expectedCount, objectsToChangeColor.Count);
@@ -69,7 +69,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldReturnEmptyListWhenNull()
     {
-        string[] nullArray = null;
+        List<string> nullArray = null;
         Assert.IsEmpty(changeColorManager.GetObjectsToChangeColor(nullArray));
         yield return null;
     }
@@ -77,7 +77,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldReturnEmptyListWhenEmpty()
     {
-        string[] emptyArray = new string[0];
+        List<string> emptyArray = new();
         Assert.IsEmpty(changeColorManager.GetObjectsToChangeColor(emptyArray));
         yield return null;
     }
