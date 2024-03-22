@@ -5,5 +5,5 @@ using UnityEngine;
 public class ChangeColorObjectMessagePayload
 {
     public string color;
-    public List<string> objectsIds;
+    public List<string> objectIds;
 }
