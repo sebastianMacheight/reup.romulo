@@ -131,6 +131,7 @@ public class EditionMediatorTest : MonoBehaviour
         InsertObjectMessagePayload payload = new InsertObjectMessagePayload
         {
             objectUrl = "test-3d-model-url",
+            objectId = "test-object-id",
             selectObjectAfterInsertion = true,
             deselectPreviousSelection = true,
         };
@@ -171,11 +172,60 @@ public class EditionMediatorTest : MonoBehaviour
     }
 
     [UnityTest]
+    public IEnumerator ShouldNotSelectInsertedObjectByDefault()
+    {
+        InsertObjectMessagePayload payload = new InsertObjectMessagePayload
+        {
+            objectUrl = "test-3d-model-url",
+            objectId = "test-3d-model-url",
+        };
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, payload);
+        editionMediator.ReceiveWebMessage(message);
+        yield return null;
+        Assert.IsNull(mockSelectedObjectsManager.wrapperDTO.wrappedObjects);
+        Assert.IsNull(mockSelectedObjectsManager.wrapperDTO.wrappedObjects);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendErrorMessageIfReceiveInsertObjectActionWithoutObjectUrl()
+    {
+        InsertObjectMessagePayload payload = new InsertObjectMessagePayload
+        {
+            objectId = "test-3d-model-url",
+        };
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, payload);
+        editionMediator.ReceiveWebMessage(message);
+        yield return null;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebMessageType.error, sentMessage.type);
+        Assert.AreEqual(editionMediator.noInsertObjectUrlErrorMessage, sentMessage.payload);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendErrorMessageIfReceiveInsertObjectActionWithoutObjectId()
+    {
+        InsertObjectMessagePayload payload = new InsertObjectMessagePayload
+        {
+            objectUrl = "test-3d-model-url",
+        };
+        string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, payload);
+        editionMediator.ReceiveWebMessage(message);
+        yield return null;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        Assert.AreEqual(WebMessageType.error, sentMessage.type);
+        Assert.AreEqual(editionMediator.noInsertObjectIdErrorMessage, sentMessage.payload);
+        yield return null;
+    }
+
+    [UnityTest]
     public IEnumerator ShouldSelectJustInsertedObject()
     {
         InsertObjectMessagePayload payload = new InsertObjectMessagePayload
         {
             objectUrl = "test-3d-model-url",
+            objectId = "test-object-id",
             selectObjectAfterInsertion = true,
             deselectPreviousSelection = true,
         };

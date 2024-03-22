@@ -4,7 +4,7 @@ namespace ReupVirtualTwin.dataModels
     {
         public string objectUrl;
         public string objectId;
-        public bool selectObjectAfterInsertion;
-        public bool deselectPreviousSelection;
+        public bool selectObjectAfterInsertion = false;
+        public bool deselectPreviousSelection = false;
     }
 }

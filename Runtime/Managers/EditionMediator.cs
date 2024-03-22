@@ -39,6 +39,9 @@ namespace ReupVirtualTwin.managers
         private bool selectObjectAfterInsertion;
         private bool deselectPreviousSelectionInInsertion;
 
+        public string noInsertObjectIdErrorMessage = "No object id provided for insertion";
+        public string noInsertObjectUrlErrorMessage = "No 3d model url provided for insertion";
+
 
         public void Notify(ReupEvent eventName)
         {
@@ -285,6 +288,16 @@ namespace ReupVirtualTwin.managers
         private void LoadObject(string payload)
         {
             InsertObjectMessagePayload parsedPayload = JsonUtility.FromJson<InsertObjectMessagePayload>(payload);
+            if (parsedPayload.objectUrl == null || parsedPayload.objectUrl == "")
+            {
+                SendErrorMessage(noInsertObjectUrlErrorMessage);
+                return;
+            }
+            if (parsedPayload.objectId == null || parsedPayload.objectId == "")
+            {
+                SendErrorMessage(noInsertObjectIdErrorMessage);
+                return;
+            }
             selectObjectAfterInsertion = parsedPayload.selectObjectAfterInsertion;
             deselectPreviousSelectionInInsertion = parsedPayload.deselectPreviousSelection;
             _insertObjectsManager.InsertObjectFromUrl(parsedPayload.objectUrl, parsedPayload.objectId);
