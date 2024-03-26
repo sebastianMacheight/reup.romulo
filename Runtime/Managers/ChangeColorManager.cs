@@ -55,7 +55,7 @@ namespace ReupVirtualTwin.managers
             {
                 ChangeObjectColor(obj, color);
             }
-                _mediator.Notify(ReupEvent.changedColorObjects);
+                _mediator.Notify(ReupEvent.objectColorChanged);
                 return true;            
         }
 
