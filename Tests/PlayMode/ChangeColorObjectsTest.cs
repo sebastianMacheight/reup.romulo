@@ -103,7 +103,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
     {
         List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
 
-        changeColorManager.ChangeColorObjects(gameObjects, Color.blue);
+        changeColorManager.ChangeObjectsColor(gameObjects, Color.blue);
 
         yield return null;
 

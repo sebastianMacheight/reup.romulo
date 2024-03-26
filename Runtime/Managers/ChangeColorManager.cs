@@ -49,7 +49,7 @@ namespace ReupVirtualTwin.managers
             }
         }
 
-        public bool ChangeColorObjects(List<GameObject> objectsToPaint, Color color)
+        public bool ChangeObjectsColor(List<GameObject> objectsToPaint, Color color)
         {
             foreach (var obj in objectsToPaint)
             {
