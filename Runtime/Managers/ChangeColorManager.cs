@@ -1,14 +1,7 @@
 using UnityEngine;
 using ReupVirtualTwin.managerInterfaces;
-using ReupVirtualTwin.helpers;
-using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.enums;
-using ReupVirtualTwin.dataModels;
-using System.Collections;
 using System.Collections.Generic;
-using System;
-using System.Linq;
-using ReupVirtualTwin.controllerInterfaces;
 using ReupVirtualTwin.models;
 
 namespace ReupVirtualTwin.managers
@@ -17,8 +10,6 @@ namespace ReupVirtualTwin.managers
     {
         private IMediator _mediator;
         public IMediator mediator { set => _mediator = value; }
-        private ITagsController _tagsController;
-        public ITagsController tagsController { set => _tagsController = value; }
         private IRegistry _registry;
         public IRegistry registry { set => _registry = value; }
 
@@ -55,8 +46,8 @@ namespace ReupVirtualTwin.managers
             {
                 ChangeObjectColor(obj, color);
             }
-                _mediator.Notify(ReupEvent.objectColorChanged);
-                return true;            
+            _mediator.Notify(ReupEvent.objectColorChanged);
+            return true;            
         }
 
         public Color? parseColor(string colorString)
