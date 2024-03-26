@@ -10,7 +10,6 @@ namespace ReupVirtualTwin.managerInterfaces
     {
         public List<GameObject> GetObjectsToChangeColor(List<string> stringIDs);
         public void ChangeObjectsColor(List<GameObject> objectsToDelete, Color color);
-        public Color? parseColor(string colorString);
     }
 }
 

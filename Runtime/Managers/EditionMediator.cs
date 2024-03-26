@@ -187,7 +187,7 @@ namespace ReupVirtualTwin.managers
             List<GameObject> objectsToChangeColor = _changeColorManager.GetObjectsToChangeColor(parsedPayload.objectIds);
             if (objectsToChangeColor.Count > 0)
             {
-                Color? parsedColor = _changeColorManager.parseColor(parsedPayload.color);
+                Color? parsedColor = Utils.ParseColor(parsedPayload.color);
                 if (parsedColor != null)
                 {
                     _changeColorManager.ChangeObjectsColor(objectsToChangeColor, (Color)parsedColor);

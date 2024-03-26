@@ -84,7 +84,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldParseStringToColor()
     {
-        Color? parsedColor = changeColorManager.parseColor("#0000FF");
+        Color? parsedColor = Utils.ParseColor("#0000FF");
         Assert.IsInstanceOf<Color>(parsedColor);
         yield return null;
     }
@@ -92,7 +92,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldFailWhenStringIsNotHex()
     {
-        Color? parsedColor = changeColorManager.parseColor("NotAnHex");
+        Color? parsedColor = Utils.ParseColor("NotAnHex");
         Assert.IsNull(parsedColor);
         yield return null;
     }
