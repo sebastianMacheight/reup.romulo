@@ -6,10 +6,8 @@ using System.Linq;
 using ReupVirtualTwin.managers;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
-using ReupVirtualTwin.dataModels;
 using System;
 using ReupVirtualTwin.models;
-using ReupVirtualTwin.controllers;
 using NUnit.Framework;
 
 public class ChangeColorObjectsTest : MonoBehaviour
@@ -19,7 +17,6 @@ public class ChangeColorObjectsTest : MonoBehaviour
     ChangeColorManager changeColorManager;
     MockMediator mockMediator;
     MockRegistry mockRegistry;
-    public List<GameObject> allObjects = new List<GameObject>();
 
     [SetUp]
     public void SetUp()
@@ -31,7 +28,6 @@ public class ChangeColorObjectsTest : MonoBehaviour
         mockRegistry = new MockRegistry();
         changeColorManager.mediator = mockMediator;
         changeColorManager.registry = mockRegistry;
-        allObjects = mockRegistry.allObjects;
     }
     public List<string> GetIDsArray(List<GameObject> gameObjects)
     {
@@ -46,7 +42,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldReturnArrayWithObjects()
     {
-        List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
+        List<GameObject> gameObjects = new List<GameObject>() { mockRegistry.parentObjects[0], mockRegistry.parentObjects[1] };
         List<string> stringIDs = GetIDsArray(gameObjects);
         Assert.IsNotEmpty(changeColorManager.GetObjectsToChangeColor(stringIDs));
         yield return null;
@@ -56,7 +52,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldReturnArrayWithObjectsAndChildren()
     {
-        List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
+        List<GameObject> gameObjects = new List<GameObject>() { mockRegistry.parentObjects[0], mockRegistry.parentObjects[1] };
         List<string> stringIDs = GetIDsArray(gameObjects);
         List<GameObject> objectsToChangeColor = changeColorManager.GetObjectsToChangeColor(stringIDs);
         int expectedCount = gameObjects.Count + gameObjects.Sum(obj => obj.transform.childCount);
@@ -98,19 +94,26 @@ public class ChangeColorObjectsTest : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator ShouldChangeColorInPaintableObjects()
+    public IEnumerator ShouldChangeColorObjectsAndChildren()
     {
-        List<GameObject> gameObjects = new List<GameObject>() { allObjects[0], allObjects[1] };
-
-        changeColorManager.ChangeObjectsColor(gameObjects, Color.blue);
+        List<GameObject> gameObjects = new List<GameObject>() { mockRegistry.parentObjects[0], mockRegistry.parentObjects[1] };
+        List<string> stringIDs = GetIDsArray(gameObjects);
+        List<GameObject> objectsToChangeColor = changeColorManager.GetObjectsToChangeColor(stringIDs);
+        changeColorManager.ChangeObjectsColor(objectsToChangeColor, Color.blue);
 
         yield return null;
 
-        Renderer renderer0 = allObjects[0].GetComponent<Renderer>();
+        Renderer renderer0 = mockRegistry.parent0.GetComponent<Renderer>();
         Assert.AreEqual(renderer0.material.color, Color.blue);
 
-        Renderer renderer1 = allObjects[1].GetComponent<Renderer>();
+        Renderer renderer1 = mockRegistry.parent1.GetComponent<Renderer>();
         Assert.AreEqual(renderer1.material.color, Color.blue);
+
+        Renderer renderer2 = mockRegistry.child0.GetComponent<Renderer>();
+        Assert.AreEqual(renderer2.material.color, Color.blue);
+
+        Renderer renderer3 = mockRegistry.child1.GetComponent<Renderer>();
+        Assert.AreEqual(renderer3.material.color, Color.blue);
     }
 
     private class MockMediator : IMediator
@@ -131,34 +134,35 @@ public class ChangeColorObjectsTest : MonoBehaviour
             throw new System.NotImplementedException();
         }
     }
-    private class MockRegistry : IRegistry
+    public class MockRegistry : IRegistry
     {
-        public List<GameObject> allObjects = new List<GameObject>();
+        public GameObject parent0 = new GameObject();
+        public GameObject parent1 = new GameObject();
+        public GameObject child0 = new GameObject();
+        public GameObject child1 = new GameObject();
+        public List<GameObject> parentObjects = new List<GameObject>();
         public MockRegistry()
         {
-            GameObject object0 = new GameObject("object0");
-            object0.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
-            object0.AddComponent<UniqueId>().GenerateId();
-            object0.AddComponent<MeshRenderer>();
+            parent0.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            parent0.AddComponent<UniqueId>().GenerateId();
+            parent0.AddComponent<MeshRenderer>();
 
-            GameObject object1 = new GameObject("object1");
-            object1.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
-            object1.AddComponent<UniqueId>().GenerateId();
-            object1.AddComponent<MeshRenderer>();
-            allObjects.Add(object0);
-            allObjects.Add(object1);
+            parent1.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            parent1.AddComponent<UniqueId>().GenerateId();
+            parent1.AddComponent<MeshRenderer>();
 
-            GameObject child1 = new GameObject("Child1");
+            child0.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            child0.AddComponent<UniqueId>().GenerateId();
+            child0.AddComponent<MeshRenderer>();
+            child0.transform.parent = parent0.transform;
+
             child1.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
             child1.AddComponent<UniqueId>().GenerateId();
             child1.AddComponent<MeshRenderer>();
-            child1.transform.parent = object0.transform;
+            child1.transform.parent = parent1.transform;
 
-            GameObject child2 = new GameObject("Child2");
-            child2.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
-            child2.AddComponent<UniqueId>().GenerateId();
-            child2.AddComponent<MeshRenderer>();
-            child2.transform.parent = object1.transform;
+            parentObjects.Add(parent0);
+            parentObjects.Add(parent1);
         }
 
         public void AddItem(GameObject obj)
@@ -167,7 +171,7 @@ public class ChangeColorObjectsTest : MonoBehaviour
         }
         public GameObject GetItemWithGuid(string guid)
         {
-            foreach (GameObject obj in allObjects)
+            foreach (GameObject obj in parentObjects)
             {
                 if (obj == null) continue;
                 var uniqueIdentifier = obj.GetComponent<UniqueId>();

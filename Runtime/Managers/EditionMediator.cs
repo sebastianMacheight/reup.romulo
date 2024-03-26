@@ -285,14 +285,10 @@ namespace ReupVirtualTwin.managers
 
         private void ProcessObjectColorChanged()
         {
-            string webMessageType;
-            webMessageType = WebMessageType.changeObjectColorSuccess;
-
             WebMessage<string> message = new WebMessage<string>
             {
-                type = webMessageType,
+                type = WebMessageType.changeObjectColorSuccess,
             };
-            _webMessageSender.SendWebMessage(message);
         }
 
         private void ProcessInsertedObjectLoaded(GameObject obj)
