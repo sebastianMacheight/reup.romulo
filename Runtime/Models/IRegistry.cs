@@ -8,5 +8,6 @@ namespace ReupVirtualTwin.models
         public void AddItem(GameObject obj);
         public GameObject GetItemWithGuid(string guid);
         public List<GameObject> GetItemsWithGuids(string[] guids);
+        public List<GameObject> GetItemTreesWithParentGuids(List<string> stringIDs);
     }
 }

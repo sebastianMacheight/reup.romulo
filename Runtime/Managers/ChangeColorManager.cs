@@ -15,39 +15,16 @@ namespace ReupVirtualTwin.managers
 
         public List<GameObject> GetObjectsToChangeColor(List<string> stringIDs)
         {
-            List<GameObject> gameObjectsToChangeColor = new List<GameObject>();
-            if (stringIDs != null && stringIDs.Count != 0)
-            {
-                gameObjectsToChangeColor = _registry.GetItemsWithGuids(stringIDs.ToArray());
-                gameObjectsToChangeColor.RemoveAll(obj => obj == null);
-                foreach (GameObject obj in new List<GameObject>(gameObjectsToChangeColor))
-                {
-                    AddChildrenToList(obj.transform, gameObjectsToChangeColor);
-                }
-                
-            }
-            return gameObjectsToChangeColor;
-        }
-        private void AddChildrenToList(Transform parent, List<GameObject> list)
-        {
-            foreach (Transform childTransform in parent)
-            {
-                if (childTransform.gameObject != null)
-                {
-                    list.Add(childTransform.gameObject);
-                    AddChildrenToList(childTransform, list);
-                }
-            }
+            return _registry.GetItemTreesWithParentGuids(stringIDs);
         }
 
-        public bool ChangeObjectsColor(List<GameObject> objectsToPaint, Color color)
+        public void ChangeObjectsColor(List<GameObject> objectsToPaint, Color color)
         {
             foreach (var obj in objectsToPaint)
             {
                 ChangeObjectColor(obj, color);
             }
-            _mediator.Notify(ReupEvent.objectColorChanged);
-            return true;            
+            _mediator.Notify(ReupEvent.objectColorChanged);           
         }
 
         public Color? parseColor(string colorString)
