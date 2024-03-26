@@ -26,9 +26,9 @@ namespace ReupVirtualTwin.controllers
             }
         }
 
-        public IUniqueIdentifer AssignIdToObject(GameObject obj, string objectId = null)
+        public IUniqueIdentifier AssignIdToObject(GameObject obj, string objectId = null)
         {
-            IUniqueIdentifer uniqueId = obj.GetComponent<IUniqueIdentifer>();
+            IUniqueIdentifier uniqueId = obj.GetComponent<IUniqueIdentifier>();
             if (uniqueId == null)
             {
                 uniqueId = obj.AddComponent<RegisteredIdentifier>();
@@ -36,7 +36,7 @@ namespace ReupVirtualTwin.controllers
             }
             return uniqueId;
         }
-        private void CreateIdInUniqueIdComponent(IUniqueIdentifer uniqueId, string idToAssign)
+        private void CreateIdInUniqueIdComponent(IUniqueIdentifier uniqueId, string idToAssign)
         {
             if (idToAssign != null)
             {
@@ -57,7 +57,7 @@ namespace ReupVirtualTwin.controllers
 
         public void RemoveIdFromObject(GameObject obj)
         {
-            IUniqueIdentifer identifier = obj.GetComponent<IUniqueIdentifer>();
+            IUniqueIdentifier identifier = obj.GetComponent<IUniqueIdentifier>();
             if (identifier != null)
             {
                 Object.DestroyImmediate((Object)identifier);
@@ -66,7 +66,7 @@ namespace ReupVirtualTwin.controllers
 
         public string GetIdFromObject(GameObject obj)
         {
-            return obj.GetComponent<IUniqueIdentifer>().getId();
+            return obj.GetComponent<IUniqueIdentifier>().getId();
         }
     }
 }

@@ -44,7 +44,7 @@ namespace ReupVirtualTwinTests.Registry
         public IEnumerator ShouldAddAnItemToRegistry()
         {
             testObj0 = new GameObject("testObj");
-            IUniqueIdentifer uniqueIdentifier = testObj0.AddComponent<UniqueId>();
+            IUniqueIdentifier uniqueIdentifier = testObj0.AddComponent<UniqueId>();
             string id = uniqueIdentifier.GenerateId();
             objectRegistry.AddItem(testObj0);
             var retrievedObj = objectRegistry.GetItemWithGuid(id);
@@ -74,7 +74,7 @@ namespace ReupVirtualTwinTests.Registry
         public IEnumerator ShouldAddSeveralItemsToRegistry()
         {
             testObj0 = new GameObject("testObj0");
-            IUniqueIdentifer uniqueIdentifier0 = testObj0.AddComponent<UniqueId>();
+            IUniqueIdentifier uniqueIdentifier0 = testObj0.AddComponent<UniqueId>();
             string id0 = uniqueIdentifier0.GenerateId();
             objectRegistry.AddItem(testObj0);
             var retrievedObj0 = objectRegistry.GetItemWithGuid(id0);
@@ -82,7 +82,7 @@ namespace ReupVirtualTwinTests.Registry
             Assert.AreEqual(1, objectRegistry.GetItemCount());
             yield return null;
             testObj1 = new GameObject("testObj1");
-            IUniqueIdentifer uniqueIdentifier1 = testObj1.AddComponent<UniqueId>();
+            IUniqueIdentifier uniqueIdentifier1 = testObj1.AddComponent<UniqueId>();
             string id1 = uniqueIdentifier1.GenerateId();
             objectRegistry.AddItem(testObj1);
             var retrievedObj1 = objectRegistry.GetItemWithGuid(id1);
@@ -95,7 +95,7 @@ namespace ReupVirtualTwinTests.Registry
         public IEnumerator ShouldRemoveItem()
         {
             testObj0 = new GameObject("testObj0");
-            IUniqueIdentifer uniqueIdentifier0 = testObj0.AddComponent<UniqueId>();
+            IUniqueIdentifier uniqueIdentifier0 = testObj0.AddComponent<UniqueId>();
             string id = uniqueIdentifier0.GenerateId();
             objectRegistry.AddItem(testObj0);
             var retrievedObj = objectRegistry.GetItemWithGuid(id);
@@ -112,11 +112,11 @@ namespace ReupVirtualTwinTests.Registry
         public IEnumerator ShouldClearRegistry()
         {
             testObj0 = new GameObject("testObj0");
-            IUniqueIdentifer uniqueIdentifier0 = testObj0.AddComponent<UniqueId>();
+            IUniqueIdentifier uniqueIdentifier0 = testObj0.AddComponent<UniqueId>();
             uniqueIdentifier0.GenerateId();
             objectRegistry.AddItem(testObj0);
             testObj1 = new GameObject("testObj1");
-            IUniqueIdentifer uniqueIdentifier1 = testObj1.AddComponent<UniqueId>();
+            IUniqueIdentifier uniqueIdentifier1 = testObj1.AddComponent<UniqueId>();
             uniqueIdentifier1.GenerateId();
             objectRegistry.AddItem(testObj1);
             Assert.AreEqual(2, objectRegistry.GetItemCount());

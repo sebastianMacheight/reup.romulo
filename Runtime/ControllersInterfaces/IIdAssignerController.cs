@@ -7,7 +7,7 @@ namespace ReupVirtualTwin.controllerInterfaces
     {
         public void AssignIdsToTree(GameObject tree, string parentTreeId = null);
         public void RemoveIdsFromTree(GameObject tree);
-        public IUniqueIdentifer AssignIdToObject(GameObject obj, string objectId = null);
+        public IUniqueIdentifier AssignIdToObject(GameObject obj, string objectId = null);
         public void RemoveIdFromObject(GameObject obj);
     }
 }

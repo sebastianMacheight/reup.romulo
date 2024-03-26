@@ -9,7 +9,7 @@ using ReupVirtualTwin.modelInterfaces;
 public class UniqueIdTest : MonoBehaviour
 {
     GameObject testObj;
-    IUniqueIdentifer uniqueIdentifier;
+    IUniqueIdentifier uniqueIdentifier;
 
     [SetUp]
     public void SetUp()

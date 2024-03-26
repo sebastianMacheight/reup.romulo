@@ -75,14 +75,14 @@ namespace ReupVirtualTwinTests.Registry
         [UnityTest]
         public IEnumerator ShouldGenerateNewIdToObject()
         {
-            IUniqueIdentifer identifierParent = parent.GetComponent<IUniqueIdentifer>();
-            IUniqueIdentifer identifierChild0 = child0.GetComponent<IUniqueIdentifer>();
+            IUniqueIdentifier identifierParent = parent.GetComponent<IUniqueIdentifier>();
+            IUniqueIdentifier identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
             Assert.IsNull(identifierParent);
             Assert.IsNull(identifierChild0);
             yield return null;
             idController.AssignIdToObject(parent);
-            identifierParent = parent.GetComponent<IUniqueIdentifer>();
-            identifierChild0 = child0.GetComponent<IUniqueIdentifer>();
+            identifierParent = parent.GetComponent<IUniqueIdentifier>();
+            identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
             Assert.IsNotNull(identifierParent);
             Assert.IsNotNull(identifierParent.getId());
             Assert.IsNull(identifierChild0);
@@ -92,15 +92,15 @@ namespace ReupVirtualTwinTests.Registry
         [UnityTest]
         public IEnumerator ShouldAssignNewIdToObject()
         {
-            IUniqueIdentifer identifierParent = parent.GetComponent<IUniqueIdentifer>();
-            IUniqueIdentifer identifierChild0 = child0.GetComponent<IUniqueIdentifer>();
+            IUniqueIdentifier identifierParent = parent.GetComponent<IUniqueIdentifier>();
+            IUniqueIdentifier identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
             Assert.IsNull(identifierParent);
             Assert.IsNull(identifierChild0);
             yield return null;
             string parentId = "parent-id";
             idController.AssignIdToObject(parent, parentId);
-            identifierParent = parent.GetComponent<IUniqueIdentifer>();
-            identifierChild0 = child0.GetComponent<IUniqueIdentifer>();
+            identifierParent = parent.GetComponent<IUniqueIdentifier>();
+            identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
             Assert.IsNotNull(identifierParent);
             Assert.AreEqual(parentId, identifierParent.getId());
             Assert.IsNull(identifierChild0);
@@ -109,20 +109,20 @@ namespace ReupVirtualTwinTests.Registry
         [UnityTest]
         public IEnumerator ShouldAssignIdsToObjectTree()
         {
-            IUniqueIdentifer identifierParent = parent.GetComponent<IUniqueIdentifer>();
-            IUniqueIdentifer identifierChild0 = child0.GetComponent<IUniqueIdentifer>();
-            IUniqueIdentifer identifierChild1 = child1.GetComponent<IUniqueIdentifer>();
-            IUniqueIdentifer identifierGrandChild00 = grandchild00.GetComponent<IUniqueIdentifer>();
+            IUniqueIdentifier identifierParent = parent.GetComponent<IUniqueIdentifier>();
+            IUniqueIdentifier identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
+            IUniqueIdentifier identifierChild1 = child1.GetComponent<IUniqueIdentifier>();
+            IUniqueIdentifier identifierGrandChild00 = grandchild00.GetComponent<IUniqueIdentifier>();
             Assert.IsNull(identifierParent);
             Assert.IsNull(identifierChild0);
             Assert.IsNull(identifierChild1);
             Assert.IsNull(identifierGrandChild00);
             yield return null;
             idController.AssignIdsToTree(parent);
-            identifierParent = parent.GetComponent<IUniqueIdentifer>();
-            identifierChild0 = child0.GetComponent<IUniqueIdentifer>();
-            identifierChild1 = child1.GetComponent<IUniqueIdentifer>();
-            identifierGrandChild00 = grandchild00.GetComponent<IUniqueIdentifer>();
+            identifierParent = parent.GetComponent<IUniqueIdentifier>();
+            identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
+            identifierChild1 = child1.GetComponent<IUniqueIdentifier>();
+            identifierGrandChild00 = grandchild00.GetComponent<IUniqueIdentifier>();
             Assert.IsNotNull(identifierParent);
             Assert.IsNotNull(identifierChild0);
             Assert.IsNotNull(identifierChild1);
@@ -137,10 +137,10 @@ namespace ReupVirtualTwinTests.Registry
         [UnityTest]
         public IEnumerator ShouldAssignIdsToObjectTreeWithParentId()
         {
-            IUniqueIdentifer identifierParent = parent.GetComponent<IUniqueIdentifer>();
-            IUniqueIdentifer identifierChild0 = child0.GetComponent<IUniqueIdentifer>();
-            IUniqueIdentifer identifierChild1 = child1.GetComponent<IUniqueIdentifer>();
-            IUniqueIdentifer identifierGrandChild00 = grandchild00.GetComponent<IUniqueIdentifer>();
+            IUniqueIdentifier identifierParent = parent.GetComponent<IUniqueIdentifier>();
+            IUniqueIdentifier identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
+            IUniqueIdentifier identifierChild1 = child1.GetComponent<IUniqueIdentifier>();
+            IUniqueIdentifier identifierGrandChild00 = grandchild00.GetComponent<IUniqueIdentifier>();
             Assert.IsNull(identifierParent);
             Assert.IsNull(identifierChild0);
             Assert.IsNull(identifierChild1);
@@ -148,10 +148,10 @@ namespace ReupVirtualTwinTests.Registry
             yield return null;
             string parentId = "parent-id";
             idController.AssignIdsToTree(parent, parentId);
-            identifierParent = parent.GetComponent<IUniqueIdentifer>();
-            identifierChild0 = child0.GetComponent<IUniqueIdentifer>();
-            identifierChild1 = child1.GetComponent<IUniqueIdentifer>();
-            identifierGrandChild00 = grandchild00.GetComponent<IUniqueIdentifer>();
+            identifierParent = parent.GetComponent<IUniqueIdentifier>();
+            identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
+            identifierChild1 = child1.GetComponent<IUniqueIdentifier>();
+            identifierGrandChild00 = grandchild00.GetComponent<IUniqueIdentifier>();
             Assert.IsNotNull(identifierParent);
             Assert.IsNotNull(identifierChild0);
             Assert.IsNotNull(identifierChild1);

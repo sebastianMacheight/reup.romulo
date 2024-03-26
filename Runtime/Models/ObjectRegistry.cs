@@ -11,8 +11,8 @@ namespace ReupVirtualTwin.models
 
         public void AddItem(GameObject item)
         {
-            IUniqueIdentifer uniqueIdentifer = item.GetComponent<IUniqueIdentifer>();
-            if (uniqueIdentifer == null || uniqueIdentifer.getId() == null)
+            IUniqueIdentifier uniqueIdentifier = item.GetComponent<IUniqueIdentifier>();
+            if (uniqueIdentifier == null || uniqueIdentifier.getId() == null)
             {
                 throw new System.Exception("Object must have a unique identifier");
             }
@@ -28,7 +28,7 @@ namespace ReupVirtualTwin.models
             foreach (GameObject obj in objects)
             {
                 if (obj == null) continue;
-                var uniqueIdentifier = obj.GetComponent<IUniqueIdentifer>();
+                var uniqueIdentifier = obj.GetComponent<IUniqueIdentifier>();
                 if (uniqueIdentifier.isIdCorrect(guid))
                 {
                     return obj;
