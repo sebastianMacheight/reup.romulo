@@ -7,10 +7,10 @@ namespace ReupVirtualTwin.controllerInterfaces
 {
     public interface ITagsController
     {
-        public List<ObjectTag> GetTagsFromObject(GameObject obj);
-        public List<ObjectTag> AddTagToObject(GameObject obj, ObjectTag tag);
-        public List<ObjectTag> RemoveTagFromOjbect(GameObject obj, ObjectTag tag);
-        public Boolean DoesObjectHaveTag(GameObject obj, ObjectTag tag);
+        public List<string> GetTagsFromObject(GameObject obj);
+        public List<string> AddTagToObject(GameObject obj, string tag);
+        public List<string> RemoveTagFromOjbect(GameObject obj, string tag);
+        public Boolean DoesObjectHaveTag(GameObject obj, string tag);
         public string[] GetTagNamesFromObject(GameObject obj);
     }
 }
