@@ -62,8 +62,8 @@ namespace ReupVirtualTwin.managers
                 case ReupEvent.objectsDeleted:
                     ProcessDeletedObjects();
                     break;
-                case ReupEvent.changedColorObjects:
-                    ProcessChangedColorObjects();
+                case ReupEvent.objectColorChanged:
+                    ProcessObjectColorChanged();
                     break;
                 default:
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
@@ -283,7 +283,7 @@ namespace ReupVirtualTwin.managers
             _webMessageSender.SendWebMessage(message);
         }
 
-        private void ProcessChangedColorObjects()
+        private void ProcessObjectColorChanged()
         {
             string webMessageType;
             webMessageType = WebMessageType.changeObjectColorSuccess;
