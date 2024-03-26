@@ -21,9 +21,6 @@ public class DeleteObjectsManagerTest : MonoBehaviour
     DeleteObjectsManager deleteObjectsManager;
     MockMediator mockMediator;
     MockRegistry mockRegistry;
-    GameObject deletableObject0;
-    GameObject deletableObject1;
-    GameObject nonDeletableObject;
     public List<GameObject> allObjects = new List<GameObject>();
 
     [SetUp]
@@ -138,6 +135,10 @@ public class DeleteObjectsManagerTest : MonoBehaviour
                 foundObjects.Add(GetItemWithGuid(guid));
             }
             return foundObjects;
+        }
+        public List<GameObject> GetItemTreesWithParentGuids(List<string> stringIDs)
+        {
+            throw new NotImplementedException();
         }
 
     }
