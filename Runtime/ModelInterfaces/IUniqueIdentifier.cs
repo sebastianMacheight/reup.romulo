@@ -1,7 +1,7 @@
 
 namespace ReupVirtualTwin.modelInterfaces
 {
-    public interface IUniqueIdentifer
+    public interface IUniqueIdentifier
     {
         public string getId();
         public bool isIdCorrect(string id);
