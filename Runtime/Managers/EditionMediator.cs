@@ -131,7 +131,7 @@ namespace ReupVirtualTwin.managers
                     LoadObject(message.payload);
                     break;
                 case WebMessageType.changeObjectColor:
-                    ChangeColorObjects(message.payload);
+                    ChangeObjectsColor(message.payload);
                     break;
                 default:
                     _webMessageSender.SendWebMessage(new WebMessage<string>
@@ -181,7 +181,7 @@ namespace ReupVirtualTwin.managers
 
         }
 
-        private void ChangeColorObjects(string payload)
+        private void ChangeObjectsColor(string payload)
         {
             ChangeColorObjectMessagePayload parsedPayload = JsonUtility.FromJson<ChangeColorObjectMessagePayload>(payload);
             List<GameObject> objectsToChangeColor = _changeColorManager.GetObjectsToChangeColor(parsedPayload.objectIds);
@@ -190,7 +190,7 @@ namespace ReupVirtualTwin.managers
                 Color? parsedColor = _changeColorManager.parseColor(parsedPayload.color);
                 if (parsedColor != null)
                 {
-                    _changeColorManager.ChangeColorObjects(objectsToChangeColor, (Color)parsedColor);
+                    _changeColorManager.ChangeObjectsColor(objectsToChangeColor, (Color)parsedColor);
                 }
                 else
                 {
