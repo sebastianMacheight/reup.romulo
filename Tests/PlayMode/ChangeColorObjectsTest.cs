@@ -27,7 +27,6 @@ public class ChangeColorObjectsTest : MonoBehaviour
         containerGameObject = new GameObject("containerGameObject");
         changeColorWrapper = new GameObject("changeColorWrapper");
         changeColorManager = containerGameObject.AddComponent<ChangeColorManager>();
-        changeColorManager.tagsController = new TagsController();
         mockMediator = new MockMediator();
         mockRegistry = new MockRegistry();
         changeColorManager.mediator = mockMediator;
