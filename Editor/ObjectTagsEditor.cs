@@ -5,12 +5,17 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 using ReupVirtualTwin.enums;
+using UnityEngine.UIElements;
 
 [CustomEditor(typeof(ObjectTags))]
 public class ObjectTagsEditor : Editor
     {
     private string searchTagText = "";
     private SerializedProperty tagsProperty;
+    private Vector2 scrollPosition;
+    private int TAG_BUTTON_HEIGHT = 18;
+    private int MAX_BUTTONS_IN_SCROLL_VIEW = 2;
+    private int UNITY_BUTTON_MARGIN = 2; // This is a variable obtained by trial and error
 
     private void OnEnable()
     {
@@ -45,13 +50,20 @@ public class ObjectTagsEditor : Editor
     {
         searchTagText = EditorGUILayout.TextField("Search for tag to add:", searchTagText);
         EditorGUILayout.Space();
+        int scrollHeight = MAX_BUTTONS_IN_SCROLL_VIEW * (TAG_BUTTON_HEIGHT + UNITY_BUTTON_MARGIN);
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Height(scrollHeight));
         List<string> allTags = GetAllTags().Where(tag => TagContainsText(tag, searchTagText) && !IsTagAlredyPresent(tag)).ToList();
         foreach (string tag in allTags)
         {
-            if (GUILayout.Button(tag))
+            if (GUILayout.Button(tag, GUILayout.Height(TAG_BUTTON_HEIGHT)))
             {
                 AddTagIfNotPresent(tag);
             }
+        }
+        EditorGUILayout.EndScrollView();
+        if(IsUserAtTheBottomOfScrollView(allTags.Count(), scrollPosition.y))
+        {
+            Debug.Log("User is at the bottom of the scroll view");
         }
     }
 
@@ -83,13 +95,24 @@ public class ObjectTagsEditor : Editor
         return isPresent;
     }
 
-
     private List<string> GetAllTags()
     {
         return new List<string>() {
             ObjectTag.SELECTABLE.ToString(),
-            ObjectTag.DELETABLE.ToString(),
             ObjectTag.TRANSFORMABLE.ToString(),
+            ObjectTag.DELETABLE.ToString(),
         };
+    }
+    private bool IsUserAtTheBottomOfScrollView(int numberOfTags, float scrollY)
+    {
+        int maxScroll = 
+            (numberOfTags - MAX_BUTTONS_IN_SCROLL_VIEW) * (TAG_BUTTON_HEIGHT + UNITY_BUTTON_MARGIN) +
+            UNITY_BUTTON_MARGIN;
+        int bottomThresholdInPixels = 100;
+        if (scrollY >= maxScroll - bottomThresholdInPixels)
+        {
+            return true;
+        }
+        return false;
     }
 }
