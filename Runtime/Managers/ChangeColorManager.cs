@@ -27,18 +27,6 @@ namespace ReupVirtualTwin.managers
             _mediator.Notify(ReupEvent.objectColorChanged);           
         }
 
-        public Color? parseColor(string colorString)
-        {
-            if(ColorUtility.TryParseHtmlString(colorString, out Color parsedColor))
-            {
-                return parsedColor;
-            }
-            else
-            {
-                return null;
-            }
-             
-        }
         private void ChangeObjectColor(GameObject obj, Color newColor)
         {
             Renderer renderer = obj.GetComponent<Renderer>();

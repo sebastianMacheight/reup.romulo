@@ -19,4 +19,14 @@ public static class Utils
         }
 
     }
+
+    public static Color? ParseColor(string colorString)
+    {
+        if (ColorUtility.TryParseHtmlString(colorString, out Color parsedColor))
+        {
+            return parsedColor;
+        }
+        return null;
+
+    }
 }
