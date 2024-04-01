@@ -1,16 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using ReupVirtualTwin.enums;
 using ReupVirtualTwin.modelInterfaces;
-using System.Linq;
 
 namespace ReupVirtualTwin.models
 {
     public class ObjectTags : MonoBehaviour, IObjectTags 
     {
-        [SerializeField]
-        private List<string> tags = new List<string>();
+        public List<string> tags = new List<string>();
 
         public List<string> GetTags()
         {
