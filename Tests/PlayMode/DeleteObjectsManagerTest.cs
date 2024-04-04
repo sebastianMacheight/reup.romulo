@@ -3,21 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 using NUnit.Framework;
-using System.Linq;
 using ReupVirtualTwin.managers;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.managerInterfaces;
-using ReupVirtualTwin.dataModels;
 using System;
 using ReupVirtualTwin.models;
 using ReupVirtualTwin.controllers;
-using ReupVirtualTwin.modelInterfaces;
 
 public class DeleteObjectsManagerTest : MonoBehaviour
 {
     GameObject containerGameObject;
-    GameObject runtimeDeleteObj;
-    GameObject deleteWrapper;
     DeleteObjectsManager deleteObjectsManager;
     MockMediator mockMediator;
     MockRegistry mockRegistry;
@@ -27,7 +22,6 @@ public class DeleteObjectsManagerTest : MonoBehaviour
     public void SetUp()
     {
         containerGameObject = new GameObject("containerGameObject");
-        deleteWrapper = new GameObject("deleteWrapper");
         deleteObjectsManager = containerGameObject.AddComponent<DeleteObjectsManager>();
         deleteObjectsManager.tagsController = new TagsController();
         mockMediator = new MockMediator();
@@ -97,13 +91,13 @@ public class DeleteObjectsManagerTest : MonoBehaviour
         public MockRegistry()
         {
             GameObject deletableObject0 = new GameObject("deletableObject0");
-            deletableObject0.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.DELETABLE });
+            deletableObject0.AddComponent<ObjectTags>().AddTags(new string[2] { EditionTag.SELECTABLE.ToString(), EditionTag.DELETABLE.ToString() });
             deletableObject0.AddComponent<UniqueId>().GenerateId();
             GameObject deletableObject1 = new GameObject("deletableObject1");
-            deletableObject1.AddComponent<ObjectTags>().AddTags(new ObjectTag[2] { ObjectTag.SELECTABLE, ObjectTag.DELETABLE });
+            deletableObject1.AddComponent<ObjectTags>().AddTags(new string[2] { EditionTag.SELECTABLE.ToString(), EditionTag.DELETABLE.ToString() });
             deletableObject1.AddComponent<UniqueId>().GenerateId();
             GameObject nonDeletableObject = new GameObject("nonDeletableObject");
-            nonDeletableObject.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
+            nonDeletableObject.AddComponent<ObjectTags>().AddTags(new string[1] { EditionTag.SELECTABLE.ToString() });
             nonDeletableObject.AddComponent<UniqueId>().GenerateId();
             allObjects.Add(deletableObject0);
             allObjects.Add(deletableObject1);
@@ -141,6 +135,20 @@ public class DeleteObjectsManagerTest : MonoBehaviour
             throw new NotImplementedException();
         }
 
+        public void RemoveItem(GameObject item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetItemCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearRegistry()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
