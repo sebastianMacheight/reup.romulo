@@ -130,7 +130,25 @@ public class DeleteObjectsManagerTest : MonoBehaviour
             }
             return foundObjects;
         }
+        public List<GameObject> GetItemTreesWithParentGuids(List<string> stringIDs)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void RemoveItem(GameObject item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetItemCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearRegistry()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
