@@ -143,20 +143,16 @@ public class ChangeColorObjectsTest : MonoBehaviour
         public List<GameObject> parentObjects = new List<GameObject>();
         public MockRegistry()
         {
-            parent0.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
             parent0.AddComponent<UniqueId>().GenerateId();
             parent0.AddComponent<MeshRenderer>();
 
-            parent1.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
             parent1.AddComponent<UniqueId>().GenerateId();
             parent1.AddComponent<MeshRenderer>();
 
-            child0.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
             child0.AddComponent<UniqueId>().GenerateId();
             child0.AddComponent<MeshRenderer>();
             child0.transform.parent = parent0.transform;
 
-            child1.AddComponent<ObjectTags>().AddTags(new ObjectTag[1] { ObjectTag.SELECTABLE });
             child1.AddComponent<UniqueId>().GenerateId();
             child1.AddComponent<MeshRenderer>();
             child1.transform.parent = parent1.transform;
@@ -165,6 +161,18 @@ public class ChangeColorObjectsTest : MonoBehaviour
             parentObjects.Add(parent1);
         }
 
+        public void RemoveItem(GameObject item)
+        {
+            throw new System.NotImplementedException();
+        }
+        public int GetItemCount()
+        {
+            throw new System.NotImplementedException();
+        }
+        public void ClearRegistry()
+        {
+            throw new System.NotImplementedException();
+        }
         public void AddItem(GameObject obj)
         {
             throw new NotImplementedException();
