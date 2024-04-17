@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.modelInterfaces;
+using ReupVirtualTwin.controllerInterfaces;
 
 namespace ReupVirtualTwin.managers
 {
@@ -30,8 +31,8 @@ namespace ReupVirtualTwin.managers
         public IChangeColorManager changeColorManager { set => _changeColorManager = value; }
       
 
-        private IInsertObjectsManager _insertObjectsManager;
-        public IInsertObjectsManager insertObjectsManager { set => _insertObjectsManager = value; }
+        private IInsertObjectsController _insertObjectsManager;
+        public IInsertObjectsController insertObjectsController { set => _insertObjectsManager = value; }
 
         private IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
@@ -40,10 +41,6 @@ namespace ReupVirtualTwin.managers
 
         private IRegistry _registry;
         public IRegistry registry { set => _registry = value; get => _registry; }
-
-
-        private bool selectObjectAfterInsertion;
-        private bool deselectPreviousSelectionInInsertion;
 
         public string noInsertObjectIdErrorMessage = "No object id provided for insertion";
         public string noInsertObjectUrlErrorMessage = "No 3d model url provided for insertion";
@@ -98,11 +95,11 @@ namespace ReupVirtualTwin.managers
                     ProcessNewWrapper((ObjectWrapperDTO)(object)payload);
                     break;
                 case ReupEvent.insertedObjectLoaded:
-                    if (!(payload is GameObject))
+                    if (!(payload is InsertedObjectPayload))
                     {
-                        throw new ArgumentException($"Payload must be of type {nameof(GameObject)} for {eventName} events", nameof(payload));
+                        throw new ArgumentException($"Payload must be of type {nameof(InsertedObjectPayload)} for {eventName} events", nameof(payload));
                     }
-                    ProcessInsertedObjectLoaded((GameObject)(object)payload);
+                    ProcessInsertedObjectLoaded((InsertedObjectPayload)(object)payload);
                     break;
                 case ReupEvent.insertedObjectStatusUpdate:
                     if (!(payload is float))
@@ -301,12 +298,16 @@ namespace ReupVirtualTwin.managers
             };
         }
 
-        private void ProcessInsertedObjectLoaded(GameObject obj)
+        private void ProcessInsertedObjectLoaded(InsertedObjectPayload insertedObjectPayload)
         {
-            SendInsertedObjectMessage(obj);
-            if (selectObjectAfterInsertion)
+            SendInsertedObjectMessage(insertedObjectPayload.loadedObject);
+            if (insertedObjectPayload.selectObjectAfterInsertion)
             {
-                SelectInsertedObject(obj);
+                if (insertedObjectPayload.deselectPreviousSelection)
+                {
+                    _selectedObjectsManager.ClearSelection();
+                }
+                _selectedObjectsManager.AddObjectToSelection(insertedObjectPayload.loadedObject);
             }
         }
         private void SendInsertedObjectMessage(GameObject obj)
@@ -318,14 +319,6 @@ namespace ReupVirtualTwin.managers
                 payload = objectDTO
             };
             _webMessageSender.SendWebMessage(message);
-        }
-        private void SelectInsertedObject(GameObject obj)
-        {
-            if (deselectPreviousSelectionInInsertion)
-            {
-                _selectedObjectsManager.ClearSelection();
-            }
-            _selectedObjectsManager.AddObjectToSelection(obj);
         }
 
         private void LoadObject(string payload)
@@ -341,9 +334,7 @@ namespace ReupVirtualTwin.managers
                 SendErrorMessage(noInsertObjectIdErrorMessage);
                 return;
             }
-            selectObjectAfterInsertion = parsedPayload.selectObjectAfterInsertion;
-            deselectPreviousSelectionInInsertion = parsedPayload.deselectPreviousSelection;
-            _insertObjectsManager.InsertObjectFromUrl(parsedPayload.objectUrl, parsedPayload.objectId);
+            _insertObjectsManager.InsertObject(parsedPayload);
         }
 
         private void ProcessLoadStatus(float status)
