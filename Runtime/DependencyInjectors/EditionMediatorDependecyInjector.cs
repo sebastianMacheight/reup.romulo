@@ -43,7 +43,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             }
             _editionMediator.webMessageSender = webMessageSender;
             _editionMediator.objectMapper = new ObjectMapper(new TagsController(), new IdController());
-            _editionMediator.insertObjectsController = new InserObjectController(
+            _editionMediator.insertObjectsController = new InsertObjectController(
                 _editionMediator,
                 new MeshDownloader(),
                 _insertPositionLocation.transform.position
