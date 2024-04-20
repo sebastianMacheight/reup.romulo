@@ -53,7 +53,6 @@ namespace ReupVirtualTwinTests.Registry
         [UnityTest]
         public IEnumerator NoObjectIsReturnedIfIncorrectId()
         {
-            
             var obtainedObj = objectRegistry.GetItemWithGuid("an-incorrect-id");
             Assert.IsNull(obtainedObj);
             yield return null;
@@ -61,7 +60,7 @@ namespace ReupVirtualTwinTests.Registry
         [UnityTest]
         public IEnumerator ObjectIsRegistryIsUpdatedIfNewIdIsAssigned()
         {
-            var currentId = testObj.GetComponent<RegisteredIdentifier>().getId();
+            string currentId = testObj.GetComponent<RegisteredIdentifier>().getId();
             Assert.AreEqual(testObj, objectRegistry.GetItemWithGuid(currentId));
             Assert.AreEqual(1, objectRegistry.GetItemCount());
             string newId = "new-id";
