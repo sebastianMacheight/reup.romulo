@@ -26,6 +26,11 @@ namespace ReupVirtualTwin.controllers
         public async Task ChangeObjectMaterial(ChangeMaterialMessagePayload message)
         {
             Texture2D texture = await textureDownloader.DownloadTextureFromUrl(message.material_url);
+            if (!texture)
+            {
+                mediator.Notify(ReupEvent.error, $"Error downloading image from {message.material_url}");
+                return;
+            }
             List<GameObject> objects = objectRegistry.GetObjectsWithGuids(message.object_ids);
             Material newMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
             newMaterial.SetTexture("_BaseMap", texture);

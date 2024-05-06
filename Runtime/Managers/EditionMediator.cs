@@ -123,6 +123,13 @@ namespace ReupVirtualTwin.managers
                     }
                     ProcessObjectMaterialsChange((ChangeMaterialMessagePayload)(object)payload);
                     break;
+                case ReupEvent.error:
+                    if (!(payload is string))
+                    {
+                        throw new ArgumentException($"Payload must be of type string for {eventName} events", nameof(payload));
+                    }
+                    SendErrorMessage((string)(object)payload);
+                    break;
                 default:
                     throw new ArgumentException($"no implementation for event: {eventName}");
             }
