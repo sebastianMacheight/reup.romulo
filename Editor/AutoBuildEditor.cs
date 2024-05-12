@@ -10,7 +10,7 @@ using ReupVirtualTwin.controllers;
 public class AutoBuildEditor : MonoBehaviour
 {
     private static IIdAssignerController idAssignerController = new IdController();
-    private static IIdSearchRepeatedController idSearchRepeatedController = new IdController();
+    private static IIdHasRepeatedController idHasRepeatedController = new IdController();
 
     [MenuItem("Reup Romulo/Build")]
     public static void Build()
@@ -54,36 +54,52 @@ public class AutoBuildEditor : MonoBehaviour
 
     public static void AddShaders()
     {
-        // add shaders
         AddShaderUtil.AddAlwaysIncludedShader("sHTiF/HandleShader");
         AddShaderUtil.AddAlwaysIncludedShader("sHTiF/AdvancedHandleShader");
-        EditorUtility.DisplayDialog("Success", "Custom shaders added", "OK");
+        EditorUtility.DisplayDialog("Success", "Custom shaders configured", "OK");
     }
 
     public static bool AddUniqueIDs()
     {
-        // get the building object
+        GameObject building = GetBuilding();
+        if (building == null)
+        {
+            return false;
+        }
+
+        RecreateIds(building);
+
+        bool hasRepeatedIds = idHasRepeatedController.HasRepeatedIds(building);
+        if (hasRepeatedIds)
+        {
+            Debug.LogError("Repeated IDs found");
+            return false;
+        }
+        EditorUtility.DisplayDialog("Success", "Unique IDs added", "OK");
+        return true;
+    }
+
+    private static GameObject GetBuilding()
+    {
         GameObject setupBuilding = ObjectFinder.FindSetupBuilding();
         if (setupBuilding == null)
         {
-            return false;
+            Debug.LogError("No setup building game object found");
+            return null;
         }
         SetupBuilding setupBuildingComponent = setupBuilding.GetComponent<SetupBuilding>();
         GameObject building = setupBuildingComponent.building;
         if (building == null)
         {
-            return false;
+            Debug.LogError("No building game object found");
+            return null;
         }
-        // recreate ids
+        return building;
+    }
+
+    private static void RecreateIds(GameObject building)
+    {
         idAssignerController.RemoveIdsFromTree(building);
         idAssignerController.AssignIdsToTree(building);
-        // check for repeated ids
-        bool repeatedIds = idSearchRepeatedController.SearchRepeatedIds(building);
-        if (repeatedIds)
-        {
-            return false;
-        }
-        EditorUtility.DisplayDialog("Success", "Unique IDs added", "OK");
-        return true;
     }
 }
