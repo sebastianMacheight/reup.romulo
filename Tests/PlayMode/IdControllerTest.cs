@@ -159,7 +159,7 @@ namespace ReupVirtualTwinTests.Registry
         public IEnumerator ShouldNotFindRepeatedIds()
         {
             idController.AssignIdsToTree(parent);
-            bool hasRepeteaded = idController.SearchRepeatedIds(parent);
+            bool hasRepeteaded = idController.HasRepeatedIds(parent);
             Assert.IsFalse(hasRepeteaded);
             yield return null;
         }
@@ -172,10 +172,9 @@ namespace ReupVirtualTwinTests.Registry
             IUniqueIdentifier identifierChild0 = child0.GetComponent<IUniqueIdentifier>();
             string repeatedId = identifierParent.getId();
             identifierChild0.AssignId(repeatedId);
-            bool hasRepeteaded = idController.SearchRepeatedIds(parent);
+            bool hasRepeteaded = idController.HasRepeatedIds(parent);
             Assert.IsTrue(hasRepeteaded);
             yield return null;
         }
-
     }
 }

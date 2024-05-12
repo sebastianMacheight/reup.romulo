@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ReupVirtualTwin.controllers
 {
-    public class IdController : IIdGetterController, IIdAssignerController, IIdSearchRepeatedController
+    public class IdController : IIdGetterController, IIdAssignerController, IIdHasRepeatedController
     {
 
         public void AssignIdsToTree(GameObject tree, string parentTreeId = null)
@@ -70,7 +70,7 @@ namespace ReupVirtualTwin.controllers
             return obj.GetComponent<IUniqueIdentifier>().getId();
         }
 
-        public bool SearchRepeatedIds(GameObject tree)
+        public bool HasRepeatedIds(GameObject tree)
         {
             HashSet<string> idSet = new HashSet<string>();
             return CheckForRepeatedIds(tree, idSet);
