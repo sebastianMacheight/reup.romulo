@@ -52,5 +52,6 @@ public class MaterialSelectionTriggerEditor : Editor
         {
             trigger.submeshIndexes[index] = 0;
         }
+        
     }
 }
