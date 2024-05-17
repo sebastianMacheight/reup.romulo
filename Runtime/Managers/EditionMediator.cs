@@ -351,6 +351,7 @@ namespace ReupVirtualTwin.managers
             {
                 type = WebMessageType.changeObjectColorSuccess,
             };
+            _webMessageSender.SendWebMessage(message);
         }
 
         private void ProcessInsertedObjectLoaded(InsertedObjectPayload insertedObjectPayload)
