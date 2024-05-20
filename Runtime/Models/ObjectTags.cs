@@ -8,7 +8,6 @@ namespace ReupVirtualTwin.models
 {
     public class ObjectTags : MonoBehaviour, IObjectTags 
     {
-        static public string tagsUrl = "https://api-prod-reup.macheight.com/api/v1/";
         public List<Tag> tags = new List<Tag>();
 
         public List<Tag> GetTags()

@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System.Linq;
 using ReupVirtualTwin.helpers;
+using System;
 
 
 namespace ReupVirtualTwin.editor
@@ -13,9 +14,11 @@ namespace ReupVirtualTwin.editor
     public class SelectTagsSection
     {
         public List<Tag> selectedTags;
+        public Action<Tag> onTagAdded { set => _onTagAdded = value; }
 
         private ITagsApiManager tagsApiManager;
         private List<Tag> allTags = new List<Tag>();
+        private Action<Tag> _onTagAdded;
 
         private Vector2 scrollPosition;
         private const int TAG_BUTTON_HEIGHT = 18;
@@ -47,6 +50,7 @@ namespace ReupVirtualTwin.editor
                 if (GUILayout.Button(tag.name, GUILayout.Height(TAG_BUTTON_HEIGHT)))
                 {
                     AddTagIfNotPresent(tag);
+                    _onTagAdded?.Invoke(tag);
                 }
             }
             EditorGUILayout.EndScrollView();
@@ -54,6 +58,11 @@ namespace ReupVirtualTwin.editor
             {
                 await GetMoreTags();
             }
+        }
+
+        public void RemoveTag(Tag tag)
+        {
+            selectedTags.Remove(tag);
         }
 
         private async void ShowResetTagsButton()

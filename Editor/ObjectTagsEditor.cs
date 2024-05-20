@@ -19,11 +19,7 @@ namespace ReupVirtualTwin.editor
 
         private void OnEnable()
         {
-            ITagsApiManager tagsApiManager = ObjectFinder.FindTagsApiManager();
-            if (tagsApiManager.tagsApiConsumer == null)
-            {
-                tagsApiManager.tagsApiConsumer = new TagsApiConsumer(ObjectTags.tagsUrl);
-            }
+            ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
             selectTagsSection = new SelectTagsSection(tagsApiManager);
         }
 
@@ -51,7 +47,7 @@ namespace ReupVirtualTwin.editor
                 EditorGUILayout.LabelField(tag.name);
                 if (GUILayout.Button("Remove"))
                 {
-                    selectTagsSection.selectedTags.Remove(tag);
+                    selectTagsSection.RemoveTag(tag);
                 }
                 EditorGUILayout.EndHorizontal();
             });
