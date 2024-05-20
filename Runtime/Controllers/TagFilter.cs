@@ -1,12 +1,11 @@
 using ReupVirtualTwin.controllerInterfaces;
-using ReupVirtualTwin.controllers;
 using ReupVirtualTwin.dataModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ReupVirtualTwin.editor
+namespace ReupVirtualTwin.controllers
 {
     public class TagFilter : ITagFilter
     {

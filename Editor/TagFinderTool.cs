@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using ReupVirtualTwin.dataModels;
+using ReupVirtualTwin.controllerInterfaces;
+using ReupVirtualTwin.controllers;
 
 namespace ReupVirtualTwin.editor
 {

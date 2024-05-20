@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ReupVirtualTwin.editor
+namespace ReupVirtualTwin.controllerInterfaces
 {
     public interface ITagFilter
     {

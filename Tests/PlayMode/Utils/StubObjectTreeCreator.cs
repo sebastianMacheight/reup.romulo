@@ -18,17 +18,20 @@ public static class StubObjectTreeCreator
         new Tag(){id="parent-tag-1"},
         new Tag(){id="parent-tag-2"},
     };
-    public static Tag[] child0Tags = new Tag[3]
+    public static Tag commonChildrenTag = new Tag() { id = "common-children-tag" };
+    public static Tag[] child0Tags = new Tag[4]
     {
         new Tag(){id="child0-tag-0"},
         new Tag(){id="child0-tag-1"},
         new Tag(){id="child0-tag-2"},
+        commonChildrenTag,
     };
-    public static Tag[] child1Tags = new Tag[3]
+    public static Tag[] child1Tags = new Tag[4]
     {
         new Tag(){id="child1-tag-0"},
         new Tag(){id="child1-tag-1"},
         new Tag(){id="child1-tag-2"},
+        commonChildrenTag,
     };
     public static Tag[] grandChild0Tags = new Tag[3]
     {

@@ -38,6 +38,8 @@ public class tagsControllerTest : MonoBehaviour
     public void TearDown()
     {
         Destroy(taggedObject0);
+        Destroy(taggedObject1);
+        Destroy(nonTaggedObject0);
     }
     [UnityTest]
     public IEnumerator ShouldReturnFalseOnCheckForTags()
