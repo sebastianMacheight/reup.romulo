@@ -50,7 +50,7 @@ namespace ReupVirtualTwin.editor
                 Debug.LogError("No building found");
                 return;
             }
-            List<GameObject> filteredObjects = TagFiltersApplier.ApplyFilters(building, tagFilters);
+            List<GameObject> filteredObjects = TagFiltersApplier.ApplyFiltersToTree(building, tagFilters);
             sceneVisibilityManager.Hide(building, true);
             for (int i = 0; i < filteredObjects.Count; i++)
             {
