@@ -16,6 +16,7 @@ namespace ReupVirtualTwin.editor
         private List<ITagFilter> tagFilters = new List<ITagFilter>();
         private IBuildingGetterSetter setupBuilding;
         private SceneVisibilityManager sceneVisibilityManager;
+        private List<Tag> selectedTags = new List<Tag>();
 
         [MenuItem("Reup Romulo/Tag Scanner")]
         public static void ShowWindow()
@@ -26,7 +27,7 @@ namespace ReupVirtualTwin.editor
         private async void OnEnable()
         {
             ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
-            selectTagsSection = await SelectTagsSection.Create(tagsApiManager);
+            selectTagsSection = await SelectTagsSection.Create(tagsApiManager, selectedTags);
             selectTagsSection.onTagAdded = OnTagAdded;
             setupBuilding = ObjectFinder.FindSetupBuilding().GetComponent<IBuildingGetterSetter>();
             sceneVisibilityManager = SceneVisibilityManager.instance;

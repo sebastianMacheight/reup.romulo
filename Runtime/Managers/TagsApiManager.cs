@@ -14,12 +14,12 @@ namespace ReupVirtualTwin.managers
         public string searchTagText { get => _searchText; set => _searchText = value; }
 
         public bool waitingForTagsResponse = false;
+        public int currentPage = 0;
 
         private string _searchText = "";
         private ITagsApiConsumer _tagsApiConsumer;
         private List<Tag> tags = new List<Tag>();
-        private bool thereAreTagsToFetch = true;
-        private int currentPage = 0;
+        private bool areThereTagsToFetch = true;
 
         public async Task<List<Tag>> GetTags()
         {
@@ -32,31 +32,41 @@ namespace ReupVirtualTwin.managers
 
         public async Task<List<Tag>> LoadMoreTags()
         {
-            if (!thereAreTagsToFetch || waitingForTagsResponse)
+            try
             {
+                if (!areThereTagsToFetch || waitingForTagsResponse)
+                {
+                    return tags;
+                }
+                waitingForTagsResponse = true;
+                PaginationResult<Tag> fetchedTagsResult = await _tagsApiConsumer.GetTags(++currentPage);
+                CheckIfThereIsStillTagsToFetch(fetchedTagsResult);
+                AddNewTags(fetchedTagsResult.results);
+                waitingForTagsResponse = false;
                 return tags;
             }
-            waitingForTagsResponse = true;
-            PaginationResult<Tag> fetchedTagsResult = await _tagsApiConsumer.GetTags(++currentPage);
-            CheckIfThereIsStillTagsToFetch(fetchedTagsResult);
-            AddNewTags(fetchedTagsResult.results);
-            waitingForTagsResponse = false;
-            return tags;
+            catch
+            {
+                waitingForTagsResponse = false;
+                currentPage--;
+                return tags;
+            }
         }
         
         public void CleanTags()
         {
-            if (waitingForTagsResponse) return;
-            tags = new List<Tag>();
-            currentPage = 0;
-            thereAreTagsToFetch = true;
-            waitingForTagsResponse = false;
+            if (waitingForTagsResponse)
+            {
+                Debug.LogWarning("Can't clean tags while waiting for tags request response, please wait a couple of seconds");
+                return;
+            }
+            Reset();
         }
 
         private void CheckIfThereIsStillTagsToFetch(PaginationResult<Tag> fetchedTagsResult) {
             if (string.IsNullOrEmpty(fetchedTagsResult.next))
             {
-                thereAreTagsToFetch = false;
+                areThereTagsToFetch = false;
             }
         }
 
@@ -67,5 +77,27 @@ namespace ReupVirtualTwin.managers
             return tags;
         }
 
+        public int GetCurrentPage()
+        {
+            return currentPage;
+        }
+
+        public bool GetWaitingForTagResponse()
+        {
+            return waitingForTagsResponse;
+        }
+
+        public void Reset()
+        {
+            waitingForTagsResponse = false;
+            tags = new List<Tag>();
+            currentPage = 0;
+            areThereTagsToFetch = true;
+        }
+
+        public bool GetAreThereTagsToFetch()
+        {
+            return areThereTagsToFetch;
+        }
     }
 }

@@ -27,11 +27,11 @@ namespace ReupVirtualTwin.editor
         private const int BOTTOM_THRESHOLD_IN_PIXELS = 50;
         private const int RE_FETCH_BUTTON_WIDTH = 95;
 
-        public async static Task<SelectTagsSection> Create(ITagsApiManager tagsApiManager)
+        public async static Task<SelectTagsSection> Create(ITagsApiManager tagsApiManager, List<Tag> referenceToSelectedTags)
         {
             var selectTagsSection = new SelectTagsSection();
             selectTagsSection.tagsApiManager = tagsApiManager;
-            selectTagsSection.selectedTags = new List<Tag>();
+            selectTagsSection.selectedTags = referenceToSelectedTags;
             await selectTagsSection.GetTags();
             return selectTagsSection;
         }
@@ -55,7 +55,9 @@ namespace ReupVirtualTwin.editor
                 }
             }
             EditorGUILayout.EndScrollView();
-            if (IsUserAtTheBottomOfScrollView(filteredTags.Count()))
+            if (IsUserAtTheBottomOfScrollView(filteredTags.Count()) &&
+                !tagsApiManager.GetWaitingForTagResponse() &&
+                tagsApiManager.GetAreThereTagsToFetch())
             {
                 await GetMoreTags();
             }

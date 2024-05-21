@@ -17,14 +17,13 @@ namespace ReupVirtualTwin.editor
 
         private async void OnEnable()
         {
+            objectTags = (ObjectTags)target;
             ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
-            selectTagsSection = await SelectTagsSection.Create(tagsApiManager);
+            selectTagsSection = await SelectTagsSection.Create(tagsApiManager, objectTags.tags);
         }
 
         public override void OnInspectorGUI()
         {
-            objectTags = (ObjectTags)target;
-            objectTags.tags = selectTagsSection.selectedTags;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"), true, new GUILayoutOption[0]);
             ShowCurrentTags();
             EditorGUILayout.Space();
@@ -38,7 +37,7 @@ namespace ReupVirtualTwin.editor
         private void ShowCurrentTags()
         {
             EditorGUILayout.LabelField("Current tags:");
-            List<Tag> tempTags = new List<Tag>(selectTagsSection.selectedTags);
+            List<Tag> tempTags = new List<Tag>(objectTags.tags);
             tempTags.ForEach(tag =>
             {
                 EditorGUILayout.BeginHorizontal();
