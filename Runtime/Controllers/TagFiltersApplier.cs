@@ -1,5 +1,4 @@
 using ReupVirtualTwin.controllerInterfaces;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,51 +10,29 @@ namespace ReupVirtualTwin.controllers
 
         public static List<GameObject> ApplyFiltersToTree(GameObject obj, List<ITagFilter> filterList)
         {
-            Dictionary<string, bool>[] cachedResults = CreateCachedResultList(filterList.Count);
-            return ApplyFiltersToTree(obj, filterList, cachedResults);
-        }
-
-        public static List<GameObject> ApplyFiltersToTree(
-            GameObject obj,
-            List<ITagFilter> filterList,
-            Dictionary<string, bool>[] cachedResults)
-        {
-            List<GameObject> filteredObjects = new List<GameObject>();
-            bool objectPassesAllFilters = ApplyFiltersToObject(obj, filterList, cachedResults);
-            if (objectPassesAllFilters)
-            {
-                filteredObjects.Add(obj);
-                return filteredObjects;
-            }
-            for (int i = 0; i < obj.transform.childCount; i++)
-            {
-                GameObject child = obj.transform.GetChild(i).gameObject;
-                List<GameObject> childFilteredObjects = ApplyFiltersToTree(child, filterList, cachedResults);
-                filteredObjects.AddRange(childFilteredObjects);
-            }
-            return filteredObjects;
-        }
-
-        static private bool ApplyFiltersToObject(GameObject obj, List<ITagFilter> filterList, Dictionary<string, bool>[] cachedResults)
-        {
+            List<HashSet<GameObject>> filteredObjectsList = new List<HashSet<GameObject>>();
             for (int i = 0; i < filterList.Count; i++)
             {
-                if (!filterList[i].ExecuteFilter(obj, cachedResults[i]))
+                filteredObjectsList.Add(filterList[i].ExecuteFilter(obj));
+            }
+
+            Debug.Log("objects that passed");
+            for (int i = 0; i < filteredObjectsList.Count; i++)
+            {
+                Debug.Log($"winners of filter {i}");
+                for (int j = 0; j < filteredObjectsList[i].Count; j++)
                 {
-                    return false;
+                    Debug.Log(filteredObjectsList[i].ToList()[j].name);
                 }
             }
-            return true;
+
+            List<GameObject> objectsThatPassedAllFilters = filteredObjectsList.Skip(1)
+            .Aggregate(
+                new HashSet<GameObject>(filteredObjectsList.First()),
+                (h, e) => { h.IntersectWith(e); return h; }
+            ).ToList();
+            return objectsThatPassedAllFilters;
         }
 
-        static private Dictionary<string, bool>[] CreateCachedResultList(int filterListSize)
-        {
-            Dictionary<string, bool>[] cachedResults = new Dictionary<string, bool>[filterListSize];
-            for (int i = 0; i < filterListSize; i++)
-            {
-                cachedResults[i] = new Dictionary<string, bool>();
-            }
-            return cachedResults;
-        }
     }
 }

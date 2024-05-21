@@ -9,8 +9,7 @@ namespace ReupVirtualTwin.controllerInterfaces
         public bool invertFilter { get;  set; }
         public string displayText { get; }
         public Action onRemoveFilter { set; }
-        public bool ExecuteFilter(GameObject gameObject);
-        public bool ExecuteFilter(GameObject gameObject, Dictionary<string, bool> cachedResult);
+        public HashSet<GameObject> ExecuteFilter(GameObject gameObject);
         public void RemoveFilter();
     }
 }

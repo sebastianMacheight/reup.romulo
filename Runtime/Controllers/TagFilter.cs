@@ -21,7 +21,6 @@ namespace ReupVirtualTwin.controllers
         private ITagsController tagsController = new TagsController();
         private Tag tag;
         private Action _onRemoveFilter;
-        private IdController idController = new IdController();
 
         public TagFilter(Tag tag)
         {
@@ -29,37 +28,32 @@ namespace ReupVirtualTwin.controllers
             _displayText = tag.name;
         }
 
-        public bool ExecuteFilter(GameObject gameObject)
+        public HashSet<GameObject> ExecuteFilter(GameObject gameObject)
         {
-            Dictionary<string, bool> cachedResults = new Dictionary<string, bool>();
-            return ExecuteFilter(gameObject, cachedResults);
-        }
-        public bool ExecuteFilter(GameObject gameObject, Dictionary<string, bool> cachedResults)
-        {
-            string objectId = idController.GetIdFromObject(gameObject);
-            Debug.Log("objectId");
-            Debug.Log(objectId);
-            if(cachedResults.ContainsKey(objectId))
-            {
-                return cachedResults[objectId];
-            }
+            HashSet<GameObject> filteredObjects = new HashSet<GameObject>();
             bool objectHaveTag = tagsController.DoesObjectHaveTag(gameObject, tag.id);
-            if (!_invertFilter)
+            Debug.Log($"object {gameObject.name} has tag {tag.id}: {objectHaveTag}");
+            if (!_invertFilter && objectHaveTag)
             {
-                return CacheAndReturnResult(cachedResults, objectId, objectHaveTag);
+                filteredObjects.Add(gameObject);
+                return filteredObjects;
             }
-            if (objectHaveTag)
+            List<GameObject> children = gameObject.GetChildren();
+            children.ForEach(child =>
             {
-                return CacheAndReturnResult(cachedResults, objectId, false);
+                HashSet<GameObject> filteredFromChild = ExecuteFilter(child);
+                filteredObjects.UnionWith(filteredFromChild);
+            });
+            if (_invertFilter && !objectHaveTag)
+            {
+                bool allChildrenPassed = children.All(child => filteredObjects.Contains(child)); 
+                if (allChildrenPassed)
+                {
+                    filteredObjects.Clear();
+                    filteredObjects.Add(gameObject);
+                }
             }
-            bool allChildrenPassFilter = gameObject.GetChildren().All(child => ExecuteFilter(child, cachedResults));
-            return CacheAndReturnResult(cachedResults, objectId, allChildrenPassFilter);
-        }
-
-        private bool CacheAndReturnResult(Dictionary<string, bool> cachedResults, string objectId, bool result)
-        {
-            cachedResults[objectId] = result;
-            return result;
+            return filteredObjects;
         }
 
         public void RemoveFilter()

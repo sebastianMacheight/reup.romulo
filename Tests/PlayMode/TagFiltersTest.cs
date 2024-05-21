@@ -30,30 +30,6 @@ namespace ReupVirtualTwinTests.controllers
             Destroy(taggedObject0);
             Destroy(taggedObject1);
         }
-
-        [Test]
-        public void FilterShouldIndicateIfObjectContainTag()
-        {
-            TagFilter filter0 = new TagFilter(tag0);
-            Assert.IsTrue(filter0.ExecuteFilter(taggedObject0));
-            Assert.IsTrue(filter0.ExecuteFilter(taggedObject1));
-            TagFilter filter1 = new TagFilter(tag1);
-            Assert.IsFalse(filter1.ExecuteFilter(taggedObject0));
-            Assert.IsTrue(filter1.ExecuteFilter(taggedObject1));
-        }
-
-        [Test]
-        public void FilterShouldIndicateIfObjectContainTag_inverse()
-        {
-            TagFilter filter0 = new TagFilter(tag0);
-            filter0.invertFilter = true;
-            Assert.IsFalse(filter0.ExecuteFilter(taggedObject0));
-            Assert.IsFalse(filter0.ExecuteFilter(taggedObject1));
-            TagFilter filter1 = new TagFilter(tag1);
-            filter1.invertFilter = true;
-            Assert.IsTrue(filter1.ExecuteFilter(taggedObject0));
-            Assert.IsFalse(filter1.ExecuteFilter(taggedObject1));
-        }
         [Test]
         public void FilterDisplayText_ShouldBeTagName()
         {

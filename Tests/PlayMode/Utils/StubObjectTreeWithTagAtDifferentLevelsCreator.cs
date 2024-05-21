@@ -6,21 +6,22 @@ public class StubObjectTreeWithTagAtDifferentLevelsCreator
     public static string parentId = "parent-id";
     public static string child0Id = "child0-id";
     public static string child1Id = "child1-id";
-    public static string child2Id = "child1-id";
+    public static string child2Id = "child2-id";
     public static string grandChild00Id = "grandChild00-id";
     public static string grandChild01Id = "grandChild01-id";
 
-    public static Tag tagAtDifferentLevels = new Tag() { id = "tag-at-different-levels" };
+    public static Tag tagX = new Tag() { id = "tag-x" };
+    public static Tag tagY = new Tag() { id = "tag-y" };
+    public static Tag tagZ = new Tag() { id = "tag-z" };
 
     /// <summary>
-    /// Creates a mock object tree with an object with a tag at the second level
-    /// and another object with the same tag at the third level in a different branch.
-    /// The returned structure is the following (Objects with an X have the mentioned tag):
+    /// Creates a mock object tree with an object with the following structure:
+    /// (Objects with X, Y, and Z are objects with those respective tags)
     ///                                        P
     ///                                     /  |  \
-    ///                                   C0  C1X  C2
+    ///                                   C0  C1XY  C2
     ///                                  /  \
-    ///                               GC00X GC01
+    ///                               GC00X GC01Y
     /// </summary>
     /// <returns></returns>
     public static GameObject CreateMockObjectWithArbitraryTagAtSecondAndThirdLevel()
@@ -35,16 +36,17 @@ public class StubObjectTreeWithTagAtDifferentLevelsCreator
         GameObject grandChild00 = new(grandChild00Id);
         grandChild00.transform.parent = child0.transform;
         StubObjectCreatorUtils.AssignIdToObject(grandChild00, grandChild00Id);
-        StubObjectCreatorUtils.AssignTagsToObject(grandChild00, new Tag[] {tagAtDifferentLevels});
+        StubObjectCreatorUtils.AssignTagsToObject(grandChild00, new Tag[] {tagX});
 
         GameObject grandChild01 = new(grandChild01Id);
         grandChild01.transform.parent = child0.transform;
         StubObjectCreatorUtils.AssignIdToObject(grandChild01, grandChild01Id);
+        StubObjectCreatorUtils.AssignTagsToObject(grandChild01, new Tag[] {tagY});
 
         GameObject child1 = new(child1Id);
         child1.transform.parent = parent.transform;
         StubObjectCreatorUtils.AssignIdToObject(child1, child1Id);
-        StubObjectCreatorUtils.AssignTagsToObject(child1, new Tag[] {tagAtDifferentLevels});
+        StubObjectCreatorUtils.AssignTagsToObject(child1, new Tag[] {tagX, tagY});
 
         GameObject child2 = new(child2Id);
         child2.transform.parent = parent.transform;
