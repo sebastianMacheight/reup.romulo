@@ -24,18 +24,20 @@ namespace ReupVirtualTwin.editor
             GetWindow<TagScannerTool>("Tag Scanner");
         }
 
-        private async void OnEnable()
+        private void OnEnable()
         {
-            ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
-            selectTagsSection = await SelectTagsSection.Create(tagsApiManager, selectedTags);
-            selectTagsSection.onTagAdded = OnTagAdded;
-            setupBuilding = ObjectFinder.FindSetupBuilding().GetComponent<IBuildingGetterSetter>();
+            CreateTagSection();
+            SetSetupBuilding();
             sceneVisibilityManager = SceneVisibilityManager.instance;
         }
         void OnGUI()
         {
             ShowTagsFilters();
             EditorGUILayout.Space();
+            if (selectTagsSection == null)
+            {
+                CreateTagSection();
+            }
             selectTagsSection?.ShowTagsToAdd();
             if (GUILayout.Button("Apply filters"))
             {
@@ -44,6 +46,10 @@ namespace ReupVirtualTwin.editor
         }
         private void ApplyFilters()
         {
+            if (setupBuilding == null)
+            {
+                SetSetupBuilding();
+            }
             GameObject building = setupBuilding.building;
             if (building == null)
             {
@@ -51,6 +57,13 @@ namespace ReupVirtualTwin.editor
                 return;
             }
             List<GameObject> filteredObjects = TagFiltersApplier.ApplyFiltersToTree(building, tagFilters);
+            Debug.Log("filteredObjects.Count");
+            Debug.Log(filteredObjects.Count);
+            for(int i = 0; i < filteredObjects.Count; i++)
+            {
+                Debug.Log($"filteredObjects[{i}].name");
+                Debug.Log(filteredObjects[i].name);
+            }
             sceneVisibilityManager.Hide(building, true);
             for (int i = 0; i < filteredObjects.Count; i++)
             {
@@ -90,6 +103,16 @@ namespace ReupVirtualTwin.editor
                 selectTagsSection.selectedTags.Remove(tag);
                 tagFilters.Remove(tagFilter);
             };
+        }
+        private void SetSetupBuilding()
+        {
+            setupBuilding = ObjectFinder.FindSetupBuilding().GetComponent<IBuildingGetterSetter>();
+        }
+        private async void CreateTagSection()
+        {
+            ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
+            selectTagsSection = await SelectTagsSection.Create(tagsApiManager, selectedTags);
+            selectTagsSection.onTagAdded = OnTagAdded;
         }
     }
 }

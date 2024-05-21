@@ -33,7 +33,11 @@ namespace ReupVirtualTwin.controllers
             HashSet<GameObject> filteredObjects = new HashSet<GameObject>();
             bool objectHaveTag = tagsController.DoesObjectHaveTag(gameObject, tag.id);
             Debug.Log($"object {gameObject.name} has tag {tag.id}: {objectHaveTag}");
-            if (!_invertFilter && objectHaveTag)
+            if (objectHaveTag && _invertFilter)
+            {
+                return filteredObjects;
+            }
+            if (objectHaveTag && !_invertFilter)
             {
                 filteredObjects.Add(gameObject);
                 return filteredObjects;

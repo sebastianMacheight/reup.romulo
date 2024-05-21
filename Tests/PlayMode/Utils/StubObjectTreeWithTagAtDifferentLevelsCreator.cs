@@ -19,7 +19,7 @@ public class StubObjectTreeWithTagAtDifferentLevelsCreator
     /// (Objects with X, Y, and Z are objects with those respective tags)
     ///                                        P
     ///                                     /  |  \
-    ///                                   C0  C1XY  C2
+    ///                                   C0Z  C1XY  C2
     ///                                  /  \
     ///                               GC00X GC01Y
     /// </summary>
@@ -32,6 +32,7 @@ public class StubObjectTreeWithTagAtDifferentLevelsCreator
         GameObject child0 = new(child0Id);
         child0.transform.parent = parent.transform;
         StubObjectCreatorUtils.AssignIdToObject(child0, child0Id);
+        StubObjectCreatorUtils.AssignTagsToObject(child0, new Tag[] {tagZ});
 
         GameObject grandChild00 = new(grandChild00Id);
         grandChild00.transform.parent = child0.transform;

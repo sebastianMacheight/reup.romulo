@@ -136,5 +136,39 @@ namespace ReupVirtualTwinTests.controllers
             Assert.IsTrue(filteredObjects.Contains(building.transform.GetChild(2).gameObject));
         }
 
+        [Test]
+        public void ShouldReturn_ObjectsWithTagZ()
+        {
+            building = StubObjectTreeWithTagAtDifferentLevelsCreator.CreateMockObjectWithArbitraryTagAtSecondAndThirdLevel();
+            ITagFilter filter = new TagFilter(StubObjectTreeWithTagAtDifferentLevelsCreator.tagZ);
+            List<ITagFilter> filterList = new List<ITagFilter>() {filter};
+            List<GameObject> filteredObjects = TagFiltersApplier.ApplyFiltersToTree(building, filterList);
+            for(int i = 0; i < filteredObjects.Count; i++)
+            {
+                Debug.Log("a name");
+                Debug.Log(filteredObjects[i].name);
+            }
+            Assert.AreEqual(1, filteredObjects.Count);
+            Assert.IsTrue(filteredObjects.Contains(building.transform.GetChild(0).gameObject));
+        }
+
+        [Test]
+        public void ShouldReturn_ObjectsWithoutTagZ()
+        {
+            building = StubObjectTreeWithTagAtDifferentLevelsCreator.CreateMockObjectWithArbitraryTagAtSecondAndThirdLevel();
+            ITagFilter filter = new TagFilter(StubObjectTreeWithTagAtDifferentLevelsCreator.tagZ);
+            filter.invertFilter = true;
+            List<ITagFilter> filterList = new List<ITagFilter>() {filter};
+            List<GameObject> filteredObjects = TagFiltersApplier.ApplyFiltersToTree(building, filterList);
+            for(int i = 0; i < filteredObjects.Count; i++)
+            {
+                Debug.Log("a name");
+                Debug.Log(filteredObjects[i].name);
+            }
+            Assert.AreEqual(2, filteredObjects.Count);
+            Assert.IsTrue(filteredObjects.Contains(building.transform.GetChild(1).gameObject));
+            Assert.IsTrue(filteredObjects.Contains(building.transform.GetChild(2).gameObject));
+        }
+
     }
 }
