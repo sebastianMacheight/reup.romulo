@@ -1,13 +1,13 @@
 using ReupVirtualTwin.controllerInterfaces;
-using ReupVirtualTwin.dataModels;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwin.controllers
 {
-    public class TagFilter : ITagFilter
+    public class SubstringTagFilter : ITagFilter
     {
         public bool invertFilter { get => _invertFilter; set => _invertFilter = value; }
         public string displayText => _displayText;
@@ -15,19 +15,12 @@ namespace ReupVirtualTwin.controllers
 
         private bool _invertFilter = false;
         private string _displayText;
-        private ITagsController tagsController = new TagsController();
-        private Tag tag;
         private Action _onRemoveFilter;
+        private ITagsController tagsController = new TagsController();
 
-        public TagFilter(Tag tag)
+        public SubstringTagFilter(string tagSubstring)
         {
-            this.tag = tag;
-            _displayText = tag.name;
-        }
-
-        private bool FilterFunction(GameObject gameObject)
-        {
-            return tagsController.DoesObjectHaveTag(gameObject, tag.id);
+            _displayText = tagSubstring;
         }
 
         public HashSet<GameObject> ExecuteFilter(GameObject gameObject)
@@ -38,6 +31,12 @@ namespace ReupVirtualTwin.controllers
         public void RemoveFilter()
         {
             _onRemoveFilter?.Invoke();
+        }
+
+        private bool FilterFunction(GameObject gameObject)
+        {
+            string[] tagNames = tagsController.GetTagNamesFromObject(gameObject);
+            return tagNames.Any(tagName => tagName.Contains(_displayText));
         }
     }
 }

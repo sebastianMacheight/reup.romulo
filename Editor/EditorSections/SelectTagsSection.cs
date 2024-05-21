@@ -40,7 +40,7 @@ namespace ReupVirtualTwin.editor
         {
             EditorGUILayout.BeginHorizontal();
                 tagsApiManager.searchTagText = EditorGUILayout.TextField("Search for tag to add:", tagsApiManager.searchTagText);
-                ShowResetTagsButton();
+                ShowRefetchTagsButton();
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
             int scrollHeight = MAX_BUTTONS_IN_SCROLL_VIEW * (TAG_BUTTON_HEIGHT + UNITY_BUTTON_MARGIN);
@@ -68,7 +68,7 @@ namespace ReupVirtualTwin.editor
             selectedTags.Remove(tag);
         }
 
-        private async void ShowResetTagsButton()
+        private async void ShowRefetchTagsButton()
         {
             if (GUILayout.Button("Re fetch tags", GUILayout.Width(RE_FETCH_BUTTON_WIDTH)))
             {

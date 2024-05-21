@@ -17,6 +17,8 @@ namespace ReupVirtualTwin.editor
         private IBuildingGetterSetter setupBuilding;
         private SceneVisibilityManager sceneVisibilityManager;
         private List<Tag> selectedTags = new List<Tag>();
+        private string subStringFilterText = "";
+        private float totalWidth;
 
         [MenuItem("Reup Romulo/Tag Scanner")]
         public static void ShowWindow()
@@ -33,16 +35,24 @@ namespace ReupVirtualTwin.editor
 
         void OnGUI()
         {
-            ApplyButtons();
+            totalWidth = EditorGUIUtility.currentViewWidth;
+            ShowApplyButtons();
+            EditorGUILayout.Space();
             ShowTagsFilters();
             EditorGUILayout.Space();
+            ShowTagsToAdd();
+            EditorGUILayout.Space();
+            ShowSubStringFilterAdder();
+        }
+        private void ShowTagsToAdd()
+        {
             if (selectTagsSection == null)
             {
                 CreateTagSection();
             }
             selectTagsSection?.ShowTagsToAdd();
         }
-        private void ApplyButtons()
+        private void ShowApplyButtons()
         {
             if (setupBuilding == null)
             {
@@ -56,14 +66,14 @@ namespace ReupVirtualTwin.editor
             }
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Apply filters"))
-            {
-                ApplyFilters(building);
-            }
-            if (GUILayout.Button("Misapply filters"))
-            {
-                MisapplyFilters(building);
-            }
+                if (GUILayout.Button("Apply filters"))
+                {
+                    ApplyFilters(building);
+                }
+                if (GUILayout.Button("Misapply filters"))
+                {
+                    MisapplyFilters(building);
+                }
             EditorGUILayout.EndHorizontal();
         }
 
@@ -90,7 +100,6 @@ namespace ReupVirtualTwin.editor
         }
         private void ShowTagsFilters()
         {
-            float totalWidth = EditorGUIUtility.currentViewWidth;
             float filterNameWidth = totalWidth * 0.6f;
             float removeFilterButtonWidth = totalWidth * 0.2f;
             float invertFilterToggleWidth = totalWidth * 0.2f;
@@ -131,6 +140,18 @@ namespace ReupVirtualTwin.editor
             ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
             selectTagsSection = await SelectTagsSection.Create(tagsApiManager, selectedTags);
             selectTagsSection.onTagAdded = OnTagAdded;
+        }
+        private void ShowSubStringFilterAdder()
+        {
+            float inputWidth = totalWidth * 0.8f;
+            float addButtonWidth = totalWidth * 0.2f;
+            EditorGUILayout.BeginHorizontal();
+                subStringFilterText = EditorGUILayout.TextField("Substring filter", subStringFilterText, GUILayout.Width(inputWidth));
+                if (GUILayout.Button("Add substring filter", GUILayout.Width(addButtonWidth)))
+                {
+
+                }
+            EditorGUILayout.EndHorizontal();
         }
     }
 }

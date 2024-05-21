@@ -10,9 +10,9 @@ public class StubObjectTreeWithTagAtDifferentLevelsCreator
     public static string grandChild00Id = "grandChild00-id";
     public static string grandChild01Id = "grandChild01-id";
 
-    public static Tag tagX = new Tag() { id = "tag-x" };
-    public static Tag tagY = new Tag() { id = "tag-y" };
-    public static Tag tagZ = new Tag() { id = "tag-z" };
+    public static Tag tagX = new Tag() { id = "tag-x", name = "tag X" };
+    public static Tag tagY = new Tag() { id = "tag-y", name = "tag Y" };
+    public static Tag tagZ = new Tag() { id = "tag-z", name = "tag Z" };
 
     /// <summary>
     /// Creates a mock object tree with an object with the following structure:
