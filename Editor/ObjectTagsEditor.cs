@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using ReupVirtualTwin.managerInterfaces;
-using ReupVirtualTwin.webRequesters;
-using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.dataModels;
 
 namespace ReupVirtualTwin.editor
@@ -17,10 +15,10 @@ namespace ReupVirtualTwin.editor
 
         private SelectTagsSection selectTagsSection;
 
-        private void OnEnable()
+        private async void OnEnable()
         {
             ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
-            selectTagsSection = new SelectTagsSection(tagsApiManager);
+            selectTagsSection = await SelectTagsSection.Create(tagsApiManager);
         }
 
         public override void OnInspectorGUI()

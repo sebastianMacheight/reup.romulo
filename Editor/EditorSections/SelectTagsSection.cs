@@ -27,11 +27,13 @@ namespace ReupVirtualTwin.editor
         private const int BOTTOM_THRESHOLD_IN_PIXELS = 50;
         private const int RE_FETCH_BUTTON_WIDTH = 95;
 
-        public SelectTagsSection(ITagsApiManager tagsApiManager)
+        public async static Task<SelectTagsSection> Create(ITagsApiManager tagsApiManager)
         {
-            this.tagsApiManager = tagsApiManager;
-            selectedTags = new List<Tag>();
-            GetTags();
+            var selectTagsSection = new SelectTagsSection();
+            selectTagsSection.tagsApiManager = tagsApiManager;
+            selectTagsSection.selectedTags = new List<Tag>();
+            await selectTagsSection.GetTags();
+            return selectTagsSection;
         }
 
         public async void ShowTagsToAdd()

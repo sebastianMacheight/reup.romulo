@@ -1,9 +1,7 @@
 using UnityEngine;
 using NUnit.Framework;
 
-using ReupVirtualTwin.models;
 using ReupVirtualTwin.controllers;
-using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.controllerInterfaces;
 using System.Collections.Generic;
 

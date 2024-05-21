@@ -1,11 +1,12 @@
 using ReupVirtualTwin.managerInterfaces;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.controllerInterfaces;
 using ReupVirtualTwin.controllers;
+using ReupVirtualTwin.helpers;
+using ReupVirtualTwin.behaviourInterfaces;
 
 namespace ReupVirtualTwin.editor
 {
@@ -13,6 +14,8 @@ namespace ReupVirtualTwin.editor
     {
         private SelectTagsSection selectTagsSection;
         private List<ITagFilter> tagFilters = new List<ITagFilter>();
+        private IBuildingGetterSetter setupBuilding;
+        private SceneVisibilityManager sceneVisibilityManager;
 
         [MenuItem("Reup Romulo/Tag Scanner")]
         public static void ShowWindow()
@@ -20,11 +23,13 @@ namespace ReupVirtualTwin.editor
             GetWindow<TagScannerTool>("Tag Scanner");
         }
 
-        private void OnEnable()
+        private async void OnEnable()
         {
             ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
-            selectTagsSection = new SelectTagsSection(tagsApiManager);
+            selectTagsSection = await SelectTagsSection.Create(tagsApiManager);
             selectTagsSection.onTagAdded = OnTagAdded;
+            setupBuilding = ObjectFinder.FindSetupBuilding().GetComponent<IBuildingGetterSetter>();
+            sceneVisibilityManager = SceneVisibilityManager.instance;
         }
         void OnGUI()
         {
@@ -33,7 +38,22 @@ namespace ReupVirtualTwin.editor
             selectTagsSection.ShowTagsToAdd();
             if (GUILayout.Button("Apply filters"))
             {
-
+                ApplyFilters();
+            }
+        }
+        private void ApplyFilters()
+        {
+            GameObject building = setupBuilding.building;
+            if (building == null)
+            {
+                Debug.LogError("No building found");
+                return;
+            }
+            List<GameObject> filteredObjects = TagFiltersApplier.ApplyFilters(building, tagFilters);
+            sceneVisibilityManager.Hide(building, true);
+            for (int i = 0; i < filteredObjects.Count; i++)
+            {
+                sceneVisibilityManager.Show(filteredObjects[i], true);
             }
         }
         private void ShowTagsFilters()
