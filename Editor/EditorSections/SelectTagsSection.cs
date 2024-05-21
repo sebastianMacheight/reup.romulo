@@ -27,7 +27,6 @@ namespace ReupVirtualTwin.editor
         private const int BOTTOM_THRESHOLD_IN_PIXELS = 50;
         private const int RE_FETCH_BUTTON_WIDTH = 95;
 
-
         public SelectTagsSection(ITagsApiManager tagsApiManager)
         {
             this.tagsApiManager = tagsApiManager;

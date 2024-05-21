@@ -9,15 +9,15 @@ using ReupVirtualTwin.controllers;
 
 namespace ReupVirtualTwin.editor
 {
-    public class TagFinderTool : EditorWindow
+    public class TagScannerTool : EditorWindow
     {
         private SelectTagsSection selectTagsSection;
         private List<ITagFilter> tagFilters = new List<ITagFilter>();
 
-        [MenuItem("Reup Romulo/Tag Finder")]
+        [MenuItem("Reup Romulo/Tag Scanner")]
         public static void ShowWindow()
         {
-            GetWindow<TagFinderTool>("Tag Finder");
+            GetWindow<TagScannerTool>("Tag Scanner");
         }
 
         private void OnEnable()
@@ -31,6 +31,10 @@ namespace ReupVirtualTwin.editor
             ShowTagsFilters();
             EditorGUILayout.Space();
             selectTagsSection.ShowTagsToAdd();
+            if (GUILayout.Button("Apply filters"))
+            {
+
+            }
         }
         private void ShowTagsFilters()
         {
