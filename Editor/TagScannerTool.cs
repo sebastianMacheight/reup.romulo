@@ -30,8 +30,10 @@ namespace ReupVirtualTwin.editor
             SetSetupBuilding();
             sceneVisibilityManager = SceneVisibilityManager.instance;
         }
+
         void OnGUI()
         {
+            ApplyButtons();
             ShowTagsFilters();
             EditorGUILayout.Space();
             if (selectTagsSection == null)
@@ -39,12 +41,8 @@ namespace ReupVirtualTwin.editor
                 CreateTagSection();
             }
             selectTagsSection?.ShowTagsToAdd();
-            if (GUILayout.Button("Apply filters"))
-            {
-                ApplyFilters();
-            }
         }
-        private void ApplyFilters()
+        private void ApplyButtons()
         {
             if (setupBuilding == null)
             {
@@ -56,6 +54,21 @@ namespace ReupVirtualTwin.editor
                 Debug.LogError("No building found");
                 return;
             }
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Apply filters"))
+            {
+                ApplyFilters(building);
+            }
+            if (GUILayout.Button("Misapply filters"))
+            {
+                MisapplyFilters(building);
+            }
+            EditorGUILayout.EndHorizontal();
+        }
+
+        private void ApplyFilters(GameObject building)
+        {
             List<GameObject> filteredObjects = TagFiltersApplier.ApplyFiltersToTree(building, tagFilters);
             Debug.Log("filteredObjects.Count");
             Debug.Log(filteredObjects.Count);
@@ -69,6 +82,11 @@ namespace ReupVirtualTwin.editor
             {
                 sceneVisibilityManager.Show(filteredObjects[i], true);
             }
+        }
+
+        private void MisapplyFilters(GameObject building)
+        {
+            sceneVisibilityManager.Show(building, true);
         }
         private void ShowTagsFilters()
         {
