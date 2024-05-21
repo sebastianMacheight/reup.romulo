@@ -28,7 +28,7 @@ namespace ReupVirtualTwin.editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"), true, new GUILayoutOption[0]);
             ShowCurrentTags();
             EditorGUILayout.Space();
-            selectTagsSection.ShowTagsToAdd();
+            selectTagsSection?.ShowTagsToAdd();
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(objectTags);

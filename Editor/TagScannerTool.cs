@@ -35,7 +35,7 @@ namespace ReupVirtualTwin.editor
         {
             ShowTagsFilters();
             EditorGUILayout.Space();
-            selectTagsSection.ShowTagsToAdd();
+            selectTagsSection?.ShowTagsToAdd();
             if (GUILayout.Button("Apply filters"))
             {
                 ApplyFilters();
