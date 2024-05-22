@@ -15,17 +15,6 @@ namespace ReupVirtualTwin.controllers
             {
                 filteredObjectsList.Add(filterList[i].ExecuteFilter(obj));
             }
-
-            Debug.Log("objects that passed");
-            for (int i = 0; i < filteredObjectsList.Count; i++)
-            {
-                Debug.Log($"winners of filter {i}");
-                for (int j = 0; j < filteredObjectsList[i].Count; j++)
-                {
-                    Debug.Log(filteredObjectsList[i].ToList()[j].name);
-                }
-            }
-
             List<GameObject> objectsThatPassedAllFilters = filteredObjectsList.Skip(1)
             .Aggregate(
                 new HashSet<GameObject>(filteredObjectsList.First()),
