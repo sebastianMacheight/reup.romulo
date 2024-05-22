@@ -14,11 +14,11 @@ namespace ReupVirtualTwin.editor
     public class SelectTagsSection
     {
         public List<Tag> selectedTags;
-        public Action<Tag> onTagAdded { set => _onTagAdded = value; }
+        public Action<List<Tag>> onTagsChange { set => _onTagsChange = value; }
 
         private ITagsApiManager tagsApiManager;
         private List<Tag> allTags = new List<Tag>();
-        private Action<Tag> _onTagAdded;
+        private Action<List<Tag>> _onTagsChange;
 
         private Vector2 scrollPosition;
         private const int TAG_BUTTON_HEIGHT = 18;
@@ -51,7 +51,6 @@ namespace ReupVirtualTwin.editor
                 if (GUILayout.Button(tag.name, GUILayout.Height(TAG_BUTTON_HEIGHT)))
                 {
                     AddTagIfNotPresent(tag);
-                    _onTagAdded?.Invoke(tag);
                 }
             }
             EditorGUILayout.EndScrollView();
@@ -83,6 +82,7 @@ namespace ReupVirtualTwin.editor
             if (!IsTagAlreadyPresent(tag))
             {
                 selectedTags.Add(tag);
+                _onTagsChange?.Invoke(selectedTags);
             }
         }
 

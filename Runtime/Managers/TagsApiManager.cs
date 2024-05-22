@@ -13,12 +13,16 @@ namespace ReupVirtualTwin.managers
 
         public string searchTagText { get => _searchText; set => _searchText = value; }
 
-        public bool waitingForTagsResponse = false;
-        public int currentPage = 0;
-
+        [SerializeField]
+        private bool waitingForTagsResponse = false;
+        [SerializeField]
+        private int currentPage = 0;
+        [SerializeField]
         private string _searchText = "";
         private ITagsApiConsumer _tagsApiConsumer;
+        [SerializeField]
         private List<Tag> tags = new List<Tag>();
+        [SerializeField]
         private bool areThereTagsToFetch = true;
 
         public async Task<List<Tag>> GetTags()

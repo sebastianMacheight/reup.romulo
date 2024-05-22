@@ -15,12 +15,14 @@ namespace ReupVirtualTwin.controllers
 
         private bool _invertFilter = false;
         private string _displayText;
+        private string substring;
         private Action _onRemoveFilter;
         private ITagsController tagsController = new TagsController();
 
         public SubstringTagFilter(string tagSubstring)
         {
-            _displayText = tagSubstring;
+            substring = tagSubstring;
+            _displayText = $"**{tagSubstring}**";
         }
 
         public HashSet<GameObject> ExecuteFilter(GameObject gameObject)
@@ -36,7 +38,7 @@ namespace ReupVirtualTwin.controllers
         private bool FilterFunction(GameObject gameObject)
         {
             string[] tagNames = tagsController.GetTagNamesFromObject(gameObject);
-            return tagNames.Any(tagName => tagName.Contains(_displayText));
+            return tagNames.Any(tagName => tagName.Contains(substring));
         }
     }
 }

@@ -7,6 +7,7 @@ using ReupVirtualTwin.controllerInterfaces;
 using ReupVirtualTwin.controllers;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.behaviourInterfaces;
+using System.Linq;
 
 namespace ReupVirtualTwin.editor
 {
@@ -14,6 +15,7 @@ namespace ReupVirtualTwin.editor
     {
         private SelectTagsSection selectTagsSection;
         private List<ITagFilter> tagFilters = new List<ITagFilter>();
+        private List<ITagFilter> substringTagFilters = new List<ITagFilter>();
         private IBuildingGetterSetter setupBuilding;
         private SceneVisibilityManager sceneVisibilityManager;
         private List<Tag> selectedTags = new List<Tag>();
@@ -26,11 +28,12 @@ namespace ReupVirtualTwin.editor
             GetWindow<TagScannerTool>("Tag Scanner");
         }
 
-        private void OnEnable()
+        private void CreateGUI()
         {
             CreateTagSection();
             SetSetupBuilding();
             sceneVisibilityManager = SceneVisibilityManager.instance;
+            OnTagsChange(selectedTags);
         }
 
         void OnGUI()
@@ -38,7 +41,7 @@ namespace ReupVirtualTwin.editor
             totalWidth = EditorGUIUtility.currentViewWidth;
             ShowApplyButtons();
             EditorGUILayout.Space();
-            ShowTagsFilters();
+            ShowFilters();
             EditorGUILayout.Space();
             ShowTagsToAdd();
             EditorGUILayout.Space();
@@ -79,14 +82,8 @@ namespace ReupVirtualTwin.editor
 
         private void ApplyFilters(GameObject building)
         {
-            List<GameObject> filteredObjects = TagFiltersApplier.ApplyFiltersToTree(building, tagFilters);
-            Debug.Log("filteredObjects.Count");
-            Debug.Log(filteredObjects.Count);
-            for(int i = 0; i < filteredObjects.Count; i++)
-            {
-                Debug.Log($"filteredObjects[{i}].name");
-                Debug.Log(filteredObjects[i].name);
-            }
+            List<ITagFilter> filters = substringTagFilters.Concat(tagFilters).ToList();
+            List<GameObject> filteredObjects = TagFiltersApplier.ApplyFiltersToTree(building, filters);
             sceneVisibilityManager.Hide(building, true);
             for (int i = 0; i < filteredObjects.Count; i++)
             {
@@ -98,12 +95,12 @@ namespace ReupVirtualTwin.editor
         {
             sceneVisibilityManager.Show(building, true);
         }
-        private void ShowTagsFilters()
+        private void ShowFilters()
         {
             float filterNameWidth = totalWidth * 0.6f;
             float removeFilterButtonWidth = totalWidth * 0.2f;
             float invertFilterToggleWidth = totalWidth * 0.2f;
-            List<ITagFilter> tempFilters = new List<ITagFilter>(tagFilters);
+            List<ITagFilter> tempFilters = substringTagFilters.Concat(tagFilters).ToList();
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Current filters", GUILayout.Width(filterNameWidth));
                 EditorGUILayout.LabelField("Remove filter", GUILayout.Width(removeFilterButtonWidth));
@@ -121,15 +118,19 @@ namespace ReupVirtualTwin.editor
                 EditorGUILayout.EndHorizontal();
             });
         }
-        private void OnTagAdded(Tag tag)
+        private void OnTagsChange(List<Tag> tags)
         {
-            ITagFilter tagFilter = new TagFilter(tag);
-            tagFilters.Add(tagFilter);
-            tagFilter.onRemoveFilter = () =>
+            tagFilters.Clear();
+            tags.ForEach(tag =>
             {
-                selectTagsSection.selectedTags.Remove(tag);
-                tagFilters.Remove(tagFilter);
-            };
+                ITagFilter tagFilter = new TagFilter(tag);
+                tagFilters.Add(tagFilter);
+                tagFilter.onRemoveFilter = () =>
+                {
+                    selectedTags.Remove(tag);
+                    tagFilters.Remove(tagFilter);
+                };
+            });
         }
         private void SetSetupBuilding()
         {
@@ -139,19 +140,26 @@ namespace ReupVirtualTwin.editor
         {
             ITagsApiManager tagsApiManager = TagsApiManagerEditorFinder.FindTagApiManager();
             selectTagsSection = await SelectTagsSection.Create(tagsApiManager, selectedTags);
-            selectTagsSection.onTagAdded = OnTagAdded;
+            selectTagsSection.onTagsChange = OnTagsChange;
         }
         private void ShowSubStringFilterAdder()
         {
-            float inputWidth = totalWidth * 0.8f;
-            float addButtonWidth = totalWidth * 0.2f;
-            EditorGUILayout.BeginHorizontal();
-                subStringFilterText = EditorGUILayout.TextField("Substring filter", subStringFilterText, GUILayout.Width(inputWidth));
-                if (GUILayout.Button("Add substring filter", GUILayout.Width(addButtonWidth)))
-                {
+            subStringFilterText = EditorGUILayout.TextField("Substring filter", subStringFilterText);
+            if (GUILayout.Button("Add substring filter"))
+            {
+                CreateSubstringTagFilter();
+            }
+        }
 
-                }
-            EditorGUILayout.EndHorizontal();
+        private void CreateSubstringTagFilter()
+        {
+            ITagFilter tagFilter = new SubstringTagFilter(subStringFilterText);
+            substringTagFilters.Add(tagFilter);
+            tagFilter.onRemoveFilter = () =>
+            {
+                substringTagFilters.Remove(tagFilter);
+            };
+            subStringFilterText = "";
         }
     }
 }
