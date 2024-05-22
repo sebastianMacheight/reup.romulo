@@ -18,7 +18,10 @@ namespace ReupVirtualTwin.controllers
             List<GameObject> objectsThatPassedAllFilters = filteredObjectsList.Skip(1)
             .Aggregate(
                 new HashSet<GameObject>(filteredObjectsList.First()),
-                (h, e) => { h.IntersectWith(e); return h; }
+                (objectsIntersection, nextObjects) =>
+                {
+                     objectsIntersection.IntersectWith(nextObjects); return objectsIntersection;
+                }
             ).ToList();
             return objectsThatPassedAllFilters;
         }

@@ -32,7 +32,7 @@ namespace ReupVirtualTwin.controllers
 
         public HashSet<GameObject> ExecuteFilter(GameObject gameObject)
         {
-            return TagFilterUtils.ExecuteFilter(gameObject, FilterFunction, _invertFilter);
+            return TagFilterUtils.ExecuteFilterInTree(gameObject, FilterFunction, _invertFilter);
         }
 
         public void RemoveFilter()

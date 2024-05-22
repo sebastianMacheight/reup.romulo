@@ -36,7 +36,7 @@ namespace ReupVirtualTwin.editor
             OnTagsChange(selectedTags);
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             totalWidth = EditorGUIUtility.currentViewWidth;
             ShowApplyButtons();

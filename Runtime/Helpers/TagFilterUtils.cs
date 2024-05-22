@@ -7,23 +7,23 @@ namespace ReupVirtualTwin.helpers
     public static class TagFilterUtils
     {
         public delegate bool FilterFunction(GameObject gameObject);
-        public static HashSet<GameObject> ExecuteFilter(GameObject gameObject, FilterFunction filterFunction, bool invertedFilter)
+        public static HashSet<GameObject> ExecuteFilterInTree(GameObject treeHead, FilterFunction filterFunction, bool invertedFilter)
         {
             HashSet<GameObject> filteredObjects = new HashSet<GameObject>();
-            bool objectPassFilter = filterFunction(gameObject);
+            bool objectPassFilter = filterFunction(treeHead);
             if (objectPassFilter && invertedFilter)
             {
                 return filteredObjects;
             }
             if (objectPassFilter && !invertedFilter)
             {
-                filteredObjects.Add(gameObject);
+                filteredObjects.Add(treeHead);
                 return filteredObjects;
             }
-            List<GameObject> children = gameObject.GetChildren();
+            List<GameObject> children = treeHead.GetChildren();
             children.ForEach(child =>
             {
-                HashSet<GameObject> filteredFromChild = ExecuteFilter(child, filterFunction, invertedFilter);
+                HashSet<GameObject> filteredFromChild = ExecuteFilterInTree(child, filterFunction, invertedFilter);
                 filteredObjects.UnionWith(filteredFromChild);
             });
             if (invertedFilter && !objectPassFilter)
@@ -32,7 +32,7 @@ namespace ReupVirtualTwin.helpers
                 if (allChildrenPassed)
                 {
                     filteredObjects.Clear();
-                    filteredObjects.Add(gameObject);
+                    filteredObjects.Add(treeHead);
                 }
             }
             return filteredObjects;
