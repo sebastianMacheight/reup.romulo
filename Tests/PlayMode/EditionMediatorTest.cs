@@ -53,6 +53,7 @@ public class EditionMediatorTest : MonoBehaviour
         editionMediator.changeColorManager = changeColorManagerSpy;
         changeMaterialControllerSpy = new ChangeMaterialControllerSpy();
         editionMediator.changeMaterialController = changeMaterialControllerSpy;
+        editionMediator.modelInfoManager = new ModelInfoManagerSpy();
     }
 
     private class ChangeColorManagerSpy : IChangeColorManager
@@ -122,6 +123,30 @@ public class EditionMediatorTest : MonoBehaviour
         {
             throw new System.NotImplementedException();
         }
+    }
+
+    private class ModelInfoManagerSpy : IModelInfoManager
+    {
+        public ModelInfoManagerSpy()
+        {
+
+        }
+
+        public WebMessage<ModelInfoMessage> ObtainModelInfoMessage()
+        {
+            return null;
+        }
+
+        public WebMessage<UpdateBuildingMessage> ObtainUpdateBuildingMessage()
+        {
+            return null;
+        }
+
+        public void InsertObjectToBuilding(GameObject obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 
     private class MockWebMessageSender : IWebMessagesSender

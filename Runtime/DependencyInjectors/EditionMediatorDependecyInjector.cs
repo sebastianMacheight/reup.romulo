@@ -52,7 +52,8 @@ namespace ReupVirtualTwin.dependencyInjectors
             editionMediator.insertObjectsController = new InsertObjectController(
                 editionMediator,
                 new MeshDownloader(),
-                insertPositionLocation.transform.position
+                insertPositionLocation.transform.position,
+                modelInfoManager.GetComponent<IModelInfoManager>()
             );
             editionMediator.changeMaterialController = new ChangeMaterialController(
                 new TextureDownloader(),
