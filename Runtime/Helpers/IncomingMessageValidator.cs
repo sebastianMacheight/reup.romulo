@@ -40,7 +40,6 @@ namespace ReupVirtualTwin.helpers
         }
         public bool ValidateMessage(string message)
         {
-            Debug.Log("validating message: " + message);
             if (!DataValidator.ValidateJsonStringToSchema(message, objectWithTypeSchema))
             {
                 Debug.LogWarning("Received message does not contain a type key");

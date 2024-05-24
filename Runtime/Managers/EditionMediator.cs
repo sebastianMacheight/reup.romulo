@@ -170,8 +170,6 @@ namespace ReupVirtualTwin.managers
         public void ReceiveWebMessage(string serializedWebMessage)
         {
             JObject message = JObject.Parse(serializedWebMessage);
-            //IList<string> errorMessages;
-            //if (!message.IsValid(RomuloExternalSchema.IncomingMessageSchema, out errorMessages))
             if (!incomingMessageValidator.ValidateMessage(serializedWebMessage))
             {
                 _webMessageSender.SendWebMessage(new WebMessage<string>

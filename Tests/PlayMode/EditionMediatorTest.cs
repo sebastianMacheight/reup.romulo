@@ -573,7 +573,6 @@ public class EditionMediatorTest : MonoBehaviour
         editionMediator.ReceiveWebMessage(message.ToString());
         yield return null;
         WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
-        Debug.Log(sentMessage.payload);
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         yield return null;
     }
