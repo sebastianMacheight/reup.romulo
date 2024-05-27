@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 
 using ReupVirtualTwin.helperInterfaces;
@@ -14,7 +13,6 @@ using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.romuloEnvironment;
 using ReupVirtualTwin.dataSchemas;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
 
 namespace ReupVirtualTwin.managers
 {
@@ -54,6 +52,8 @@ namespace ReupVirtualTwin.managers
             get => _changeMaterialController; set => _changeMaterialController = value;
         }
 
+        private IncomingMessageValidator incomingMessageValidator;
+
         [HideInInspector]
         public string noInsertObjectIdErrorMessage = "No object id provided for insertion";
         [HideInInspector]
@@ -64,11 +64,30 @@ namespace ReupVirtualTwin.managers
         private IModelInfoManager _modelInfoManager;
         public IModelInfoManager modelInfoManager { set => _modelInfoManager = value; }
 
+        private void Awake()
+        {
+            incomingMessageValidator = new IncomingMessageValidator();
+
+            incomingMessageValidator.RegisterMessage(WebMessageType.activatePositionTransform);
+            incomingMessageValidator.RegisterMessage(WebMessageType.activateRotationTransform);
+            incomingMessageValidator.RegisterMessage(WebMessageType.deactivateTransformMode);
+            incomingMessageValidator.RegisterMessage(WebMessageType.requestModelInfo);
+
+            incomingMessageValidator.RegisterMessage(WebMessageType.setEditMode, DataValidator.boolSchema);
+
+            incomingMessageValidator.RegisterMessage(WebMessageType.deleteObjects, DataValidator.stringSchema);
+            incomingMessageValidator.RegisterMessage(WebMessageType.loadObject, DataValidator.stringSchema);
+            incomingMessageValidator.RegisterMessage(WebMessageType.changeObjectColor, DataValidator.stringSchema);
+
+            incomingMessageValidator.RegisterMessage(WebMessageType.changeObjectsMaterial, RomuloExternalSchema.changeObjectMaterialPayloadSchema);
+
+        }
+
         public void Notify(ReupEvent eventName)
         {
             switch (eventName)
             {
-                case ReupEvent.transformHandleStartItneraction:
+                case ReupEvent.transformHandleStartInteraction:
                     _characterRotationManager.allowRotation = false;
                     break;
                 case ReupEvent.transformHandleStopInteraction:
@@ -126,6 +145,7 @@ namespace ReupVirtualTwin.managers
                     ProcessLoadStatus((float)(object)payload);
                     break;
                 case ReupEvent.objectMaterialChanged:
+                    Debug.Log("I was notified of material changed");
                     if (RomuloEnvironment.development)
                     {
                         if (!DataValidator.ValidateObjectToSchema(payload, RomuloInternalSchema.materialChangeInfo))
@@ -150,18 +170,12 @@ namespace ReupVirtualTwin.managers
         public void ReceiveWebMessage(string serializedWebMessage)
         {
             JObject message = JObject.Parse(serializedWebMessage);
-            IList<string> errorMessages;
-            if (!message.IsValid(RomuloExternalSchema.IncomingMessageSchema, out errorMessages))
+            if (!incomingMessageValidator.ValidateMessage(serializedWebMessage))
             {
-                Debug.LogWarning("Invalid message received");
-                for (int i = 0; i < errorMessages.Count; i++)
-                {
-                    Debug.LogWarning(errorMessages[i]);
-                }
-                _webMessageSender.SendWebMessage(new WebMessage<IList<string>>
+                _webMessageSender.SendWebMessage(new WebMessage<string>
                 {
                     type = WebMessageType.error,
-                    payload = errorMessages
+                    payload = $"Invalid message received at {this.GetType()}"
                 });
                 return;
             }
@@ -198,6 +212,8 @@ namespace ReupVirtualTwin.managers
                     break;
             }
         }
+
+
 
         public void SendModelInfoMessage()
         {
@@ -421,6 +437,7 @@ namespace ReupVirtualTwin.managers
                 payload = message,
             });
         }
+
     }
 
 }
