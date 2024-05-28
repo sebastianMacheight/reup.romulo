@@ -1,6 +1,7 @@
 using ReupVirtualTwin.dataModels;
 using ReupVirtualTwin.enums;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ReupVirtualTwin.helpers
 {
@@ -39,6 +40,11 @@ namespace ReupVirtualTwin.helpers
                 name = EditionTag.SELECTABLE.ToString(),
                 description = "this is an action tag burn into unity"
             };
+        }
+
+        public static List<Tag> ApplyEditionTags(List<Tag> tags)
+        {
+            return EditionTagsCreator.CreateEditionTags().Concat(tags).ToList();
         }
     }
 }

@@ -18,17 +18,20 @@ public static class StubObjectTreeCreator
         new Tag(){id="parent-tag-1"},
         new Tag(){id="parent-tag-2"},
     };
-    public static Tag[] child0Tags = new Tag[3]
+    public static Tag commonChildrenTag = new Tag() { id = "common-children-tag" };
+    public static Tag[] child0Tags = new Tag[4]
     {
         new Tag(){id="child0-tag-0"},
         new Tag(){id="child0-tag-1"},
         new Tag(){id="child0-tag-2"},
+        commonChildrenTag,
     };
-    public static Tag[] child1Tags = new Tag[3]
+    public static Tag[] child1Tags = new Tag[4]
     {
         new Tag(){id="child1-tag-0"},
         new Tag(){id="child1-tag-1"},
         new Tag(){id="child1-tag-2"},
+        commonChildrenTag,
     };
     public static Tag[] grandChild0Tags = new Tag[3]
     {
@@ -52,15 +55,15 @@ public static class StubObjectTreeCreator
         GameObject grandChild0 = new(grandChild0Id);
         grandChild0.transform.parent = child0.transform;
 
-        AssignIdToObject(parent, parentId);
-        AssignIdToObject(child0, child0Id);
-        AssignIdToObject(child1, child1Id);
-        AssignIdToObject(grandChild0, grandChild0Id);
+        StubObjectCreatorUtils.AssignIdToObject(parent, parentId);
+        StubObjectCreatorUtils.AssignIdToObject(child0, child0Id);
+        StubObjectCreatorUtils.AssignIdToObject(child1, child1Id);
+        StubObjectCreatorUtils.AssignIdToObject(grandChild0, grandChild0Id);
 
-        AssignTagsToObject(parent, parentTags);
-        AssignTagsToObject(child0, child0Tags);
-        AssignTagsToObject(child1, child1Tags);
-        AssignTagsToObject(grandChild0, grandChild0Tags);
+        StubObjectCreatorUtils.AssignTagsToObject(parent, parentTags);
+        StubObjectCreatorUtils.AssignTagsToObject(child0, child0Tags);
+        StubObjectCreatorUtils.AssignTagsToObject(child1, child1Tags);
+        StubObjectCreatorUtils.AssignTagsToObject(grandChild0, grandChild0Tags);
 
         if (deepChildDepth > 0)
         {
@@ -71,6 +74,7 @@ public static class StubObjectTreeCreator
         return parent;
     }
 
+
     private static GameObject CreateDeepChainedLineOfObjects(int depth, int objectIndex = 0)
     {
         if (depth == 0)
@@ -79,27 +83,13 @@ public static class StubObjectTreeCreator
         }
         string objectId = $"object-{objectIndex}";
         GameObject obj = new(objectId);
-        AssignIdToObject(obj, objectId);
-        AssignTagsToObject(obj, new Tag[1] { new Tag() { id =  $"object-{objectIndex}-tag", name = $"object-{objectIndex}-tag"  } });
+        StubObjectCreatorUtils.AssignIdToObject(obj, objectId);
+        StubObjectCreatorUtils.AssignTagsToObject(obj, new Tag[1] { new Tag() { id =  $"object-{objectIndex}-tag", name = $"object-{objectIndex}-tag"  } });
         GameObject child = CreateDeepChainedLineOfObjects(depth - 1, objectIndex + 1);
         if (child != null)
         {
             child.transform.parent = obj.transform;
         }
         return obj;
-    }
-
-    private static void AssignTagsToObject(GameObject obj, Tag[] tags)
-    {
-        ITagSystemController tagSystemController = new TagSystemController();
-        tagSystemController.AssignTagSystemToObject(obj);
-        IObjectTags objectTags = obj.GetComponent<IObjectTags>();
-        objectTags.AddTags(tags);
-    }
-
-    private static void AssignIdToObject(GameObject obj, string id)
-    {
-        IUniqueIdentifier identifier = obj.AddComponent<UniqueId>();
-        identifier.AssignId(id);
     }
 }
