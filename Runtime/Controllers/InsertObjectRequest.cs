@@ -14,15 +14,17 @@ namespace ReupVirtualTwin.controllers
     public class InsertObjectRequest
     {
         private IMediator mediator;
+        private IModelInfoManager modelInfo;
         private InsertObjectMessagePayload insertObjectMessagePayload;
         private ITagSystemController tagSystemController = new TagSystemController();
         private IIdAssignerController idAssigner = new IdController();
         private IColliderAdder colliderAdder = new  ColliderAdder();
         private Vector3 insertPosition;
-        public InsertObjectRequest(IMediator mediator, IMeshDownloader meshDownloader, InsertObjectMessagePayload messagePayload, Vector3 insertPosition)
+        public InsertObjectRequest(IMediator mediator, IMeshDownloader meshDownloader, InsertObjectMessagePayload messagePayload, Vector3 insertPosition, IModelInfoManager modelInfoManager)
         {
             this.insertPosition = insertPosition;
             this.mediator = mediator;
+            this.modelInfo = modelInfoManager;
             insertObjectMessagePayload = messagePayload;
             meshDownloader.downloadMesh(
                 messagePayload.objectUrl,
@@ -44,6 +46,7 @@ namespace ReupVirtualTwin.controllers
             SetLoadPosition(loadedObj);
             AddColliders(loadedObj);
             AssignIds(loadedObj);
+            InsertToBuilding(loadedObj);
             loadedObj.SetActive(false);
         }
         private void AddTags(GameObject obj)
@@ -61,7 +64,12 @@ namespace ReupVirtualTwin.controllers
         }
         private void AssignIds(GameObject obj)
         {
-            idAssigner.AssignIdsToTree(obj, insertObjectMessagePayload.objectId);
+            idAssigner.AssignIdsToTree(obj);
+        }
+
+        private void InsertToBuilding(GameObject obj)
+        {
+            modelInfo.InsertObjectToBuilding(obj);
         }
 
         private void OnMaterialsLoad(ModelLoaderContext assetLoaderContext)

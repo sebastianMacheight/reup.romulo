@@ -13,6 +13,7 @@ using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.romuloEnvironment;
 using ReupVirtualTwin.dataSchemas;
 using Newtonsoft.Json.Linq;
+using System.Collections;
 
 namespace ReupVirtualTwin.managers
 {
@@ -35,8 +36,8 @@ namespace ReupVirtualTwin.managers
         private IChangeColorManager _changeColorManager;
         public IChangeColorManager changeColorManager { set => _changeColorManager = value; }
 
-        private IInsertObjectsController _insertObjectsManager;
-        public IInsertObjectsController insertObjectsController { set => _insertObjectsManager = value; }
+        private IInsertObjectsController _insertObjectsController;
+        public IInsertObjectsController insertObjectsController { set => _insertObjectsController = value; }
 
         private IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
@@ -112,6 +113,7 @@ namespace ReupVirtualTwin.managers
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
             }
         }
+
         public void Notify<T>(ReupEvent eventName, T payload)
         {
             switch (eventName)
@@ -359,6 +361,19 @@ namespace ReupVirtualTwin.managers
                 type = webMessageType,
             };
             _webMessageSender.SendWebMessage(message);
+            StartCoroutine(SendUpdatedBuildingMessageAfterDeletion());
+        }
+
+        private IEnumerator SendUpdatedBuildingMessageAfterDeletion()
+        {
+            yield return new WaitForSeconds(0.2f);
+            SendUpdatedBuildingMessage();
+        }
+
+        private void SendUpdatedBuildingMessage()
+        {
+            WebMessage<UpdateBuildingMessage> message = _modelInfoManager.ObtainUpdateBuildingMessage();
+            _webMessageSender.SendWebMessage(message);
         }
 
         private void ProcessObjectColorChanged()
@@ -379,9 +394,11 @@ namespace ReupVirtualTwin.managers
                 {
                     _selectedObjectsManager.ClearSelection();
                 }
+                SendUpdatedBuildingMessage();
                 _selectedObjectsManager.AddObjectToSelection(insertedObjectPayload.loadedObject);
             }
         }
+
         private void SendInsertedObjectMessage(GameObject obj)
         {
             ObjectDTO objectDTO = _objectMapper.MapObjectToDTO(obj);
@@ -406,7 +423,7 @@ namespace ReupVirtualTwin.managers
                 SendErrorMessage(noInsertObjectIdErrorMessage);
                 return;
             }
-            _insertObjectsManager.InsertObject(parsedPayload);
+            _insertObjectsController.InsertObject(parsedPayload);
         }
 
         private void ProcessLoadStatus(float status)
