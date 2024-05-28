@@ -3,9 +3,8 @@ using System;
 namespace ReupVirtualTwin.dataModels
 {
     [Serializable]
-    public class ModelInfoMessage
+    public class UpdateBuildingMessage
     {
-        public string buildVersion;
         public ObjectDTO building;
     }
 }
