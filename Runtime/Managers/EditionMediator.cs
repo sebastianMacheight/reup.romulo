@@ -366,7 +366,7 @@ namespace ReupVirtualTwin.managers
 
         private IEnumerator SendUpdatedBuildingMessageAfterDeletion()
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return null;
             SendUpdatedBuildingMessage();
         }
 
@@ -388,13 +388,13 @@ namespace ReupVirtualTwin.managers
         private void ProcessInsertedObjectLoaded(InsertedObjectPayload insertedObjectPayload)
         {
             SendInsertedObjectMessage(insertedObjectPayload.loadedObject);
+            if (insertedObjectPayload.deselectPreviousSelection)
+            {
+                _selectedObjectsManager.ClearSelection();
+            }
+            SendUpdatedBuildingMessage();
             if (insertedObjectPayload.selectObjectAfterInsertion)
             {
-                if (insertedObjectPayload.deselectPreviousSelection)
-                {
-                    _selectedObjectsManager.ClearSelection();
-                }
-                SendUpdatedBuildingMessage();
                 _selectedObjectsManager.AddObjectToSelection(insertedObjectPayload.loadedObject);
             }
         }

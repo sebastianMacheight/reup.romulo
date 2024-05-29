@@ -154,10 +154,10 @@ namespace ReupVirtualTwinTests.controllers
        }
 
        [UnityTest]
-       public IEnumerator InsertedObjectShouldHaveNewId()
+       public IEnumerator InsertedObjectShouldHaveDefinedId()
        {
            yield return new WaitUntil(() => mediatorSpy.allRequestedObjectsAreLoaded);
-           Assert.AreNotEqual(insertObjectMessagePayload.objectId, idReader.GetIdFromObject(mediatorSpy.GetLastLoadedObject()));
+           Assert.AreEqual(insertObjectMessagePayload.objectId, idReader.GetIdFromObject(mediatorSpy.GetLastLoadedObject()));
            yield return null;
        }
 

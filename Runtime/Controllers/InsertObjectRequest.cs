@@ -14,7 +14,7 @@ namespace ReupVirtualTwin.controllers
     public class InsertObjectRequest
     {
         private IMediator mediator;
-        private IModelInfoManager modelInfo;
+        private IModelInfoManager modelInfoManager;
         private InsertObjectMessagePayload insertObjectMessagePayload;
         private ITagSystemController tagSystemController = new TagSystemController();
         private IIdAssignerController idAssigner = new IdController();
@@ -24,7 +24,7 @@ namespace ReupVirtualTwin.controllers
         {
             this.insertPosition = insertPosition;
             this.mediator = mediator;
-            this.modelInfo = modelInfoManager;
+            this.modelInfoManager = modelInfoManager;
             insertObjectMessagePayload = messagePayload;
             meshDownloader.downloadMesh(
                 messagePayload.objectUrl,
@@ -64,12 +64,12 @@ namespace ReupVirtualTwin.controllers
         }
         private void AssignIds(GameObject obj)
         {
-            idAssigner.AssignIdsToTree(obj);
+            idAssigner.AssignIdsToTree(obj, insertObjectMessagePayload.objectId);
         }
 
         private void InsertToBuilding(GameObject obj)
         {
-            modelInfo.InsertObjectToBuilding(obj);
+            modelInfoManager.InsertObjectToBuilding(obj);
         }
 
         private void OnMaterialsLoad(ModelLoaderContext assetLoaderContext)

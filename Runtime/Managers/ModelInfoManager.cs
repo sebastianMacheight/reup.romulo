@@ -50,6 +50,12 @@ namespace ReupVirtualTwin.managers
             return message;
         }
 
+        public void InsertObjectToBuilding(GameObject obj)
+        {
+            GameObject buildingObject = ObtainBuildingObject();
+            obj.transform.SetParent(buildingObject.transform);
+        }
+
         private UpdateBuildingMessage ObtainUpdateBuildingMessagePayload()
         {
             ObjectDTO buildingDTO = ObtainBuildingDTO();
@@ -81,12 +87,6 @@ namespace ReupVirtualTwin.managers
         private GameObject ObtainBuildingObject()
         {
             return ((IBuildingGetterSetter)setupBuilding).building;
-        }
-
-        public void InsertObjectToBuilding(GameObject obj)
-        {
-            GameObject buildingObject = ObtainBuildingObject();
-            obj.transform.SetParent(buildingObject.transform);
         }
     }
 }

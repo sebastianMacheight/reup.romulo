@@ -29,6 +29,7 @@ public class EditionMediatorTest : MonoBehaviour
     ObjectRegistrySpy registrySpy;
     ChangeColorManagerSpy changeColorManagerSpy;
     ChangeMaterialControllerSpy changeMaterialControllerSpy;
+    MockModelInfoManager mockModelInfoManager;
 
     [SetUp]
     public void SetUp()
@@ -53,7 +54,8 @@ public class EditionMediatorTest : MonoBehaviour
         editionMediator.changeColorManager = changeColorManagerSpy;
         changeMaterialControllerSpy = new ChangeMaterialControllerSpy();
         editionMediator.changeMaterialController = changeMaterialControllerSpy;
-        editionMediator.modelInfoManager = new ModelInfoManagerSpy();
+        mockModelInfoManager = new MockModelInfoManager();
+        editionMediator.modelInfoManager = mockModelInfoManager;
     }
 
     private class ChangeColorManagerSpy : IChangeColorManager
@@ -125,21 +127,43 @@ public class EditionMediatorTest : MonoBehaviour
         }
     }
 
-    private class ModelInfoManagerSpy : IModelInfoManager
+    private class MockModelInfoManager : IModelInfoManager
     {
-        public ModelInfoManagerSpy()
+        public ObjectDTO building;
+        public MockModelInfoManager()
         {
-
+            building = new ObjectDTO
+            {
+                id = "building-id",
+                tags = new Tag[2] { new Tag() { id = "tag0" }, new Tag() { id = "tag1" } },
+            };
         }
 
         public WebMessage<ModelInfoMessage> ObtainModelInfoMessage()
         {
-            return null;
+            WebMessage<ModelInfoMessage> message = new()
+            {
+                type = WebMessageType.requestModelInfoSuccess,
+                payload = new ModelInfoMessage()
+                {
+                    buildVersion = "2024-04-05",
+                    building = building,
+                },
+            };
+            return message;
         }
 
         public WebMessage<UpdateBuildingMessage> ObtainUpdateBuildingMessage()
         {
-            return null;
+            WebMessage<UpdateBuildingMessage> message = new()
+            {
+                type = WebMessageType.updateBuilding,
+                payload = new UpdateBuildingMessage()
+                {
+                    building = building,
+                },
+            };
+            return message;
         }
 
         public void InsertObjectToBuilding(GameObject obj)
@@ -151,10 +175,11 @@ public class EditionMediatorTest : MonoBehaviour
 
     private class MockWebMessageSender : IWebMessagesSender
     {
-        public object sentMessage;
+        public List<object> sentMessages = new List<object>();
+
         public void SendWebMessage<T>(WebMessage<T> webMessage)
         {
-            sentMessage = webMessage;
+            sentMessages.Add(webMessage);
         }
     }
     private class MockTransformObjectsManager : ITransformObjectsManager
@@ -278,7 +303,7 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldSendMessageInSetEditModeToTrue()
     {
         editionMediator.Notify(ReupEvent.setEditMode, true);
-        WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessage;
+        WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.setEditModeSuccess, sentMessage.type);
         Assert.AreEqual(true, sentMessage.payload);
         yield return null;
@@ -287,7 +312,7 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldSendMessageInSetEditModeToFalse()
     {
         editionMediator.Notify(ReupEvent.setEditMode, false);
-        WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessage;
+        WebMessage<bool> sentMessage = (WebMessage<bool>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.setEditModeSuccess, sentMessage.type);
         Assert.AreEqual(false, sentMessage.payload);
         yield return null;
@@ -332,7 +357,7 @@ public class EditionMediatorTest : MonoBehaviour
         string message = dummyJsonCreator.createWebMessage(WebMessageType.activatePositionTransform);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         Assert.AreEqual($"Can't activate {TransformMode.PositionMode} Transform mode because no object is selected", sentMessage.payload);
         yield return null;
@@ -343,7 +368,7 @@ public class EditionMediatorTest : MonoBehaviour
         string message = dummyJsonCreator.createWebMessage(WebMessageType.activateRotationTransform);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         Assert.AreEqual($"Can't activate {TransformMode.RotationMode} Transform mode because no object is selected", sentMessage.payload);
         yield return null;
@@ -354,7 +379,7 @@ public class EditionMediatorTest : MonoBehaviour
         string message = dummyJsonCreator.createWebMessage(WebMessageType.deactivateTransformMode);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         Assert.AreEqual("Can't deactivate transform mode if no transform mode is currently active", sentMessage.payload);
         yield return null;
@@ -383,30 +408,33 @@ public class EditionMediatorTest : MonoBehaviour
     {
         float processStatus = 0.25f;
         editionMediator.Notify(ReupEvent.insertedObjectStatusUpdate, processStatus);
-        WebMessage<float> sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessage;
+        WebMessage<float> sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.loadObjectProcessUpdate, sentMessage.type);
         Assert.AreEqual(processStatus, sentMessage.payload);
         yield return null;
         processStatus = 0.6f;
         editionMediator.Notify(ReupEvent.insertedObjectStatusUpdate, processStatus);
-        sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessage;
+        sentMessage = (WebMessage<float>)mockWebMessageSender.sentMessages[1];
         Assert.AreEqual(WebMessageType.loadObjectProcessUpdate, sentMessage.type);
         Assert.AreEqual(processStatus, sentMessage.payload);
         yield return null;
     }
 
     [UnityTest]
-    public IEnumerator ShouldSendMessageOfLoadObjectSuccess()
+    public IEnumerator ShouldSendMessageOfLoadObjectSuccessAndUpdateBuildingMessage()
     {
-        InsertedObjectPayload insertedObjectPayload = new()
+        InsertedObjectPayload insertedObjectPayload = new InsertedObjectPayload()
         {
             loadedObject = new GameObject("insertedObject"),
         };
         editionMediator.Notify(ReupEvent.insertedObjectLoaded, insertedObjectPayload);
-        WebMessage<ObjectDTO> sentMessage = (WebMessage<ObjectDTO>)mockWebMessageSender.sentMessage;
+        yield return null;
+        WebMessage<ObjectDTO> sentMessage = (WebMessage<ObjectDTO>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.loadObjectSuccess, sentMessage.type);
         Assert.AreEqual(mockObjectMapper.objectDTOs[0], sentMessage.payload);
-        yield return null;
+        WebMessage<UpdateBuildingMessage> sentUpdateBuildingMessage = (WebMessage<UpdateBuildingMessage>)mockWebMessageSender.sentMessages[1];  
+        Assert.AreEqual(WebMessageType.updateBuilding, sentUpdateBuildingMessage.type);
+        Assert.AreEqual(mockModelInfoManager.building, sentUpdateBuildingMessage.payload.building);
     }
 
     [UnityTest]
@@ -435,7 +463,7 @@ public class EditionMediatorTest : MonoBehaviour
         string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, payload);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         Assert.AreEqual(editionMediator.noInsertObjectUrlErrorMessage, sentMessage.payload);
         yield return null;
@@ -451,7 +479,7 @@ public class EditionMediatorTest : MonoBehaviour
         string message = dummyJsonCreator.createWebMessage(WebMessageType.loadObject, payload);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         Assert.AreEqual(editionMediator.noInsertObjectIdErrorMessage, sentMessage.payload);
         yield return null;
@@ -520,7 +548,7 @@ public class EditionMediatorTest : MonoBehaviour
         string message = dummyJsonCreator.createWebMessage(WebMessageType.changeObjectColor, payload);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         Assert.AreEqual(editionMediator.InvalidColorErrorMessage(color), sentMessage.payload);
     }
@@ -564,7 +592,7 @@ public class EditionMediatorTest : MonoBehaviour
             new JProperty("object_ids", new JArray(new string[] { "id-0", "id-1" }))
         );
         editionMediator.Notify(ReupEvent.objectMaterialChanged, materialChangeInfo);
-        WebMessage<JObject> sentMessage = (WebMessage<JObject>)mockWebMessageSender.sentMessage;
+        WebMessage<JObject> sentMessage = (WebMessage<JObject>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.changeObjectsMaterialSuccess, sentMessage.type);
         Assert.AreEqual(materialChangeInfo["material_url"], sentMessage.payload["material_url"]);
         Assert.AreEqual(materialChangeInfo["object_ids"], sentMessage.payload["object_ids"]);
@@ -583,7 +611,7 @@ public class EditionMediatorTest : MonoBehaviour
         );
         editionMediator.ReceiveWebMessage(message.ToString());
         yield return null;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         yield return null;
     }
@@ -597,8 +625,20 @@ public class EditionMediatorTest : MonoBehaviour
         };
         editionMediator.ReceiveWebMessage(message.ToString());
         yield return null;
-        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessage;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendDeleteObjectSuccessAndUpdateBuildingMessage()
+    {
+        editionMediator.Notify(ReupEvent.objectsDeleted);
+        WebMessage<string> deletedSuccessMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
+        yield return null;
+        Assert.AreEqual(WebMessageType.deleteObjectsSuccess, deletedSuccessMessage.type);
+        WebMessage<UpdateBuildingMessage> sentUpdateBuildingMessage = (WebMessage<UpdateBuildingMessage>)mockWebMessageSender.sentMessages[1];
+        Assert.AreEqual(WebMessageType.updateBuilding, sentUpdateBuildingMessage.type);
+        Assert.AreEqual(mockModelInfoManager.building, sentUpdateBuildingMessage.payload.building);
     }
 }
