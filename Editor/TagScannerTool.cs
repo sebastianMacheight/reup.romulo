@@ -73,7 +73,7 @@ namespace ReupVirtualTwin.editor
                 {
                     ApplyFilters(building);
                 }
-                if (GUILayout.Button("Misapply filters"))
+                if (GUILayout.Button("Undo filters"))
                 {
                     MisapplyFilters(building);
                 }
@@ -83,6 +83,11 @@ namespace ReupVirtualTwin.editor
         private void ApplyFilters(GameObject building)
         {
             List<ITagFilter> filters = substringTagFilters.Concat(tagFilters).ToList();
+            if (filters.Count == 0)
+            {
+                Debug.LogWarning("No filters to apply");
+                return;
+            }
             List<GameObject> filteredObjects = TagFiltersApplier.ApplyFiltersToTree(building, filters);
             sceneVisibilityManager.Hide(building, true);
             for (int i = 0; i < filteredObjects.Count; i++)
