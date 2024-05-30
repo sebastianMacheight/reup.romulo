@@ -177,7 +177,6 @@ namespace ReupVirtualTwinTests.controllers
                 objectId = "object-id-2",
                 objectUrl = "object-url-2",
                 selectObjectAfterInsertion = false,
-                deselectPreviousSelection = false,
             };
             RequesObject(anotherInsertMessagePayload);
             yield return new WaitUntil(() => mediatorSpy.allRequestedObjectsAreLoaded);
@@ -187,8 +186,6 @@ namespace ReupVirtualTwinTests.controllers
 
             Assert.AreEqual(meshDownloaderSpy.loadedObjects[0], firstObjectPayload.loadedObject);
             Assert.AreEqual(meshDownloaderSpy.loadedObjects[1], secondObjectPayload.loadedObject);
-            Assert.AreEqual(insertObjectMessagePayload.deselectPreviousSelection, firstObjectPayload.deselectPreviousSelection);
-            Assert.AreEqual(anotherInsertMessagePayload.deselectPreviousSelection, secondObjectPayload.deselectPreviousSelection);
             yield return null;
         }
 

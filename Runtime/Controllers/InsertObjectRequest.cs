@@ -80,7 +80,6 @@ namespace ReupVirtualTwin.controllers
             {
                 loadedObject = obj,
                 selectObjectAfterInsertion = insertObjectMessagePayload.selectObjectAfterInsertion,
-                deselectPreviousSelection = insertObjectMessagePayload.deselectPreviousSelection,
             };
             mediator.Notify(ReupEvent.insertedObjectLoaded, insertedObjectPayload);
         }

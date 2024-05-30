@@ -228,7 +228,6 @@ public class EditionMediatorTest : MonoBehaviour
             {
                 loadedObject = injectedObject,
                 selectObjectAfterInsertion = insertObjectMessagePayload.selectObjectAfterInsertion,
-                deselectPreviousSelection = insertObjectMessagePayload.deselectPreviousSelection,
             };
             editionMediator.Notify(ReupEvent.insertedObjectLoaded, insertedObjectPayload);
             requestedObjectId = insertObjectMessagePayload.objectId;

@@ -104,7 +104,7 @@ namespace ReupVirtualTwin.managers
                     ProcessTranformModeDeactivation();
                     break;
                 case ReupEvent.objectsDeleted:
-                    ProcessDeletedObjects();
+                    StartCoroutine(ProcessDeletedObjects());
                     break;
                 case ReupEvent.objectColorChanged:
                     ProcessObjectColorChanged();
@@ -137,7 +137,7 @@ namespace ReupVirtualTwin.managers
                     {
                         throw new ArgumentException($"Payload must be of type {nameof(InsertedObjectPayload)} for {eventName} events", nameof(payload));
                     }
-                    ProcessInsertedObjectLoaded((InsertedObjectPayload)(object)payload);
+                    StartCoroutine(ProcessInsertedObjectLoaded((InsertedObjectPayload)(object)payload));
                     break;
                 case ReupEvent.insertedObjectStatusUpdate:
                     if (!(payload is float))
@@ -351,7 +351,13 @@ namespace ReupVirtualTwin.managers
             _webMessageSender.SendWebMessage(message);
         }
 
-        private void ProcessDeletedObjects()
+        private void SendUpdatedBuildingMessage()
+        {
+            WebMessage<UpdateBuildingMessage> message = _modelInfoManager.ObtainUpdateBuildingMessage();
+            _webMessageSender.SendWebMessage(message);
+        }
+
+        private IEnumerator ProcessDeletedObjects()
         {
             string webMessageType;
             webMessageType = WebMessageType.deleteObjectsSuccess;
@@ -361,19 +367,8 @@ namespace ReupVirtualTwin.managers
                 type = webMessageType,
             };
             _webMessageSender.SendWebMessage(message);
-            StartCoroutine(SendUpdatedBuildingMessageAfterDeletion());
-        }
-
-        private IEnumerator SendUpdatedBuildingMessageAfterDeletion()
-        {
             yield return null;
             SendUpdatedBuildingMessage();
-        }
-
-        private void SendUpdatedBuildingMessage()
-        {
-            WebMessage<UpdateBuildingMessage> message = _modelInfoManager.ObtainUpdateBuildingMessage();
-            _webMessageSender.SendWebMessage(message);
         }
 
         private void ProcessObjectColorChanged()
@@ -385,14 +380,12 @@ namespace ReupVirtualTwin.managers
             _webMessageSender.SendWebMessage(message);
         }
 
-        private void ProcessInsertedObjectLoaded(InsertedObjectPayload insertedObjectPayload)
+        private IEnumerator ProcessInsertedObjectLoaded(InsertedObjectPayload insertedObjectPayload)
         {
             SendInsertedObjectMessage(insertedObjectPayload.loadedObject);
-            if (insertedObjectPayload.deselectPreviousSelection)
-            {
-                _selectedObjectsManager.ClearSelection();
-            }
-            SendUpdatedBuildingMessage();
+            _selectedObjectsManager.ClearSelection();
+            yield return null;
+            SendUpdatedBuildingMessage(); 
             if (insertedObjectPayload.selectObjectAfterInsertion)
             {
                 _selectedObjectsManager.AddObjectToSelection(insertedObjectPayload.loadedObject);
