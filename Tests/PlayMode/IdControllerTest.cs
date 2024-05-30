@@ -176,5 +176,11 @@ namespace ReupVirtualTwinTests.Registry
             Assert.IsTrue(hasRepeteaded);
             yield return null;
         }
+        [UnityTest]
+        public IEnumerator ShouldThrow_if_objectDoesNotHaveId()
+        {
+            Assert.That(() => idController.GetIdFromObject(parent), Throws.Exception);
+            yield return null;
+        }
     }
 }
