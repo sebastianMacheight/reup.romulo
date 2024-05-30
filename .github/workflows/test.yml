@@ -22,13 +22,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
           packageMode: true
           unityVersion: '2021.3.24f1'
           projectPath: temporal_repo_folder
           artifactsPath: 'artifacts'
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: Test results
-          path: ${{ steps.test-step.outputs.artifactsPath }}
