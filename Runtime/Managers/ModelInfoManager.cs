@@ -30,7 +30,7 @@ namespace ReupVirtualTwin.managers
 
         public WebMessage<ModelInfoMessage> ObtainModelInfoMessage()
         {
-            ModelInfoMessage messagePayload = ObtainMessagePayload();
+            ModelInfoMessage messagePayload = ObtainModelInfoMessagePayload();
             WebMessage<ModelInfoMessage> message = new()
             {
                 type = WebMessageType.requestModelInfoSuccess,
@@ -39,7 +39,34 @@ namespace ReupVirtualTwin.managers
             return message;
         }
 
-        private ModelInfoMessage ObtainMessagePayload()
+        public WebMessage<UpdateBuildingMessage> ObtainUpdateBuildingMessage()
+        {
+            UpdateBuildingMessage messagePayload = ObtainUpdateBuildingMessagePayload();
+            WebMessage<UpdateBuildingMessage> message = new()
+            {
+                type = WebMessageType.updateBuilding,
+                payload = messagePayload,
+            };
+            return message;
+        }
+
+        public void InsertObjectToBuilding(GameObject obj)
+        {
+            GameObject buildingObject = ObtainBuildingObject();
+            obj.transform.SetParent(buildingObject.transform);
+        }
+
+        private UpdateBuildingMessage ObtainUpdateBuildingMessagePayload()
+        {
+            ObjectDTO buildingDTO = ObtainBuildingDTO();
+            UpdateBuildingMessage updateBuildingMessage = new()
+            {
+                building = buildingDTO,
+            };
+            return updateBuildingMessage;
+        }
+
+        private ModelInfoMessage ObtainModelInfoMessagePayload()
         {
             ObjectDTO buildingDTO = ObtainBuildingDTO();
             ModelInfoMessage startupMessage = new()
@@ -52,9 +79,14 @@ namespace ReupVirtualTwin.managers
 
         private ObjectDTO ObtainBuildingDTO()
         {
-            GameObject buildingObject = ((IBuildingGetterSetter)setupBuilding).building;
+            GameObject buildingObject = ObtainBuildingObject();
             ObjectDTO buildingDTO = _objectMapper.MapObjectTree(buildingObject);
             return buildingDTO;
+        }
+
+        private GameObject ObtainBuildingObject()
+        {
+            return ((IBuildingGetterSetter)setupBuilding).building;
         }
     }
 }

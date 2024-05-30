@@ -44,7 +44,7 @@ public class ModelInfoManagerTest : MonoBehaviour
    }
 
    [UnityTest]
-   public IEnumerator ShouldObtainTheMessage()
+   public IEnumerator ShouldObtainTheModelInfoMessage()
    {
        WebMessage<ModelInfoMessage> message = ((ModelInfoManager)ModelInfoManagerContainerGameObject.GetComponent<IModelInfoManager>()).ObtainModelInfoMessage();
        Assert.IsNotNull(message);
@@ -52,6 +52,16 @@ public class ModelInfoManagerTest : MonoBehaviour
        Assert.IsNotNull(message.payload);
        Assert.AreEqual(((ModelInfoManager)ModelInfoManagerContainerGameObject.GetComponent<IModelInfoManager>()).buildVersion, message.payload.buildVersion);
        yield return null;
+   }
+
+   [UnityTest]
+   public IEnumerator ShouldObtainTheUpdateBuildingMessage()
+   {
+        WebMessage<UpdateBuildingMessage> message = ((ModelInfoManager)ModelInfoManagerContainerGameObject.GetComponent<IModelInfoManager>()).ObtainUpdateBuildingMessage();
+        Assert.IsNotNull(message);
+        Assert.AreEqual(WebMessageType.updateBuilding, message.type);
+        Assert.IsNotNull(message.payload);
+        yield return null;
    }
 
    [UnityTest]

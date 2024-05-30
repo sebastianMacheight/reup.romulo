@@ -13,6 +13,7 @@ using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.romuloEnvironment;
 using ReupVirtualTwin.dataSchemas;
 using Newtonsoft.Json.Linq;
+using System.Collections;
 
 namespace ReupVirtualTwin.managers
 {
@@ -35,8 +36,8 @@ namespace ReupVirtualTwin.managers
         private IChangeColorManager _changeColorManager;
         public IChangeColorManager changeColorManager { set => _changeColorManager = value; }
 
-        private IInsertObjectsController _insertObjectsManager;
-        public IInsertObjectsController insertObjectsController { set => _insertObjectsManager = value; }
+        private IInsertObjectsController _insertObjectsController;
+        public IInsertObjectsController insertObjectsController { set => _insertObjectsController = value; }
 
         private IWebMessagesSender _webMessageSender;
         public IWebMessagesSender webMessageSender { set { _webMessageSender = value; } }
@@ -103,7 +104,7 @@ namespace ReupVirtualTwin.managers
                     ProcessTranformModeDeactivation();
                     break;
                 case ReupEvent.objectsDeleted:
-                    ProcessDeletedObjects();
+                    StartCoroutine(ProcessDeletedObjects());
                     break;
                 case ReupEvent.objectColorChanged:
                     ProcessObjectColorChanged();
@@ -112,6 +113,7 @@ namespace ReupVirtualTwin.managers
                     throw new ArgumentException($"no implementation without payload for event: {eventName}");
             }
         }
+
         public void Notify<T>(ReupEvent eventName, T payload)
         {
             switch (eventName)
@@ -135,7 +137,7 @@ namespace ReupVirtualTwin.managers
                     {
                         throw new ArgumentException($"Payload must be of type {nameof(InsertedObjectPayload)} for {eventName} events", nameof(payload));
                     }
-                    ProcessInsertedObjectLoaded((InsertedObjectPayload)(object)payload);
+                    StartCoroutine(ProcessInsertedObjectLoaded((InsertedObjectPayload)(object)payload));
                     break;
                 case ReupEvent.insertedObjectStatusUpdate:
                     if (!(payload is float))
@@ -349,7 +351,13 @@ namespace ReupVirtualTwin.managers
             _webMessageSender.SendWebMessage(message);
         }
 
-        private void ProcessDeletedObjects()
+        private void SendUpdatedBuildingMessage()
+        {
+            WebMessage<UpdateBuildingMessage> message = _modelInfoManager.ObtainUpdateBuildingMessage();
+            _webMessageSender.SendWebMessage(message);
+        }
+
+        private IEnumerator ProcessDeletedObjects()
         {
             string webMessageType;
             webMessageType = WebMessageType.deleteObjectsSuccess;
@@ -359,6 +367,8 @@ namespace ReupVirtualTwin.managers
                 type = webMessageType,
             };
             _webMessageSender.SendWebMessage(message);
+            yield return null;
+            SendUpdatedBuildingMessage();
         }
 
         private void ProcessObjectColorChanged()
@@ -370,18 +380,18 @@ namespace ReupVirtualTwin.managers
             _webMessageSender.SendWebMessage(message);
         }
 
-        private void ProcessInsertedObjectLoaded(InsertedObjectPayload insertedObjectPayload)
+        private IEnumerator ProcessInsertedObjectLoaded(InsertedObjectPayload insertedObjectPayload)
         {
             SendInsertedObjectMessage(insertedObjectPayload.loadedObject);
+            _selectedObjectsManager.ClearSelection();
+            yield return null;
+            SendUpdatedBuildingMessage(); 
             if (insertedObjectPayload.selectObjectAfterInsertion)
             {
-                if (insertedObjectPayload.deselectPreviousSelection)
-                {
-                    _selectedObjectsManager.ClearSelection();
-                }
                 _selectedObjectsManager.AddObjectToSelection(insertedObjectPayload.loadedObject);
             }
         }
+
         private void SendInsertedObjectMessage(GameObject obj)
         {
             ObjectDTO objectDTO = _objectMapper.MapObjectToDTO(obj);
@@ -406,7 +416,7 @@ namespace ReupVirtualTwin.managers
                 SendErrorMessage(noInsertObjectIdErrorMessage);
                 return;
             }
-            _insertObjectsManager.InsertObject(parsedPayload);
+            _insertObjectsController.InsertObject(parsedPayload);
         }
 
         private void ProcessLoadStatus(float status)
