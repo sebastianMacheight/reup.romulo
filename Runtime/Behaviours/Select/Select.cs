@@ -3,6 +3,7 @@ using ReupVirtualTwin.helpers;
 using UnityEngine.InputSystem;
 using ReupVirtualTwin.inputs;
 using ReupVirtualTwin.managers;
+using ReupVirtualTwin.helperInterfaces;
 
 namespace ReupVirtualTwin.behaviours
 {

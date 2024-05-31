@@ -12,8 +12,8 @@ namespace ReupVirtualTwin.behaviours
         public ICharacterPositionManager characterPositionManager { set => _characterPositionManager = value; }
         IOnBuildingSetup _setUpBuilding;
         public IOnBuildingSetup setUpBuilding { set => _setUpBuilding = value; }
-        private ISensor _sensor;
-        public ISensor sensor { set => _sensor = value; }
+        private IPointSensor _sensor;
+        public IPointSensor sensor { set => _sensor = value; }
         public void Spawn()
         {
             _setUpBuilding.onBuildingSetUp += this.MoveToInitialHeightCallback;

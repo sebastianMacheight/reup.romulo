@@ -16,8 +16,8 @@ namespace ReupVirtualTwin.behaviours
         private static float CHARACTER_HEIGHT;
         public float characterHeight { set =>  CHARACTER_HEIGHT = value; }
 
-        private ISensor _sensor;
-        public ISensor sensor {  set =>  _sensor = value; }
+        private IPointSensor _sensor;
+        public IPointSensor sensor {  set =>  _sensor = value; }
 
         private void Start()
         {
