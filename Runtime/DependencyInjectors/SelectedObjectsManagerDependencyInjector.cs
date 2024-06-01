@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             SelectedObjectsManager selectedObjectsManager = GetComponent<SelectedObjectsManager>();
             selectedObjectsManager.mediator = mediator.GetComponent<IMediator>();
             selectedObjectsManager.objectWrapper = new ObjectWrapper();
-            Outliner outliner = gameObject.AddComponent<Outliner>();
+            Outliner outliner = new Outliner();
             selectedObjectsManager.highlighter = outliner;
 
             SelectableObjectSelector selector = GetComponent<SelectableObjectSelector>();
