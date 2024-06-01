@@ -7,14 +7,11 @@ namespace ReupVirtualTwin.helpers
     [RequireComponent(typeof(IObjectSelector))]
     public class ObjectSensor : MonoBehaviour, IObjectSensor
     {
-        protected IRayProvider _rayProvider;
-        protected IObjectSelector _objectSelector;
+        public IRayProvider rayProvider { set => _rayProvider = value; get => _rayProvider; }
+        IRayProvider _rayProvider;
 
-        void Awake()
-        {
-            _rayProvider = GetComponent<IRayProvider>();
-            _objectSelector = GetComponent<IObjectSelector>();
-        }
+        public IObjectSelector objectSelector { set => _objectSelector = value; get => _objectSelector; }
+        IObjectSelector _objectSelector;
 
         public GameObject Sense()
         {

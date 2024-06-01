@@ -10,6 +10,7 @@ using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwinTests.behaviours;
+using ReupVirtualTwin.helpers;
 
 
 public class ReupPrefabTest : MonoBehaviour
@@ -87,6 +88,14 @@ public class ReupPrefabTest : MonoBehaviour
     public IEnumerator SelectableObjectHighlighter_should_have_objectHighlighter()
     {
         Assert.IsNotNull(selectableObjectHighlighter.objectHighlighter);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator SelectableObjectHighlighterObjectSensor_should_haveSelectableObjectSelector()
+    {
+        ObjectSensor selectableObjectSensorHighligherObjectSensor = (ObjectSensor) selectableObjectHighlighter.objectSensor;
+        Assert.AreEqual(typeof(SelectableObjectSelector), selectableObjectSensorHighligherObjectSensor.objectSelector.GetType());
         yield return null;
     }
 

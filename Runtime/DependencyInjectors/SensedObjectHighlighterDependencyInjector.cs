@@ -1,20 +1,20 @@
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.helpers;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ReupVirtualTwin.dependencyInjectors
 {
     public class SensedObjectHighlighterDependencyInjector : MonoBehaviour
     {
-        SensedObjectHighlighter sensedObjectHighlighter;
-
         private void Awake()
         {
-            sensedObjectHighlighter = GetComponent<SensedObjectHighlighter>();
-            sensedObjectHighlighter.objectSensor = GetComponent<IObjectSensor>();
+            ObjectSensor objectSensor = GetComponent<ObjectSensor>();
+            objectSensor.rayProvider = GetComponent<IRayProvider>();
+            objectSensor.objectSelector = GetComponent<IObjectSelector>();
+
+            SensedObjectHighlighter sensedObjectHighlighter = GetComponent<SensedObjectHighlighter>();
+            sensedObjectHighlighter.objectSensor = objectSensor;
             sensedObjectHighlighter.objectHighlighter = new Outliner();
         }
     }
