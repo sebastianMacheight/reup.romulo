@@ -8,28 +8,27 @@ namespace Tests.PlayMode.Mocks
 {
     public class ObjectHighlighterSpy : IObjectHighlighter
     {
-        private List<GameObject> highlightedObjects;
+        private GameObject highlightedObject;
         private int highlightCount = 0;
         public ObjectHighlighterSpy()
         {
-            highlightedObjects = new List<GameObject>();
             highlightCount = 0;
         }
         public void HighlightObject(GameObject obj)
         {
             Debug.Log("Highlighting object in spy");
-            highlightedObjects.Add(obj);
+            highlightedObject = obj;
             highlightCount++;
         }
 
         public void UnhighlightObject(GameObject obj)
         {
-            highlightedObjects.Remove(obj);
+            highlightedObject = null;
         }
 
-        public List<GameObject> GetHighlightedObjects()
+        public GameObject GetHighlightedObject()
         {
-            return highlightedObjects;
+            return highlightedObject;
         }
 
         public int GetHighlightCount()

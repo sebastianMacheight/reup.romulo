@@ -53,17 +53,17 @@ namespace ReupVirtualTwinTests.behaviours
         public IEnumerator ShouldNotHighlightObject_if_noObjectIsSensed()
         {
             yield return null;
-            Assert.AreEqual(0, objectHighlighter.GetHighlightedObjects().Count);
+            Assert.IsNull(objectHighlighter.GetHighlightedObject());
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator ShouldHighlightObject_if_ObjectIsSensed()
         {
-            Assert.AreEqual(0, objectHighlighter.GetHighlightedObjects().Count);
+            Assert.IsNull(objectHighlighter.GetHighlightedObject());
             objectSensor.sensedObject = testObject;
             yield return null;
-            Assert.AreEqual(1, objectHighlighter.GetHighlightedObjects().Count);
+            Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
             yield return null;
         }
 
@@ -72,11 +72,25 @@ namespace ReupVirtualTwinTests.behaviours
         {
             objectSensor.sensedObject = testObject;
             yield return null;
-            Assert.AreEqual(1, objectHighlighter.GetHighlightedObjects().Count);
+            Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
             yield return null;
             yield return null;
             yield return null;
             yield return null;
+            Assert.AreEqual(1, objectHighlighter.GetHighlightCount());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ShouldStopHighlightingObject_when_objectIsNotSensed()
+        {
+            objectSensor.sensedObject = testObject;
+            yield return null;
+            Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
+            yield return null;
+            objectSensor.sensedObject = null;
+            yield return null;
+            Assert.IsNull(objectHighlighter.GetHighlightedObject());
             Assert.AreEqual(1, objectHighlighter.GetHighlightCount());
             yield return null;
         }

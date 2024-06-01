@@ -13,17 +13,23 @@ namespace ReupVirtualTwin.behaviours
         public IObjectHighlighter objectHighlighter { set => _objectHighlighter = value; get => _objectHighlighter; }
         IObjectHighlighter _objectHighlighter;
 
-        private List<GameObject> highlightedObjects = new List<GameObject>();
+        private GameObject highlightedObject;
 
         private void Update()
         {
-            Debug.Log("sensing");
             GameObject sensedObject = _objectSensor.Sense();
-            if (sensedObject != null && !highlightedObjects.Contains(sensedObject))
+            if (sensedObject != highlightedObject)
             {
-                Debug.Log("it was not null");
-                _objectHighlighter.HighlightObject(sensedObject);
-                highlightedObjects.Add(sensedObject);
+                if (highlightedObject != null)
+                {
+                    _objectHighlighter.UnhighlightObject(highlightedObject);
+                    highlightedObject = null;
+                }
+                if (sensedObject != null)
+                {
+                    _objectHighlighter.HighlightObject(sensedObject);
+                    highlightedObject = sensedObject;
+                }
             }
         }
 
