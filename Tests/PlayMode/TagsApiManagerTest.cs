@@ -155,5 +155,15 @@ public class TagsApiManagerTest : MonoBehaviour
         Assert.AreEqual(4, delayTagsWebRequesterSpy.lastPageFetched);
     }
 
+    [Test]
+    public async Task ShouldNotIncreasePageWhenFailingFetch()
+    {
+        FailingTagsWebRequesterSpy failingTagsWebRequesterSpy = new FailingTagsWebRequesterSpy();
+        tagsApiManager.tagsApiConsumer = failingTagsWebRequesterSpy;
+        Assert.AreEqual(0, tagsApiManager.GetCurrentPage());
+        await tagsApiManager.LoadMoreTags();
+        Assert.AreEqual(0, tagsApiManager.GetCurrentPage());
+    }
+
 }
 

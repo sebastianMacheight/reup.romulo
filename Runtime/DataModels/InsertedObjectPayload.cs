@@ -6,6 +6,5 @@ namespace ReupVirtualTwin.dataModels
     {
         public GameObject loadedObject;
         public bool selectObjectAfterInsertion;
-        public bool deselectPreviousSelection;
     }
 }

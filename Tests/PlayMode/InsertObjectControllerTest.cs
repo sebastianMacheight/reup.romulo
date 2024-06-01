@@ -25,6 +25,7 @@ namespace ReupVirtualTwinTests.controllers
         MeshDownloaderSpy meshDownloaderSpy;
         InsertObjectMessagePayload insertObjectMessagePayload;
         InsertObjectController controller;
+        MockModelInfoManager mockModelInfoManager;
         ITagsController tagsReader;
         IIdGetterController idReader;
         Vector3 insertPosition;
@@ -66,6 +67,7 @@ namespace ReupVirtualTwinTests.controllers
         {
             mediatorSpy = new MediatorSpy();
             meshDownloaderSpy = new MeshDownloaderSpy();
+            mockModelInfoManager = new MockModelInfoManager();
             insertObjectMessagePayload = new InsertObjectMessagePayload()
             {
                 objectId = "object-id",
@@ -74,7 +76,7 @@ namespace ReupVirtualTwinTests.controllers
                 deselectPreviousSelection = true,
             };
             insertPosition = new Vector3(1, 2, 3);
-            controller = new InsertObjectController(mediatorSpy, meshDownloaderSpy, insertPosition);
+            controller = new InsertObjectController(mediatorSpy, meshDownloaderSpy, insertPosition, mockModelInfoManager);
             RequesObject(insertObjectMessagePayload);
             tagsReader = new TagsController();
             idReader = new IdController();
@@ -175,7 +177,6 @@ namespace ReupVirtualTwinTests.controllers
                 objectId = "object-id-2",
                 objectUrl = "object-url-2",
                 selectObjectAfterInsertion = false,
-                deselectPreviousSelection = false,
             };
             RequesObject(anotherInsertMessagePayload);
             yield return new WaitUntil(() => mediatorSpy.allRequestedObjectsAreLoaded);
@@ -185,8 +186,14 @@ namespace ReupVirtualTwinTests.controllers
 
             Assert.AreEqual(meshDownloaderSpy.loadedObjects[0], firstObjectPayload.loadedObject);
             Assert.AreEqual(meshDownloaderSpy.loadedObjects[1], secondObjectPayload.loadedObject);
-            Assert.AreEqual(insertObjectMessagePayload.deselectPreviousSelection, firstObjectPayload.deselectPreviousSelection);
-            Assert.AreEqual(anotherInsertMessagePayload.deselectPreviousSelection, secondObjectPayload.deselectPreviousSelection);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ShouldInsertObjectToBuilding()
+        {
+            yield return new WaitUntil(() => mediatorSpy.allRequestedObjectsAreLoaded);
+            Assert.AreEqual(1, mockModelInfoManager.objectsAddedToBuilding);
             yield return null;
         }
 
@@ -301,6 +308,30 @@ namespace ReupVirtualTwinTests.controllers
             {
                 public GameObject RootGameObject;
             }
+        }
+        private class MockModelInfoManager : IModelInfoManager
+        {
+            public int objectsAddedToBuilding = 0;
+            public MockModelInfoManager()
+            {
+                objectsAddedToBuilding = 0;
+            }
+
+            public WebMessage<ModelInfoMessage> ObtainModelInfoMessage()
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public WebMessage<UpdateBuildingMessage> ObtainUpdateBuildingMessage()
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void InsertObjectToBuilding(GameObject obj)
+            {
+                objectsAddedToBuilding += 1;
+            }
+
         }
     }
 }

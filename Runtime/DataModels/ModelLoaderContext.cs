@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.dataModels
 {
-    public class ModelLoaderContext : MonoBehaviour
+    public class ModelLoaderContext
     {
         public GameObject loadedObject;
     }

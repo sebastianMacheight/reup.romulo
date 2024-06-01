@@ -67,7 +67,12 @@ namespace ReupVirtualTwin.controllers
 
         public string GetIdFromObject(GameObject obj)
         {
-            return obj.GetComponent<IUniqueIdentifier>().getId();
+            IUniqueIdentifier uniqueIdentifier = obj.GetComponent<IUniqueIdentifier>();
+            if (uniqueIdentifier == null)
+            {
+                throw new System.Exception($"Object {obj.name} does not have an id");
+            }
+            return uniqueIdentifier.getId();
         }
 
         public bool HasRepeatedIds(GameObject tree)

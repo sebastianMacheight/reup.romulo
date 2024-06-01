@@ -14,15 +14,17 @@ namespace ReupVirtualTwin.controllers
     public class InsertObjectRequest
     {
         private IMediator mediator;
+        private IModelInfoManager modelInfoManager;
         private InsertObjectMessagePayload insertObjectMessagePayload;
         private ITagSystemController tagSystemController = new TagSystemController();
         private IIdAssignerController idAssigner = new IdController();
         private IColliderAdder colliderAdder = new  ColliderAdder();
         private Vector3 insertPosition;
-        public InsertObjectRequest(IMediator mediator, IMeshDownloader meshDownloader, InsertObjectMessagePayload messagePayload, Vector3 insertPosition)
+        public InsertObjectRequest(IMediator mediator, IMeshDownloader meshDownloader, InsertObjectMessagePayload messagePayload, Vector3 insertPosition, IModelInfoManager modelInfoManager)
         {
             this.insertPosition = insertPosition;
             this.mediator = mediator;
+            this.modelInfoManager = modelInfoManager;
             insertObjectMessagePayload = messagePayload;
             meshDownloader.downloadMesh(
                 messagePayload.objectUrl,
@@ -44,6 +46,7 @@ namespace ReupVirtualTwin.controllers
             SetLoadPosition(loadedObj);
             AddColliders(loadedObj);
             AssignIds(loadedObj);
+            InsertToBuilding(loadedObj);
             loadedObj.SetActive(false);
         }
         private void AddTags(GameObject obj)
@@ -64,6 +67,11 @@ namespace ReupVirtualTwin.controllers
             idAssigner.AssignIdsToTree(obj, insertObjectMessagePayload.objectId);
         }
 
+        private void InsertToBuilding(GameObject obj)
+        {
+            modelInfoManager.InsertObjectToBuilding(obj);
+        }
+
         private void OnMaterialsLoad(ModelLoaderContext assetLoaderContext)
         {
             var obj = assetLoaderContext.loadedObject;
@@ -72,7 +80,6 @@ namespace ReupVirtualTwin.controllers
             {
                 loadedObject = obj,
                 selectObjectAfterInsertion = insertObjectMessagePayload.selectObjectAfterInsertion,
-                deselectPreviousSelection = insertObjectMessagePayload.deselectPreviousSelection,
             };
             mediator.Notify(ReupEvent.insertedObjectLoaded, insertedObjectPayload);
         }
