@@ -63,9 +63,23 @@ namespace ReupVirtualTwinTests.behaviours
             Assert.AreEqual(0, objectHighlighter.GetHighlightedObjects().Count);
             objectSensor.sensedObject = testObject;
             yield return null;
-            Debug.Log("asserting");
             Assert.AreEqual(1, objectHighlighter.GetHighlightedObjects().Count);
             yield return null;
         }
+
+        [UnityTest]
+        public IEnumerator ShouldRequestHighlightSameObject_only_once()
+        {
+            objectSensor.sensedObject = testObject;
+            yield return null;
+            Assert.AreEqual(1, objectHighlighter.GetHighlightedObjects().Count);
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            Assert.AreEqual(1, objectHighlighter.GetHighlightCount());
+            yield return null;
+        }
+
     }
 }
