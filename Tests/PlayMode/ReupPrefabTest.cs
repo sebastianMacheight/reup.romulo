@@ -12,7 +12,6 @@ using ReupVirtualTwin.behaviours;
 using ReupVirtualTwinTests.behaviours;
 using ReupVirtualTwin.helpers;
 
-
 public class ReupPrefabTest : MonoBehaviour
 {
     GameObject reupPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Reup.prefab");
@@ -20,9 +19,11 @@ public class ReupPrefabTest : MonoBehaviour
     GameObject building;
 
     IObjectRegistry objectRegistry;
-    EditionMediator editionMediator;
     IBuildingGetterSetter setupBuilding;
+
+    EditionMediator editionMediator;
     SensedObjectHighlighter selectableObjectHighlighter;
+    EditModeManager editModeManager;
 
     [UnitySetUp]
     public IEnumerator SetUp()
@@ -37,11 +38,13 @@ public class ReupPrefabTest : MonoBehaviour
         reupGameObject = (GameObject)PrefabUtility.InstantiatePrefab(reupPrefab);
         GameObject baseGlobalScriptGameObject = reupGameObject.transform.Find("BaseGlobalScripts").gameObject;
         objectRegistry = baseGlobalScriptGameObject.transform.Find("ObjectRegistry").GetComponent<IObjectRegistry>();
-        editionMediator = baseGlobalScriptGameObject.transform.Find("EditionMediator").GetComponent<EditionMediator>();
         setupBuilding = baseGlobalScriptGameObject.transform.Find("SetupBuilding").GetComponent<IBuildingGetterSetter>();
 
-        GameObject character = reupGameObject.transform.Find("Character").gameObject;
+        GameObject editionMediatorGameObject = baseGlobalScriptGameObject.transform.Find("EditionMediator").gameObject;
+        editionMediator = editionMediatorGameObject.GetComponent<EditionMediator>();
+        editModeManager = editionMediatorGameObject.transform.Find("EditModeManager").GetComponent<EditModeManager>();
 
+        GameObject character = reupGameObject.transform.Find("Character").gameObject;
         selectableObjectHighlighter = character.transform
             .Find("Behaviours")
             .Find("HoverOverSelectablesObjects")
@@ -96,6 +99,20 @@ public class ReupPrefabTest : MonoBehaviour
     {
         ObjectSensor selectableObjectSensorHighligherObjectSensor = (ObjectSensor) selectableObjectHighlighter.objectSensor;
         Assert.AreEqual(typeof(SelectableObjectSelector), selectableObjectSensorHighligherObjectSensor.objectSelector.GetType());
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator SelectableObjectsHighlighter_should_beEnabled_onlyWhen_EditModeIsEnabled()
+    {
+        Assert.IsFalse(selectableObjectHighlighter.enableHighlighting);
+
+        editModeManager.editMode = true;
+        yield return null;
+        Assert.IsTrue(selectableObjectHighlighter.enableHighlighting);
+        editModeManager.editMode = false;
+        yield return null;
+        Assert.IsFalse(selectableObjectHighlighter.enableHighlighting);
         yield return null;
     }
 
