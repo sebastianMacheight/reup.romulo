@@ -4,36 +4,54 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEditor;
 
-using ReupVirtualTwin.dependencyInjectors;
 using ReupVirtualTwin.managers;
+using ReupVirtualTwin.models;
+using ReupVirtualTwin.behaviourInterfaces;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
-    private GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/ScriptHolders/Character.prefab");
-    private GameObject character;
-    private CharacterPositionManager posManager;
-    private GameObject setupBuildingGameObject;
+
+    GameObject reupPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Reup.prefab");
+    GameObject reupGameObject;
+    GameObject building;
+    GameObject character;
+    IBuildingGetterSetter setupBuilding;
+
+    CharacterPositionManager posManager;
 
     float HEIGHT_CLOSENESS_THRESHOLD = 0.02f;
     float MOVEMENT_CLOSENESS_THRESHOLD = 0.02f;
     float WALK_CLOSENESS_THRESHOLD = 0.5f;
 
-    [SetUp]
-    public void SetUp()
+    [UnitySetUp]
+    public IEnumerator SetUp()
     {
-        setupBuildingGameObject = StubOnSetupBuildingCreator.CreateImmediateOnSetupBuilding();
-        character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
-        DestroyGameRelatedDependecyInjectors();
-        character.transform.position = Vector3.zero;
+        CreateComponents();
+        CreateBuilding();
+        yield return null;
+    }
+
+    private void CreateComponents()
+    {
+        reupGameObject = (GameObject)PrefabUtility.InstantiatePrefab(reupPrefab);
+        GameObject baseGlobalScriptGameObject = reupGameObject.transform.Find("BaseGlobalScripts").gameObject;
+        setupBuilding = baseGlobalScriptGameObject.transform.Find("SetupBuilding").GetComponent<IBuildingGetterSetter>();
+        character = reupGameObject.transform.Find("Character").gameObject;
         posManager = character.GetComponent<CharacterPositionManager>();
-        posManager.maxStepHeight = 0.25f;
+    }
+
+    private void CreateBuilding()
+    {
+        building = new GameObject("building");
+        building.AddComponent<RegisteredIdentifier>().AssignId("building-id");
+        setupBuilding.building = building;
     }
 
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(character);
-        Destroy(setupBuildingGameObject);
+        Destroy(reupGameObject);
+        Destroy(building);
         yield return null;
     }
 
@@ -129,13 +147,6 @@ public class CharacterPositionManagerTest : MonoBehaviour
         var expectedPosition = new Vector3(sqrt6, sqrt6, 2 * sqrt6) / 3;
         Assert.LessOrEqual(Vector3.Distance(character.transform.position, expectedPosition), 1E-5);
         yield return null;
-    }
-    private void DestroyGameRelatedDependecyInjectors()
-    {
-        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
-        var initialSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
-        Destroy(movementSelectPosDependencyInjector);
-        Destroy(initialSpawnDependencyInjector);
     }
 }
 

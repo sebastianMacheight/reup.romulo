@@ -9,7 +9,6 @@ using ReupVirtualTwin.models;
 using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.behaviours;
-using ReupVirtualTwinTests.behaviours;
 using ReupVirtualTwin.helpers;
 
 public class ReupPrefabTest : MonoBehaviour
@@ -17,6 +16,7 @@ public class ReupPrefabTest : MonoBehaviour
     GameObject reupPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Reup.prefab");
     GameObject reupGameObject;
     GameObject building;
+    GameObject character;
 
     IObjectRegistry objectRegistry;
     IBuildingGetterSetter setupBuilding;
@@ -24,6 +24,7 @@ public class ReupPrefabTest : MonoBehaviour
     EditionMediator editionMediator;
     SensedObjectHighlighter selectableObjectHighlighter;
     EditModeManager editModeManager;
+
 
     [UnitySetUp]
     public IEnumerator SetUp()
@@ -36,6 +37,7 @@ public class ReupPrefabTest : MonoBehaviour
     private void CreateComponents()
     {
         reupGameObject = (GameObject)PrefabUtility.InstantiatePrefab(reupPrefab);
+
         GameObject baseGlobalScriptGameObject = reupGameObject.transform.Find("BaseGlobalScripts").gameObject;
         objectRegistry = baseGlobalScriptGameObject.transform.Find("ObjectRegistry").GetComponent<IObjectRegistry>();
         setupBuilding = baseGlobalScriptGameObject.transform.Find("SetupBuilding").GetComponent<IBuildingGetterSetter>();
@@ -44,7 +46,7 @@ public class ReupPrefabTest : MonoBehaviour
         editionMediator = editionMediatorGameObject.GetComponent<EditionMediator>();
         editModeManager = editionMediatorGameObject.transform.Find("EditModeManager").GetComponent<EditModeManager>();
 
-        GameObject character = reupGameObject.transform.Find("Character").gameObject;
+        character = reupGameObject.transform.Find("Character").gameObject;
         selectableObjectHighlighter = character.transform
             .Find("Behaviours")
             .Find("HoverOverSelectablesObjects")
@@ -91,6 +93,13 @@ public class ReupPrefabTest : MonoBehaviour
     public IEnumerator SelectableObjectHighlighter_should_have_objectHighlighter()
     {
         Assert.IsNotNull(selectableObjectHighlighter.objectHighlighter);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator SelectableObjectHighlighter_should_have_selectedObjectsManager()
+    {
+        Assert.IsNotNull(selectableObjectHighlighter.selectedObjectsManager);
         yield return null;
     }
 

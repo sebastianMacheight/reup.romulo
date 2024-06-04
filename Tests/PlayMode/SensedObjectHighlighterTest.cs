@@ -7,6 +7,7 @@ using ReupVirtualTwin.helperInterfaces;
 using Tests.PlayMode.Mocks;
 using ReupVirtualTwin.behaviours;
 using UnityEngine.TestTools;
+using ReupVirtualTwin.managerInterfaces;
 
 namespace ReupVirtualTwinTests.behaviours
 {
@@ -17,6 +18,16 @@ namespace ReupVirtualTwinTests.behaviours
         SensedObjectHighlighter sensedObjectHighlighter;
         ObjectSensorSpy objectSensor;
         ObjectHighlighterSpy objectHighlighter;
+        SelectedObjectsManagerSpy isObjectPartOfSelection;
+
+        class SelectedObjectsManagerSpy : IIsObjectPartOfSelection
+        {
+            public bool isObjectPartOfSelection = false;
+            public bool IsObjectPartOfSelection(GameObject obj)
+            {
+                return isObjectPartOfSelection;
+            }
+        }
 
         class ObjectSensorSpy : MonoBehaviour, IObjectSensor
         {
@@ -39,6 +50,9 @@ namespace ReupVirtualTwinTests.behaviours
 
             objectHighlighter = new ObjectHighlighterSpy();
             sensedObjectHighlighter.objectHighlighter = objectHighlighter;
+
+            isObjectPartOfSelection = new SelectedObjectsManagerSpy();
+            sensedObjectHighlighter.selectedObjectsManager = isObjectPartOfSelection;
             yield return null;
         }
         [UnityTearDown]
@@ -60,6 +74,7 @@ namespace ReupVirtualTwinTests.behaviours
         [UnityTest]
         public IEnumerator ShouldHighlightObject_if_ObjectIsSensed()
         {
+            sensedObjectHighlighter.enableHighlighting = true;
             Assert.IsNull(objectHighlighter.GetHighlightedObject());
             objectSensor.sensedObject = testObject;
             yield return null;
@@ -70,6 +85,7 @@ namespace ReupVirtualTwinTests.behaviours
         [UnityTest]
         public IEnumerator ShouldRequestHighlightSameObject_only_once()
         {
+            sensedObjectHighlighter.enableHighlighting = true;
             objectSensor.sensedObject = testObject;
             yield return null;
             Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
@@ -84,6 +100,7 @@ namespace ReupVirtualTwinTests.behaviours
         [UnityTest]
         public IEnumerator ShouldStopHighlightingObject_when_objectIsNotSensed()
         {
+            sensedObjectHighlighter.enableHighlighting = true;
             objectSensor.sensedObject = testObject;
             yield return null;
             Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
@@ -109,6 +126,7 @@ namespace ReupVirtualTwinTests.behaviours
         [UnityTest]
         public IEnumerator ShouldStopHighlightingObject_when_switchIsTurnedOff()
         {
+            sensedObjectHighlighter.enableHighlighting = true;
             objectSensor.sensedObject = testObject;
             yield return null;
             Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
@@ -134,6 +152,18 @@ namespace ReupVirtualTwinTests.behaviours
             yield return null;
             Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
             Assert.AreEqual(1, objectHighlighter.GetHighlightCount());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ShouldNotHighlightObject_if_objectIsPartOfSelection()
+        {
+            sensedObjectHighlighter.enableHighlighting = true;
+            isObjectPartOfSelection.isObjectPartOfSelection = true;
+            objectSensor.sensedObject = testObject;
+            yield return null;
+            Assert.IsNull(objectHighlighter.GetHighlightedObject());
+            Assert.AreEqual(0, objectHighlighter.GetHighlightCount());
             yield return null;
         }
 

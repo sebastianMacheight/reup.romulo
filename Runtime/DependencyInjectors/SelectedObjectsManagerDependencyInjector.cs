@@ -16,7 +16,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             SelectedObjectsManager selectedObjectsManager = GetComponent<SelectedObjectsManager>();
             selectedObjectsManager.mediator = mediator.GetComponent<IMediator>();
             selectedObjectsManager.objectWrapper = new ObjectWrapper();
-            Outliner outliner = new Outliner();
+            Outliner outliner = new Outliner(Color.yellow, 5.0f);
             selectedObjectsManager.highlighter = outliner;
 
             SelectableObjectSelector selector = GetComponent<SelectableObjectSelector>();

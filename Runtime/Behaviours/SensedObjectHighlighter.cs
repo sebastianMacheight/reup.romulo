@@ -1,4 +1,5 @@
 using ReupVirtualTwin.helperInterfaces;
+using ReupVirtualTwin.managerInterfaces;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +8,21 @@ namespace ReupVirtualTwin.behaviours
 {
     public class SensedObjectHighlighter : MonoBehaviour
     {
-        public bool enableHighlighting = true;
+        [HideInInspector]
+        public bool enableHighlighting { set => _enableHighlighting = value; get => _enableHighlighting; }
+        private bool _enableHighlighting;
         public IObjectSensor objectSensor { set => _objectSensor = value; get => _objectSensor; }
         IObjectSensor _objectSensor;
 
         public IObjectHighlighter objectHighlighter { set => _objectHighlighter = value; get => _objectHighlighter; }
         IObjectHighlighter _objectHighlighter;
+
+        public IIsObjectPartOfSelection selectedObjectsManager
+        {
+            set => _selectedObjectsManager = value;
+            get => _selectedObjectsManager;
+        }
+        IIsObjectPartOfSelection _selectedObjectsManager;
 
         private GameObject highlightedObject;
 
@@ -35,7 +45,7 @@ namespace ReupVirtualTwin.behaviours
                     _objectHighlighter.UnhighlightObject(highlightedObject);
                     highlightedObject = null;
                 }
-                if (sensedObject != null)
+                if (sensedObject != null && !_selectedObjectsManager.IsObjectPartOfSelection(sensedObject))
                 {
                     _objectHighlighter.HighlightObject(sensedObject);
                     highlightedObject = sensedObject;

@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: 1281623039952056728}
   - component: {fileID: 6848725594558035825}
   - component: {fileID: 589564064158956272}
+  - component: {fileID: 2951535440952928143}
   m_Layer: 7
   m_Name: HoverOverSelectablesObjects
   m_TagString: Untagged
@@ -312,6 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db3466126358da44d9c6fac0264e332e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableHighlighting: 1
 --- !u!114 &589564064158956272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +324,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50e71ef445a50ad48969053210d6bb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2951535440952928143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135168503502123684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac29836f39176ec45af0e614a7ba33b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &151350736762601885

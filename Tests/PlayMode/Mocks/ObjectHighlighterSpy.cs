@@ -16,7 +16,6 @@ namespace Tests.PlayMode.Mocks
         }
         public void HighlightObject(GameObject obj)
         {
-            Debug.Log("Highlighting object in spy");
             highlightedObject = obj;
             highlightCount++;
         }
@@ -36,5 +35,10 @@ namespace Tests.PlayMode.Mocks
             return highlightCount;
         }
 
+        public bool HighlightObjectIfNotHighlighted(GameObject obj)
+        {
+            HighlightObject(obj);
+            return true;
+        }
     }
 }
