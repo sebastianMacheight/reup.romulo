@@ -2,20 +2,13 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEditor;
 
 using ReupVirtualTwin.managers;
-using ReupVirtualTwin.models;
-using ReupVirtualTwin.behaviourInterfaces;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
-
-    GameObject reupPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Reup.prefab");
-    GameObject reupGameObject;
-    GameObject building;
+    ReupPrefabInstantiator.SceneObjects sceneObjects;
     GameObject character;
-    IBuildingGetterSetter setupBuilding;
 
     CharacterPositionManager posManager;
 
@@ -26,32 +19,16 @@ public class CharacterPositionManagerTest : MonoBehaviour
     [UnitySetUp]
     public IEnumerator SetUp()
     {
-        CreateComponents();
-        CreateBuilding();
-        yield return null;
-    }
-
-    private void CreateComponents()
-    {
-        reupGameObject = (GameObject)PrefabUtility.InstantiatePrefab(reupPrefab);
-        GameObject baseGlobalScriptGameObject = reupGameObject.transform.Find("BaseGlobalScripts").gameObject;
-        setupBuilding = baseGlobalScriptGameObject.transform.Find("SetupBuilding").GetComponent<IBuildingGetterSetter>();
-        character = reupGameObject.transform.Find("Character").gameObject;
+        sceneObjects = ReupPrefabInstantiator.InstantiateScene();
+        character = sceneObjects.character;
         posManager = character.GetComponent<CharacterPositionManager>();
-    }
-
-    private void CreateBuilding()
-    {
-        building = new GameObject("building");
-        building.AddComponent<RegisteredIdentifier>().AssignId("building-id");
-        setupBuilding.building = building;
+        yield return null;
     }
 
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(reupGameObject);
-        Destroy(building);
+        ReupPrefabInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 

@@ -4,25 +4,23 @@ using UnityEngine.TestTools;
 using UnityEditor;
 using System.Collections;
 
-using ReupVirtualTwin.dependencyInjectors;
 using ReupVirtualTwin.managers;
 
 public class CollisionDetectorTest : MonoBehaviour
 {
-    GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/ScriptHolders/Character.prefab");
-    GameObject cubePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/Cube.prefab");
+    ReupPrefabInstantiator.SceneObjects sceneObjects;
     GameObject character;
+
+    CharacterPositionManager posManager;
+    GameObject cubePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/Cube.prefab");
     GameObject widePlatform;
     GameObject wall;
-    CharacterPositionManager posManager;
-    private GameObject setupBuildingGameObject;
 
     [SetUp]
     public void SetUp()
     {
-        setupBuildingGameObject = StubOnSetupBuildingCreator.CreateImmediateOnSetupBuilding();
-        character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
-        DestroyGameRelatedDependecyInjectors();
+        sceneObjects = ReupPrefabInstantiator.InstantiateScene();
+        character = sceneObjects.character;
         posManager = character.GetComponent<CharacterPositionManager>();
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(cubePrefab);
         SetPlatform();
@@ -31,9 +29,9 @@ public class CollisionDetectorTest : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(character);
         Destroy(widePlatform);
-        Destroy(setupBuildingGameObject);
+        Destroy(wall);
+        ReupPrefabInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 
@@ -63,13 +61,5 @@ public class CollisionDetectorTest : MonoBehaviour
     {
         wall.transform.localScale = new Vector3(10, 10, 0.1f);
         wall.transform.position = new Vector3(0, 0, 2.05f);
-    }
-    private void DestroyGameRelatedDependecyInjectors()
-    {
-        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
-        Destroy(movementSelectPosDependencyInjector);
-        var initialSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
-        Destroy(initialSpawnDependencyInjector);
-
     }
 }

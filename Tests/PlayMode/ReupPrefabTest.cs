@@ -2,24 +2,18 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEditor;
 
 using ReupVirtualTwin.managers;
-using ReupVirtualTwin.models;
 using ReupVirtualTwin.modelInterfaces;
-using ReupVirtualTwin.behaviourInterfaces;
 using ReupVirtualTwin.behaviours;
 using ReupVirtualTwin.helpers;
 
 public class ReupPrefabTest : MonoBehaviour
 {
-    GameObject reupPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/Quickstart/Reup.prefab");
-    GameObject reupGameObject;
-    GameObject building;
+    ReupPrefabInstantiator.SceneObjects sceneObjects;
     GameObject character;
 
     IObjectRegistry objectRegistry;
-    IBuildingGetterSetter setupBuilding;
 
     EditionMediator editionMediator;
     SensedObjectHighlighter selectableObjectHighlighter;
@@ -30,41 +24,30 @@ public class ReupPrefabTest : MonoBehaviour
     public IEnumerator SetUp()
     {
         CreateComponents();
-        CreateBuilding();
         yield return null;
     }
 
     private void CreateComponents()
     {
-        reupGameObject = (GameObject)PrefabUtility.InstantiatePrefab(reupPrefab);
-
-        GameObject baseGlobalScriptGameObject = reupGameObject.transform.Find("BaseGlobalScripts").gameObject;
+        sceneObjects = ReupPrefabInstantiator.InstantiateScene();
+        GameObject baseGlobalScriptGameObject = sceneObjects.baseGlobalScriptGameObject;
         objectRegistry = baseGlobalScriptGameObject.transform.Find("ObjectRegistry").GetComponent<IObjectRegistry>();
-        setupBuilding = baseGlobalScriptGameObject.transform.Find("SetupBuilding").GetComponent<IBuildingGetterSetter>();
 
         GameObject editionMediatorGameObject = baseGlobalScriptGameObject.transform.Find("EditionMediator").gameObject;
         editionMediator = editionMediatorGameObject.GetComponent<EditionMediator>();
         editModeManager = editionMediatorGameObject.transform.Find("EditModeManager").GetComponent<EditModeManager>();
 
-        character = reupGameObject.transform.Find("Character").gameObject;
+        character = sceneObjects.character;
         selectableObjectHighlighter = character.transform
             .Find("Behaviours")
             .Find("HoverOverSelectablesObjects")
             .gameObject.GetComponent<SensedObjectHighlighter>();
     }
 
-    private void CreateBuilding()
-    {
-        building = new GameObject("building");
-        building.AddComponent<RegisteredIdentifier>().AssignId("building-id");
-        setupBuilding.building = building;
-    }
-
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(reupGameObject);
-        Destroy(building);
+        ReupPrefabInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 
