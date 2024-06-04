@@ -35,7 +35,9 @@ namespace ReupVirtualTwinTests.helpers
             sensorGameObject = new GameObject("sensorGameObject");
             rayProvider = sensorGameObject.AddComponent<RayProviderMock>();
             objectSelector = sensorGameObject.AddComponent<ObjectSelectorMock>();
-            objectSensor = sensorGameObject.AddComponent<ObjectSensor>();
+            objectSensor = new ObjectSensor();
+            objectSensor.rayProvider = rayProvider;
+            objectSensor.objectSelector = objectSelector;
         }
         [TearDown]
         public void TearDown()

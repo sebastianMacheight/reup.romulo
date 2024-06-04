@@ -1,4 +1,5 @@
 using ReupVirtualTwin.behaviours;
+using ReupVirtualTwin.controllers;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.helpers;
 using UnityEngine;
@@ -9,9 +10,11 @@ namespace ReupVirtualTwin.dependencyInjectors
     {
         private void Awake()
         {
-            ObjectSensor objectSensor = GetComponent<ObjectSensor>();
+            ObjectSensor objectSensor = new ObjectSensor();
             objectSensor.rayProvider = GetComponent<IRayProvider>();
-            objectSensor.objectSelector = GetComponent<IObjectSelector>();
+            SelectableObjectSelector selector = GetComponent<SelectableObjectSelector>();
+            selector.tagsController = new TagsController();
+            objectSensor.objectSelector = selector;
 
             SensedObjectHighlighter sensedObjectHighlighter = GetComponent<SensedObjectHighlighter>();
             sensedObjectHighlighter.objectSensor = objectSensor;

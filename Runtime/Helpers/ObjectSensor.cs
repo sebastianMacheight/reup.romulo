@@ -3,9 +3,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
 {
-    [RequireComponent(typeof(IRayProvider))]
-    [RequireComponent(typeof(IObjectSelector))]
-    public class ObjectSensor : MonoBehaviour, IObjectSensor
+    public class ObjectSensor : IObjectSensor
     {
         public IRayProvider rayProvider { set => _rayProvider = value; get => _rayProvider; }
         IRayProvider _rayProvider;
