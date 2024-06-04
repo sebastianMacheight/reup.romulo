@@ -7,7 +7,7 @@ using ReupVirtualTwin.managers;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
-    ReupPrefabInstantiator.SceneObjects sceneObjects;
+    ReupSceneInstantiator.SceneObjects sceneObjects;
     GameObject character;
 
     CharacterPositionManager posManager;
@@ -19,7 +19,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
     [UnitySetUp]
     public IEnumerator SetUp()
     {
-        sceneObjects = ReupPrefabInstantiator.InstantiateScene();
+        sceneObjects = ReupSceneInstantiator.InstantiateScene();
         character = sceneObjects.character;
         posManager = character.GetComponent<CharacterPositionManager>();
         yield return null;
@@ -28,7 +28,7 @@ public class CharacterPositionManagerTest : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        ReupPrefabInstantiator.DestroySceneObjects(sceneObjects);
+        ReupSceneInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 

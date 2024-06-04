@@ -8,7 +8,7 @@ using ReupVirtualTwin.managers;
 
 public class CollisionDetectorTest : MonoBehaviour
 {
-    ReupPrefabInstantiator.SceneObjects sceneObjects;
+    ReupSceneInstantiator.SceneObjects sceneObjects;
     GameObject character;
 
     CharacterPositionManager posManager;
@@ -19,7 +19,7 @@ public class CollisionDetectorTest : MonoBehaviour
     [SetUp]
     public void SetUp()
     {
-        sceneObjects = ReupPrefabInstantiator.InstantiateScene();
+        sceneObjects = ReupSceneInstantiator.InstantiateScene();
         character = sceneObjects.character;
         posManager = character.GetComponent<CharacterPositionManager>();
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(cubePrefab);
@@ -31,7 +31,7 @@ public class CollisionDetectorTest : MonoBehaviour
     {
         Destroy(widePlatform);
         Destroy(wall);
-        ReupPrefabInstantiator.DestroySceneObjects(sceneObjects);
+        ReupSceneInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 

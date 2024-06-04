@@ -11,7 +11,7 @@ using ReupVirtualTwin.managerInterfaces;
 
 public class MaintainHeightTest : MonoBehaviour
 {
-    ReupPrefabInstantiator.SceneObjects sceneObjects;
+    ReupSceneInstantiator.SceneObjects sceneObjects;
     GameObject platformPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/Platform.prefab");
     GameObject character;
     GameObject widePlatform;
@@ -21,7 +21,7 @@ public class MaintainHeightTest : MonoBehaviour
     [SetUp]
     public void SetUp()
     {
-        sceneObjects = ReupPrefabInstantiator.InstantiateScene();
+        sceneObjects = ReupSceneInstantiator.InstantiateScene();
         character = sceneObjects.character;
         var posManager = character.GetComponent<ICharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
@@ -33,7 +33,7 @@ public class MaintainHeightTest : MonoBehaviour
     public IEnumerator TearDown()
     {
         Destroy(widePlatform);
-        ReupPrefabInstantiator.DestroySceneObjects(sceneObjects);
+        ReupSceneInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 

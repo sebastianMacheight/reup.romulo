@@ -10,7 +10,7 @@ using ReupVirtualTwin.helpers;
 
 public class ReupPrefabTest : MonoBehaviour
 {
-    ReupPrefabInstantiator.SceneObjects sceneObjects;
+    ReupSceneInstantiator.SceneObjects sceneObjects;
     GameObject character;
 
     IObjectRegistry objectRegistry;
@@ -29,7 +29,7 @@ public class ReupPrefabTest : MonoBehaviour
 
     private void CreateComponents()
     {
-        sceneObjects = ReupPrefabInstantiator.InstantiateScene();
+        sceneObjects = ReupSceneInstantiator.InstantiateScene();
         GameObject baseGlobalScriptGameObject = sceneObjects.baseGlobalScriptGameObject;
         objectRegistry = baseGlobalScriptGameObject.transform.Find("ObjectRegistry").GetComponent<IObjectRegistry>();
 
@@ -47,7 +47,7 @@ public class ReupPrefabTest : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        ReupPrefabInstantiator.DestroySceneObjects(sceneObjects);
+        ReupSceneInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 
