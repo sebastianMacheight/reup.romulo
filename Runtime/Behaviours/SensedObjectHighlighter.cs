@@ -7,6 +7,7 @@ namespace ReupVirtualTwin.behaviours
 {
     public class SensedObjectHighlighter : MonoBehaviour
     {
+        public bool enableHighlighting = true;
         public IObjectSensor objectSensor { set => _objectSensor = value; get => _objectSensor; }
         IObjectSensor _objectSensor;
 
@@ -17,6 +18,15 @@ namespace ReupVirtualTwin.behaviours
 
         private void Update()
         {
+            if (!enableHighlighting)
+            {
+                if (highlightedObject != null)
+                {
+                    _objectHighlighter.UnhighlightObject(highlightedObject);
+                    highlightedObject = null;
+                }
+                return;
+            }
             GameObject sensedObject = _objectSensor.Sense();
             if (sensedObject != highlightedObject)
             {

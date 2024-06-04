@@ -14,7 +14,7 @@ namespace ReupVirtualTwinTests.behaviours
     {
         GameObject sensedObjectHighlighterGameObject;
         GameObject testObject;
-        SensedObjectHighlighter sensedObjectHighter;
+        SensedObjectHighlighter sensedObjectHighlighter;
         ObjectSensorSpy objectSensor;
         ObjectHighlighterSpy objectHighlighter;
 
@@ -32,13 +32,13 @@ namespace ReupVirtualTwinTests.behaviours
         {
             testObject = new GameObject("testObject");
             sensedObjectHighlighterGameObject = new GameObject("sensedObjectHighlighterGameObject");
-            sensedObjectHighter = sensedObjectHighlighterGameObject.AddComponent<SensedObjectHighlighter>();
+            sensedObjectHighlighter = sensedObjectHighlighterGameObject.AddComponent<SensedObjectHighlighter>();
 
             objectSensor = sensedObjectHighlighterGameObject.AddComponent<ObjectSensorSpy>();
-            sensedObjectHighter.objectSensor = objectSensor;
+            sensedObjectHighlighter.objectSensor = objectSensor;
 
             objectHighlighter = new ObjectHighlighterSpy();
-            sensedObjectHighter.objectHighlighter = objectHighlighter;
+            sensedObjectHighlighter.objectHighlighter = objectHighlighter;
             yield return null;
         }
         [UnityTearDown]
@@ -91,6 +91,48 @@ namespace ReupVirtualTwinTests.behaviours
             objectSensor.sensedObject = null;
             yield return null;
             Assert.IsNull(objectHighlighter.GetHighlightedObject());
+            Assert.AreEqual(1, objectHighlighter.GetHighlightCount());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ShouldNotHighlightObject_when_switchIsOff()
+        {
+            sensedObjectHighlighter.enableHighlighting = false;
+            objectSensor.sensedObject = testObject;
+            yield return null;
+            Assert.IsNull(objectHighlighter.GetHighlightedObject());
+            Assert.AreEqual(0, objectHighlighter.GetHighlightCount());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ShouldStopHighlightingObject_when_switchIsTurnedOff()
+        {
+            objectSensor.sensedObject = testObject;
+            yield return null;
+            Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
+            Assert.AreEqual(1, objectHighlighter.GetHighlightCount());
+
+            sensedObjectHighlighter.enableHighlighting = false;
+            yield return null;
+            Assert.IsNull(objectHighlighter.GetHighlightedObject());
+            Assert.AreEqual(1, objectHighlighter.GetHighlightCount());
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ShouldStartHighlightingObject_when_switchIsTurnedOn()
+        {
+            sensedObjectHighlighter.enableHighlighting = false;
+            objectSensor.sensedObject = testObject;
+            yield return null;
+            Assert.IsNull(objectHighlighter.GetHighlightedObject());
+            Assert.AreEqual(0, objectHighlighter.GetHighlightCount());
+
+            sensedObjectHighlighter.enableHighlighting = true;
+            yield return null;
+            Assert.AreEqual(testObject, objectHighlighter.GetHighlightedObject());
             Assert.AreEqual(1, objectHighlighter.GetHighlightCount());
             yield return null;
         }
