@@ -2,26 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
-using System.Linq;
-using System;
 using NUnit.Framework;
 
 using ReupVirtualTwin.models;
+using ReupVirtualTwin.managers;
+using ReupVirtualTwin.enums;
+using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.modelInterfaces;
 using ReupVirtualTwin.helpers;
-using ReupVirtualTwin.managers;
-using ReupVirtualTwin.enums;
-using ReupVirtualTwin.managerInterfaces;
-using ReupVirtualTwin.managers;
-using ReupVirtualTwin.enums;
-using ReupVirtualTwin.managerInterfaces;
-using ReupVirtualTwin.models;
-using ReupVirtualTwin.modelInterfaces;
-using NUnit.Framework;
+using Newtonsoft.Json.Linq;
 
 public class ChangeColorObjectsTest : MonoBehaviour
 {
-    GameObject containerGameObject;
+    ReupSceneInstantiator.SceneObjects sceneObjects;
     ChangeColorManager changeColorManager;
     MockMediator mockMediator;
 
@@ -33,8 +26,8 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [SetUp]
     public void SetUp()
     {
-        containerGameObject = new GameObject("containerGameObject");
-        changeColorManager = containerGameObject.AddComponent<ChangeColorManager>();
+        sceneObjects = ReupSceneInstantiator.InstantiateScene();
+        changeColorManager = sceneObjects.changeColorManager;
         mockMediator = new MockMediator();
         changeColorManager.mediator = mockMediator;
         CreateObjects();
@@ -42,20 +35,58 @@ public class ChangeColorObjectsTest : MonoBehaviour
     [TearDown]
     public void TearDown()
     {
-        Destroy(containerGameObject);
+        ReupSceneInstantiator.DestroySceneObjects(sceneObjects);
         Destroy(meshedParent);
         Destroy(unmeshedParent);
         Destroy(meshedChild);
         Destroy(unmeshedChild);
     }
+    private void CreateObjects()
+    {
+        meshedParent = new GameObject();
+        unmeshedParent = new GameObject();
+        unmeshedChild = new GameObject();
+        meshedChild = new GameObject();
+
+        meshedParent.AddComponent<RegisteredIdentifier>().GenerateId();
+        meshedParent.AddComponent<MeshRenderer>();
+
+        unmeshedParent.AddComponent<RegisteredIdentifier>().GenerateId();
+
+        unmeshedChild.AddComponent<RegisteredIdentifier>().GenerateId();
+        unmeshedChild.transform.parent = meshedParent.transform;
+
+        meshedChild.AddComponent<RegisteredIdentifier>().GenerateId();
+        meshedChild.AddComponent<MeshRenderer>();
+        meshedChild.transform.parent = unmeshedParent.transform;
+    }
+
     public List<string> GetIDsArray(List<GameObject> gameObjects)
     {
         List<string> stringIDs = new List<string>();
         foreach (GameObject obj in gameObjects)
         {
-            stringIDs.Add(obj.GetComponent<UniqueId>().getId());
+            stringIDs.Add(obj.GetComponent<IUniqueIdentifier>().getId());
         }
         return stringIDs;
+    }
+    private class MockMediator : IMediator
+    {
+        public bool deleteModeActive = false;
+        public bool notified = false;
+
+        public void Notify(ReupEvent eventName)
+        {
+            if (eventName == ReupEvent.objectsDeleted)
+            {
+                notified = true;
+            }
+        }
+
+        public void Notify<T>(ReupEvent eventName, T payload)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     [UnityTest]
@@ -81,42 +112,29 @@ public class ChangeColorObjectsTest : MonoBehaviour
         yield return null;
     }
 
-    private class MockMediator : IMediator
+    [UnityTest]
+    public IEnumerator ShouldAddColorMetaDataToObjects()
     {
-        public bool deleteModeActive = false;
-        public bool notified = false;
+        List<GameObject> gameObjects = new() { meshedParent, meshedChild, unmeshedParent, unmeshedChild};
+        changeColorManager.ChangeObjectsColor(gameObjects, Color.blue);
+        yield return null;
 
-        public void Notify(ReupEvent eventName)
-        {
-            if (eventName == ReupEvent.objectsDeleted)
-            {
-                notified = true;
-            }
-        }
+        string blueColorRGBA = ColorUtility.ToHtmlStringRGBA(Color.blue);
+        Assert.AreEqual(blueColorRGBA, ObjectMetaDataUtils.GetObjectColor(meshedParent));
+        Assert.AreEqual(blueColorRGBA, ObjectMetaDataUtils.GetObjectColor(meshedChild));
+        Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedParent));
+        Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedChild));
+        yield return null;
 
-        public void Notify<T>(ReupEvent eventName, T payload)
-        {
-            throw new System.NotImplementedException();
-        }
+        changeColorManager.ChangeObjectsColor(gameObjects, Color.red);
+        yield return null;
+
+        string redColorRGBA = ColorUtility.ToHtmlStringRGBA(Color.red);
+        Assert.AreEqual(redColorRGBA, ObjectMetaDataUtils.GetObjectColor(meshedParent));
+        Assert.AreEqual(redColorRGBA, ObjectMetaDataUtils.GetObjectColor(meshedChild));
+        Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedParent));
+        Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedChild));
+        yield return null;
     }
 
-    private void CreateObjects()
-    {
-        meshedParent = new GameObject();
-        unmeshedParent = new GameObject();
-        unmeshedChild = new GameObject();
-        meshedChild = new GameObject();
-
-        meshedParent.AddComponent<UniqueId>().GenerateId();
-        meshedParent.AddComponent<MeshRenderer>();
-
-        unmeshedParent.AddComponent<UniqueId>().GenerateId();
-
-        unmeshedChild.AddComponent<UniqueId>().GenerateId();
-        unmeshedChild.transform.parent = meshedParent.transform;
-
-        meshedChild.AddComponent<UniqueId>().GenerateId();
-        meshedChild.AddComponent<MeshRenderer>();
-        meshedChild.transform.parent = unmeshedParent.transform;
-    }
 }

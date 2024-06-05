@@ -2,13 +2,14 @@ using ReupVirtualTwin.helpers;
 using UnityEngine;
 using ReupVirtualTwin.modelInterfaces;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace ReupVirtualTwin.models
 {
-    public class RegisteredIdentifier : UniqueId, IObjectMetaData
+    public class RegisteredIdentifier : UniqueId, IObjectMetaDataGetterSetter
     {
-        public Dictionary<string, object> objectMetaData { get => _objectMetaData; set => _objectMetaData = value;}
-        private Dictionary<string, object> _objectMetaData;
+        public JObject objectMetaData { get => _objectMetaData; set => _objectMetaData = value;}
+        private JObject _objectMetaData;
         public string manualId = "";
         IObjectRegistry _objectRegistry;
 
@@ -16,7 +17,6 @@ namespace ReupVirtualTwin.models
         {
             FindObjectRegistry();
             base.Start();
-            _objectMetaData = new Dictionary<string, object>();
         }
         override public string GenerateId()
         {

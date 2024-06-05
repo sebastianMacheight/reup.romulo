@@ -214,8 +214,6 @@ namespace ReupVirtualTwin.managers
             }
         }
 
-
-
         public void SendModelInfoMessage()
         {
             WebMessage<ModelInfoMessage> message = _modelInfoManager.ObtainModelInfoMessage();
