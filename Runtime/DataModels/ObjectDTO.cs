@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 
 namespace ReupVirtualTwin.dataModels
@@ -8,5 +9,6 @@ namespace ReupVirtualTwin.dataModels
         public string id;
         public Tag[] tags;
         public ObjectDTO[] children;
+        public JObject meta_data;
     }
 }

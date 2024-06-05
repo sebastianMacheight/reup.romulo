@@ -33,7 +33,8 @@ namespace ReupVirtualTwin.helpers
             return new ObjectDTO
             {
                 id = _idGetterController.GetIdFromObject(obj),
-                tags = _tagsController.GetTagsFromObject(obj).ToArray()
+                tags = _tagsController.GetTagsFromObject(obj).ToArray(),
+                meta_data = ObjectMetaDataUtils.GetMetaData(obj)
             };
         }
 
