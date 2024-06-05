@@ -42,6 +42,46 @@ public class ModelInfoManagerTest : MonoBehaviour
        buildingGameObject = StubObjectTreeCreator.CreateMockBuilding(BUILDING_CHILDREN_DEPTH);
        fakeSetupBuilding.building = buildingGameObject;
    }
+   private int NumberOfObjectsInTree(ObjectDTO tree)
+   {
+       int count = 1;
+       foreach (ObjectDTO child in tree.children)
+       {
+           count += NumberOfObjectsInTree(child);
+       }
+       return count;
+   }
+
+   private bool CompareObjectDTOs(ObjectDTO expected, ObjectDTO obtained)
+   {
+       if (expected.id != obtained.id)
+       {
+           return false;
+       }
+       if (expected.tags.Length != obtained.tags.Length)
+       {
+           return false;
+       }
+       for (int i = 0; i < expected.tags.Length; i++)
+       {
+           if (expected.tags[i] != obtained.tags[i])
+           {
+               return false;
+           }
+       }
+       if (expected.children.Length != obtained.children.Length)
+       {
+           return false;
+       }
+       for (int i = 0; i < expected.children.Length; i++)
+       {
+           if (!CompareObjectDTOs(expected.children[i], obtained.children[i]))
+           {
+               return false;
+           }
+       }
+       return true;
+   }
 
    [UnityTest]
    public IEnumerator ShouldObtainTheModelInfoMessage()
@@ -87,45 +127,5 @@ public class ModelInfoManagerTest : MonoBehaviour
        yield return null;
    }
 
-   private int NumberOfObjectsInTree(ObjectDTO tree)
-   {
-       int count = 1;
-       foreach (ObjectDTO child in tree.children)
-       {
-           count += NumberOfObjectsInTree(child);
-       }
-       return count;
-   }
-
-   private bool CompareObjectDTOs(ObjectDTO expected, ObjectDTO obtained)
-   {
-       if (expected.id != obtained.id)
-       {
-           return false;
-       }
-       if (expected.tags.Length != obtained.tags.Length)
-       {
-           return false;
-       }
-       for (int i = 0; i < expected.tags.Length; i++)
-       {
-           if (expected.tags[i] != obtained.tags[i])
-           {
-               return false;
-           }
-       }
-       if (expected.children.Length != obtained.children.Length)
-       {
-           return false;
-       }
-       for (int i = 0; i < expected.children.Length; i++)
-       {
-           if (!CompareObjectDTOs(expected.children[i], obtained.children[i]))
-           {
-               return false;
-           }
-       }
-       return true;
-   }
 
 }
