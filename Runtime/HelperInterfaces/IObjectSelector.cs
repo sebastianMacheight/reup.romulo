@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ReupVirtualTwin.helpers
+namespace ReupVirtualTwin.helperInterfaces
 {
     public interface IObjectSelector
     {

@@ -11,6 +11,7 @@ using ReupVirtualTwin.models;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.dataModels;
+using Tests.PlayMode.Mocks;
 
 public class SelectedObjectsManagerTest : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class SelectedObjectsManagerTest : MonoBehaviour
     GameObject testGameObject1;
     SelectedObjectsManager selectedObjectsManager;
     MockMediator mockMediator;
-    MockHighlighter mockHighlighter;
+    ObjectHighlighterSpy mockHighlighter;
     MockObjectWrapper mockObjectWrapper;
 
     [SetUp]
@@ -32,7 +33,7 @@ public class SelectedObjectsManagerTest : MonoBehaviour
         testGameObject1.AddComponent<UniqueId>();
         selectedObjectsManager = containerGameObject.AddComponent<SelectedObjectsManager>();
         mockMediator = new MockMediator();
-        mockHighlighter = new MockHighlighter();
+        mockHighlighter = new ObjectHighlighterSpy();
         mockObjectWrapper = new MockObjectWrapper();
         selectedObjectsManager.mediator = mockMediator;
         selectedObjectsManager.highlighter = mockHighlighter;
@@ -133,16 +134,6 @@ public class SelectedObjectsManagerTest : MonoBehaviour
         }
     }
 
-    private class MockHighlighter : IObjectHighlighter
-    {
-        public void HighlightObject(GameObject obj)
-        {
-        }
-
-        public void UnhighlightObject(GameObject obj)
-        {
-        }
-    }
 
     private class MockObjectWrapper : IObjectWrapper
     {
