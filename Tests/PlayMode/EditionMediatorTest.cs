@@ -321,8 +321,6 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldSetEditModeWhenReceiveRequest()
     {
         string message = JObject.FromObject(new { type = WebMessageType.setEditMode, payload = true }).ToString();
-        Debug.Log("message");
-        Debug.Log(message);
         editionMediator.ReceiveWebMessage(message);
         Assert.AreEqual(mockEditModeManager.editMode, true);
         yield return null;

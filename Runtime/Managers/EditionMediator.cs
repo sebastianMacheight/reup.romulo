@@ -147,7 +147,6 @@ namespace ReupVirtualTwin.managers
                     ProcessLoadStatus((float)(object)payload);
                     break;
                 case ReupEvent.objectMaterialChanged:
-                    Debug.Log("I was notified of material changed");
                     if (RomuloEnvironment.development)
                     {
                         if (!DataValidator.ValidateObjectToSchema(payload, RomuloInternalSchema.materialChangeInfo))
