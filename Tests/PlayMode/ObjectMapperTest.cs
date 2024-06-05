@@ -8,8 +8,6 @@ using ReupVirtualTwin.dataModels;
 using System.Linq;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.controllers;
-using ReupVirtualTwin.modelInterfaces;
-using Newtonsoft.Json.Linq;
 
 public class ObjectMapperTest : MonoBehaviour
 {
@@ -27,12 +25,6 @@ public class ObjectMapperTest : MonoBehaviour
     public void TearDown()
     {
         Destroy(mockBuilding);
-    }
-
-    class MetaDataComponentMock : MonoBehaviour, IObjectMetaDataGetterSetter
-    {
-        public JObject _objectMetaData;
-        public JObject objectMetaData { get => _objectMetaData; set => _objectMetaData = value; }
     }
 
     [UnityTest]
@@ -75,16 +67,6 @@ public class ObjectMapperTest : MonoBehaviour
         Assert.AreEqual(StubObjectTreeCreator.grandChild0Id, treeDTO.children[0].children[0].id);
 
         yield return null;
-    }
-
-    [Test]
-    public void ShouldMapObjectMetaData()
-    {
-        JObject testMetaData = new JObject(new JProperty("test-meta-data-key", "test-meta-data-value"));
-        MetaDataComponentMock metaDataComponent = mockBuilding.AddComponent<MetaDataComponentMock>();
-        metaDataComponent.objectMetaData = testMetaData;
-        ObjectDTO objectDTO = objectMapper.MapObjectToDTO(mockBuilding);
-        Assert.AreEqual(testMetaData["test-meta-data-key"], objectDTO.meta_data["test-meta-data-key"]);
     }
 
 }

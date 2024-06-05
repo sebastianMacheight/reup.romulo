@@ -36,5 +36,8 @@ namespace ReupVirtualTwin.enums
         public const string requestModelInfoSuccess = "[Initial Load Request] Request ModelInfo Success v2";
 
         public const string updateBuilding = "[Update Building] Update Building Success";
+
+        public const string requestSceneState = "[Model Info] Request Scene State";
+        public const string requestSceneStateSuccess = "[Model Info] Request Scene State Success";
     }
 }

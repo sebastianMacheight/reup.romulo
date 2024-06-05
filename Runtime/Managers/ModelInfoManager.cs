@@ -5,6 +5,7 @@ using ReupVirtualTwin.enums;
 using UnityEngine;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.managerInterfaces;
+using Newtonsoft.Json.Linq;
 
 
 namespace ReupVirtualTwin.managers
@@ -26,6 +27,16 @@ namespace ReupVirtualTwin.managers
         private void LookForDependencySingletons()
         {
             setupBuilding = ObjectFinder.FindSetupBuilding()?.GetComponent<IOnBuildingSetup>();
+        }
+
+        public WebMessage<JObject> GetSceneStateMessage()
+        {
+            JObject sceneState = GetSceneState();
+            return new WebMessage<JObject>
+            {
+                type = WebMessageType.requestSceneStateSuccess,
+                payload = sceneState,
+            };
         }
 
         public WebMessage<ModelInfoMessage> ObtainModelInfoMessage()
@@ -87,6 +98,12 @@ namespace ReupVirtualTwin.managers
         private GameObject ObtainBuildingObject()
         {
             return ((IBuildingGetterSetter)setupBuilding).building;
+        }
+
+        private JObject GetSceneState()
+        {
+            GameObject buildingObject = ObtainBuildingObject();
+            return _objectMapper.GetTreeSceneState(buildingObject);
         }
     }
 }

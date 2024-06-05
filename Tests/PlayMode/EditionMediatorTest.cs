@@ -248,6 +248,17 @@ public class EditionMediatorTest : MonoBehaviour
                 tags = new Tag[2]{ new Tag() { id = "tag2"},  new Tag() { id = "tag3"} },
             },
         };
+
+        public JObject GetObjectSceneState(GameObject obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public JObject GetTreeSceneState(GameObject obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public ObjectDTO[] MapObjectsToDTO(List<GameObject> objs)
         {
             return objectDTOs;
