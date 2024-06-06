@@ -578,6 +578,7 @@ public class EditionMediatorTest : MonoBehaviour
             { "type", WebMessageType.changeObjectsMaterial },
             { "payload", new Dictionary<string, object>
                 {
+                    {"material_id", "material-id"},
                     {"material_url", "material-url"},
                     {"object_ids", new string[] { "id-0", "id-1" } },
                 }
@@ -671,6 +672,28 @@ public class EditionMediatorTest : MonoBehaviour
         WebMessage<JObject> sentMessage = (WebMessage<JObject>)mockWebMessageSender.sentMessages[0];
         Assert.AreEqual(WebMessageType.requestSceneStateSuccess, sentMessage.type);
         Assert.IsTrue(JToken.DeepEquals(mockModelInfoManager.GetSceneStateMessage().payload, sentMessage.payload));
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldRejectRequestChangeMaterialMessageWithNoMaterialId()
+    {
+
+        Dictionary<string, object> messageWithNoMaterialId = new Dictionary<string, object>
+        {
+            { "type", WebMessageType.changeObjectsMaterial },
+            { "payload", new Dictionary<string, object>
+                {
+                    {"material_url", "material-url"},
+                    {"object_ids", new string[] { "id-0", "id-1" } },
+                }
+            }
+        };
+        var serializedMessage = JsonConvert.SerializeObject(messageWithNoMaterialId);
+        editionMediator.ReceiveWebMessage(serializedMessage);
+        yield return null;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
+        Assert.AreEqual(WebMessageType.error, sentMessage.type);
         yield return null;
     }
 }
