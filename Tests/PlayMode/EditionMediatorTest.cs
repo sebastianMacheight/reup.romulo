@@ -127,7 +127,7 @@ public class EditionMediatorTest : MonoBehaviour
         }
     }
 
-    private class MockModelInfoManager : IModelInfoManager
+    private class MockModelInfoManager : IModelInfoManager, ISceneStateManager
     {
         public ObjectDTO building;
         public MockModelInfoManager()
@@ -171,6 +171,14 @@ public class EditionMediatorTest : MonoBehaviour
             throw new System.NotImplementedException();
         }
 
+        public WebMessage<JObject> GetSceneStateMessage()
+        {
+            return new WebMessage<JObject>
+            {
+                type = WebMessageType.requestSceneStateSuccess,
+                payload = new JObject(),
+            };
+        }
     }
 
     private class MockWebMessageSender : IWebMessagesSender
@@ -648,5 +656,21 @@ public class EditionMediatorTest : MonoBehaviour
         WebMessage<UpdateBuildingMessage> sentUpdateBuildingMessage = (WebMessage<UpdateBuildingMessage>)mockWebMessageSender.sentMessages[1];
         Assert.AreEqual(WebMessageType.updateBuilding, sentUpdateBuildingMessage.type);
         Assert.AreEqual(mockModelInfoManager.building, sentUpdateBuildingMessage.payload.building);
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendSceneStateMessage_when_requested()
+    {
+        WebMessage<string> sceneStateRequestMessage = new WebMessage<string>()
+        {
+            type = WebMessageType.requestSceneState,
+        };
+        editionMediator.ReceiveWebMessage(JsonConvert.SerializeObject(sceneStateRequestMessage));
+        yield return null;
+
+        WebMessage<JObject> sentMessage = (WebMessage<JObject>)mockWebMessageSender.sentMessages[0];
+        Assert.AreEqual(WebMessageType.requestSceneStateSuccess, sentMessage.type);
+        Assert.IsTrue(JToken.DeepEquals(mockModelInfoManager.GetSceneStateMessage().payload, sentMessage.payload));
+        yield return null;
     }
 }

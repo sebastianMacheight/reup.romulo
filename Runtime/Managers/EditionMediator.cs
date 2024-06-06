@@ -73,6 +73,7 @@ namespace ReupVirtualTwin.managers
             incomingMessageValidator.RegisterMessage(WebMessageType.activateRotationTransform);
             incomingMessageValidator.RegisterMessage(WebMessageType.deactivateTransformMode);
             incomingMessageValidator.RegisterMessage(WebMessageType.requestModelInfo);
+            incomingMessageValidator.RegisterMessage(WebMessageType.requestSceneState);
 
             incomingMessageValidator.RegisterMessage(WebMessageType.setEditMode, DataValidator.boolSchema);
 
@@ -211,7 +212,16 @@ namespace ReupVirtualTwin.managers
                 case WebMessageType.changeObjectsMaterial:
                     _changeMaterialController.ChangeObjectMaterial((JObject)payload);
                     break;
+                case WebMessageType.requestSceneState:
+                    SendSceneStateMessage();
+                    break;
             }
+        }
+
+        public void SendSceneStateMessage()
+        {
+            WebMessage<JObject> sceneStateMessage = ((ISceneStateManager)_modelInfoManager).GetSceneStateMessage();
+            _webMessageSender.SendWebMessage(sceneStateMessage);
         }
 
         public void SendModelInfoMessage()

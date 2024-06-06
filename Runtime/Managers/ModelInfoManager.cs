@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ReupVirtualTwin.managers
 {
-    public class ModelInfoManager: MonoBehaviour, IModelInfoManager
+    public class ModelInfoManager: MonoBehaviour, IModelInfoManager, ISceneStateManager
     {
         public string buildVersion { get => _buildVersion; }
         public IObjectMapper objectMapper { set => _objectMapper = value; }
