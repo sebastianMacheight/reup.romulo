@@ -15,7 +15,7 @@ namespace ReupVirtualTwin.managers
         public string buildVersion { get => _buildVersion; }
         public IObjectMapper objectMapper { set => _objectMapper = value; }
 
-        string _buildVersion = "2024-04-05";
+        string _buildVersion = "2024-06-06";
         IOnBuildingSetup setupBuilding;
         IObjectMapper _objectMapper;
 
