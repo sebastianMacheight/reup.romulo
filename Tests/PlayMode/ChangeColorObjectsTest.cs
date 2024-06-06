@@ -136,5 +136,33 @@ public class ChangeColorObjectsTest : MonoBehaviour
         Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedChild));
         yield return null;
     }
+    void AssignFakeMaterialIdMetaDataToObjects(List<GameObject> objects, string materialId)
+    {
+        for (int i = 0; i < objects.Count; i++)
+        {
+            if (objects[i].GetComponent<MeshRenderer>() != null)
+            {
+                ObjectMetaDataUtils.AssignMaterialIdMetaDataToObject(objects[i], materialId);
+            }
+        }
+    }
+    [UnityTest]
+    public IEnumerator ShouldDeleteMaterialIdMetaData_when_applyingColorMetaData()
+    {
+        List<GameObject> gameObjects = new() { meshedParent, meshedChild, unmeshedParent, unmeshedChild};
+        string fakeMaterialId = "fakeMaterialId";
+        AssignFakeMaterialIdMetaDataToObjects(gameObjects, fakeMaterialId);
+        AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue(gameObjects, "appearance.material_id", fakeMaterialId);
+        changeColorManager.ChangeObjectsColor(gameObjects, Color.blue);
+        yield return null;
+        List<string> objectsMaterialId = ObjectMetaDataUtils.GetStringMetaDataFromObjects(
+            gameObjects, "appearance.material_id");
+        AssertUtils.AssertAllAreNull(objectsMaterialId);
+        AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue(
+            gameObjects,
+            "appearance.color",
+            ColorUtility.ToHtmlStringRGBA(Color.blue));
+        yield return null;
+    }
 
 }

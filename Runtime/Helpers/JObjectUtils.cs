@@ -8,9 +8,10 @@ namespace ReupVirtualTwin.helpers
 {
     public static class JObjectUtils
     {
-        public static JObject SetValueToPath(JObject jObj, List<string> keyPath, object value)
+        public static JObject SetValueToPath(JObject jObj, string valuePath, object value)
         {
-            JObject nestedObject = keyPath.SkipLast(1).Aggregate(jObj, (obj, key) =>
+            List<string> keys = valuePath.Split('.').ToList();
+            JObject nestedObject = keys.SkipLast(1).Aggregate(jObj, (obj, key) =>
             {
                 JObject nestedObject = obj[key] as JObject;
                 if (nestedObject == null)
@@ -21,7 +22,16 @@ namespace ReupVirtualTwin.helpers
                 }
                 return nestedObject;
             });
-            nestedObject[keyPath.Last()] = JToken.FromObject(value);
+            nestedObject[keys.Last()] = JToken.FromObject(value);
+            return jObj;
+        }
+        public static JObject RemoveValueFromPath(JObject jObj, string valuePath)
+        {
+            JToken jValue = jObj.SelectToken(valuePath);
+            if (jValue != null)
+            {
+                jValue.Parent.Remove();
+            }
             return jObj;
         }
     }

@@ -15,6 +15,7 @@ namespace Tests.PlayMode.Mocks
             {
                 GameObject obj = new();
                 obj.AddComponent<UniqueId>().GenerateId();
+                obj.AddComponent<MetaDataComponentMock>();
                 if (i % 2 == 0)
                 {
                     obj.AddComponent<MeshRenderer>();
@@ -50,6 +51,14 @@ namespace Tests.PlayMode.Mocks
         public void RemoveObject(GameObject item)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void DestroyAllObjects()
+        {
+            for(int i = 0; i < objects.Count; i++)
+            {
+                Object.Destroy(objects[i]);
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ using ReupVirtualTwin.enums;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using ReupVirtualTwin.modelInterfaces;
+using Tests.PlayMode.Mocks;
 
 public class ModelInfoManagerTest : MonoBehaviour
 {
@@ -39,11 +40,6 @@ public class ModelInfoManagerTest : MonoBehaviour
         Destroy(setupBuildingGameObject);
         Destroy(buildingGameObject);
         yield return null;
-    }
-    class MetaDataComponentMock : MonoBehaviour, IObjectMetaDataGetterSetter
-    {
-        public JObject _objectMetaData;
-        public JObject objectMetaData { get => _objectMetaData; set => _objectMetaData = value; }
     }
     private void CreateStubSetupBuilding()
     {
