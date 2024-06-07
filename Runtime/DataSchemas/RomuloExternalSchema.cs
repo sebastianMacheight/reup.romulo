@@ -16,5 +16,15 @@ namespace ReupVirtualTwin.dataSchemas
                 }
             }
         };
+
+        public static readonly JObject requestSceneStatePayloadSchema = new JObject
+        {
+            { "type", DataValidator.objectType },
+            { "properties", new JObject
+                {
+                    { "scene_name", DataValidator.stringSchema },
+                }
+            }
+        };
     }
 }

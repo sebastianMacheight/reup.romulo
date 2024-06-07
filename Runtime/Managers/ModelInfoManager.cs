@@ -28,15 +28,10 @@ namespace ReupVirtualTwin.managers
         {
             setupBuilding = ObjectFinder.FindSetupBuilding()?.GetComponent<IOnBuildingSetup>();
         }
-
-        public WebMessage<JObject> GetSceneStateMessage()
+        public JObject GetSceneState()
         {
-            JObject sceneState = GetSceneState();
-            return new WebMessage<JObject>
-            {
-                type = WebMessageType.requestSceneStateSuccess,
-                payload = sceneState,
-            };
+            GameObject buildingObject = ObtainBuildingObject();
+            return _objectMapper.GetTreeSceneState(buildingObject);
         }
 
         public WebMessage<ModelInfoMessage> ObtainModelInfoMessage()
@@ -100,10 +95,5 @@ namespace ReupVirtualTwin.managers
             return ((IBuildingGetterSetter)setupBuilding).building;
         }
 
-        private JObject GetSceneState()
-        {
-            GameObject buildingObject = ObtainBuildingObject();
-            return _objectMapper.GetTreeSceneState(buildingObject);
-        }
     }
 }

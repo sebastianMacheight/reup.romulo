@@ -6,6 +6,6 @@ namespace ReupVirtualTwin.managerInterfaces
 {
     public interface ISceneStateManager
     {
-        public WebMessage<JObject> GetSceneStateMessage();
+        public JObject GetSceneState();
     }
 }

@@ -159,8 +159,7 @@ public class ModelInfoManagerTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldGetSceneStateMessage_with_SameIdStructureAsBuilding()
     {
-        WebMessage<JObject> sceneStateMessage = modelInfoManager.GetSceneStateMessage();
-        JObject sceneSTate = sceneStateMessage.payload;
+        JObject sceneSTate = modelInfoManager.GetSceneState();
         ObjectDTO buildingTreeDataStructure = objectMapper.MapObjectTree(buildingGameObject);
         Assert.IsTrue(IdStructureAreEqual(JObject.FromObject(buildingTreeDataStructure), sceneSTate));
         yield return null;
@@ -169,8 +168,7 @@ public class ModelInfoManagerTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldGetSceneStateMessage_with_noAppearanceInfoAtTheBeginning()
     {
-        WebMessage<JObject> sceneStateMessage = modelInfoManager.GetSceneStateMessage();
-        JObject sceneSTate = sceneStateMessage.payload;
+        JObject sceneSTate = modelInfoManager.GetSceneState();
         Assert.IsNull(sceneSTate["appearance"]);
         Assert.IsNull(sceneSTate["children"][0]["appearance"]);
         Assert.IsNull(sceneSTate["children"][1]["appearance"]);
@@ -202,8 +200,7 @@ public class ModelInfoManagerTest : MonoBehaviour
         };
         metaDataChildComponent.objectMetaData = childMetaData;
 
-        WebMessage<JObject> sceneStateMessage = modelInfoManager.GetSceneStateMessage();
-        JObject sceneSTate = sceneStateMessage.payload;
+        JObject sceneSTate = modelInfoManager.GetSceneState();
         Assert.AreEqual(parentMetaData["appearance"]["color"], sceneSTate["appearance"]["color"]);
         Assert.AreEqual(childMetaData["appearance"]["color"], sceneSTate["children"][0]["appearance"]["color"]);
         yield return null;

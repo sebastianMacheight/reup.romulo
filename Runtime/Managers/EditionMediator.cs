@@ -73,7 +73,6 @@ namespace ReupVirtualTwin.managers
             incomingMessageValidator.RegisterMessage(WebMessageType.activateRotationTransform);
             incomingMessageValidator.RegisterMessage(WebMessageType.deactivateTransformMode);
             incomingMessageValidator.RegisterMessage(WebMessageType.requestModelInfo);
-            incomingMessageValidator.RegisterMessage(WebMessageType.requestSceneState);
 
             incomingMessageValidator.RegisterMessage(WebMessageType.setEditMode, DataValidator.boolSchema);
 
@@ -82,7 +81,7 @@ namespace ReupVirtualTwin.managers
             incomingMessageValidator.RegisterMessage(WebMessageType.changeObjectColor, DataValidator.stringSchema);
 
             incomingMessageValidator.RegisterMessage(WebMessageType.changeObjectsMaterial, RomuloExternalSchema.changeObjectMaterialPayloadSchema);
-
+            incomingMessageValidator.RegisterMessage(WebMessageType.requestSceneState, RomuloExternalSchema.requestSceneStatePayloadSchema);
         }
 
         public void Notify(ReupEvent eventName)
@@ -213,14 +212,21 @@ namespace ReupVirtualTwin.managers
                     _changeMaterialController.ChangeObjectMaterial((JObject)payload);
                     break;
                 case WebMessageType.requestSceneState:
-                    SendSceneStateMessage();
+                    SendSceneStateMessage((JObject)payload);
                     break;
             }
         }
 
-        public void SendSceneStateMessage()
+        public void SendSceneStateMessage(JObject sceneStateRequestPayload)
         {
-            WebMessage<JObject> sceneStateMessage = ((ISceneStateManager)_modelInfoManager).GetSceneStateMessage();
+            JObject sceneState = ((ISceneStateManager)_modelInfoManager).GetSceneState();
+            WebMessage<JObject> sceneStateMessage = new WebMessage<JObject>
+            {
+                type = WebMessageType.requestSceneStateSuccess,
+                payload = new JObject(
+                    new JProperty("scene_state", sceneState),
+                    new JProperty("scene_name", sceneStateRequestPayload["scene_name"])),
+            };
             _webMessageSender.SendWebMessage(sceneStateMessage);
         }
 
