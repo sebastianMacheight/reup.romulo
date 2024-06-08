@@ -153,7 +153,7 @@ namespace ReupVirtualTwin.helpers
             }
             foreach (KeyValuePair<string, JToken> pair in properties)
             {
-                if (obj[pair.Key] == null && ItemInArray<string>(required, pair.Key))
+                if (obj[pair.Key] == null && IsItemInArray<string>(required, pair.Key))
                 {
                     Debug.LogWarning($"Key {pair.Key} not found in object");
                     return false;
@@ -187,7 +187,7 @@ namespace ReupVirtualTwin.helpers
             return true;
         }
 
-        static bool ItemInArray<T>(JArray array, T item)
+        static bool IsItemInArray<T>(JArray array, T item)
         {
             if (array == null)
             {
