@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ReupVirtualTwin.helpers
@@ -63,7 +64,7 @@ namespace ReupVirtualTwin.helpers
                 case stringType:
                     return ValidateJObjectType(obj, JTokenType.String, key);
                 case objectType:
-                    return ValidateJObjectProperties(obj, (JObject)schema["properties"]);
+                    return ValidateJObjectProperties(obj, schema);
                 case arrayType:
                     return ValidateJArrayItems(obj, (JArray)schema["items"]);
                 default:
@@ -98,20 +99,22 @@ namespace ReupVirtualTwin.helpers
             }
             return false;
         }
-        static private bool ValidateJObjectProperties(JToken obj, JObject properties)
+        static private bool ValidateJObjectProperties(JToken obj, JObject schema)
         {
+            JObject properties = (JObject)schema["properties"];
+            JArray required = (JArray)schema["required"];
             if (!ValidateJObjectType(obj, JTokenType.Object))
             {
                 return false;
             }
             foreach (KeyValuePair<string, JToken> pair in properties)
             {
-                if (obj[pair.Key] == null)
+                if (obj[pair.Key] == null && ItemInArray<string>(required, pair.Key))
                 {
                     Debug.LogWarning($"Key {pair.Key} not found in object");
                     return false;
                 }
-                if (!ValidateJTokenToSchema(obj[pair.Key], (JObject)pair.Value, pair.Key))
+                if (obj[pair.Key] != null && !ValidateJTokenToSchema(obj[pair.Key], (JObject)pair.Value, pair.Key))
                 {
                     Debug.LogWarning($"Validation of key {pair.Key} failed");
                     return false;
@@ -138,6 +141,11 @@ namespace ReupVirtualTwin.helpers
                 return false;
             }
             return true;
+        }
+
+        static private bool ItemInArray<T>(JArray array, T item)
+        {
+            return array.Any(arrayItem => arrayItem.Value<T>().Equals(item));
         }
 
     }
