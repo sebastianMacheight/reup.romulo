@@ -145,6 +145,10 @@ namespace ReupVirtualTwin.helpers
 
         static private bool ItemInArray<T>(JArray array, T item)
         {
+            if (array == null)
+            {
+                return false;
+            }
             return array.Any(arrayItem => arrayItem.Value<T>().Equals(item));
         }
 
