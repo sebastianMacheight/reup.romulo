@@ -15,7 +15,7 @@ namespace ReupVirtualTwin.dataSchemas
                     { "object_ids", DataValidator.CreateArraySchema(new JObject[] { DataValidator.stringSchema }) },
                 }
             },
-            { "required", new JArray { "material_url", "object_ids" } },
+            { "required", new JArray { "material_url", "object_ids", "material_id" } },
         };
 
         public static readonly JObject requestSceneStatePayloadSchema = new JObject
@@ -25,7 +25,8 @@ namespace ReupVirtualTwin.dataSchemas
                 {
                     { "scene_name", DataValidator.stringSchema },
                 }
-            }
+            },
+            { "required", new JArray { "scene_name" } },
         };
     }
 }
