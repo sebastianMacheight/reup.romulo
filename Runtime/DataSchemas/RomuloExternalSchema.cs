@@ -10,7 +10,7 @@ namespace ReupVirtualTwin.dataSchemas
             { "type", DataValidator.objectType },
             { "properties", new JObject
                 {
-                    { "material_id", DataValidator.stringSchema },
+                    { "material_id", DataValidator.intSchema },
                     { "material_url", DataValidator.stringSchema },
                     { "object_ids", DataValidator.CreateArraySchema(new JObject[] { DataValidator.stringSchema }) },
                 }

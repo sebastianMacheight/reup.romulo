@@ -1,5 +1,6 @@
 using Newtonsoft.Json.Linq;
 using ReupVirtualTwin.modelInterfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,31 +30,19 @@ namespace ReupVirtualTwin.helpers
             throw new System.Exception($"Object {gameObject.name} does not have a IObjectMetaDataGetterSetter component");
         }
 
-        public static string GetObjectColor(GameObject gameObject)
-        {
-            return GetStringMetaDataFromObject(gameObject, "appearance.color");
-        }
-
-        public static string GetObjectMaterialId(GameObject gameObject)
-        {
-            return GetStringMetaDataFromObject(gameObject, "appearance.material_id");
-        }
-
-        public static string GetStringMetaDataFromObject(GameObject gameObject, string metaDataPath)
+        public static JToken GetMetaDataValueFromObject(GameObject gameObject, string metaDataPath)
         {
             JObject objectMetaData = GetMetaData(gameObject);
             if (objectMetaData != null)
             {
-                JToken colorToken = objectMetaData.SelectToken(metaDataPath);
-                if (colorToken != null)
-                {
-                    return colorToken.ToString();
-                }
+                JToken valueToken = objectMetaData.SelectToken(metaDataPath);
+                return valueToken;
+
             }
             return null;
         }
 
-        public static JObject AssignMaterialIdMetaDataToObject(GameObject gameObject, string materialId)
+        public static JObject AssignMaterialIdMetaDataToObject(GameObject gameObject, int materialId)
         {
             RemoveValueFromMetaDataInObject(gameObject, colorPath);
             return AssignMetaDataValueInPathToObject(gameObject, materialIdPath, materialId);
@@ -88,12 +77,12 @@ namespace ReupVirtualTwin.helpers
             return newObjectMetaData;
         }
 
-        public static List<string> GetStringMetaDataFromObjects(List<GameObject> objects, string metaDataPath)
+        public static List<JToken> GetMetaDataValuesFromObjects(List<GameObject> objects, string metaDataPath)
         {
-            List<string> metaData = new();
+            List<JToken> metaData = new();
             for (int i = 0; i < objects.Count; i++)
             {
-                metaData.Add(GetStringMetaDataFromObject(objects[i], metaDataPath));
+                metaData.Add(GetMetaDataValueFromObject(objects[i], metaDataPath));
             }
             return metaData;
         }

@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using ReupVirtualTwin.helpers;
 using System.Collections;
@@ -7,18 +8,18 @@ using UnityEngine;
 public static class AssertUtils
 {
 
-    public static void AssertAllObjectsWithMeshRendererHaveMetaDataValue(List<GameObject> objects, string metaDataPath, string materialId)
+    public static void AssertAllObjectsWithMeshRendererHaveMetaDataValue<T>(List<GameObject> objects, string metaDataPath, object metaDataValue)
     {
-        List<string> objectsMaterialId = ObjectMetaDataUtils.GetStringMetaDataFromObjects(objects, metaDataPath);
+        List<JToken> metaDataValues = ObjectMetaDataUtils.GetMetaDataValuesFromObjects(objects, metaDataPath);
         for (int i = 0; i < objects.Count; i++)
         {
             if (objects[i].GetComponent<MeshRenderer>() != null)
             {
-                Assert.AreEqual(materialId, objectsMaterialId[i]);
+                Assert.AreEqual(metaDataValue, metaDataValues[i].ToObject<T>());
             }
             else
             {
-                Assert.IsNull(objectsMaterialId[i]);
+                Assert.IsNull(metaDataValues[i]);
             }
         }
     }

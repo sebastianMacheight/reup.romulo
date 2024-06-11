@@ -120,23 +120,23 @@ public class ChangeColorObjectsTest : MonoBehaviour
         yield return null;
 
         string blueColorRGBA = ColorUtility.ToHtmlStringRGBA(Color.blue);
-        Assert.AreEqual(blueColorRGBA, ObjectMetaDataUtils.GetObjectColor(meshedParent));
-        Assert.AreEqual(blueColorRGBA, ObjectMetaDataUtils.GetObjectColor(meshedChild));
-        Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedParent));
-        Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedChild));
+        AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<string>(
+            gameObjects,
+            "appearance.color",
+            blueColorRGBA);
         yield return null;
 
         changeColorManager.ChangeObjectsColor(gameObjects, Color.red);
         yield return null;
 
         string redColorRGBA = ColorUtility.ToHtmlStringRGBA(Color.red);
-        Assert.AreEqual(redColorRGBA, ObjectMetaDataUtils.GetObjectColor(meshedParent));
-        Assert.AreEqual(redColorRGBA, ObjectMetaDataUtils.GetObjectColor(meshedChild));
-        Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedParent));
-        Assert.AreEqual(null, ObjectMetaDataUtils.GetObjectColor(unmeshedChild));
+        AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<string>(
+            gameObjects,
+            "appearance.color",
+            redColorRGBA);
         yield return null;
     }
-    void AssignFakeMaterialIdMetaDataToObjects(List<GameObject> objects, string materialId)
+    void AssignFakeMaterialIdMetaDataToObjects(List<GameObject> objects, int materialId)
     {
         for (int i = 0; i < objects.Count; i++)
         {
@@ -150,15 +150,15 @@ public class ChangeColorObjectsTest : MonoBehaviour
     public IEnumerator ShouldDeleteMaterialIdMetaData_when_applyingColorMetaData()
     {
         List<GameObject> gameObjects = new() { meshedParent, meshedChild, unmeshedParent, unmeshedChild};
-        string fakeMaterialId = "fakeMaterialId";
+        int fakeMaterialId = 746;
         AssignFakeMaterialIdMetaDataToObjects(gameObjects, fakeMaterialId);
-        AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue(gameObjects, "appearance.material_id", fakeMaterialId);
+        AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<int>(gameObjects, "appearance.material_id", fakeMaterialId);
         changeColorManager.ChangeObjectsColor(gameObjects, Color.blue);
         yield return null;
-        List<string> objectsMaterialId = ObjectMetaDataUtils.GetStringMetaDataFromObjects(
+        List<JToken> objectsMaterialId = ObjectMetaDataUtils.GetMetaDataValuesFromObjects(
             gameObjects, "appearance.material_id");
         AssertUtils.AssertAllAreNull(objectsMaterialId);
-        AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue(
+        AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<string>(
             gameObjects,
             "appearance.color",
             ColorUtility.ToHtmlStringRGBA(Color.blue));

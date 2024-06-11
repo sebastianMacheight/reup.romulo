@@ -32,7 +32,7 @@ namespace ReupVirtualTwinTests.controllers
             controller = new ChangeMaterialController(textureDownloaderSpy, objectRegistry, mediatorSpy);
             messagePayload = new JObject()
             {
-                { "material_id", "material-id" },
+                { "material_id", 1234567890 },
                 { "material_url", "material-url.com" },
                 { "object_ids", new JArray(new string[] { "id-0", "id-1" }) }
             };
@@ -87,6 +87,17 @@ namespace ReupVirtualTwinTests.controllers
             }
             return materials;
         }
+        void AssignFakeColorMetaDataToObjects(List<GameObject> objects, string colorCode)
+        {
+            for (int i = 0; i < objects.Count; i++)
+            {
+                if (objects[i].GetComponent<MeshRenderer>() != null)
+                {
+                    ObjectMetaDataUtils.AssignColorMetaDataToObject(objects[i], colorCode);
+                }
+            }
+        }
+
         [UnityTest]
         public IEnumerator ShouldCreateTheController()
         {
@@ -133,28 +144,17 @@ namespace ReupVirtualTwinTests.controllers
             Assert.AreEqual(messagePayload["object_ids"], mediatorSpy.changeMaterialInfo["object_ids"]);
         }
 
-        void AssignFakeColorMetaDataToObjects(List<GameObject> objects, string colorCode)
-        {
-            for (int i = 0; i < objects.Count; i++)
-            {
-                if (objects[i].GetComponent<MeshRenderer>() != null)
-                {
-                    ObjectMetaDataUtils.AssignColorMetaDataToObject(objects[i], colorCode);
-                }
-            }
-        }
-
         [Test]
         public async Task ShouldSaveMaterialId_In_ObjectsMetaData()
         {
-            List<string> objectsMaterialId = ObjectMetaDataUtils.GetStringMetaDataFromObjects(
+            List<JToken> objectsMaterialId = ObjectMetaDataUtils.GetMetaDataValuesFromObjects(
                 objectRegistry.objects, "appearance.material_id");
             AssertUtils.AssertAllAreNull(objectsMaterialId);
             await controller.ChangeObjectMaterial(messagePayload);
-            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue(
+            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<int>(
                 objectRegistry.objects,
                 "appearance.material_id",
-                messagePayload["material_id"].ToString());
+                messagePayload["material_id"].ToObject<int>());
         }
 
         [Test]
@@ -162,18 +162,18 @@ namespace ReupVirtualTwinTests.controllers
         {
             string fakeColorCode = "fake-color-code";
             AssignFakeColorMetaDataToObjects(objectRegistry.objects, fakeColorCode);
-            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue(
+            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<string>(
                 objectRegistry.objects,
                 "appearance.color",
                 fakeColorCode);
             await controller.ChangeObjectMaterial(messagePayload);
-            List<string> objectsColorCode = ObjectMetaDataUtils.GetStringMetaDataFromObjects(
+            List<JToken> objectsColorCode = ObjectMetaDataUtils.GetMetaDataValuesFromObjects(
                 objectRegistry.objects, "appearance.color");
             AssertUtils.AssertAllAreNull(objectsColorCode);
-            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue(
+            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<int>(
                 objectRegistry.objects,
                 "appearance.material_id",
-                messagePayload["material_id"].ToString());
+                messagePayload["material_id"].ToObject<int>());
         }
 
     }

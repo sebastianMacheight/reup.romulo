@@ -574,7 +574,7 @@ public class EditionMediatorTest : MonoBehaviour
             { "type", WebMessageType.changeObjectsMaterial },
             { "payload", new Dictionary<string, object>
                 {
-                    {"material_id", "material-id"},
+                    {"material_id", 1234},
                     {"material_url", "material-url"},
                     {"object_ids", new string[] { "id-0", "id-1" } },
                 }
@@ -601,6 +601,7 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldSendSuccessMessage_When_NotifiedOfMaterialChangeSuccess()
     {
         JObject materialChangeInfo = new JObject(
+            new JProperty("material_id", 1234),
             new JProperty("material_url", "material-url"),
             new JProperty("object_ids", new JArray(new string[] { "id-0", "id-1" }))
         );
