@@ -130,6 +130,7 @@ public class EditionMediatorTest : MonoBehaviour
     private class MockModelInfoManager : IModelInfoManager, ISceneStateManager
     {
         public ObjectDTO building;
+        public bool sceneStateRequested = false;
         public MockModelInfoManager()
         {
             building = new ObjectDTO
@@ -173,6 +174,7 @@ public class EditionMediatorTest : MonoBehaviour
 
         public JObject GetSceneState()
         {
+            sceneStateRequested = true;
             return new JObject();
         }
     }
@@ -714,4 +716,30 @@ public class EditionMediatorTest : MonoBehaviour
         Assert.AreEqual(WebMessageType.error, sentMessage.type);
         yield return null;
     }
+
+    [UnityTest]
+    public IEnumerator ShouldClearSelectionBeforeSendingSceneStateMessage()
+    {
+        WebMessage<Dictionary<string, object>> sceneStateRequestMessage = new WebMessage<Dictionary<string, object>>()
+        {
+            type = WebMessageType.requestSceneState,
+            payload = new Dictionary<string, object>()
+            {
+                {"scene_name", "test-scene-name" }
+            }
+        };
+
+        Assert.IsFalse(mockSelectedObjectsManager.selectionCleared);
+        Assert.IsFalse(mockModelInfoManager.sceneStateRequested);
+
+        string serializedMessage = JsonConvert.SerializeObject(sceneStateRequestMessage);
+        editionMediator.ReceiveWebMessage(serializedMessage);
+        Assert.IsTrue(mockSelectedObjectsManager.selectionCleared);
+        Assert.IsFalse(mockModelInfoManager.sceneStateRequested);
+        yield return null;
+        Assert.IsTrue(mockSelectedObjectsManager.selectionCleared);
+        Assert.IsTrue(mockModelInfoManager.sceneStateRequested);
+        yield return null;
+    }
+
 }

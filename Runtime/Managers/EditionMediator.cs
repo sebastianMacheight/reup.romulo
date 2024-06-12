@@ -212,13 +212,15 @@ namespace ReupVirtualTwin.managers
                     _changeMaterialController.ChangeObjectMaterial((JObject)payload);
                     break;
                 case WebMessageType.requestSceneState:
-                    SendSceneStateMessage((JObject)payload);
+                    StartCoroutine(SendSceneStateMessage((JObject)payload));
                     break;
             }
         }
 
-        public void SendSceneStateMessage(JObject sceneStateRequestPayload)
+        private IEnumerator SendSceneStateMessage(JObject sceneStateRequestPayload)
         {
+            _selectedObjectsManager.ClearSelection();
+            yield return null;
             JObject sceneState = ((ISceneStateManager)_modelInfoManager).GetSceneState();
             WebMessage<JObject> sceneStateMessage = new WebMessage<JObject>
             {
