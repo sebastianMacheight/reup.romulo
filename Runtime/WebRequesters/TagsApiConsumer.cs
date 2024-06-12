@@ -9,8 +9,7 @@ namespace ReupVirtualTwin.webRequesters
 {
     public class TagsApiConsumer : ITagsApiConsumer
     {
-        //private string baseUrl = "https://api-prod-reup.macheight.com/api/v1/";
-        private string baseUrl = "https://api-staging-reup.macheight.com/api/v1/";
+        private string baseUrl = "https://api-prod-reup.macheight.com/api/v1/";
 
         public Task<PaginationResult<Tag>> GetTags()
         {
