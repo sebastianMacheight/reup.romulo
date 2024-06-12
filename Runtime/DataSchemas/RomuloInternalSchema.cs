@@ -11,9 +11,10 @@ namespace ReupVirtualTwin.dataSchemas
             { "properties", new JObject
                 {
                     { "material_url", DataValidator.stringSchema },
-                    { "object_ids",  DataValidator.CreateArraySchema(new JObject[] { DataValidator.stringSchema })}
+                    { "object_ids",  DataValidator.CreateArraySchema(new JObject[] { DataValidator.stringSchema })},
                 }
             },
+            { "required", new JArray { "material_url", "object_ids" } }
         };
     }
 }
