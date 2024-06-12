@@ -23,7 +23,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             {
                 initialSpawn.setUpBuilding = setUpBuilding;
             }
-            initialSpawn.sensor = sensor.GetComponent<ISensor>();
+            initialSpawn.sensor = sensor.GetComponent<IPointSensor>();
         }
 
     }

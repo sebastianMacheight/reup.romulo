@@ -11,20 +11,18 @@ using ReupVirtualTwin.managerInterfaces;
 
 public class MaintainHeightTest : MonoBehaviour
 {
-    GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/ScriptHolders/Character.prefab");
+    ReupSceneInstantiator.SceneObjects sceneObjects;
     GameObject platformPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Tests/TestAssets/Platform.prefab");
     GameObject character;
     GameObject widePlatform;
-    GameObject setupBuildingGameObject;
 
     float HEIGHT_CLOSENESS_THRESHOLD = 0.02f;
 
     [SetUp]
     public void SetUp()
     {
-        setupBuildingGameObject = StubOnSetupBuildingCreator.CreateImmediateOnSetupBuilding();
-        character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
-        DestroyGameRelatedDependecyInjectors();
+        sceneObjects = ReupSceneInstantiator.InstantiateScene();
+        character = sceneObjects.character;
         var posManager = character.GetComponent<ICharacterPositionManager>();
         posManager.maxStepHeight = 0.25f;
         widePlatform = (GameObject)PrefabUtility.InstantiatePrefab(platformPrefab);
@@ -34,9 +32,8 @@ public class MaintainHeightTest : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(character);
         Destroy(widePlatform);
-        Destroy(setupBuildingGameObject);
+        ReupSceneInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 
@@ -86,13 +83,5 @@ public class MaintainHeightTest : MonoBehaviour
     {
         widePlatform.transform.localScale = new Vector3(10, 0.1f, 10);
         widePlatform.transform.position = new Vector3(0, -0.05f, 0);
-    }
-    private void DestroyGameRelatedDependecyInjectors()
-    {
-        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
-        Destroy(movementSelectPosDependencyInjector);
-        var initialSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
-        Destroy(initialSpawnDependencyInjector);
-
     }
 }

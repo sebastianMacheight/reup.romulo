@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ReupVirtualTwin.helperInterfaces
 {
-    public interface ISensor
+    public interface IPointSensor
     {
         public RaycastHit? Sense();
     }

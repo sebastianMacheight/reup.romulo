@@ -6,7 +6,7 @@ namespace ReupVirtualTwin.helpers
 {
     [RequireComponent(typeof(IRayProvider))]
     [RequireComponent(typeof(IRayCastHitSelector))]
-    public class SensorImp : MonoBehaviour, ISensor
+    public class PointSensor : MonoBehaviour, IPointSensor
     {
         protected IRayProvider _rayProvider;
         protected IRayCastHitSelector _hitSelector;

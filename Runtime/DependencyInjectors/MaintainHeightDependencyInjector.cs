@@ -17,7 +17,7 @@ namespace ReupVirtualTwin.dependencyInjectors
         private void Awake()
         {
             MaintainHeight maintainHeight = GetComponent<MaintainHeight>();
-            maintainHeight.sensor = sensor.GetComponent<ISensor>();
+            maintainHeight.sensor = sensor.GetComponent<IPointSensor>();
             maintainHeight.characterPositionManager = positionManager.GetComponent<ICharacterPositionManager>();
             maintainHeight.maxStepHeight = maxStepHeight;
         }
