@@ -13,9 +13,9 @@ namespace ReupVirtualTwin.helpers
         public const string stringType = "string";
         public const string objectType = "object";
         public const string arrayType = "array";
-        public const string schemaRefType = "$schemaRef";
-        public const string schemaName = "$schemaName";
-        public const string referredSchemaKey = "referredSchema";
+
+        private const string referredSchemaKey = "referredSchema";
+        private const string schemaRefType = "$schemaRef";
 
         public static readonly JObject stringSchema = new()
         {
@@ -113,8 +113,8 @@ namespace ReupVirtualTwin.helpers
         {
             return container != null &&
                 container is JObject &&
-                container[schemaName] != null &&
-                container[schemaName].ToString() == refSchemaName;
+                container["name"] != null &&
+                container["name"].ToString() == refSchemaName;
         }
         static bool ValidateJArrayItems(JToken array, JArray acceptedSchemas)
         {

@@ -38,7 +38,7 @@ namespace ReupVirtualTwin.dataSchemas
             sceneStateSchema = new()
             {
                 { "type", DataValidator.objectType },
-                { DataValidator.schemaName, "sceneStateSchema" },
+                { "name", "sceneStateSchema" },
                 { "properties", new JObject
                     {
                         { "id", DataValidator.stringSchema },

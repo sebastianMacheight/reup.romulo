@@ -4,7 +4,6 @@ using UnityEngine.TestTools;
 using NUnit.Framework;
 
 using ReupVirtualTwin.models;
-using ReupVirtualTwin.enums;
 using ReupVirtualTwin.dataModels;
 
 

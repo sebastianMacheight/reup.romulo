@@ -18,7 +18,7 @@ public class DataValidatorTest
     {
         parentSchema = new JObject
         {
-            { DataValidator.schemaName, "parentSchema" },
+            { "name", "parentSchema" },
             { "type", DataValidator.objectType },
             { "properties", new JObject()
                 {
