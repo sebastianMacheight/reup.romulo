@@ -4,6 +4,7 @@ using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.managers;
 using ReupVirtualTwin.controllers;
+using ReupVirtualTwin.romuloEnvironment;
 
 namespace ReupVirtualTwin.dependencyInjectors
 {
@@ -16,7 +17,7 @@ namespace ReupVirtualTwin.dependencyInjectors
             SelectedObjectsManager selectedObjectsManager = GetComponent<SelectedObjectsManager>();
             selectedObjectsManager.mediator = mediator.GetComponent<IMediator>();
             selectedObjectsManager.objectWrapper = new ObjectWrapper();
-            Outliner outliner = new Outliner(Color.yellow, 5.0f);
+            Outliner outliner = new Outliner(RomuloEnvironment.reupBlueColor, 5.0f);
             selectedObjectsManager.highlighter = outliner;
 
             SelectableObjectSelector selector = GetComponent<SelectableObjectSelector>();
