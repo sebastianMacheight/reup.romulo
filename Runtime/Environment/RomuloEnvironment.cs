@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace ReupVirtualTwin.romuloEnvironment
 {
     public static class RomuloEnvironment
@@ -7,5 +9,7 @@ namespace ReupVirtualTwin.romuloEnvironment
 #else
         public static readonly bool development = false;
 #endif
+        public static readonly Color reupBlueColor = new Color(0.15f, 0.59f, 0.75f);
+        public static readonly Color orangeHighlightColor = new Color(0.15f, 0.59f, 0.75f);
     }
 }
