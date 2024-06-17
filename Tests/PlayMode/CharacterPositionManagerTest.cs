@@ -2,38 +2,33 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEditor;
 
-using ReupVirtualTwin.dependencyInjectors;
 using ReupVirtualTwin.managers;
 
 public class CharacterPositionManagerTest : MonoBehaviour
 {
-    private GameObject characterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Packages/com.reup.romulo/Assets/ScriptHolders/Character.prefab");
-    private GameObject character;
-    private CharacterPositionManager posManager;
-    private GameObject setupBuildingGameObject;
+    ReupSceneInstantiator.SceneObjects sceneObjects;
+    GameObject character;
+
+    CharacterPositionManager posManager;
 
     float HEIGHT_CLOSENESS_THRESHOLD = 0.02f;
     float MOVEMENT_CLOSENESS_THRESHOLD = 0.02f;
     float WALK_CLOSENESS_THRESHOLD = 0.5f;
 
-    [SetUp]
-    public void SetUp()
+    [UnitySetUp]
+    public IEnumerator SetUp()
     {
-        setupBuildingGameObject = StubOnSetupBuildingCreator.CreateImmediateOnSetupBuilding();
-        character = (GameObject)PrefabUtility.InstantiatePrefab(characterPrefab);
-        DestroyGameRelatedDependecyInjectors();
-        character.transform.position = Vector3.zero;
+        sceneObjects = ReupSceneInstantiator.InstantiateScene();
+        character = sceneObjects.character;
         posManager = character.GetComponent<CharacterPositionManager>();
-        posManager.maxStepHeight = 0.25f;
+        yield return null;
     }
 
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(character);
-        Destroy(setupBuildingGameObject);
+        ReupSceneInstantiator.DestroySceneObjects(sceneObjects);
         yield return null;
     }
 
@@ -129,13 +124,6 @@ public class CharacterPositionManagerTest : MonoBehaviour
         var expectedPosition = new Vector3(sqrt6, sqrt6, 2 * sqrt6) / 3;
         Assert.LessOrEqual(Vector3.Distance(character.transform.position, expectedPosition), 1E-5);
         yield return null;
-    }
-    private void DestroyGameRelatedDependecyInjectors()
-    {
-        var movementSelectPosDependencyInjector = character.transform.Find("Behaviours").Find("PointerMovement").GetComponent<CharacterMovementSelectPositionDependenciesInjector>();
-        var initialSpawnDependencyInjector = character.transform.Find("Behaviours").Find("HeightMediator").Find("InitialSpawn").GetComponent<InitialSpawnDependencyInjector>();
-        Destroy(movementSelectPosDependencyInjector);
-        Destroy(initialSpawnDependencyInjector);
     }
 }
 

@@ -14,8 +14,8 @@ namespace ReupVirtualTwin.helpers
         }
 
         /// <summary>
-        /// This method should be overrided in every non abstract implmentation of a Selector
-        /// Returns true if obj is the object we want to return, false otherwise
+        /// This method should be overridden in every non abstract implementation of a Selector
+        /// Returns the obj if obj is the object we want to return, null otherwise
         /// </summary>
         /// <param name="obj">object to check</param>
         /// <returns>True if obj is the object we want to return, false otherwise </returns>

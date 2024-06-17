@@ -5,10 +5,12 @@ using ReupVirtualTwin.helpers;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.enums;
 using ReupVirtualTwin.dataModels;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace ReupVirtualTwin.managers
 {
-    public class SelectedObjectsManager : MonoBehaviour, ISelectedObjectsManager
+    public class SelectedObjectsManager : MonoBehaviour, ISelectedObjectsManager, IIsObjectPartOfSelection
     {
         private IObjectWrapper _objectWrapper;
         public IObjectWrapper objectWrapper { set =>  _objectWrapper = value; }
@@ -82,6 +84,12 @@ namespace ReupVirtualTwin.managers
             wrapperObject = _objectWrapper.UnwrapObject(selectedObject);
             _highlighter.UnhighlightObject(selectedObject);
             return _wrapperObject;
+        }
+
+        public bool IsObjectPartOfSelection(GameObject obj)
+        {
+            List<GameObject> selectedObjects = _objectWrapper.wrappedObjects;
+            return GameObjectUtils.IsPartOf(selectedObjects, obj);
         }
     }
 }

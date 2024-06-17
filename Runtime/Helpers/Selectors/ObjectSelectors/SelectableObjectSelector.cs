@@ -1,5 +1,4 @@
 using UnityEngine;
-using ReupVirtualTwin.enums;
 using ReupVirtualTwin.controllerInterfaces;
 
 namespace ReupVirtualTwin.helpers

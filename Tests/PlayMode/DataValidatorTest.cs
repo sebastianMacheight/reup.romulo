@@ -23,8 +23,10 @@ public class DataValidatorTest
                 {
                     { "a_string", DataValidator.stringSchema},
                     { "an_int", DataValidator.intSchema},
+                    { "optionial_int", DataValidator.intSchema }
                 }
-            }
+            },
+            { "required", new JArray { "a_string", "an_int" } },
         };
         nestedObjectSchema = new JObject
         {
@@ -47,6 +49,17 @@ public class DataValidatorTest
             }
         };
         intStringArraySchema = DataValidator.CreateArraySchema(new JObject[] { DataValidator.intSchema, DataValidator.stringSchema });
+    }
+
+    [Test]
+    public void ValidateObject_shouldFail_if_requiredFieldIsMissing()
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "a_string", "John Doe" },
+        };
+        bool result = DataValidator.ValidateObjectToSchema(data, parentSchema);
+        Assert.IsFalse(result);
     }
 
     [Test]
@@ -234,6 +247,18 @@ public class DataValidatorTest
     {
         bool result = DataValidator.ValidateObjectToSchema("this is not an object", parentSchema);
         Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void ValidateObject_should_success_ifNonRequiredFieldIsMissing()
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "a_string", "John Doe" },
+            { "an_int", 25 },
+        };
+        bool result = DataValidator.ValidateObjectToSchema(data, parentSchema);
+        Assert.IsTrue(result);
     }
 
 }
