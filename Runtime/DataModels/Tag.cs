@@ -8,5 +8,6 @@ namespace ReupVirtualTwin.dataModels
         public string id;
         public string name;
         public string description;
+        public int priority;
     }
 }
