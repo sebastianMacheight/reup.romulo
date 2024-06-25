@@ -11,6 +11,7 @@ using Tests.PlayMode.Mocks;
 using ReupVirtualTwin.managerInterfaces;
 using ReupVirtualTwin.enums;
 using Newtonsoft.Json.Linq;
+using ReupVirtualTwin.helpers;
 
 namespace ReupVirtualTwinTests.controllers
 {
@@ -31,9 +32,17 @@ namespace ReupVirtualTwinTests.controllers
             controller = new ChangeMaterialController(textureDownloaderSpy, objectRegistry, mediatorSpy);
             messagePayload = new JObject()
             {
+                { "material_id", 1234567890 },
                 { "material_url", "material-url.com" },
                 { "object_ids", new JArray(new string[] { "id-0", "id-1" }) }
             };
+            yield return null;
+        }
+
+        [UnityTearDown]
+        public IEnumerator TearDown()
+        {
+            objectRegistry.DestroyAllObjects();
             yield return null;
         }
 
@@ -68,15 +77,25 @@ namespace ReupVirtualTwinTests.controllers
 
         private List<Material> GetMaterialsFromObjects(List<GameObject> objects)
         {
-            List<Material> originalMaterials = new();
+            List<Material> materials = new();
             for (int i = 0; i < objects.Count; i++)
             {
                 if (objects[i].GetComponent<Renderer>() != null)
                 {
-                    originalMaterials.Add(objects[i].GetComponent<Renderer>().material);
+                    materials.Add(objects[i].GetComponent<Renderer>().material);
                 }
             }
-            return originalMaterials;
+            return materials;
+        }
+        void AssignFakeColorMetaDataToObjects(List<GameObject> objects, string colorCode)
+        {
+            for (int i = 0; i < objects.Count; i++)
+            {
+                if (objects[i].GetComponent<MeshRenderer>() != null)
+                {
+                    ObjectMetaDataUtils.AssignColorMetaDataToObject(objects[i], colorCode);
+                }
+            }
         }
 
         [UnityTest]
@@ -123,6 +142,38 @@ namespace ReupVirtualTwinTests.controllers
             await controller.ChangeObjectMaterial(messagePayload);
             Assert.AreEqual(messagePayload["material_url"], mediatorSpy.changeMaterialInfo["material_url"]);
             Assert.AreEqual(messagePayload["object_ids"], mediatorSpy.changeMaterialInfo["object_ids"]);
+        }
+
+        [Test]
+        public async Task ShouldSaveMaterialId_In_ObjectsMetaData()
+        {
+            List<JToken> objectsMaterialId = ObjectMetaDataUtils.GetMetaDataValuesFromObjects(
+                objectRegistry.objects, "appearance.material_id");
+            AssertUtils.AssertAllAreNull(objectsMaterialId);
+            await controller.ChangeObjectMaterial(messagePayload);
+            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<int>(
+                objectRegistry.objects,
+                "appearance.material_id",
+                messagePayload["material_id"].ToObject<int>());
+        }
+
+        [Test]
+        public async Task ShouldDeleteColorMetaData_when_applyingMaterialIdMetaData()
+        {
+            string fakeColorCode = "fake-color-code";
+            AssignFakeColorMetaDataToObjects(objectRegistry.objects, fakeColorCode);
+            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<string>(
+                objectRegistry.objects,
+                "appearance.color",
+                fakeColorCode);
+            await controller.ChangeObjectMaterial(messagePayload);
+            List<JToken> objectsColorCode = ObjectMetaDataUtils.GetMetaDataValuesFromObjects(
+                objectRegistry.objects, "appearance.color");
+            AssertUtils.AssertAllAreNull(objectsColorCode);
+            AssertUtils.AssertAllObjectsWithMeshRendererHaveMetaDataValue<int>(
+                objectRegistry.objects,
+                "appearance.material_id",
+                messagePayload["material_id"].ToObject<int>());
         }
 
     }

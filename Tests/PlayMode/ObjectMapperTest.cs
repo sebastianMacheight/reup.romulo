@@ -12,17 +12,25 @@ using ReupVirtualTwin.controllers;
 public class ObjectMapperTest : MonoBehaviour
 {
     IObjectMapper objectMapper;
+    GameObject mockBuilding;
 
     [SetUp]
     public void SetUp()
     {
         objectMapper = new ObjectMapper(new TagsController(), new IdController());
+        mockBuilding = StubObjectTreeCreator.CreateMockBuilding();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        Destroy(mockBuilding);
     }
 
     [UnityTest]
     public IEnumerator ShouldMapOneObject()
     {
-        ObjectDTO objectDTO = objectMapper.MapObjectToDTO(StubObjectTreeCreator.CreateMockBuilding());
+        ObjectDTO objectDTO = objectMapper.MapObjectToDTO(mockBuilding);
         Assert.AreEqual(StubObjectTreeCreator.parentId, objectDTO.id);
         Assert.AreEqual(StubObjectTreeCreator.parentTags, objectDTO.tags);
         Assert.IsNull(objectDTO.children);
@@ -31,10 +39,9 @@ public class ObjectMapperTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldMapSeveralObject()
     {
-        GameObject parent = StubObjectTreeCreator.CreateMockBuilding();
         ObjectDTO[] objectDTOs = objectMapper.MapObjectsToDTO(new GameObject[]
         {
-            parent, parent.transform.GetChild(0).gameObject, parent.transform.GetChild(1).gameObject
+            mockBuilding, mockBuilding.transform.GetChild(0).gameObject, mockBuilding.transform.GetChild(1).gameObject
         }.ToList());
         Assert.AreEqual(3, objectDTOs.Length);
         Assert.AreEqual(StubObjectTreeCreator.parentId, objectDTOs[0].id);
@@ -49,8 +56,7 @@ public class ObjectMapperTest : MonoBehaviour
     [UnityTest]
     public IEnumerator ShouldMapObjectTree()
     {
-        GameObject mockbuilding = StubObjectTreeCreator.CreateMockBuilding();
-        ObjectDTO treeDTO = objectMapper.MapObjectTree(mockbuilding);
+        ObjectDTO treeDTO = objectMapper.MapObjectTree(mockBuilding);
         Assert.AreEqual(StubObjectTreeCreator.parentId, treeDTO.id);
         Assert.AreEqual(StubObjectTreeCreator.parentTags, treeDTO.tags);
         Assert.AreEqual(StubObjectTreeCreator.child0Tags, treeDTO.children[0].tags);

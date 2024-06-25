@@ -1,7 +1,6 @@
 using ReupVirtualTwin.behaviourInterfaces;
+using ReupVirtualTwin.managers;
 using ReupVirtualTwin.models;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +13,7 @@ public static class ReupSceneInstantiator
         public GameObject character;
         public GameObject baseGlobalScriptGameObject;
         public GameObject building;
+        public ChangeColorManager changeColorManager;
     }
 
     public static SceneObjects InstantiateScene()
@@ -27,12 +27,18 @@ public static class ReupSceneInstantiator
         IBuildingGetterSetter setupBuilding = baseGlobalScriptGameObject.transform.Find("SetupBuilding").GetComponent<IBuildingGetterSetter>();
         setupBuilding.building = building;
 
+        ChangeColorManager changeColorManager = baseGlobalScriptGameObject.transform
+            .Find("EditionMediator")
+            .Find("ChangeColorManager")
+            .GetComponent<ChangeColorManager>();
+
         return new SceneObjects
         {
             reupObject = reupGameObject,
             character = character,
             baseGlobalScriptGameObject = baseGlobalScriptGameObject,
             building = building,
+            changeColorManager = changeColorManager,
         };
     }
 

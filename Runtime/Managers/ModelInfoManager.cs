@@ -5,16 +5,19 @@ using ReupVirtualTwin.enums;
 using UnityEngine;
 using ReupVirtualTwin.helperInterfaces;
 using ReupVirtualTwin.managerInterfaces;
+using Newtonsoft.Json.Linq;
+using ReupVirtualTwin.romuloEnvironment;
+using ReupVirtualTwin.dataSchemas;
 
 
 namespace ReupVirtualTwin.managers
 {
-    public class ModelInfoManager: MonoBehaviour, IModelInfoManager
+    public class ModelInfoManager: MonoBehaviour, IModelInfoManager, ISceneStateManager
     {
         public string buildVersion { get => _buildVersion; }
         public IObjectMapper objectMapper { set => _objectMapper = value; }
 
-        string _buildVersion = "2024-04-05";
+        string _buildVersion = "2024-06-06";
         IOnBuildingSetup setupBuilding;
         IObjectMapper _objectMapper;
 
@@ -26,6 +29,18 @@ namespace ReupVirtualTwin.managers
         private void LookForDependencySingletons()
         {
             setupBuilding = ObjectFinder.FindSetupBuilding()?.GetComponent<IOnBuildingSetup>();
+        }
+        public JObject GetSceneState()
+        {
+            GameObject buildingObject = ObtainBuildingObject();
+            JObject sceneState = _objectMapper.GetTreeSceneState(buildingObject);
+            if (
+                RomuloEnvironment.development &&
+                !DataValidator.ValidateObjectToSchema(sceneState, RomuloInternalSchema.sceneStateSchema))
+            {
+                throw new System.Exception("Scene state does not match schema");
+            }
+            return sceneState;
         }
 
         public WebMessage<ModelInfoMessage> ObtainModelInfoMessage()
@@ -88,5 +103,6 @@ namespace ReupVirtualTwin.managers
         {
             return ((IBuildingGetterSetter)setupBuilding).building;
         }
+
     }
 }

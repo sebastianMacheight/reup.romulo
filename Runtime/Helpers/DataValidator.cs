@@ -14,6 +14,9 @@ namespace ReupVirtualTwin.helpers
         public const string objectType = "object";
         public const string arrayType = "array";
 
+        private const string referredSchemaKey = "referredSchema";
+        private const string schemaRefType = "$schemaRef";
+
         public static readonly JObject stringSchema = new()
         {
             { "type", stringType }
@@ -27,6 +30,15 @@ namespace ReupVirtualTwin.helpers
             { "type", boolType }
         };
 
+        static public JObject CreateRefSchema(string refName)
+        {
+            return new JObject
+            {
+                { "type", schemaRefType },
+                { referredSchemaKey, refName }
+            };
+        }
+
         static public JObject CreateArraySchema(JObject[] itemSchemas)
         {
             return new JObject
@@ -36,10 +48,10 @@ namespace ReupVirtualTwin.helpers
             };
         }
 
-        static public bool ValidateObjectToSchema(object obj, JObject schemaKeys)
+        static public bool ValidateObjectToSchema(object obj, JObject schema)
         {
             string json = JsonConvert.SerializeObject(obj);
-            return ValidateJsonStringToSchema(json, schemaKeys);
+            return ValidateJsonStringToSchema(json, schema);
         }
 
         static public bool ValidateJsonStringToSchema(string json, JObject schema)
@@ -48,13 +60,17 @@ namespace ReupVirtualTwin.helpers
             return ValidateJTokenToSchema(jsonObj, schema);
         }
 
-        static private bool ValidateJTokenToSchema(JToken obj, JObject schema)
+        static bool ValidateJTokenToSchema(JToken obj, JObject schema)
         {
             return ValidateJTokenToSchema(obj, schema, "");
         }
 
-        static private bool ValidateJTokenToSchema(JToken obj, JObject schema, string key)
+        static bool ValidateJTokenToSchema(JToken obj, JObject schema, string key)
         {
+            if (schema == null)
+            {
+                return false;
+            }
             switch ((string)schema["type"])
             {
                 case boolType:
@@ -67,12 +83,40 @@ namespace ReupVirtualTwin.helpers
                     return ValidateJObjectProperties(obj, schema);
                 case arrayType:
                     return ValidateJArrayItems(obj, (JArray)schema["items"]);
+                case schemaRefType:
+                    return ValidateObjectToSchemaRef(obj, schema);
                 default:
                     Debug.LogWarning($"Type {schema["type"]} not supported");
                     return false;
             }
         }
-        static private bool ValidateJArrayItems(JToken array, JArray acceptedSchemas)
+        static bool ValidateObjectToSchemaRef(JToken obj, JObject schemaRef)
+        {
+            JObject referredSchema = GetReferredSchemaFromInnerSchema(schemaRef, (string)schemaRef[referredSchemaKey]);
+            return ValidateJTokenToSchema(obj, referredSchema);
+        }
+        static JObject GetReferredSchemaFromInnerSchema(JContainer innerSchema, string refSchemaName)
+        {
+            if (innerSchema == null)
+            {
+                Debug.LogWarning($"Could not find reference to {refSchemaName}");
+                return null;
+            }
+            JContainer parentObj = innerSchema.Parent;
+            if (IsJObjectReferredSchema(parentObj, refSchemaName))
+            {
+                return (JObject)parentObj;
+            }
+            return GetReferredSchemaFromInnerSchema(parentObj, refSchemaName);
+        }
+        static bool IsJObjectReferredSchema(JContainer container, string refSchemaName)
+        {
+            return container != null &&
+                container is JObject &&
+                container["name"] != null &&
+                container["name"].ToString() == refSchemaName;
+        }
+        static bool ValidateJArrayItems(JToken array, JArray acceptedSchemas)
         {
             if (!ValidateJObjectType(array, JTokenType.Array))
             {
@@ -88,7 +132,7 @@ namespace ReupVirtualTwin.helpers
             }
             return true;
         }
-        static private bool ValidateJTokenToAnySchema(JToken obj, JArray schemas)
+        static bool ValidateJTokenToAnySchema(JToken obj, JArray schemas)
         {
             foreach (JToken schema in schemas)
             {
@@ -99,7 +143,7 @@ namespace ReupVirtualTwin.helpers
             }
             return false;
         }
-        static private bool ValidateJObjectProperties(JToken obj, JObject schema)
+        static bool ValidateJObjectProperties(JToken obj, JObject schema)
         {
             JObject properties = (JObject)schema["properties"];
             JArray required = (JArray)schema["required"];
@@ -109,7 +153,7 @@ namespace ReupVirtualTwin.helpers
             }
             foreach (KeyValuePair<string, JToken> pair in properties)
             {
-                if (obj[pair.Key] == null && ItemInArray<string>(required, pair.Key))
+                if (obj[pair.Key] == null && IsItemInArray<string>(required, pair.Key))
                 {
                     Debug.LogWarning($"Key {pair.Key} not found in object");
                     return false;
@@ -123,7 +167,7 @@ namespace ReupVirtualTwin.helpers
             return true;
         }
 
-        static private bool ValidateJObjectType(JToken obj, JTokenType expectedType, string key)
+        static bool ValidateJObjectType(JToken obj, JTokenType expectedType, string key)
         {
             bool valid = ValidateJObjectType(obj, expectedType);
             if (!valid && !string.IsNullOrEmpty(key))
@@ -133,7 +177,7 @@ namespace ReupVirtualTwin.helpers
             return valid;
         }
 
-        static private bool ValidateJObjectType(JToken obj, JTokenType expectedType)
+        static bool ValidateJObjectType(JToken obj, JTokenType expectedType)
         {
             if (obj.Type != expectedType)
             {
@@ -143,7 +187,7 @@ namespace ReupVirtualTwin.helpers
             return true;
         }
 
-        static private bool ItemInArray<T>(JArray array, T item)
+        static bool IsItemInArray<T>(JArray array, T item)
         {
             if (array == null)
             {

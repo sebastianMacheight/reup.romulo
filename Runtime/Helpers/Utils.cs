@@ -7,7 +7,6 @@ namespace ReupVirtualTwin.helpers
     {
         public static List<string> ConvertStringToList(string idsString)
         {
-            string[] idsArray;
            if (!string.IsNullOrEmpty(idsString))
             {
                 return new List<string>(idsString.Split(','));

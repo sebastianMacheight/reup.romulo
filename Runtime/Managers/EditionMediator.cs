@@ -81,7 +81,7 @@ namespace ReupVirtualTwin.managers
             incomingMessageValidator.RegisterMessage(WebMessageType.changeObjectColor, DataValidator.stringSchema);
 
             incomingMessageValidator.RegisterMessage(WebMessageType.changeObjectsMaterial, RomuloExternalSchema.changeObjectMaterialPayloadSchema);
-
+            incomingMessageValidator.RegisterMessage(WebMessageType.requestSceneState, RomuloExternalSchema.requestSceneStatePayloadSchema);
         }
 
         public void Notify(ReupEvent eventName)
@@ -147,7 +147,6 @@ namespace ReupVirtualTwin.managers
                     ProcessLoadStatus((float)(object)payload);
                     break;
                 case ReupEvent.objectMaterialChanged:
-                    Debug.Log("I was notified of material changed");
                     if (RomuloEnvironment.development)
                     {
                         if (!DataValidator.ValidateObjectToSchema(payload, RomuloInternalSchema.materialChangeInfo))
@@ -212,10 +211,26 @@ namespace ReupVirtualTwin.managers
                 case WebMessageType.changeObjectsMaterial:
                     _changeMaterialController.ChangeObjectMaterial((JObject)payload);
                     break;
+                case WebMessageType.requestSceneState:
+                    StartCoroutine(SendSceneStateMessage((JObject)payload));
+                    break;
             }
         }
 
-
+        private IEnumerator SendSceneStateMessage(JObject sceneStateRequestPayload)
+        {
+            _selectedObjectsManager.ClearSelection();
+            yield return null;
+            JObject sceneState = ((ISceneStateManager)_modelInfoManager).GetSceneState();
+            WebMessage<JObject> sceneStateMessage = new WebMessage<JObject>
+            {
+                type = WebMessageType.requestSceneStateSuccess,
+                payload = new JObject(
+                    new JProperty("scene_state", sceneState),
+                    new JProperty("scene_name", sceneStateRequestPayload["scene_name"])),
+            };
+            _webMessageSender.SendWebMessage(sceneStateMessage);
+        }
 
         public void SendModelInfoMessage()
         {
