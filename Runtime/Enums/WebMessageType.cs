@@ -37,7 +37,10 @@ namespace ReupVirtualTwin.enums
 
         public const string updateBuilding = "[Update Building] Update Building Success";
 
-        public const string requestSceneState = "[Model Info] Request Scene State";
-        public const string requestSceneStateSuccess = "[Model Info] Request Scene State Success";
+        public const string requestSceneState= "[Save Scene] Request Scene State";
+        public const string requestSceneStateSuccess= "[Save Scene] Request Scene State Success";
+        public const string requestSceneLoad= "[Model Info] Request Scene Load";
+        public const string requestSceneLoadSuccess= "[Model Info] Request Scene Load Success";
+
     }
 }
