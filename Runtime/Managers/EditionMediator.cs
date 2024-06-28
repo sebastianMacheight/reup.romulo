@@ -14,6 +14,7 @@ using ReupVirtualTwin.romuloEnvironment;
 using ReupVirtualTwin.dataSchemas;
 using Newtonsoft.Json.Linq;
 using System.Collections;
+using System.Linq;
 
 namespace ReupVirtualTwin.managers
 {
@@ -82,6 +83,7 @@ namespace ReupVirtualTwin.managers
 
             incomingMessageValidator.RegisterMessage(WebMessageType.changeObjectsMaterial, RomuloExternalSchema.changeObjectMaterialPayloadSchema);
             incomingMessageValidator.RegisterMessage(WebMessageType.requestSceneState, RomuloExternalSchema.requestSceneStatePayloadSchema);
+            incomingMessageValidator.RegisterMessage(WebMessageType.requestSceneLoad, RomuloExternalSchema.requestLoadScenePayloadSchema);
         }
 
         public void Notify(ReupEvent eventName)
@@ -181,7 +183,7 @@ namespace ReupVirtualTwin.managers
                 return;
             }
             string type = message["type"].ToString();
-            object payload = message["payload"];
+            JToken payload = message["payload"];
             switch (type)
             {
                 case WebMessageType.setEditMode:
@@ -214,6 +216,26 @@ namespace ReupVirtualTwin.managers
                 case WebMessageType.requestSceneState:
                     StartCoroutine(SendSceneStateMessage((JObject)payload));
                     break;
+                case WebMessageType.requestSceneLoad:
+                    LoadObjectsState(payload.ToObject<JArray>().Cast<JObject>().ToList());
+                    break;
+            }
+        }
+
+        private void LoadObjectsState(List<JObject> objectStates)
+        {
+            IEnumerable<IGrouping<JToken, JObject>> objectStatesByColor = objectStates.GroupBy(objectState => objectState["color"]);
+            foreach(var objectsByColor in objectStatesByColor)
+            {
+                Color? color = Utils.ParseColor(objectsByColor.Key.ToString());
+                if (color == null)
+                {
+                    SendErrorMessage(InvalidColorErrorMessage(objectsByColor.Key.ToString()));
+                    return;
+                }
+                string[] objectIds = objectsByColor.Select(objectState => objectState["object_id"].ToString()).ToArray();
+                List<GameObject> objectsToPaint = _registry.GetObjectsWithGuids(objectIds);
+                _changeColorManager.ChangeObjectsColor(objectsToPaint, (Color) color);
             }
         }
 

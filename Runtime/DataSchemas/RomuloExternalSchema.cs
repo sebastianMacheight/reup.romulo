@@ -28,5 +28,9 @@ namespace ReupVirtualTwin.dataSchemas
             },
             { "required", new JArray { "scene_name" } },
         };
+
+        public static readonly JObject requestLoadScenePayloadSchema = DataValidator.CreateArraySchema(
+            RomuloInternalSchema.objectSceneSchema
+        );
     }
 }

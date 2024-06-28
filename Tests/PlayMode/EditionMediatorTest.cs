@@ -60,12 +60,16 @@ public class EditionMediatorTest : MonoBehaviour
 
     private class ChangeColorManagerSpy : IChangeColorManager
     {
-        public List<GameObject> calledObjects;
-        public Color color;
+        public List<GameObject> lastCalledObjects;
+        public Color lastCalledColor;
+        public List<Color> calledColors = new List<Color>();
+        public List<List<GameObject>> calledObjects = new List<List<GameObject>>();
         public void ChangeObjectsColor(List<GameObject> objectsToDelete, Color color)
         {
-            calledObjects = objectsToDelete;
-            this.color = color;
+            lastCalledObjects = objectsToDelete;
+            this.lastCalledColor = color;
+            calledColors.Add(color);
+            calledObjects.Add(objectsToDelete);
         }
     }
 
@@ -546,8 +550,9 @@ public class EditionMediatorTest : MonoBehaviour
         string message = dummyJsonCreator.createWebMessage(WebMessageType.changeObjectColor, payload);
         editionMediator.ReceiveWebMessage(message);
         yield return null;
-        Assert.AreEqual(expectedColor, changeColorManagerSpy.color);
-        Assert.AreEqual(registrySpy.objects, changeColorManagerSpy.calledObjects);
+        Assert.AreEqual(registrySpy.lastRequestedObjectIds, payload.objectIds);
+        Assert.AreEqual(expectedColor, changeColorManagerSpy.lastCalledColor);
+        Assert.AreEqual(registrySpy.objects, changeColorManagerSpy.lastCalledObjects);
     }
 
     [UnityTest]
@@ -740,6 +745,109 @@ public class EditionMediatorTest : MonoBehaviour
         Assert.IsTrue(mockSelectedObjectsManager.selectionCleared);
         Assert.IsTrue(mockModelInfoManager.sceneStateRequested);
         yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldPaintObjects_when_ReceivingObjectsToPaint_inLoadSceneRequest_onlyOneColor()
+    {
+        string color = "#00FF00";
+        Color expectedColor = Color.green;
+        JObject requestSceneLoadMessage = new JObject(
+            new JProperty("type", WebMessageType.requestSceneLoad),
+            new JProperty("payload", new JArray(
+                new JObject[]
+                {
+                    new JObject()
+                    {
+                        { "id", 1 },
+                        { "object_id", "object-id-1" },
+                        { "base_scene", 1 },
+                        { "material_id", null },
+                        { "color", color },
+                    },
+                    new JObject()
+                    {
+                        { "id", 2 },
+                        { "object_id", "object-id-2" },
+                        { "base_scene", 1 },
+                        { "material_id", null },
+                        { "color", null },
+                    },
+                    new JObject()
+                    {
+                        { "id", 3 },
+                        { "object_id", "object-id-3" },
+                        { "base_scene", 1 },
+                        { "material_id", null },
+                        { "color", color },
+                    },
+                })));
+        string serializedMessage = JsonConvert.SerializeObject(requestSceneLoadMessage);
+        editionMediator.ReceiveWebMessage(serializedMessage);
+        yield return null;
+        Assert.AreEqual(new string[] { "object-id-1", "object-id-3" }, registrySpy.lastRequestedObjectIds);
+        Assert.AreEqual(expectedColor, changeColorManagerSpy.lastCalledColor);
+        Assert.AreEqual(registrySpy.objects, changeColorManagerSpy.lastCalledObjects);
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldPaintObjects_when_ReceivingObjectsToPaint_inLoadSceneRequest_severalColors()
+    {
+        string greenColor = "#00FF00";
+        Color expectedGreenColor = Color.green;
+        string redColor = "#FF0000";
+        Color expectedRedColor = Color.red;
+        JObject requestSceneLoadMessage = new JObject(
+            new JProperty("type", WebMessageType.requestSceneLoad),
+            new JProperty("payload", new JArray(
+                new JObject[]
+                {
+                    new JObject()
+                    {
+                        { "id", 1 },
+                        { "object_id", "object-id-1" },
+                        { "base_scene", 1 },
+                        { "material_id", null },
+                        { "color", greenColor },
+                    },
+                    new JObject()
+                    {
+                        { "id", 2 },
+                        { "object_id", "object-id-2" },
+                        { "base_scene", 1 },
+                        { "material_id", null },
+                        { "color", redColor },
+                    },
+                    new JObject()
+                    {
+                        { "id", 3 },
+                        { "object_id", "object-id-3" },
+                        { "base_scene", 1 },
+                        { "material_id", null },
+                        { "color", greenColor },
+                    },
+                })));
+        string serializedMessage = JsonConvert.SerializeObject(requestSceneLoadMessage);
+        editionMediator.ReceiveWebMessage(serializedMessage);
+        yield return null;
+        List<string[]> expectedObjectIdsGroups = new List<string[]>
+        {
+            new string[] { "object-id-1", "object-id-3" },
+            new string[] { "object-id-2" },
+        };
+        List<Color> expectedColors = new List<Color>
+        {
+            expectedGreenColor,
+            expectedRedColor,
+        };
+        List<List<GameObject>> expectedCalledObjects = new List<List<GameObject>>
+        {
+            registrySpy.objects,
+            registrySpy.objects,
+        };
+        Assert.AreEqual(expectedObjectIdsGroups, registrySpy.requestedObjectIds);
+        Assert.AreEqual(expectedColors, changeColorManagerSpy.calledColors);
+        Assert.AreEqual(expectedCalledObjects, changeColorManagerSpy.calledObjects);
     }
 
 }
