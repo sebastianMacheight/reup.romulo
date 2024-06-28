@@ -13,6 +13,7 @@ namespace ReupVirtualTwin.helpers
         public const string stringType = "string";
         public const string objectType = "object";
         public const string arrayType = "array";
+        public const string nullType = "null";
 
         private const string referredSchemaKey = "referredSchema";
         private const string schemaRefType = "$schemaRef";
@@ -31,7 +32,7 @@ namespace ReupVirtualTwin.helpers
         };
         public static readonly JObject nullSchema = new JObject
         {
-            { "type", null }
+            { "type", nullType }
         };
 
         static public JObject MultiSchema(params JObject[] schemas)
@@ -74,7 +75,7 @@ namespace ReupVirtualTwin.helpers
 
         static bool ValidateJTokenToSchema(JToken obj, JObject schema)
         {
-            return ValidateJTokenToSchema(obj, schema, "");
+            return ValidateJTokenToSchema(obj, schema, null);
         }
 
         static bool ValidateJTokenToSchema(JToken obj, JObject schema, string key)
@@ -85,7 +86,7 @@ namespace ReupVirtualTwin.helpers
             }
             if (schema["oneOf"] != null)
             {
-                return ValidateJTokenToAnySchema(obj, (JArray)schema["oneOf"]);
+                return ValidateJTokenToAnySchema(obj, (JArray)schema["oneOf"], key);
             }
             switch ((string)schema["type"])
             {
@@ -101,7 +102,7 @@ namespace ReupVirtualTwin.helpers
                     return ValidateJArrayItems(obj, (JArray)schema["items"]);
                 case schemaRefType:
                     return ValidateObjectToSchemaRef(obj, schema);
-                case null:
+                case nullType:
                     return ValidateToNull(obj);
                 default:
                     Debug.LogWarning($"Type {schema["type"]} not supported");
@@ -154,6 +155,16 @@ namespace ReupVirtualTwin.helpers
             }
             return true;
         }
+        static bool ValidateJTokenToAnySchema(JToken obj, JArray schemas, string key)
+        {
+            bool result = ValidateJTokenToAnySchema(obj, schemas);
+            if (key != null && result == false)
+            {
+                string schemasAsList = string.Join(", ", schemas.ToList().Select(schema => schema["type"].ToString()));
+                Debug.LogWarning($"Key {key} is not of any of the accepted schemas: {schemasAsList}");
+            }
+            return result;
+        }
         static bool ValidateJTokenToAnySchema(JToken obj, JArray schemas)
         {
             foreach (JToken schema in schemas)
@@ -182,7 +193,7 @@ namespace ReupVirtualTwin.helpers
                 }
                 if (obj[pair.Key] != null && !ValidateJTokenToSchema(obj[pair.Key], (JObject)pair.Value, pair.Key))
                 {
-                    Debug.LogWarning($"Validation of key {pair.Key} failed");
+                    Debug.LogWarning($"Validation of {pair.Key} value failed");
                     return false;
                 }
             }
@@ -194,7 +205,7 @@ namespace ReupVirtualTwin.helpers
             bool valid = ValidateJObjectType(obj, expectedType);
             if (!valid && !string.IsNullOrEmpty(key))
             {
-                Debug.LogWarning($"Key {key} is not of type {expectedType}");
+                Debug.LogWarning($"Unexpected {obj.Type} value in {key} key, expected to be of type {expectedType}");
             }
             return valid;
         }
@@ -203,7 +214,6 @@ namespace ReupVirtualTwin.helpers
         {
             if (obj.Type != expectedType)
             {
-                Debug.LogWarning($"Expected object to be of type {expectedType}, but actual type is {obj.Type}");
                 return false;
             }
             return true;
