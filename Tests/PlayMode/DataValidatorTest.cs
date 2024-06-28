@@ -313,4 +313,27 @@ public class DataValidatorTest
         Assert.IsFalse(result);
     }
 
+    [Test]
+    public void ValidateObjectShouldSuccess_for_multiOptionTypes()
+    {
+        JObject multiSchema = DataValidator.MultiSchema(DataValidator.intSchema, DataValidator.stringSchema);
+        bool result;
+        result = DataValidator.ValidateObjectToSchema(5, multiSchema);
+        Assert.IsTrue(result);
+        result = DataValidator.ValidateObjectToSchema("this is a string", multiSchema);
+        Assert.IsTrue(result);
+        result = DataValidator.ValidateObjectToSchema(null, multiSchema);
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void ValidateShouldAcceptNullSchema()
+    {
+        bool result;
+        result = DataValidator.ValidateObjectToSchema("this is a string", DataValidator.nullSchema);
+        Assert.IsFalse(result);
+        result = DataValidator.ValidateObjectToSchema(null, DataValidator.nullSchema);
+        Assert.IsTrue(result);
+    }
+
 }
