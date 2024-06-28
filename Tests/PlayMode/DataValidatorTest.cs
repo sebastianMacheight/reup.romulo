@@ -50,7 +50,7 @@ public class DataValidatorTest
                 }
             }
         };
-        intStringArraySchema = DataValidator.CreateArraySchema(new JObject[] { DataValidator.intSchema, DataValidator.stringSchema });
+        intStringArraySchema = DataValidator.CreateArraySchema(DataValidator.intSchema, DataValidator.stringSchema);
     }
 
     [Test]

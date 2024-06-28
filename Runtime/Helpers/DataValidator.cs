@@ -51,7 +51,7 @@ namespace ReupVirtualTwin.helpers
             };
         }
 
-        static public JObject CreateArraySchema(JObject[] itemSchemas)
+        static public JObject CreateArraySchema(params JObject[] itemSchemas)
         {
             return new JObject
             {
