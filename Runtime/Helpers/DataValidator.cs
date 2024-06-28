@@ -29,6 +29,18 @@ namespace ReupVirtualTwin.helpers
         {
             { "type", boolType }
         };
+        public static readonly JObject nullSchema = new JObject
+        {
+            { "type", null }
+        };
+
+        static public JObject MultiSchema(params JObject[] schemas)
+        {
+            return new JObject
+            {
+                { "oneOf", new JArray(schemas) }
+            };
+        }
 
         static public JObject CreateRefSchema(string refName)
         {
@@ -39,7 +51,7 @@ namespace ReupVirtualTwin.helpers
             };
         }
 
-        static public JObject CreateArraySchema(JObject[] itemSchemas)
+        static public JObject CreateArraySchema(params JObject[] itemSchemas)
         {
             return new JObject
             {
@@ -71,6 +83,10 @@ namespace ReupVirtualTwin.helpers
             {
                 return false;
             }
+            if (schema["oneOf"] != null)
+            {
+                return ValidateJTokenToAnySchema(obj, (JArray)schema["oneOf"]);
+            }
             switch ((string)schema["type"])
             {
                 case boolType:
@@ -85,10 +101,16 @@ namespace ReupVirtualTwin.helpers
                     return ValidateJArrayItems(obj, (JArray)schema["items"]);
                 case schemaRefType:
                     return ValidateObjectToSchemaRef(obj, schema);
+                case null:
+                    return ValidateToNull(obj);
                 default:
                     Debug.LogWarning($"Type {schema["type"]} not supported");
                     return false;
             }
+        }
+        static bool ValidateToNull(JToken obj)
+        {
+            return obj.Type == JTokenType.Null;
         }
         static bool ValidateObjectToSchemaRef(JToken obj, JObject schemaRef)
         {

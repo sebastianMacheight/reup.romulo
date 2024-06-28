@@ -50,7 +50,7 @@ public class DataValidatorTest
                 }
             }
         };
-        intStringArraySchema = DataValidator.CreateArraySchema(new JObject[] { DataValidator.intSchema, DataValidator.stringSchema });
+        intStringArraySchema = DataValidator.CreateArraySchema(DataValidator.intSchema, DataValidator.stringSchema);
     }
 
     [Test]
@@ -311,6 +311,29 @@ public class DataValidatorTest
         };
         bool result = DataValidator.ValidateObjectToSchema(data, parentSchema);
         Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void ValidateObjectShouldSuccess_for_multiOptionTypes()
+    {
+        JObject multiSchema = DataValidator.MultiSchema(DataValidator.intSchema, DataValidator.stringSchema);
+        bool result;
+        result = DataValidator.ValidateObjectToSchema(5, multiSchema);
+        Assert.IsTrue(result);
+        result = DataValidator.ValidateObjectToSchema("this is a string", multiSchema);
+        Assert.IsTrue(result);
+        result = DataValidator.ValidateObjectToSchema(null, multiSchema);
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void ValidateShouldAcceptNullSchema()
+    {
+        bool result;
+        result = DataValidator.ValidateObjectToSchema("this is a string", DataValidator.nullSchema);
+        Assert.IsFalse(result);
+        result = DataValidator.ValidateObjectToSchema(null, DataValidator.nullSchema);
+        Assert.IsTrue(result);
     }
 
 }
