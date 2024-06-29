@@ -18,12 +18,14 @@ public class DataValidatorTest
     {
         parentSchema = new JObject
         {
+            { "name", "parentSchema" },
             { "type", DataValidator.objectType },
             { "properties", new JObject()
                 {
                     { "a_string", DataValidator.stringSchema},
                     { "an_int", DataValidator.intSchema},
-                    { "optionial_int", DataValidator.intSchema }
+                    { "optional_int", DataValidator.intSchema },
+                    { "optional_child", DataValidator.CreateRefSchema("parentSchema") },
                 }
             },
             { "required", new JArray { "a_string", "an_int" } },
@@ -259,6 +261,56 @@ public class DataValidatorTest
         };
         bool result = DataValidator.ValidateObjectToSchema(data, parentSchema);
         Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void ValidateObjectShouldRejectIncorrectData_with_schemaRef()
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "a_string", "John Doe" },
+            { "an_int", 25 },
+            { "optional_child", "this is supposed to be of schema ParentSchema" }
+        };
+        bool result = DataValidator.ValidateObjectToSchema(data, parentSchema);
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void ValidateObjectShouldSuccessCorrectData_with_schemaRef()
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "a_string", "John Doe" },
+            { "an_int", 25 },
+            { "optional_child", new Dictionary<string, object>()
+                {
+                    { "a_string", "John Doe" },
+                    { "an_int", 25 },
+                }
+            }
+        };
+        bool result = DataValidator.ValidateObjectToSchema(data, parentSchema);
+        Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void ValidateObjectShouldFail_if_incorrectSchemaRefExists()
+    {
+        parentSchema["properties"]["optional_child"] = DataValidator.CreateRefSchema("incorrectSchemaReferrence");
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "a_string", "John Doe" },
+            { "an_int", 25 },
+            { "optional_child", new Dictionary<string, object>()
+                {
+                    { "a_string", "John Doe" },
+                    { "an_int", 25 },
+                }
+            }
+        };
+        bool result = DataValidator.ValidateObjectToSchema(data, parentSchema);
+        Assert.IsFalse(result);
     }
 
 }

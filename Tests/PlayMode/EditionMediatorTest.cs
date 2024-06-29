@@ -127,9 +127,10 @@ public class EditionMediatorTest : MonoBehaviour
         }
     }
 
-    private class MockModelInfoManager : IModelInfoManager
+    private class MockModelInfoManager : IModelInfoManager, ISceneStateManager
     {
         public ObjectDTO building;
+        public bool sceneStateRequested = false;
         public MockModelInfoManager()
         {
             building = new ObjectDTO
@@ -171,6 +172,11 @@ public class EditionMediatorTest : MonoBehaviour
             throw new System.NotImplementedException();
         }
 
+        public JObject GetSceneState()
+        {
+            sceneStateRequested = true;
+            return new JObject();
+        }
     }
 
     private class MockWebMessageSender : IWebMessagesSender
@@ -248,6 +254,17 @@ public class EditionMediatorTest : MonoBehaviour
                 tags = new Tag[2]{ new Tag() { id = "tag2"},  new Tag() { id = "tag3"} },
             },
         };
+
+        public JObject GetObjectSceneState(GameObject obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public JObject GetTreeSceneState(GameObject obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public ObjectDTO[] MapObjectsToDTO(List<GameObject> objs)
         {
             return objectDTOs;
@@ -321,8 +338,6 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldSetEditModeWhenReceiveRequest()
     {
         string message = JObject.FromObject(new { type = WebMessageType.setEditMode, payload = true }).ToString();
-        Debug.Log("message");
-        Debug.Log(message);
         editionMediator.ReceiveWebMessage(message);
         Assert.AreEqual(mockEditModeManager.editMode, true);
         yield return null;
@@ -561,6 +576,7 @@ public class EditionMediatorTest : MonoBehaviour
             { "type", WebMessageType.changeObjectsMaterial },
             { "payload", new Dictionary<string, object>
                 {
+                    {"material_id", 1234},
                     {"material_url", "material-url"},
                     {"object_ids", new string[] { "id-0", "id-1" } },
                 }
@@ -587,6 +603,7 @@ public class EditionMediatorTest : MonoBehaviour
     public IEnumerator ShouldSendSuccessMessage_When_NotifiedOfMaterialChangeSuccess()
     {
         JObject materialChangeInfo = new JObject(
+            new JProperty("material_id", 1234),
             new JProperty("material_url", "material-url"),
             new JProperty("object_ids", new JArray(new string[] { "id-0", "id-1" }))
         );
@@ -640,4 +657,89 @@ public class EditionMediatorTest : MonoBehaviour
         Assert.AreEqual(WebMessageType.updateBuilding, sentUpdateBuildingMessage.type);
         Assert.AreEqual(mockModelInfoManager.building, sentUpdateBuildingMessage.payload.building);
     }
+
+    [UnityTest]
+    public IEnumerator ShouldRejectSceneStateMessage_when_noSceneNameProvided()
+    {
+        WebMessage<Dictionary<string, object>> sceneStateRequestMessage = new WebMessage<Dictionary<string, object>>()
+        {
+            type = WebMessageType.requestSceneState,
+            payload = new Dictionary<string, object>()
+        };
+        var serializedMessage = JsonConvert.SerializeObject(sceneStateRequestMessage);
+        editionMediator.ReceiveWebMessage(serializedMessage);
+        yield return null;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
+        Assert.AreEqual(WebMessageType.error, sentMessage.type);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldSendSceneStateMessage_when_requested()
+    {
+        string sceneName = "the-scene-name";
+        WebMessage<Dictionary<string, object>> sceneStateRequestMessage = new WebMessage<Dictionary<string, object>>()
+        {
+            type = WebMessageType.requestSceneState,
+            payload = new Dictionary<string, object>()
+            {
+                {"scene_name", sceneName }
+            }
+        };
+        editionMediator.ReceiveWebMessage(JsonConvert.SerializeObject(sceneStateRequestMessage));
+        yield return null;
+
+        WebMessage<JObject> sentMessage = (WebMessage<JObject>)mockWebMessageSender.sentMessages[0];
+        Assert.AreEqual(WebMessageType.requestSceneStateSuccess, sentMessage.type);
+        Assert.IsTrue(JToken.DeepEquals(mockModelInfoManager.GetSceneState(), sentMessage.payload["scene_state"]));
+        Assert.AreEqual(sceneName, sentMessage.payload["scene_name"].ToString());
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldRejectRequestChangeMaterialMessageWithNoMaterialId()
+    {
+        Dictionary<string, object> messageWithNoMaterialId = new Dictionary<string, object>
+        {
+            { "type", WebMessageType.changeObjectsMaterial },
+            { "payload", new Dictionary<string, object>
+                {
+                    {"material_url", "material-url"},
+                    {"object_ids", new string[] { "id-0", "id-1" } },
+                }
+            }
+        };
+        var serializedMessage = JsonConvert.SerializeObject(messageWithNoMaterialId);
+        editionMediator.ReceiveWebMessage(serializedMessage);
+        yield return null;
+        WebMessage<string> sentMessage = (WebMessage<string>)mockWebMessageSender.sentMessages[0];
+        Assert.AreEqual(WebMessageType.error, sentMessage.type);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator ShouldClearSelectionBeforeSendingSceneStateMessage()
+    {
+        WebMessage<Dictionary<string, object>> sceneStateRequestMessage = new WebMessage<Dictionary<string, object>>()
+        {
+            type = WebMessageType.requestSceneState,
+            payload = new Dictionary<string, object>()
+            {
+                {"scene_name", "test-scene-name" }
+            }
+        };
+
+        Assert.IsFalse(mockSelectedObjectsManager.selectionCleared);
+        Assert.IsFalse(mockModelInfoManager.sceneStateRequested);
+
+        string serializedMessage = JsonConvert.SerializeObject(sceneStateRequestMessage);
+        editionMediator.ReceiveWebMessage(serializedMessage);
+        Assert.IsTrue(mockSelectedObjectsManager.selectionCleared);
+        Assert.IsFalse(mockModelInfoManager.sceneStateRequested);
+        yield return null;
+        Assert.IsTrue(mockSelectedObjectsManager.selectionCleared);
+        Assert.IsTrue(mockModelInfoManager.sceneStateRequested);
+        yield return null;
+    }
+
 }
